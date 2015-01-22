@@ -1,0 +1,5 @@
+suites:
+    main:
+        namespace: Creuset
+        psr4_prefix: Creuset
+        src_path: app

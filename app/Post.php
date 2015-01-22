@@ -1,0 +1,57 @@
+<?php namespace Creuset;
+
+use Illuminate\Database\Eloquent\Model;
+use Creuset\Presenters\PresentableTrait;
+
+class Post extends Model {
+
+	use PresentableTrait;
+	
+	protected $presenter = 'Creuset\Presenters\PostPresenter';
+
+	/**
+	 * The database table used by the model.
+	 *
+	 * @var string
+	 */
+	protected $table = 'posts';
+
+	/**
+	 * The attributes that are mass assignable.
+	 *
+	 * @var array
+	 */
+	protected $fillable = ['title', 'content', 'user_id', 'post_id', 'type', 'status'];
+
+	public function author()
+	{
+		return $this->belongsTo('Creuset\User', 'user_id', 'id');
+	}
+
+	public function parent()
+	{
+		return $this->belongsTo('Creuset\Post');
+	}
+
+	public function children()
+	{
+		return $this->hasMany('Creuset\Post');
+	}
+
+	public function terms()
+	{
+		return $this->morphToMany('Creuset\Term', 'termable');
+	}
+
+	public function categories()
+	{
+		return $this->morphToMany('Creuset\Term', 'termable')
+		->where('taxonomy', 'category');
+	}
+
+	public function tags()
+	{
+		return $this->morphToMany('Creuset\Term', 'termable')
+		->where('taxonomy', 'tag');
+	}
+}
