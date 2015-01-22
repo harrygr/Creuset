@@ -16,9 +16,15 @@ Route::get('/', 'WelcomeController@index');
 Route::get('home', 'HomeController@index');
 
 Route::controllers([
-	'auth' => 'Auth\AuthController',
+	//'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
+
+Route::get('login', ['uses' => 'Auth\AuthController@getLogin', 'as' => 'auth.login']);
+Route::post('login', ['uses' => 'Auth\AuthController@postLogin', 'as' => 'auth.login']);
+Route::get('logout', ['uses' => 'Auth\AuthController@getLogout', 'as' => 'auth.logout']);
+
+
 
 Route::model('post', 'Creuset\Post');
 
