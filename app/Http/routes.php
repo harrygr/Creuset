@@ -20,6 +20,10 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
+Route::get('register', ['uses' => 'Auth\AuthController@getRegister', 'as' => 'auth.register']);
+Route::post('register', ['uses' => 'Auth\AuthController@postRegister', 'as' => 'auth.register']);
+
+
 Route::get('login', ['uses' => 'Auth\AuthController@getLogin', 'as' => 'auth.login']);
 Route::post('login', ['uses' => 'Auth\AuthController@postLogin', 'as' => 'auth.login']);
 Route::get('logout', ['uses' => 'Auth\AuthController@getLogout', 'as' => 'auth.logout']);

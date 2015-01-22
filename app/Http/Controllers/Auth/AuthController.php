@@ -46,4 +46,26 @@ class AuthController extends Controller {
 					]);
 	}
 
+	/**
+	 * Handle a registration request for the application.
+	 *
+	 * @param  \Illuminate\Foundation\Http\FormRequest  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function postRegister(Request $request)
+	{
+		$validator = $this->registrar->validator($request->all());
+
+		if ($validator->fails())
+		{
+			$this->throwValidationException(
+				$request, $validator
+			);
+		}
+
+		$this->auth->login($this->registrar->create($request->all()));
+
+		return redirect($this->redirectPath());
+	}
+
 }
