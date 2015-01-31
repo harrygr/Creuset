@@ -1,8 +1,8 @@
 <?php namespace Creuset\Http\Requests;
 
-# use Creuset\Http\Requests\Request;
+use Creuset\Http\Requests\Request;
 
-class UpdatePostRequest extends Request {
+class CreatePostRequest extends Request {
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -14,13 +14,6 @@ class UpdatePostRequest extends Request {
 		return true;
 	}
 
-	public function forbiddenResponse()
-	{
-		return $this->redirector->back()
-		->with('alert-class', 'danger')
-		->with('alert', 'You are not allowed to edit this post');
-	}
-
 	/**
 	 * Get the validation rules that apply to the request.
 	 *
@@ -30,7 +23,7 @@ class UpdatePostRequest extends Request {
 	{
 		return [
 			'title'	=> 'required',
-			'slug'	=> 'required|unique:posts,slug,' . $this->route('post')->id,
+			'slug'	=> 'required|unique:posts,slug',
 			'published_at' => 'required|date',
 		];
 	}

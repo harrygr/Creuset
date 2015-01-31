@@ -39,7 +39,7 @@ class AuthController extends Controller {
 			return redirect()->intended(route('admin.posts'));
 		}
 
-		return redirectRoute('auth.login')
+		return \Redirect::route('auth.login')
 					->withInput($request->only('email'))
 					->withErrors([
 						'email' => 'These credentials do not match our records.',
@@ -49,7 +49,7 @@ class AuthController extends Controller {
 	/**
 	 * Handle a registration request for the application.
 	 *
-	 * @param  \Illuminate\Foundation\Http\FormRequest  $request
+	 * @param  \Illuminate\Foundation\Http\FormRequest $request
 	 * @return \Illuminate\Http\Response
 	 */
 	public function postRegister(Request $request)

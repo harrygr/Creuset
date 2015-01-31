@@ -1,34 +1,32 @@
-@extends('layouts.admin')
+@extends('admin.layouts.admin')
 
 @section('title')
 Edit Post
 @stop
 
-@section('content')
+@section('admin.content')
 <h1>Edit Post</h1>
 
 @include('partials.errors')
 
 {!! Form::model($post, ['route' => ['admin.posts.update', $post->id], 'method' => 'PATCH']) !!}
 
-{!! Form::hidden('id', $post->id) !!}
 <div class="row">
-	<div class="col-md-8">
-		<div class="form-group">
-			{!! Form::text('title', null, ['class' => 'form-control input-lg']) !!}
-		</div>
-		<div class="form-group">
-			{!! Form::text('slug', null, ['class' => 'form-control']) !!}
-		</div>
-
-		<div class="form-group">
-			{!! Form::textarea('content', null, ['class' => 'form-control']) !!}
-		</div>
-	</div>
+	@include('admin.posts.form')
 	<div class="col-md-4">
-			{!! HTML::linkRoute('admin.posts.delete', 'Delete Post', [$post->id],['class' => 'btn btn-link text-danger pull-left']) !!}
+		<div class="panel panel-default">
+			<div class="panel-body">
+			{!! HTML::linkRoute('admin.posts.delete', 'Trash', [$post->id],[
+				'class' => 'btn text-danger pull-left',
+				'data-method' => 'delete',
+				'data-confirm' => 'Are you sure?'
+				]) !!}
 			{!! Form::submit('Update', ['class' => 'btn btn-primary pull-right']) !!}
+			</div>
+			</div>
+		</div>
 	</div>
 </div>
+
 {!! Form::close() !!}
 @stop

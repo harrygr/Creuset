@@ -6,7 +6,8 @@ use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\MinkContext;
-use PHPUnit_Framework_Assert as PHPUnit;
+use Laracasts\Behat\Context\DatabaseTransactions;
+
 use Laracasts\Behat\Context\Migrator;
 
 /**
@@ -15,7 +16,9 @@ use Laracasts\Behat\Context\Migrator;
 class FeatureContext extends MinkContext implements Context, SnippetAcceptingContext
 {
 
-    use Migrator;
+    use Migrator, DatabaseTransactions, AuthenticationFeature;
+
+
     /**
      * Initializes context.
      *
@@ -27,27 +30,32 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
     {
     }
 
+
+
     /**
-     * @When I register :name :email
+     * @When I create a post :title :content
+     * @param $title string
+     * @param $content string
      */
-    public function iRegister($name, $email)
+    public function iCreateAPost($title, $content)
     {
-        $this->visit('register');
+        $this->visit('admin/posts/create');
+        $this->fillField('title', $title);
+        $this->fillField('slug', 'ex-slug');
+        $this->fillField('content', $content);
+        $this->pressButton('Create Post');
+        $this->printCurrentUrl();
 
-        $this->fillField('name', $name);
-        $this->fillField('email', $email);
-        $this->fillField('password', 'password');
-        $this->fillField('password_confirmation', 'password');
-
-        $this->pressButton('Register');
-        $this->printLastResponse();
     }
 
     /**
-     * @Then I should have an account
+     * @Then I should see a post :title
+     * @param $title
      */
-    public function iShouldHaveAnAccount()
+    public function iShouldSeeAPost($title)
     {
-        throw new PendingException();
+        $this->visit('admin/posts');
+        $this->printCurrentUrl();
+        $this->assertPageContainsText($title);
     }
 }

@@ -21,7 +21,9 @@ class Post extends Model {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['title', 'content', 'user_id', 'post_id', 'type', 'status'];
+	protected $fillable = ['title', 'slug', 'content', 'user_id', 'post_id', 'type', 'status', 'published_at'];
+
+	protected $dates = ['published_at'];
 
 	public function author()
 	{

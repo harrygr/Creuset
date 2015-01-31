@@ -33,6 +33,9 @@ Route::get('logout', ['uses' => 'Auth\AuthController@getLogout', 'as' => 'auth.l
 Route::model('post', 'Creuset\Post');
 
 Route::get('admin/posts', ['uses' => 'Admin\PostsController@index', 'as' => 'admin.posts']);
+Route::get('admin/posts/create', ['uses' => 'Admin\PostsController@create', 'as' => 'admin.posts.create']);
+Route::post('admin/posts/store', ['uses' => 'Admin\PostsController@store', 'as' => 'admin.posts.store']);
+
 Route::get('admin/posts/{post}/edit', ['uses' => 'Admin\PostsController@edit', 'as' => 'admin.posts.edit']);
 Route::patch('admin/posts/{post}', ['uses' => 'Admin\PostsController@update', 'as' => 'admin.posts.update']);
 Route::delete('admin/posts/{id}', ['uses' => 'Admin\PostsController@delete', 'as' => 'admin.posts.delete']);

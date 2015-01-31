@@ -25,6 +25,8 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <meta name="csrf_token" content="{{ csrf_token() }}" />
+
 
 </head>
 
@@ -44,7 +46,7 @@
                 <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
                 @include('partials.alert')
 
-                @yield("content")
+                @yield("admin.content")
 
             </div>
         </div>
@@ -53,15 +55,18 @@
     </div>
     <!-- /#wrapper -->
 
-    @include('layouts.footer')
+    @include('admin.layouts.footer')
+
 
     <!-- Menu Toggle Script -->
     <script>
+
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
     </script>
+    {!! HTML::script('js/admin.js') !!}
 
 </body>
 
