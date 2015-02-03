@@ -2,7 +2,7 @@
 
 use Laracasts\TestDummy\Factory;
 use Laracasts\TestDummy\DbTestCase;
-use Creuset\Repositories\PostRepository;
+use Creuset\Repositories\DbPostRepository;
 
 class PostsTest extends TestCase {
 
@@ -12,7 +12,7 @@ class PostsTest extends TestCase {
 	{
 		parent::setUp();
 		DB::beginTransaction();
-		$this->posts = new PostRepository(new Creuset\Post);
+		$this->posts = new DbPostRepository(new Creuset\Post);
 	}
 
 	/**

@@ -4,6 +4,7 @@ $factory('Creuset\Post', [
 	'title'		=> $faker->sentence,
 	'content'	=> $faker->paragraph,
 	'slug'		=> $faker->slug,
+	'published_at' => $faker->dateTimeThisMonth(),
 	'user_id'	=> 'factory:Creuset\User',
 	]);
 

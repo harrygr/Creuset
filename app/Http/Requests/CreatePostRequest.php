@@ -1,6 +1,7 @@
 <?php namespace Creuset\Http\Requests;
 
 use Creuset\Http\Requests\Request;
+use Illuminate\Support\Facades\Log;
 
 class CreatePostRequest extends Request {
 

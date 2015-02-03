@@ -1,6 +1,7 @@
 <?php namespace Creuset\Repositories;
 
 abstract class DbRepository {
+	protected $model;
 
 	public function getAll($with = [])
 	{

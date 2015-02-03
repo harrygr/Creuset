@@ -28,6 +28,7 @@ class UpdatePostRequest extends Request {
 	 */
 	public function rules()
 	{
+		\Log::debug('We are getting the post validation rules');
 		return [
 			'title'	=> 'required',
 			'slug'	=> 'required|unique:posts,slug,' . $this->route('post')->id,

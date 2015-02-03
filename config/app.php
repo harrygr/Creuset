@@ -147,6 +147,7 @@ return [
 		'Creuset\Providers\RouteServiceProvider',
 		//'Cviebrock\EloquentSluggable\SluggableServiceProvider',
 		'Gvb\Whoops\ServiceProvider',
+		'Creuset\Providers\DatabaseServiceProvider',
 
 	],
 

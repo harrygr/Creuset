@@ -2,11 +2,14 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Creuset\Presenters\PresentableTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model {
 
-	use PresentableTrait;
+	use PresentableTrait, SoftDeletes;
 	
+	protected $dates = ['published_at', 'deleted_at'];
+
 	protected $presenter = 'Creuset\Presenters\PostPresenter';
 
 	/**
@@ -23,7 +26,8 @@ class Post extends Model {
 	 */
 	protected $fillable = ['title', 'slug', 'content', 'user_id', 'post_id', 'type', 'status', 'published_at'];
 
-	protected $dates = ['published_at'];
+
+
 
 	public function author()
 	{

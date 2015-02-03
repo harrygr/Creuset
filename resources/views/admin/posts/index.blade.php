@@ -5,7 +5,7 @@ Posts
 @stop
 
 @section('admin.content')
-		<h1>Posts <a href="{{ route('admin.posts.create') }}" class="btn btn-default"><i class="fa fa-plus"></i> Add New</a></h1>
+		<h1>{{$title or 'Posts'}} <a href="{{ route('admin.posts.create') }}" class="btn btn-default"><i class="fa fa-plus"></i> Add New</a></h1>
 	<div class="panel panel-default">
 		<div class="panel-body">
 
@@ -25,7 +25,7 @@ Posts
 						<strong>{{ $post->title }}</strong>
 						<div class="row-actions">
 							<a href="{{ route('admin.posts.edit', [$post->id]) }}">Edit</a> |
-							<a href="#" data-method="delete" data-confirm="Are you sure?" class="text-danger">Delete</a>
+							<a href="{{ route('admin.posts.delete', [$post->id]) }}" data-method="delete" data-confirm="Are you sure?" class="text-danger" rel="nofollow">Trash</a>
 						</div>
 					</td>
 					<td>{{ $post->author->name }}</td>
@@ -41,6 +41,7 @@ Posts
 			@endforeach
 			</tbody>
 		</table>
+		{!! $posts->render() !!}
 	</div>
 	</div>
 

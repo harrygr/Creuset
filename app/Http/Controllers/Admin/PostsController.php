@@ -3,10 +3,10 @@
 use Creuset\Http\Requests;
 use Creuset\Http\Controllers\Controller;
 use Creuset\Http\Requests\CreatePostRequest;
-use Creuset\Repositories\PostRepository;
 use Creuset\Post;
 use Creuset\Http\Requests\UpdatePostRequest;
 
+use Creuset\Repositories\Post\PostRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -17,19 +17,25 @@ use Illuminate\Http\Response;
 class PostsController extends Controller {
 
 
-	public function __construct()
+	/**
+	 * @var PostRepository
+	 */
+	private $postRepo;
+
+	public function __construct(PostRepository $postRepo)
 	{
 		$this->middleware('auth');
+		$this->postRepo = $postRepo;
 	}
 
 
 	/**
-	 * @param PostRepository $postsRepo
 	 * @return Response
-     */
-	public function index(PostRepository $postsRepo)
+	 * @internal param PostRepository $postRepo
+	 */
+	public function index()
 	{
-		$posts = $postsRepo->getPaginated(['categories', 'author']);
+		$posts = $this->postRepo->getPaginated(['categories', 'author']);
 
 		return \View::make('admin.posts.index')->with(compact('posts'));
 	}
@@ -47,13 +53,15 @@ class PostsController extends Controller {
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @param Post $post
 	 * @param CreatePostRequest $request
 	 * @return Response
+	 * @internal param PostRepository $postRepo
+	 * @internal param Post $post
 	 */
-	public function store(Post $post, CreatePostRequest $request)
+	public function store(CreatePostRequest $request)
 	{
-		$post = $post->create($request->all());
+		$post = $this->postRepo->create($request->all());
+
 		return redirect()->route('admin.posts.edit', [$post->id])
 			->with(['alert' => 'Post saved', 'alert-class' => 'success']);
 	}
@@ -91,7 +99,9 @@ class PostsController extends Controller {
 	 */
 	public function update(Post $post, UpdatePostRequest $request)
 	{
-		$post->update($request->all());
+
+
+		$this->postRepo->update($post, $request->all());
 		$alert = "Post Updated!";
 
 		return redirect()->route('admin.posts.edit', [$post])
@@ -102,13 +112,17 @@ class PostsController extends Controller {
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param Request $request
-	 * @param  int $id
+	 * @param Post $post
 	 * @return Response
+	 * @throws \Exception
+	 * @internal param int $id
+	 * @internal param Request $request
 	 */
-	public function destroy(Request $request, $id)
+	public function destroy(Post $post)
 	{
-		dd($request);
+		$post->delete();
+		return redirect()->route('admin.posts.index')
+			->with(['alert' => 'Post moved to trash', 'alert-class' => 'success']);
 	}
 
 }
