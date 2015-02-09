@@ -28,11 +28,12 @@ class UpdatePostRequest extends Request {
 	 */
 	public function rules()
 	{
-		\Log::debug('We are getting the post validation rules');
 		return [
-			'title'	=> 'required',
-			'slug'	=> 'required|unique:posts,slug,' . $this->route('post')->id,
-			'published_at' => 'required|date',
+			'title'			=> 'required',
+			'slug'			=> 'required|alpha_dash|unique:posts,slug,' . $this->route('post')->id,
+			'published_at'	=> 'required|date',
+			'status'		=> 'alpha_dash',
+			'type'			=> 'alpha_dash',
 		];
 	}
 

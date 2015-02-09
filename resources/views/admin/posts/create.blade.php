@@ -11,16 +11,9 @@
 
     {!! Form::open(['route' => 'admin.posts.store', 'method' => 'POST']) !!}
 
-    <div class="row">
-        @include('admin.posts.form')
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    {!! Form::submit('Create Post', ['class' => 'btn btn-primary pull-right']) !!}
-                </div>
-            </div>
-        </div>
-    </div>
+
+        @include('admin.posts.form', ['submitText' => 'Create Post'])
+
 
     {!! Form::close() !!}
 @stop

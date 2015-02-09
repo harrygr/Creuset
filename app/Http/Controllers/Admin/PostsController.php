@@ -7,6 +7,7 @@ use Creuset\Post;
 use Creuset\Http\Requests\UpdatePostRequest;
 
 use Creuset\Repositories\Post\PostRepository;
+use Creuset\Repositories\Term\DbTermRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -43,11 +44,20 @@ class PostsController extends Controller {
 	/**
 	 * Show the form for creating a new resource.
 	 *
+	 * @param DbTermRepository $termRepo
 	 * @return Response
 	 */
-	public function create()
+	public function create(DbTermRepository $termRepo)
 	{
-		return view('admin.posts.create');
+		$selectedCategories = [];
+		$categoryList = $termRepo->getCategoryList();
+		$tagList = $termRepo->getTagList();
+
+		return view('admin.posts.create')->with(compact(
+			'categoryList',
+			'selectedCategories',
+			'tagList'
+		));
 	}
 
 	/**
@@ -81,12 +91,24 @@ class PostsController extends Controller {
 	 * Show the form for editing the specified resource.
 	 *
 	 * @param Post $post
+	 * @param DbTermRepository $termRepo
 	 * @return Response
 	 * @internal param int $id
 	 */
-	public function edit(Post $post)
+	public function edit(Post $post, DbTermRepository $termRepo)
 	{
-		return view('admin.posts.edit')->with(compact('post'));
+		$post->load('categories', 'tags');
+
+		$selectedCategories = $post->categories->lists('id');
+		$categoryList = $termRepo->getCategoryList($post);
+		$tagList = $termRepo->getTagList();
+
+		return view('admin.posts.edit')->with(compact(
+			'post',
+			'categoryList',
+			'selectedCategories',
+			'tagList'
+		));
 	}
 
 	/**
@@ -99,7 +121,6 @@ class PostsController extends Controller {
 	 */
 	public function update(Post $post, UpdatePostRequest $request)
 	{
-
 
 		$this->postRepo->update($post, $request->all());
 		$alert = "Post Updated!";

@@ -22,7 +22,7 @@ Posts
 			@foreach ($posts as $post)
 				<tr>
 					<td>
-						<strong>{{ $post->title }}</strong>
+						<strong>{{ $post->title }}</strong> {!! $post->present()->statusLabel() !!}
 						<div class="row-actions">
 							<a href="{{ route('admin.posts.edit', [$post->id]) }}">Edit</a> |
 							<a href="{{ route('admin.posts.delete', [$post->id]) }}" data-method="delete" data-confirm="Are you sure?" class="text-danger" rel="nofollow">Trash</a>

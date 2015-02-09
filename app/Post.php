@@ -26,7 +26,11 @@ class Post extends Model {
 	 */
 	protected $fillable = ['title', 'slug', 'content', 'user_id', 'post_id', 'type', 'status', 'published_at'];
 
-
+	public static $postStatuses = [
+		'published'	=> 'Published',
+		'draft'		=> 'Draft',
+		'private'	=> 'Private',
+	];
 
 
 	public function author()
@@ -60,4 +64,5 @@ class Post extends Model {
 		return $this->morphToMany('Creuset\Term', 'termable')
 		->where('taxonomy', 'tag');
 	}
+
 }

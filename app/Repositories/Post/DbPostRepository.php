@@ -65,7 +65,10 @@ class DbPostRepository implements PostRepository {
      */
 	public function create($attributes)
 	{
-		return $this->post->create($attributes);
+		$post = $this->post->create($attributes);
+		$post = $this->syncTerms($post, ['postCategories', 'tags'], $attributes);
+
+		return $post;
 	}
 
 	/**
@@ -75,8 +78,16 @@ class DbPostRepository implements PostRepository {
      */
 	public function update(Post $post, $attributes)
 	{
+
+
+
+		$terms = isset($attributes['terms']) ? $attributes['terms'] : [];
+		$post->terms()->sync($terms);
+
 		return $post->update($attributes);
 	}
+
+
 
 	/**
 	 * @param Post $post

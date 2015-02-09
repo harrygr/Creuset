@@ -18,12 +18,14 @@ class AuthController extends Controller {
 	| a simple trait to add these behaviors. Why don't you explore it?
 	|
 	*/
+
+	protected $redirectTo = '/home';
+
 	/**
 	 * Create a new authentication controller instance.
 	 *
-	 * @param  Guard  $auth
-	 * @param  Registrar  $registrar
-	 * @return void
+	 * @param  Guard $auth
+	 * @param  Registrar $registrar
 	 */
 	public function __construct(Guard $auth, Registrar $registrar)
 	{
