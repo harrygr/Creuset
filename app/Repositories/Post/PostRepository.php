@@ -6,9 +6,10 @@ interface PostRepository {
 
 	/**
 	 * @param integer $id
+	 * @param array $with
 	 * @return mixed
-     */
-	public function getById($id);
+	 */
+	public function getById($id, $with = []);
 
 	/**
 	 * @param array $with

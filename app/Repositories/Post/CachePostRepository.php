@@ -20,11 +20,13 @@ class CachePostRepository implements PostRepository {
 
     /**
      * @param int $id
+     * @param array $with
      * @return mixed
      */
-    public function getById($id)
+    public function getById($id, $with = [])
     {
-        return \Cache::remember("post_{$id}", env('CACHE_TIME'), function() use ($id)
+        $withs = implode('-', $with);
+        return \Cache::remember("post.{$id}.{$withs}", env('CACHE_TIME'), function() use ($id)
         {
            return $this->repository->getById($id);
         });
@@ -68,7 +70,7 @@ class CachePostRepository implements PostRepository {
      */
     public function update(Post $post, $attributes)
     {
-        \Cache::forget("post_{$post->id}");
+        \Cache::forget("post.{$post->id}");
         \Cache::forget("posts.paginated");
         return $this->repository->update($post, $attributes);
     }
@@ -79,7 +81,7 @@ class CachePostRepository implements PostRepository {
      */
     public function delete(Post $post)
     {
-        \Cache::forget("post_{$post->id}");
+        \Cache::forget("post.{$post->id}");
         \Cache::forget("posts.paginated");
         return $this->repository->delete($post);
     }

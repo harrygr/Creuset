@@ -16,6 +16,6 @@ class PostPresenter extends Presenter {
 	{
 		$status = strtolower($this->model->status);
 		$labelClass = array_key_exists($status, $this->statusClasses) ? $this->statusClasses[$status] : 'default';
-		return "<label class='label label-{$labelClass} pull-right'>{$status}</label>";
+		return sprintf("<label class='label label-%s pull-right'>%s</label>",$labelClass, ucfirst($status));
 	}
 }

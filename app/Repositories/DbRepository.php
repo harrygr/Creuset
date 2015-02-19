@@ -1,16 +1,26 @@
 <?php namespace Creuset\Repositories;
 
 abstract class DbRepository {
+
 	protected $model;
 
-	public function getAll($with = [])
+	/**
+	 * @param int $id
+	 * @param array $with
+	 * @return \Illuminate\Support\Collection|mixed|null|static
+	 */
+	public function getById($id, $with = [])
 	{
-		return $this->model->with($with)->get();
+		return $this->model->with($with)->find($id);
 	}
 
-	public function getById($id)
+	/**
+	 * @param array $with
+	 * @return mixed
+	 */
+	public function getAll($with = [])
 	{
-		return $this->model->find($id);
+		return $this->model->with($with)->latest()->get();
 	}
 
 	public function getBySlug($slug)

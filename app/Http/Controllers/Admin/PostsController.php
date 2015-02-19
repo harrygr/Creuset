@@ -121,7 +121,6 @@ class PostsController extends Controller {
 	 */
 	public function update(Post $post, UpdatePostRequest $request)
 	{
-
 		$this->postRepo->update($post, $request->all());
 		$alert = "Post Updated!";
 

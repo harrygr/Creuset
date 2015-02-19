@@ -10,7 +10,6 @@ namespace Creuset\Repositories\Term;
 
 
 use Creuset\Term;
-use Eloquent;
 use Illuminate\Database\Eloquent\Model;
 
 class DbTermRepository implements TermRepository {

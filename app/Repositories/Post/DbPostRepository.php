@@ -1,8 +1,10 @@
 <?php namespace Creuset\Repositories\Post;
 
 use \Creuset\Post;
+use Creuset\Repositories\DbRepository;
 
-class DbPostRepository implements PostRepository {
+class DbPostRepository extends DbRepository implements PostRepository {
+
 
 
 	/**
@@ -10,7 +12,7 @@ class DbPostRepository implements PostRepository {
 	 */
 	public function __construct(Post $post)
 	{
-		$this->post = $post;
+		$this->model = $post;
 	}
 
 	/**
@@ -19,16 +21,7 @@ class DbPostRepository implements PostRepository {
      */
 	function getByUserId($userId)
 	{
-		return $this->post->where('user_id', $userId)->get();
-	}
-
-	/**
-	 * @param array $with
-	 * @return mixed
-     */
-	public function getAll($with = [])
-	{
-		return $this->post->with($with)->latest()->get();
+		return $this->model->where('user_id', $userId)->get();
 	}
 
 	/**
@@ -37,26 +30,8 @@ class DbPostRepository implements PostRepository {
      */
 	public function getPaginated($with = [])
 	{
-		return $this->post->with($with)->latest()->paginate(10);
+		return $this->model->with($with)->latest()->paginate(10);
 
-	}
-
-	/**
-	 * @param int $id
-	 * @return \Illuminate\Support\Collection|mixed|null|static
-	 */
-	public function getById($id)
-	{
-		return $this->post->find($id);
-	}
-
-	/**
-	 * @param string $slug
-	 * @return mixed
-     */
-	public function getBySlug($slug)
-	{
-		return $this->post->where('slug', $slug)->first();
 	}
 
 	/**
@@ -65,8 +40,9 @@ class DbPostRepository implements PostRepository {
      */
 	public function create($attributes)
 	{
-		$post = $this->post->create($attributes);
-		$post = $this->syncTerms($post, ['postCategories', 'tags'], $attributes);
+		$post = $this->model->create($attributes);
+		if ( isset($attributes['terms']) )
+			$post->terms()->sync($attributes['terms']);
 
 		return $post;
 	}
@@ -78,16 +54,12 @@ class DbPostRepository implements PostRepository {
      */
 	public function update(Post $post, $attributes)
 	{
+		if ( isset($attributes['terms']) )
+			$post->terms()->sync($attributes['terms']);
 
-
-
-		$terms = isset($attributes['terms']) ? $attributes['terms'] : [];
-		$post->terms()->sync($terms);
-
+		//dd($attributes);
 		return $post->update($attributes);
 	}
-
-
 
 	/**
 	 * @param Post $post

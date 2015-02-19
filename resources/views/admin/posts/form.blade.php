@@ -3,9 +3,11 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="form-group">
+                    {!! Form::label('title', 'Title', ['class' => 'sr-only']) !!}
                     {!! Form::text('title', null, ['class' => 'form-control input-lg', 'placeholder' => 'Title']) !!}
                 </div>
                 <div class="input-group">
+                    {!! Form::label('slug', 'Slug', ['class' => 'sr-only']) !!}
                     {!! Form::text('slug', null, ['class' => 'form-control', 'placeholder' => 'Slug']) !!}
                     <span class="input-group-btn refresh-slug">
                         <button class="btn btn-default disabled" type="button"><i class="fa fa-fw fa-refresh"></i></button>
@@ -13,6 +15,7 @@
                 </div>
 
                 <div class="form-group top-buffer">
+                    {!! Form::label('content', 'Content', ['class' => 'sr-only']) !!}
                     {!! Form::textarea('content', null, ['class' => 'form-control']) !!}
                 </div>
             </div>
@@ -25,15 +28,19 @@
             <div class="panel-body">
                 <div class="form-group">
                     {!! Form::label('published_at', 'Publish at') !!}
-                    {!! Form::input('datetime-local', 'published_at', Carbon\Carbon::now()->toRfc3339String(), ['class' => 'form-control']) !!}
+                    <div class="input-group date datetimepicker">
+                    {!! Form::text('published_at', $post->published_at->format('Y-m-d H:i'), ['class' => 'form-control']) !!}
+                    <span class="input-group-addon"><span class="fa-calendar fa"></span></span>
+                    </div>
                 </div>
                 <div class="form-group">
                     {!! Form::label('status') !!}
                     {!! Form::select('status', Creuset\Post::$postStatuses, null, ['class' => 'form-control']) !!}
                 </div>
                 <div class="form-group">
+
                     {!! Form::label('user_id', 'Author') !!}
-                    {!! Form::select('user_id', Creuset\User::lists('name', 'id'), \Auth::user()->id, ['class' => 'form-control']) !!}
+                    {!! Form::select('user_id', Creuset\User::lists('name', 'id'), null, ['class' => 'form-control']) !!}
                 </div>
             </div>
             <div class="panel-footer">
@@ -74,13 +81,9 @@
             <div class="panel-body">
                 <div class="form-group">
 
-                {!! Form::select('terms[]', $tagList, isset($post) ? $post->tags->lists('id') : null, ['multiple', 'class' => 'form-control']) !!}
+                {!! Form::select('terms[]', $tagList, isset($post) ? $post->tags->lists('id') : null, ['multiple', 'class' => 'form-control select2']) !!}
                 </div>
             </div>
         </div>
     </div>
 </div>
-    <script>
-
-
-    </script>

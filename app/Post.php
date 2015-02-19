@@ -1,5 +1,6 @@
 <?php namespace Creuset;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Creuset\Presenters\PresentableTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -31,6 +32,20 @@ class Post extends Model {
 		'draft'		=> 'Draft',
 		'private'	=> 'Private',
 	];
+
+	public function setPublishedAtAttribute($date)
+	{
+		$this->attributes['published_at'] = Carbon::parse($date);
+	}
+	public function getPublishedAtAttribute($date)
+	{
+		return new Carbon($date);
+	}
+
+	public function getUserIdAttribute($userId)
+	{
+		return $userId ?: \Auth::user()->id;
+	}
 
 
 	public function author()
