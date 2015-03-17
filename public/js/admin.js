@@ -13542,6 +13542,7 @@ $(function()
     // Do it when the title is changed
     $postTitleInput.change(function()
     {
+        // Only resluggify if the no slug already existed
         if ( ! $slugInput.val() )
         {
             $slugInput.val(sluggify($(this).val()));
@@ -13567,7 +13568,20 @@ function sluggify(text)
 }
 
 
-$('.select2').select2();
+$('.tagSelect').select2({
+    tags: true,
+    tokenSeparators: [",", " "],
+    createTag: function(tag) {
+        return {id: tag.term, text: tag.term, new: true};
+    }
+}).on('select2:select', function (e) {
+    if (e.params.data.new)
+    {
+        console.log('Ajax to add tag "' + e.params.data.text + '" to DB');
+    }
+
+});
+
 
 $("#menu-toggle").click(function(e) {
     e.preventDefault();

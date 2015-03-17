@@ -81,7 +81,7 @@
             <div class="panel-body">
                 <div class="form-group">
 
-                {!! Form::select('terms[]', $tagList, isset($post) ? $post->tags->lists('id') : null, ['multiple', 'class' => 'form-control select2']) !!}
+                {!! Form::select('terms[]', $tagList, isset($post) ? $post->tags->lists('id') : null, ['multiple', 'class' => 'form-control tagSelect']) !!}
                 </div>
             </div>
         </div>

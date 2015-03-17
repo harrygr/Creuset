@@ -8,6 +8,8 @@ use Creuset\Http\Requests\UpdatePostRequest;
 
 use Creuset\Repositories\Post\PostRepository;
 use Creuset\Repositories\Term\DbTermRepository;
+use Creuset\Repositories\Term\TermRepository;
+use Creuset\Term;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -22,11 +24,16 @@ class PostsController extends Controller {
 	 * @var PostRepository
 	 */
 	private $postRepo;
+	/**
+	 * @var TermRepository
+	 */
+	private $termRepo;
 
-	public function __construct(PostRepository $postRepo)
+	public function __construct(PostRepository $postRepo, TermRepository $termRepo)
 	{
 		$this->middleware('auth');
 		$this->postRepo = $postRepo;
+		$this->termRepo = $termRepo;
 	}
 
 
@@ -121,12 +128,39 @@ class PostsController extends Controller {
 	 */
 	public function update(Post $post, UpdatePostRequest $request)
 	{
+		$attributes = $request->all();
+		//$attributes['terms'] = $this->processTerms($attributes['terms']);
+
+
 		$this->postRepo->update($post, $request->all());
 		$alert = "Post Updated!";
 
 		return redirect()->route('admin.posts.edit', [$post])
 			->with(compact('alert'))
 			->with(['alert-class' => "success"]);
+	}
+
+
+	/**
+	 * Check if any terms passed in the request exist and if not create them.
+	 * @param $terms
+	 * @param string $taxonomy
+	 * @return array
+	 */
+	private function processTerms($terms, $taxonomy = 'category')
+	{
+		// extract the input into separate integer and string arrays
+		$currentTerms = array_filter($terms, 'is_numeric');		// [1, 3, 5]
+		$newTerms = array_filter($terms, 'is_string');	// ["awesome", "cool"]
+
+		// Create a new tag for each string in the input and update the current tags array
+		foreach ($newTerms as $newTerm)
+		{
+			if ($term = $this->termRepo->createTag($newTerm))
+				$currentTerms[] = $term->id;
+		}
+
+		return $currentTerms;
 	}
 
 	/**

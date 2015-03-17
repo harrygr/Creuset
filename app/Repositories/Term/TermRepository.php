@@ -34,4 +34,10 @@ interface TermRepository {
      */
     public function getTagList();
 
+    public function createTag($term, $slug = null);
+
+
+    public function createCategory($term, $slug = null);
+
+
 }
