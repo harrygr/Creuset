@@ -35,8 +35,10 @@ class Post extends Model {
 
 	public function setPublishedAtAttribute($date)
 	{
-		$this->attributes['published_at'] = Carbon::parse($date);
+		if (is_string($date))
+			$this->attributes['published_at'] = new Carbon($date);
 	}
+
 	public function getPublishedAtAttribute($date)
 	{
 		return new Carbon($date);

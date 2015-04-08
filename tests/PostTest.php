@@ -2,7 +2,7 @@
 
 use Laracasts\TestDummy\Factory;
 use Laracasts\TestDummy\DbTestCase;
-use Creuset\Repositories\DbPostRepository;
+use Creuset\Repositories\Post\DbPostRepository;
 
 class PostsTest extends TestCase {
 

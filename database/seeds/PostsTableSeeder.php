@@ -20,6 +20,7 @@ class PostsTableSeeder extends Seeder {
 				'slug'	=> Str::slug($title),
 				'content' => $faker->paragraph(4),
 				'user_id' => $faker->randomElement($userIds),
+				'published_at' => $creationTime,
 				'created_at' => $creationTime,
 				'updated_at' => $creationTime,
 				]);
