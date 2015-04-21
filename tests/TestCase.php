@@ -1,7 +1,9 @@
 <?php
 
+use Laracasts\Integrated\Extensions\Laravel as IntegrationTest;
 
-abstract class TestCase extends Illuminate\Foundation\Testing\TestCase {
+
+abstract class TestCase extends IntegrationTest {
 
 	/**
 	 * Creates the application.
@@ -14,9 +16,15 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
 		$app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
 
+		$this->setUpDatabase();
+
 		return $app;
 	}
 
-
+	protected function setUpDatabase()
+	{
+		Artisan::call('migrate:reset');
+		Artisan::call('migrate', ['--seed']);
+	}
 
 }

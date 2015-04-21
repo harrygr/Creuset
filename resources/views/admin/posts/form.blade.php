@@ -63,7 +63,6 @@
                 Categories
             </div>
             <div class="panel-body">
-
                 @foreach ($categoryList as $categoryId => $category)
                     <div class="checkbox">
                     <label>
@@ -80,7 +79,6 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-
                 {!! Form::select('terms[]', $tagList, isset($post) ? $post->tags->lists('id') : null, ['multiple', 'class' => 'form-control tagSelect']) !!}
                 </div>
             </div>

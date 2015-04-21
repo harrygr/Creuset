@@ -129,10 +129,11 @@ class PostsController extends Controller {
 	public function update(Post $post, UpdatePostRequest $request)
 	{
 		$attributes = $request->all();
-		//$attributes['terms'] = $this->processTerms($attributes['terms']);
+		$attributes['terms'] = $this->processTerms($attributes['terms']);
 
+        //dd($attributes);
 
-		$this->postRepo->update($post, $request->all());
+		$this->postRepo->update($post, $attributes);
 		$alert = "Post Updated!";
 
 		return redirect()->route('admin.posts.edit', [$post])
@@ -142,16 +143,18 @@ class PostsController extends Controller {
 
 
 	/**
-	 * Check if any terms passed in the request exist and if not create them.
+	 * Check if any terms passed in the request are new, and if not create them.
 	 * @param $terms
 	 * @param string $taxonomy
 	 * @return array
 	 */
-	private function processTerms($terms, $taxonomy = 'category')
+	private function processTerms($terms)
 	{
 		// extract the input into separate integer and string arrays
 		$currentTerms = array_filter($terms, 'is_numeric');		// [1, 3, 5]
-		$newTerms = array_filter($terms, 'is_string');	// ["awesome", "cool"]
+
+		$newTerms = array_diff($terms, $currentTerms);
+
 
 		// Create a new tag for each string in the input and update the current tags array
 		foreach ($newTerms as $newTerm)
@@ -174,7 +177,8 @@ class PostsController extends Controller {
 	 */
 	public function destroy(Post $post)
 	{
-		$post->delete();
+		$this->postRepo->delete($post);
+		
 		return redirect()->route('admin.posts.index')
 			->with(['alert' => 'Post moved to trash', 'alert-class' => 'success']);
 	}

@@ -11,7 +11,7 @@ $factory('Creuset\Post', [
 $factory('Creuset\User', [
 	'name'			=> $faker->name,
 	'email'			=> $faker->email,
-	'password'		=> $faker->password,
+	'password'		=> bcrypt('password'),
 	]);
 
 $factory('Creuset\Term', [

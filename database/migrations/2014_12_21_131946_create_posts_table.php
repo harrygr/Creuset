@@ -22,7 +22,7 @@ class CreatePostsTable extends Migration {
 			$table->string('status', 20)->default('published');
 			$table->integer('user_id')->unsigned();
 			$table->integer('post_id')->unsigned()->nullable();
-			$table->timestamp('published_at');
+			$table->timestamp('published_at')->nullable();
 			$table->softDeletes();
 			$table->timestamps();
 		});

@@ -9,8 +9,8 @@ class UsersTableSeeder extends Seeder {
 		$faker = Faker::create();
 
 		User::create([
-			'name' => 'Harry Grumbar',
-			'email' => 'harry@grumbar.me',
+			'name' => 'Harry G',
+			'email' => 'harry@laravel.com',
 			'password' => Hash::make('secret'),
 			]);
 

@@ -17,9 +17,11 @@ class TermsTableSeeder extends Seeder {
 
 		foreach (range(1,15) as $index)
 		{
+			$term = $this->getUniqueWord();
+
 			Term::create([
 				'taxonomy' => $this->faker->randomElement($taxonomies),
-				'term'	=> $this->getUniqueWord();,
+				'term'	=> $term,
 				'slug'	=> Str::slug($term),
 				]);
 		}

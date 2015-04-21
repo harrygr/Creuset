@@ -13,10 +13,15 @@
         <testsuite name="Application Test Suite">
             <directory>./tests/</directory>
         </testsuite>
+        <testsuite name="Integration Test Suite">
+            <directory>./tests/integration</directory>
+        </testsuite>
     </testsuites>
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
+        <env name="DB_DRIVER" value="sqlite" />
+        <env name="DB_PATH" value="database.sqlite" />
     </php>
 </phpunit>
