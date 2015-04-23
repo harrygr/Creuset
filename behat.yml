@@ -1,6 +1,0 @@
-default:
-    extensions:
-        Laracasts\Behat\ServiceContainer\BehatExtension: ~
-        Behat\MinkExtension\ServiceContainer\MinkExtension:
-            default_session: laravel
-            laravel: ~
