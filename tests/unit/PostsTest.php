@@ -1,6 +1,8 @@
-<?php
+<?php namespace Unit;
 
-use Laracasts\TestDummy\Factory;
+use TestCase;
+use DB;
+use Laracasts\TestDummy\Factory as TestDummy;
 use Laracasts\TestDummy\DbTestCase;
 use Creuset\Repositories\Post\DbPostRepository;
 
@@ -12,7 +14,7 @@ class PostsTest extends TestCase {
 	{
 		parent::setUp();
 		DB::beginTransaction();
-		$this->posts = new DbPostRepository(new Creuset\Post);
+		$this->posts = new DbPostRepository(new \Creuset\Post);
 	}
 
 	/**
@@ -37,11 +39,11 @@ class PostsTest extends TestCase {
 
 	public function testGetPostsForUser()
 	{
-		$user = Factory::create('Creuset\User');
+		$user = TestDummy::create('Creuset\User');
 
-		Factory::times(2)->create('Creuset\Post', ['user_id' => $user->id]);
+		TestDummy::times(2)->create('Creuset\Post', ['user_id' => $user->id]);
 
-		Factory::times(3)->create('Creuset\Post');
+		TestDummy::times(3)->create('Creuset\Post');
 
 		$posts = $this->posts->getByUserId($user->id);
 		$this->assertCount(2, $posts);
@@ -49,11 +51,11 @@ class PostsTest extends TestCase {
 
 	public function testGetSinglePosts()
 	{
-		$postDummy = Factory::create('Creuset\Post');
+		$postDummy = TestDummy::create('Creuset\Post');
 		$post = $this->posts->getById($postDummy->id);
 		$this->assertEquals($post->slug, $postDummy->slug);
 
-		$postDummy = Factory::create('Creuset\Post');
+		$postDummy = TestDummy::create('Creuset\Post');
 		$post = $this->posts->getBySlug($postDummy->slug);
 		$this->assertEquals($post->slug, $postDummy->slug);
 	}

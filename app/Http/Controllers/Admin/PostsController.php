@@ -83,16 +83,7 @@ class PostsController extends Controller {
 			->with(['alert' => 'Post saved', 'alert-class' => 'success']);
 	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
+	
 
 	/**
 	 * Show the form for editing the specified resource.
@@ -106,7 +97,8 @@ class PostsController extends Controller {
 	{
 		$post->load('categories', 'tags');
 
-		$selectedCategories = $post->categories->lists('id');
+		$selectedCategories = $post->categories->lists('id')->toArray();
+		
 		$categoryList = $termRepo->getCategoryList($post);
 		$tagList = $termRepo->getTagList();
 
@@ -129,9 +121,7 @@ class PostsController extends Controller {
 	public function update(Post $post, UpdatePostRequest $request)
 	{
 		$attributes = $request->all();
-		$attributes['terms'] = $this->processTerms($attributes['terms']);
-
-        //dd($attributes);
+		$attributes['terms'] = $this->processTerms($request->input('terms', []));
 
 		$this->postRepo->update($post, $attributes);
 		$alert = "Post Updated!";

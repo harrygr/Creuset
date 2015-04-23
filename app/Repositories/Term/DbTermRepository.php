@@ -28,7 +28,7 @@ class DbTermRepository implements TermRepository {
      */
     public function getCategoryList(Model $relatedModel = null)
     {
-        $categories = $this->getCategories()->lists('term', 'id');
+        $categories = $this->getCategories()->lists('term', 'id')->toArray();
 
         if ( ! is_null($relatedModel) )
             $categories = $this->orderBySelected($categories, $relatedModel);

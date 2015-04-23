@@ -1,5 +1,6 @@
-<?php
+<?php namespace Integration;
 
+use TestCase;
 use Laracasts\TestDummy\Factory as TestDummy;
 
 class AdminTest extends TestCase {
@@ -29,8 +30,5 @@ class AdminTest extends TestCase {
 			->andSee('These credentials do not match our records');
 	}
 
-	protected function createUser(array $overrides = [])
-	{
-		return TestDummy::create('Creuset\User', $overrides);
-	}
+
 }

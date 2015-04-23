@@ -1,6 +1,7 @@
 <?php
 
 use Laracasts\Integrated\Extensions\Laravel as IntegrationTest;
+use Laracasts\TestDummy\Factory as TestDummy;
 
 
 abstract class TestCase extends IntegrationTest {
@@ -27,4 +28,8 @@ abstract class TestCase extends IntegrationTest {
 		Artisan::call('migrate', ['--seed']);
 	}
 
+	protected function createUser(array $overrides = [])
+	{
+		return TestDummy::create('Creuset\User', $overrides);
+	}
 }
