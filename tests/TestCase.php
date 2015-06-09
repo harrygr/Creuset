@@ -6,6 +6,8 @@ use Laracasts\TestDummy\Factory as TestDummy;
 
 abstract class TestCase extends IntegrationTest {
 
+	protected $baseUrl = 'http://homestead.app';
+
 	/**
 	 * Creates the application.
 	 *

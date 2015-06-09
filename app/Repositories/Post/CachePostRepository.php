@@ -38,7 +38,9 @@ class CachePostRepository implements PostRepository {
      */
     public function getPaginated($with)
     {
-        return \Cache::remember('posts.paginated', env('CACHE_TIME'), function() use ($with)
+        $page = \Request::get('page');
+
+        return \Cache::remember("posts.paginated.page.{$page}", env('CACHE_TIME'), function() use ($with)
         {
             return $this->repository->getPaginated($with);
         });

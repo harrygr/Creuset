@@ -26,7 +26,7 @@ return [
 	|
 	*/
 
-	'url' => env('APP_URL', 'http://localhost'),
+	'url' => env('APP_URL', 'http://homestead.app'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -135,7 +135,6 @@ return [
 		'Illuminate\Translation\TranslationServiceProvider',
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
-		'Illuminate\Html\HtmlServiceProvider',
 
 		/*
 		 * Application Service Providers...
@@ -148,6 +147,7 @@ return [
 		//'Cviebrock\EloquentSluggable\SluggableServiceProvider',
 		'Gvb\Whoops\ServiceProvider',
 		'Creuset\Providers\DatabaseServiceProvider',
+		'Collective\Html\HtmlServiceProvider',
 
 	],
 
@@ -194,8 +194,8 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
-		'HTML'		=> 'Illuminate\Html\HtmlFacade',
-		'Form'		=> 'Illuminate\Html\FormFacade',
+		'Form'		=> 'Collective\Html\FormFacade',
+      	'HTML' 		=> 'Collective\Html\HtmlFacade',
 		'Str'       => 'Illuminate\Support\Str',
 
 	],

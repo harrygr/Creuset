@@ -9,8 +9,8 @@ class TermablesTableSeeder extends Seeder {
 	{
 		$faker = Faker::create();
 
-		$postIds = Post::lists('id');
-		$termIds = Term::lists('id');
+		$postIds = Post::lists('id')->toArray();
+		$termIds = Term::lists('id')->toArray();
 
 
 		foreach (range(1,30) as $index)

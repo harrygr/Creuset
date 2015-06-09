@@ -43,3 +43,8 @@ Route::group(['prefix' => 'admin'], function()
 	Route::patch('posts/{post}', ['uses' => 'Admin\PostsController@update', 'as' => 'admin.posts.update']);
 	Route::delete('posts/{post}', ['uses' => 'Admin\PostsController@destroy', 'as' => 'admin.posts.delete']);
 });
+
+Route::group(['prefix' => 'api'], function()
+{
+
+});

@@ -22,14 +22,14 @@
         "Illuminate\\Translation\\TranslationServiceProvider",
         "Illuminate\\Validation\\ValidationServiceProvider",
         "Illuminate\\View\\ViewServiceProvider",
-        "Illuminate\\Html\\HtmlServiceProvider",
         "Creuset\\Providers\\AppServiceProvider",
         "Creuset\\Providers\\BusServiceProvider",
         "Creuset\\Providers\\ConfigServiceProvider",
         "Creuset\\Providers\\EventServiceProvider",
         "Creuset\\Providers\\RouteServiceProvider",
         "Gvb\\Whoops\\ServiceProvider",
-        "Creuset\\Providers\\DatabaseServiceProvider"
+        "Creuset\\Providers\\DatabaseServiceProvider",
+        "Collective\\Html\\HtmlServiceProvider"
     ],
     "eager": [
         "Illuminate\\Auth\\AuthServiceProvider",
@@ -74,11 +74,11 @@
         "command.route.cache": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",
         "command.route.clear": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",
         "command.route.list": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",
-        "command.scaffold.auth": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",
         "command.serve": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",
         "command.tinker": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",
         "command.up": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",
         "command.vendor.publish": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",
+        "command.view.clear": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",
         "Illuminate\\Bus\\Dispatcher": "Illuminate\\Bus\\BusServiceProvider",
         "Illuminate\\Contracts\\Bus\\Dispatcher": "Illuminate\\Bus\\BusServiceProvider",
         "Illuminate\\Contracts\\Bus\\QueueingDispatcher": "Illuminate\\Bus\\BusServiceProvider",
@@ -101,6 +101,7 @@
         "command.migrate.make": "Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider",
         "seeder": "Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider",
         "command.seed": "Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider",
+        "command.seeder.make": "Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider",
         "composer": "Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider",
         "command.queue.table": "Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider",
         "command.queue.failed": "Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider",
@@ -130,8 +131,10 @@
         "auth.password.tokens": "Illuminate\\Auth\\Passwords\\PasswordResetServiceProvider",
         "translator": "Illuminate\\Translation\\TranslationServiceProvider",
         "translation.loader": "Illuminate\\Translation\\TranslationServiceProvider",
-        "html": "Illuminate\\Html\\HtmlServiceProvider",
-        "form": "Illuminate\\Html\\HtmlServiceProvider"
+        "html": "Collective\\Html\\HtmlServiceProvider",
+        "form": "Collective\\Html\\HtmlServiceProvider",
+        "Collective\\Html\\HtmlBuilder": "Collective\\Html\\HtmlServiceProvider",
+        "Collective\\Html\\FormBuilder": "Collective\\Html\\HtmlServiceProvider"
     },
     "when": {
         "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider": [],
@@ -145,6 +148,6 @@
         "Illuminate\\Redis\\RedisServiceProvider": [],
         "Illuminate\\Auth\\Passwords\\PasswordResetServiceProvider": [],
         "Illuminate\\Translation\\TranslationServiceProvider": [],
-        "Illuminate\\Html\\HtmlServiceProvider": []
+        "Collective\\Html\\HtmlServiceProvider": []
     }
 }

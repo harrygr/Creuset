@@ -9,7 +9,7 @@ class PostsTableSeeder extends Seeder {
 	{
 		$faker = Faker::create();
 
-		$userIds = User::lists('id');
+		$userIds = User::lists('id')->toArray();
 
 		foreach (range(1,15) as $index)
 		{
