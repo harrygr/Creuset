@@ -1,9 +1,12 @@
 <?php namespace Integration;
 
 use TestCase;
-use Laracasts\TestDummy\Factory as TestDummy;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class AdminTest extends TestCase {
+class AdminTest extends TestCase 
+{
+
+	use DatabaseTransactions;
 
 	function testCanLoginWithValidCredentials()
 	{
@@ -15,20 +18,22 @@ class AdminTest extends TestCase {
 		$this->createUser($credentials);
 
 		// We should be able to log in
-		$credentials += ['password' => 'password'];
 
 		$this->visit('/login')
-			 ->andSubmitForm('Login', $credentials)
-			 ->andSeePageIs('/admin/posts');
+			 ->type($credentials['email'], 'email')
+			 ->type('password', 'password')
+			 ->press('Login')
+			 ->seePageIs('/admin/posts');
 	}
 
 	function testCanNotLoginWithInvalidCredentials()
 	{
 		$this->visit('login')
-			->andSubmitForm('Login', ['email' => 'fakename@noone.com', 'password' => 'wrongpw'])
-			->andSeePageIs('/login')
-			->andSee('These credentials do not match our records');
+			 ->type('fakename@noone.com', 'email')
+			 ->type('wrongpw', 'password')
+			 ->press('Login')
+			 ->seePageIs('/login')
+			 ->see('These credentials do not match our records');
 	}
-
 
 }

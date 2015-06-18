@@ -1,9 +1,13 @@
 <?php namespace Integration;
 
 use TestCase;
-use Laracasts\TestDummy\Factory as TestDummy;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class PostsTest extends TestCase {
+class PostsTest extends TestCase 
+{
+
+	use DatabaseTransactions;
+
 	public function testICanCreateAPost()
 	{
 		// Given I have and account and am logged in

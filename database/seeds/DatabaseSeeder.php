@@ -40,12 +40,43 @@ class DatabaseSeeder extends Seeder {
 	 */
 	protected function cleanDatabase()
 	{
-		DB::statement('SET FOREIGN_KEY_CHECKS=0');
+		$this->disableForeignKeyCheck();
 		foreach ($this->tables as $table)
 		{
 			DB::table($table)->truncate();
 		}
-		DB::statement('SET FOREIGN_KEY_CHECKS=1');
+		$this->enableForeignKeyCheck();
+	}
+
+	protected function disableForeignKeyCheck()
+	{
+		$statement = $this->getForeignKeyCheckStatement();
+		DB::statement($statement['disable']);
+	}
+
+	protected function enableForeignKeyCheck()
+	{
+		$statement = $this->getForeignKeyCheckStatement();
+		DB::statement($statement['enable']);
+	}
+
+	protected function getForeignKeyCheckStatement()
+	{
+		$driver = Config::get('database.default');
+
+		if ($driver == 'sqlite')
+		{
+			return [
+			'disable' => 'PRAGMA foreign_keys = OFF',
+			'enable'  => 'PRAGMA foreign_keys = ON',
+			];
+
+		}
+
+		return [
+		'disable' => 'SET FOREIGN_KEY_CHECKS=0',
+		'enable'  => 'SET FOREIGN_KEY_CHECKS=1',
+		];
 	}
 
 }

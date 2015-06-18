@@ -1,10 +1,6 @@
 <?php
 
-use Laracasts\Integrated\Extensions\Laravel as IntegrationTest;
-use Laracasts\TestDummy\Factory as TestDummy;
-
-
-abstract class TestCase extends IntegrationTest {
+abstract class TestCase extends Illuminate\Foundation\Testing\TestCase{
 
 	protected $baseUrl = 'http://homestead.app';
 
@@ -25,13 +21,14 @@ abstract class TestCase extends IntegrationTest {
 	}
 
 	protected function setUpDatabase()
-	{
+	{	 
 		Artisan::call('migrate:reset');
-		Artisan::call('migrate', ['--seed']);
+		Artisan::call('migrate');
+		//Artisan::call('migrate', ['--seed']);
 	}
 
 	protected function createUser(array $overrides = [])
 	{
-		return TestDummy::create('Creuset\User', $overrides);
+		return factory('Creuset\User')->create($overrides);
 	}
 }

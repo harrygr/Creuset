@@ -1,29 +1,24 @@
 <?php namespace Unit;
 
 use TestCase;
-use DB;
-use Laracasts\TestDummy\Factory as TestDummy;
-use Laracasts\TestDummy\DbTestCase;
+
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Creuset\Repositories\Post\DbPostRepository;
 
-class PostsTest extends TestCase {
+class PostsTest extends TestCase 
+{
+
+	use DatabaseTransactions;
 
 	protected $posts;
 
 	public function setUp()
 	{
 		parent::setUp();
-		DB::beginTransaction();
+		//DB::beginTransaction();
 		$this->posts = new DbPostRepository(new \Creuset\Post);
 	}
 
-	/**
-	 * Rollback transactions after each test.
-	 */
-	public function tearDown()
-	{
-		DB::rollback();
-	}
 
 	/**
 	 * A basic functional test example.
@@ -39,11 +34,11 @@ class PostsTest extends TestCase {
 
 	public function testGetPostsForUser()
 	{
-		$user = TestDummy::create('Creuset\User');
+		$user = factory('Creuset\User')->create();
 
-		TestDummy::times(2)->create('Creuset\Post', ['user_id' => $user->id]);
+		factory('Creuset\Post', 2)->create(['user_id' => $user->id]);
+		factory('Creuset\Post', 3)->create();
 
-		TestDummy::times(3)->create('Creuset\Post');
 
 		$posts = $this->posts->getByUserId($user->id);
 		$this->assertCount(2, $posts);
@@ -51,11 +46,12 @@ class PostsTest extends TestCase {
 
 	public function testGetSinglePosts()
 	{
-		$postDummy = TestDummy::create('Creuset\Post');
+		$postDummy = factory('Creuset\Post')->create();
+
 		$post = $this->posts->getById($postDummy->id);
 		$this->assertEquals($post->slug, $postDummy->slug);
 
-		$postDummy = TestDummy::create('Creuset\Post');
+		$postDummy = factory('Creuset\Post')->create();
 		$post = $this->posts->getBySlug($postDummy->slug);
 		$this->assertEquals($post->slug, $postDummy->slug);
 	}
