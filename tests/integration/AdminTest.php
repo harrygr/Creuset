@@ -8,6 +8,9 @@ class AdminTest extends TestCase
 
 	use DatabaseTransactions;
 
+	/**
+	 * Test a user can login with their credentials and is taken to the right page.
+	 */
 	function testCanLoginWithValidCredentials()
 	{
     	// Assuming we have a user with these credentials
@@ -18,6 +21,7 @@ class AdminTest extends TestCase
 		$this->createUser($credentials);
 
 		// We should be able to log in
+		// (The factory-defined password is 'password')
 
 		$this->visit('/login')
 			 ->type($credentials['email'], 'email')
@@ -26,6 +30,9 @@ class AdminTest extends TestCase
 			 ->seePageIs('/admin/posts');
 	}
 
+	/**
+	 * Test that invalid credentials provides the correct response when trying to login
+	 */
 	function testCanNotLoginWithInvalidCredentials()
 	{
 		$this->visit('login')
