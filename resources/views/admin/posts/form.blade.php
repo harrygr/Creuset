@@ -5,12 +5,13 @@
 
                 <div class="form-group">
                     <label for="title" class="sr-only">Title</label>
-                    <input type="text" name="title" class="form-control input-lg" placeholder="Title" value="{{ $post->title }}">
+                    {!! Form::text('title', null, ['class' => 'form-control input-lg', 'placeholder' => "Title"]) !!}                    
                 </div>
 
                 <div class="input-group">
                     <label for="slug" class="sr-only">Slug</label>
-                    <input type="text" name="slug" class="form-control" placeholder="Slug" value="{{ $post->slug }}">
+                     {!! Form::text('slug', null, ['class' => 'form-control', 'placeholder' => "Slug"]) !!}   
+                    
                     <span class="input-group-btn refresh-slug">
                         <button class="btn btn-default disabled" type="button"><i class="fa fa-fw fa-refresh"></i></button>
                     </span>
@@ -18,7 +19,7 @@
 
                 <div class="form-group top-buffer">
                     <label for="content" class="sr-only">Content</label>
-                    <textarea name="content" class="form-control" rows="15">{!! $post->content !!}</textarea>
+                    {!! Form::textarea('content', null, ['class' => 'form-control']) !!} 
                 </div>
             </div>
         </div>
@@ -32,7 +33,8 @@
                     <label for="published_at" class="sr-only">Publish At</label>
 
                     <div class="input-group date datetimepicker">
-                        <input type="text" name="published_at" class="form-control" value="{{ $post->published_at->format('Y-m-d H:i') }}">
+
+                         {!! Form::text('published_at', null, ['class' => 'form-control']) !!}   
                         <span class="input-group-addon">
                             <span class="fa-calendar fa"></span>
                         </span>
@@ -91,3 +93,4 @@
             </div>
         </div>
     </div>
+

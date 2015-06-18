@@ -60,6 +60,9 @@
 
     {!! HTML::script('js/admin.js') !!}
 
+    {{-- Browserify --}}
+    <!-- {!! HTML::script('js/bundle.js') !!} -->
+
 </body>
 
 </html>

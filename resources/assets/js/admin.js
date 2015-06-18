@@ -15,6 +15,7 @@ $('.tagSelect').select2({
 
 $("#menu-toggle").click(function(e) {
     e.preventDefault();
+    $("#admin-content").toggleClass("toggled");
     $("#wrapper").toggleClass("toggled");
 });
 

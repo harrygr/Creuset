@@ -3,6 +3,7 @@ use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use Creuset\Post;
 use Creuset\User;
+use Carbon\Carbon;
 
 class PostsTableSeeder extends Seeder {
 	public function run()
@@ -14,7 +15,9 @@ class PostsTableSeeder extends Seeder {
 		foreach (range(1,15) as $index)
 		{
 			$title = $faker->sentence(5);
-			$creationTime = $faker->dateTimeThisMonth();
+			$creationTime = Carbon::instance($faker->dateTimeThisMonth())->toDateTimeString();
+
+			//dd($creationTime);
 			Post::create([
 				'title' => $title,
 				'slug'	=> Str::slug($title),

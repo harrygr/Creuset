@@ -40,4 +40,6 @@ elixir(function(mix) {
             'js/post.js',
             'js/admin.js'
         ], 'resources/assets/', 'public/js/admin.js');
+
+    mix.browserify('js/app.js');
 });

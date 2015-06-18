@@ -5,7 +5,7 @@ $factory->define('Creuset\Post', function($faker) {
 	'title'		=> $faker->sentence,
 	'content'	=> $faker->paragraph,
 	'slug'		=> $faker->slug,
-	'published_at' => $faker->dateTimeThisMonth(),
+	'published_at' => Carbon::instance($faker->dateTimeThisMonth())->toDateTimeString(),
 	'user_id'	=> 'factory:Creuset\User',
 	];
 });
