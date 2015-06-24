@@ -1,31 +1,13 @@
 {
+  "private": true,
   "devDependencies": {
     "gulp": "^3.8.8",
-    "laravel-elixir": "*"
-  },
-  "name": "creuset",
-  "description": "Creuset is a powerful cms and blogging platform built in Laravel. It is intended to use design patterns and have a structure that allows it to be flexible to the extent it could be easily extented or adapted, for example, be turned into an ecommerce solution.",
-  "version": "1.0.0",
-  "main": "gulpfile.js",
-  "directories": {
-    "test": "tests"
+    "laravel-elixir": "^2.0.0",
+    "vue": "*"
   },
   "dependencies": {
-    "gulp": "^3.8.8",
-    "laravel-elixir": "^2.0.0",
-    "vue": "^0.12.1"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/harrygr/Creuset.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/harrygr/Creuset/issues"
-  },
-  "homepage": "https://github.com/harrygr/Creuset"
+    "jquery": "^2.1.4",
+    "marked": "^0.3.3",
+    "select2": "^3.5.2-browserify"
+  }
 }

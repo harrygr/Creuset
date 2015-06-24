@@ -1,12 +1,19 @@
 <?php
 
+use Carbon\Carbon;
+
 $factory->define('Creuset\Post', function($faker) {
+
+	$creationDate = $faker->dateTimeThisMonth();
+
 	return [
 	'title'		=> $faker->sentence,
 	'content'	=> $faker->paragraph,
 	'slug'		=> $faker->slug,
-	'published_at' => Carbon::instance($faker->dateTimeThisMonth())->toDateTimeString(),
-	'user_id'	=> 'factory:Creuset\User',
+	'published_at' =>  $creationDate, //$faker->dateTimeThisMonth(), //Carbon::instance($faker->dateTimeThisMonth())->toDateTimeString(),
+	'created_at' => $creationDate,
+	'updated_at' => $creationDate,
+	'user_id'	=> factory('Creuset\User')->create()->id,
 	];
 });
 

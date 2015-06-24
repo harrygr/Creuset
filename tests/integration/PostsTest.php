@@ -11,8 +11,7 @@ class PostsTest extends TestCase
 	public function testICanCreateAPost()
 	{
 		// Given I have and account and am logged in
-		$user = factory('Creuset\User')->create();
-		\Auth::loginUsingId($user->id);
+		$user = $this->loginWithUser();
 
 		// I go to the create posts page
 		$postTitle =  'Awesome Post Title';
@@ -34,5 +33,39 @@ class PostsTest extends TestCase
 			]);
 
 
+	}
+
+	public function testICanEditAPost()
+	{
+		// Given I have and account and am logged in
+		$user = $this->loginWithUser();
+
+		// And a post exists in the database
+		$post = factory('Creuset\Post')->create();
+
+		// I update the post
+		$postTitle =  'Edited Title';
+
+		$this->visit("/admin/posts/{$post->id}/edit")
+			 ->see('Edit Post')
+			 ->type($postTitle, 'title')
+			 ->type(\Str::slug($postTitle), 'slug')
+			 ->press('Update')
+			 ->seePageIs("/admin/posts/{$post->id}/edit")
+			 ->see('Post Updated');
+
+        // And see that I edited the post successfully
+		$this->seeInDatabase('posts', [
+			'id'	=> $post->id,
+			'title' => $postTitle,
+			'type'	=> 'post'
+			]);
+	}
+
+	protected function loginWithUser()
+	{
+		$user = factory('Creuset\User')->create();
+		\Auth::loginUsingId($user->id);
+		return $user;
 	}
 }

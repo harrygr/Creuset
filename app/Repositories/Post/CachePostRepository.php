@@ -38,9 +38,9 @@ class CachePostRepository implements PostRepository {
      */
     public function getPaginated($with)
     {
-        $page = \Request::get('page');
+        $page = \Request::get('page', 0);
 
-        return \Cache::remember("posts.paginated.page.{$page}", env('CACHE_TIME'), function() use ($with)
+        return \Cache::tags('posts', 'posts.index')->remember("posts.paginated.page.{$page}", env('CACHE_TIME'), function() use ($with)
         {
             return $this->repository->getPaginated($with);
         });
@@ -61,7 +61,7 @@ class CachePostRepository implements PostRepository {
      */
     public function create($attributes)
     {
-        \Cache::forget("posts.paginated");
+        \Cache::flush('posts.index');
         return $this->repository->create($attributes);
     }
 
@@ -73,7 +73,7 @@ class CachePostRepository implements PostRepository {
     public function update(Post $post, $attributes)
     {
         \Cache::forget("post.{$post->id}");
-        \Cache::forget("posts.paginated");
+        \Cache::flush('posts.index');
         return $this->repository->update($post, $attributes);
     }
 
@@ -84,7 +84,7 @@ class CachePostRepository implements PostRepository {
     public function delete(Post $post)
     {
         \Cache::forget("post.{$post->id}");
-        \Cache::forget("posts.paginated");
+        \Cache::flush('posts.index');
         return $this->repository->delete($post);
     }
 }

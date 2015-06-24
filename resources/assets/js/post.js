@@ -2,22 +2,22 @@
 $(function()
 {
     // Markdown editing for the content area
-    $('textarea[name=content]').pagedownBootstrap();
+   // $('textarea[name=content]').pagedownBootstrap();
 
     // activate the datepicker
-    $('.datetimepicker').datetimepicker({
-        format: 'YYYY-MM-DD HH:mm',
-        icons: {
-            time: 'fa fa-clock-o',
-            date: 'fa fa-calendar',
-            up: 'fa fa-chevron-up',
-            down: 'fa fa-chevron-down',
-            previous: 'fa fa-chevron-left',
-            next: 'fa fa-chevron-right',
-            today: 'fa fa-screenshot',
-            clear: 'fa fa-trash'
-        }
-    });
+    // $('.datetimepicker').datetimepicker({
+    //     format: 'YYYY-MM-DD HH:mm:ss',
+    //     icons: {
+    //         time: 'fa fa-clock-o',
+    //         date: 'fa fa-calendar',
+    //         up: 'fa fa-chevron-up',
+    //         down: 'fa fa-chevron-down',
+    //         previous: 'fa fa-chevron-left',
+    //         next: 'fa fa-chevron-right',
+    //         today: 'fa fa-screenshot',
+    //         clear: 'fa fa-trash'
+    //     }
+    // });
 
     // Generate slugs from the post title
     var $refreshSlugButton = $('.refresh-slug button');

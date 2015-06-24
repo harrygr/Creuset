@@ -17,9 +17,16 @@
                     </span>
                 </div>
 
-                <div class="form-group top-buffer">
+                <div class="form-group top-buffer" id="postContent">
                     <label for="content" class="sr-only">Content</label>
-                    {!! Form::textarea('content', null, ['class' => 'form-control']) !!} 
+                    {!! Form::textarea('content', null, ['class' => 'form-control', 'v-model' => 'content']) !!} 
+                    
+                    <div class="panel panel-default">
+                      <div class="panel-body" v-html="content | marked">
+                       
+                      </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -30,14 +37,15 @@
 
             <div class="panel-body">
                 <div class="form-group">
-                    <label for="published_at" class="sr-only">Publish At</label>
 
-                    <div class="input-group date datetimepicker">
+                    {!! Form::label('published_at', 'Publish At') !!}
+                    <div class="date datetimepickerx">
+                        {!! Form::input('datetime-local', 'published_at', isset($post->published_at) ? $post->published_at->format('Y-m-d\TH:i:s') : date('Y-m-d\TH:i:s'), ['class' => 'form-control']) !!}
 
-                         {!! Form::text('published_at', null, ['class' => 'form-control']) !!}   
+{{--                          {!! Form::text('published_at', null, ['class' => 'form-control']) !!}   
                         <span class="input-group-addon">
                             <span class="fa-calendar fa"></span>
-                        </span>
+                        </span> --}}
                     </div>
                 </div>
                 <div class="form-group">
@@ -94,3 +102,6 @@
         </div>
     </div>
 
+@section('admin.scripts')
+
+@stop

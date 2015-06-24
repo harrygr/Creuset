@@ -9,7 +9,12 @@ class Post extends Model {
 
 	use PresentableTrait, SoftDeletes;
 	
-	protected $dates = ['published_at', 'deleted_at'];
+	/**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+	protected $dates = ['created_at', 'updated_at', 'published_at', 'deleted_at'];
 
 	protected $presenter = 'Creuset\Presenters\PostPresenter';
 
@@ -33,15 +38,20 @@ class Post extends Model {
 		'private'	=> 'Private',
 	];
 
+	/**
+	 * Parses a date string into a Carbon instance for saving
+	 * 
+	 * This shouldn't really need to be done, but Laravel's automatic date
+	 * mutators expects strings to be in the format Y-m-d H-i-s which is 
+	 * not always the case; such as for 'datetime-local' html5 fields
+	 * 
+	 * @param mixed $date The date to be parsed
+	 *
+	 */
 	public function setPublishedAtAttribute($date)
 	{
 		if (is_string($date))
 			$this->attributes['published_at'] = new Carbon($date);
-	}
-
-	public function getPublishedAtAttribute($date)
-	{
-		return new Carbon($date);
 	}
 
 	public function getUserIdAttribute($userId)
