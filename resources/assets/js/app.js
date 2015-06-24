@@ -22,3 +22,9 @@ var select2 = require('select2');
 //        console.log('Ajax to add tag "' + e.params.data.text + '" to DB');
 //    }
 // });
+ 
+$("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    $("#admin-content").toggleClass("toggled");
+    $("#wrapper").toggleClass("toggled");
+});

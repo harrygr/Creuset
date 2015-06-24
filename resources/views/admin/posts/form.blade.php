@@ -1,31 +1,37 @@
-<div class="row post-form">
+<div class="row post-form" id="postForm">
     <div class="col-md-8">
         <div class="panel panel-default">
             <div class="panel-body">
 
                 <div class="form-group">
                     <label for="title" class="sr-only">Title</label>
-                    {!! Form::text('title', null, ['class' => 'form-control input-lg', 'placeholder' => "Title"]) !!}                    
+                    {!! Form::text('title', null, [
+                    'class' => 'form-control input-lg', 
+                    'placeholder' => "Title", 
+                    'v-model' => 'title',
+                    'v-on' => 'blur: setNewSlug'
+                    ]) !!}                    
                 </div>
 
+                <label for="slug" class="sr-only">Slug</label>
                 <div class="input-group">
-                    <label for="slug" class="sr-only">Slug</label>
-                     {!! Form::text('slug', null, ['class' => 'form-control', 'placeholder' => "Slug"]) !!}   
+                     {!! Form::text('slug', null, ['class' => 'form-control', 'placeholder' => "Slug" , 'v-model' => 'slug']) !!}   
                     
                     <span class="input-group-btn refresh-slug">
-                        <button class="btn btn-default disabled" type="button"><i class="fa fa-fw fa-refresh"></i></button>
+                        <button class="btn btn-default" type="button" v-on="click: resluggifyTitle"><i class="fa fa-fw fa-refresh"></i></button>
                     </span>
                 </div>
 
                 <div class="form-group top-buffer" id="postContent">
                     <label for="content" class="sr-only">Content</label>
-                    {!! Form::textarea('content', null, ['class' => 'form-control', 'v-model' => 'content']) !!} 
+                    {!! Form::textarea('content', null, ['class' => 'form-control', 'placeholder' => 'Content (Markdown/HTML)', 'v-model' => 'content']) !!} 
                     
-                    <div class="panel panel-default">
+                    <div class="panel panel-default top-buffer">
+                    
                       <div class="panel-body" v-html="content | marked">
                        
                       </div>
-                    </div>
+                    </div>                   
 
                 </div>
             </div>

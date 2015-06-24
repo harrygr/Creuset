@@ -26,8 +26,14 @@ var select2 = require('select2');
 //    }
 // });
 
+$('#menu-toggle').click(function (e) {
+    e.preventDefault();
+    $('#admin-content').toggleClass('toggled');
+    $('#wrapper').toggleClass('toggled');
+});
+
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./plugins/larail.js":69,"./vue-components/post-content.js":70,"jquery":2,"select2":4,"vue":67}],2:[function(require,module,exports){
+},{"./plugins/larail.js":70,"./vue-components/post-content.js":71,"jquery":2,"select2":4,"vue":67}],2:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -23131,6 +23137,13 @@ function traverse (obj) {
 module.exports = Watcher
 
 },{"./batcher":12,"./config":18,"./observer":50,"./parsers/expression":53,"./util":63}],69:[function(require,module,exports){
+'use strict';
+
+module.exports = function (text) {
+    return text.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
+};
+
+},{}],70:[function(require,module,exports){
 /**
  * larail.js
  *
@@ -23220,18 +23233,35 @@ module.exports = $(function () {
     larail.initialize();
 });
 
-},{}],70:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 'use strict';
 
+var sluggify = require('../filters/sluggify.js');
+
 module.exports = new Vue({
-	el: '#postContent',
+	el: '#postForm',
 	data: {
-		content: '',
-		testData: 'sabrbrbr'
+		title: '',
+		oldTitle: '',
+		slug: '',
+		content: ''
 	},
 	filters: {
-		marked: require('marked')
+		marked: require('marked'),
+		sluggify: sluggify
+	},
+	methods: {
+		resluggifyTitle: function resluggifyTitle(e) {
+			if (e) e.preventDefault();
+			this.slug = sluggify(this.title);
+		},
+		setNewSlug: function setNewSlug(e) {
+			if (this.oldTitle == '') {
+				this.resluggifyTitle(e);
+			}
+			this.oldTitle = this.title;
+		}
 	}
 });
 
-},{"marked":3}]},{},[1]);
+},{"../filters/sluggify.js":69,"marked":3}]},{},[1]);
