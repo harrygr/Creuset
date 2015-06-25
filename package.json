@@ -8,6 +8,7 @@
   "dependencies": {
     "jquery": "^2.1.4",
     "marked": "^0.3.3",
-    "select2": "^3.5.2-browserify"
+    "select2": "^3.5.2-browserify",
+    "vue-resource": "^0.1.3"
   }
 }

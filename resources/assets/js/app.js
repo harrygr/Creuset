@@ -2,8 +2,12 @@
 
 global.Vue = require('vue');
 global.$ = require('jquery');
+require('vue-resource');
+//global.Vue.use(require('vue-resource'));
+
 
 var postContent = require('./vue-components/post-content.js');
+var postMeta = require('./vue-components/post-meta.js');
 
 // Larail allows sending POST/PUT/DELETE requests using an a tag
 var larail = require('./plugins/larail.js');

@@ -6,8 +6,11 @@
 
 global.Vue = require('vue');
 global.$ = require('jquery');
+require('vue-resource');
+//global.Vue.use(require('vue-resource'));
 
 var postContent = require('./vue-components/post-content.js');
+var postMeta = require('./vue-components/post-meta.js');
 
 // Larail allows sending POST/PUT/DELETE requests using an a tag
 var larail = require('./plugins/larail.js');
@@ -33,7 +36,7 @@ $('#menu-toggle').click(function (e) {
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./plugins/larail.js":70,"./vue-components/post-content.js":71,"jquery":2,"select2":4,"vue":67}],2:[function(require,module,exports){
+},{"./plugins/larail.js":76,"./vue-components/post-content.js":77,"./vue-components/post-meta.js":78,"jquery":2,"select2":4,"vue":73,"vue-resource":7}],2:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -14068,6 +14071,686 @@ the specific language governing permissions and limitations under the Apache Lic
 }(jQuery));
 
 },{}],6:[function(require,module,exports){
+module.exports = function (Vue) {
+
+    var _ = require('./util')(Vue);
+    var Promise = require('./promise');
+    var jsonType = { 'Content-Type': 'application/json;charset=utf-8' };
+
+    /**
+     * Http provides a service for sending XMLHttpRequests.
+     */
+
+    function Http (url, options) {
+
+        var self = this, headers, promise;
+
+        options = options || {};
+
+        if (_.isPlainObject(url)) {
+            options = url;
+            url = '';
+        }
+
+        headers = _.extend({},
+            Http.headers.common,
+            Http.headers[options.method.toLowerCase()]
+        );
+
+        options = _.extend(true, {url: url, headers: headers},
+            Http.options, _.options('http', this, options)
+        );
+
+        promise = (options.method.toLowerCase() == 'jsonp' ? jsonp : xhr).call(this, this.$url || Vue.url, options);
+
+        _.extend(promise, {
+
+            success: function (onSuccess) {
+
+                this.then(function (request) {
+                    onSuccess.apply(self, parseReq(request));
+                }, function () {});
+
+                return this;
+            },
+
+            error: function (onError) {
+
+                this.catch(function (request) {
+                    onError.apply(self, parseReq(request));
+                });
+
+                return this;
+            },
+
+            always: function (onAlways) {
+
+                var cb = function (request) {
+                    onAlways.apply(self, parseReq(request));
+                };
+
+                this.then(cb, cb);
+
+                return this;
+            }
+
+        });
+
+        if (options.success) {
+            promise.success(options.success);
+        }
+
+        if (options.error) {
+            promise.error(options.error);
+        }
+
+        return promise;
+    }
+
+    function xhr(url, options) {
+
+        var request = new XMLHttpRequest();
+
+        if (_.isFunction(options.beforeSend)) {
+            options.beforeSend(request, options);
+        }
+
+        if (options.emulateHTTP && /^(PUT|PATCH|DELETE)$/i.test(options.method)) {
+            options.headers['X-HTTP-Method-Override'] = options.method;
+            options.method = 'POST';
+        }
+
+        if (options.emulateJSON && _.isPlainObject(options.data)) {
+            options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+            options.data = url.params(options.data);
+        }
+
+        if (_.isObject(options.data) && /FormData/i.test(options.data.toString())) {
+            delete options.headers['Content-Type'];
+        }
+
+        if (_.isPlainObject(options.data)) {
+            options.data = JSON.stringify(options.data);
+        }
+
+        var promise = new Promise(function (resolve, reject) {
+
+            request.open(options.method, url(options), true);
+
+            _.each(options.headers, function (value, header) {
+                request.setRequestHeader(header, value);
+            });
+
+            request.onreadystatechange = function () {
+
+                if (this.readyState === 4) {
+
+                    if (this.status >= 200 && this.status < 300) {
+                        resolve(this);
+                    } else {
+                        reject(this);
+                    }
+                }
+            };
+
+            request.send(options.data);
+        });
+
+        _.extend(promise, {
+
+            abort: function () {
+                request.abort();
+            }
+
+        });
+
+        return promise;
+    }
+
+    function jsonp(url, options) {
+
+        var callback = '_jsonp' + Math.random().toString(36).substr(2), script, result;
+
+        _.extend(options.params, options.data);
+        options.params[options.jsonp] = callback;
+
+        if (_.isFunction(options.beforeSend)) {
+            options.beforeSend({}, options);
+        }
+
+        var promise = new Promise(function (resolve, reject) {
+
+            script = document.createElement('script');
+            script.src = url(options.url, options.params);
+            script.type = 'text/javascript';
+            script.async = true;
+
+            window[callback] = function (data) {
+                result = data;
+            };
+
+            var handler = function (event) {
+
+                delete window[callback];
+                document.body.removeChild(script);
+
+                if (event.type === 'load' && !result) {
+                    event.type = 'error';
+                }
+
+                var text = result ? result : event.type, status = event.type === 'error' ? 404 : 200;
+
+                (status === 200 ? resolve : reject)({ responseText: text, status: status });
+            };
+
+            script.onload = handler;
+            script.onerror = handler;
+
+            document.body.appendChild(script);
+        });
+
+        return promise;
+    }
+
+    function parseReq(request) {
+
+        var result;
+
+        try {
+            result = JSON.parse(request.responseText);
+        } catch (e) {
+            result = request.responseText;
+        }
+
+        return [result, request.status, request];
+    }
+
+    Http.options = {
+        method: 'GET',
+        params: {},
+        data: '',
+        jsonp: 'callback',
+        beforeSend: null,
+        emulateHTTP: false,
+        emulateJSON: false,
+    };
+
+    Http.headers = {
+        put: jsonType,
+        post: jsonType,
+        patch: jsonType,
+        delete: jsonType,
+        common: {
+            'Accept': 'application/json, text/plain, */*',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    };
+
+    ['get', 'put', 'post', 'patch', 'delete', 'jsonp'].forEach(function (method) {
+
+        Http[method] = function (url, data, success, options) {
+
+            if (_.isFunction(data)) {
+                options = success;
+                success = data;
+                data = undefined;
+            }
+
+            return this(url, _.extend({method: method, data: data, success: success}, options));
+        };
+    });
+
+    Object.defineProperty(Vue.prototype, '$http', {
+
+        get: function () {
+            return _.extend(Http.bind(this), Http);
+        }
+
+    });
+
+    return Http;
+};
+
+},{"./promise":8,"./util":11}],7:[function(require,module,exports){
+/**
+ * Install plugin.
+ */
+
+function install (Vue) {
+    Vue.url = require('./url')(Vue);
+    Vue.http = require('./http')(Vue);
+    Vue.resource = require('./resource')(Vue);
+}
+
+if (window.Vue) {
+    Vue.use(install);
+}
+
+module.exports = install;
+
+},{"./http":6,"./resource":9,"./url":10}],8:[function(require,module,exports){
+/**
+ * Promise polyfill (https://gist.github.com/briancavalier/814313)
+ */
+
+function Promise (executor) {
+    executor(this.resolve.bind(this), this.reject.bind(this));
+    this._thens = [];
+}
+
+Promise.prototype = {
+
+    then: function (onResolve, onReject, onProgress) {
+        this._thens.push({resolve: onResolve, reject: onReject, progress: onProgress});
+    },
+
+    'catch': function (onReject) {
+        this._thens.push({reject: onReject});
+    },
+
+    resolve: function (value) {
+        this._complete('resolve', value);
+    },
+
+    reject: function (reason) {
+        this._complete('reject', reason);
+    },
+
+    progress: function (status) {
+
+        var i = 0, aThen;
+
+        while (aThen = this._thens[i++]) {
+            aThen.progress && aThen.progress(status);
+        }
+    },
+
+    _complete: function (which, arg) {
+
+        this.then = which === 'resolve' ?
+            function (resolve, reject) { resolve && resolve(arg); } :
+            function (resolve, reject) { reject && reject(arg); };
+
+        this.resolve = this.reject = this.progress =
+            function () { throw new Error('Promise already completed.'); };
+
+        var aThen, i = 0;
+
+        while (aThen = this._thens[i++]) {
+            aThen[which] && aThen[which](arg);
+        }
+
+        delete this._thens;
+    }
+};
+
+module.exports = window.Promise ? window.Promise : Promise;
+
+},{}],9:[function(require,module,exports){
+module.exports = function (Vue) {
+
+    var _ = require('./util')(Vue);
+
+    /**
+     * Resource provides interaction support with RESTful services.
+     */
+
+    function Resource (url, params, actions) {
+
+        var self = this, resource = {};
+
+        actions = _.extend({},
+            Resource.actions,
+            actions
+        );
+
+        _.each(actions, function (action, name) {
+
+            action = _.extend(true, {url: url, params: params || {}}, action);
+
+            resource[name] = function () {
+                return (self.$http || Vue.http)(opts(action, arguments));
+            };
+        });
+
+        return resource;
+    }
+
+    function opts (action, args) {
+
+        var options = _.extend({}, action), params = {}, data, success, error;
+
+        switch (args.length) {
+
+            case 4:
+
+                error = args[3];
+                success = args[2];
+
+            case 3:
+            case 2:
+
+                if (_.isFunction (args[1])) {
+
+                    if (_.isFunction (args[0])) {
+
+                        success = args[0];
+                        error = args[1];
+
+                        break;
+                    }
+
+                    success = args[1];
+                    error = args[2];
+
+                } else {
+
+                    params = args[0];
+                    data = args[1];
+                    success = args[2];
+
+                    break;
+                }
+
+            case 1:
+
+                if (_.isFunction (args[0])) {
+                    success = args[0];
+                } else if (/^(POST|PUT|PATCH)$/i.test(options.method)) {
+                    data = args[0];
+                } else {
+                    params = args[0];
+                }
+
+                break;
+
+            case 0:
+
+                break;
+
+            default:
+
+                throw 'Expected up to 4 arguments [params, data, success, error], got ' + args.length + ' arguments';
+        }
+
+        options.url = action.url;
+        options.data = data;
+        options.params = _.extend({}, action.params, params);
+
+        if (success) {
+            options.success = success;
+        }
+
+        if (error) {
+            options.error = error;
+        }
+
+        return options;
+    }
+
+    Resource.actions = {
+
+        get: {method: 'GET'},
+        save: {method: 'POST'},
+        query: {method: 'GET'},
+        remove: {method: 'DELETE'},
+        delete: {method: 'DELETE'}
+
+    };
+
+    Object.defineProperty(Vue.prototype, '$resource', {
+
+        get: function () {
+            return Resource.bind(this);
+        }
+
+    });
+
+    return Resource;
+};
+
+},{"./util":11}],10:[function(require,module,exports){
+module.exports = function (Vue) {
+
+    var _ = require('./util')(Vue);
+
+    /**
+     * Url provides URL templating.
+     *
+     * @param {String} url
+     * @param {Object} params
+     */
+
+    function Url (url, params) {
+
+        var urlParams = {}, queryParams = {}, options = url, query;
+
+        if (!_.isPlainObject(options)) {
+            options = {url: url, params: params};
+        }
+
+        options = _.extend({}, Url.options, _.options('url', this, options));
+
+        url = options.url.replace(/:([a-z]\w*)/gi, function (match, name) {
+
+            if (options.params[name]) {
+                urlParams[name] = true;
+                return encodeUriSegment(options.params[name]);
+            }
+
+            return '';
+        });
+
+        if (!url.match(/^(https?:)?\//) && options.root) {
+            url = options.root + '/' + url;
+        }
+
+        url = url.replace(/([^:])[\/]{2,}/g, '$1/');
+        url = url.replace(/(\w+)\/+$/, '$1');
+
+        _.each(options.params, function (value, key) {
+            if (!urlParams[key]) {
+                queryParams[key] = value;
+            }
+        });
+
+        query = Url.params(queryParams);
+
+        if (query) {
+            url += (url.indexOf('?') == -1 ? '?' : '&') + query;
+        }
+
+        return url;
+    }
+
+    /**
+     * Url options.
+     */
+
+    Url.options = {
+        url: '',
+        root: '',
+        params: {}
+    };
+
+    /**
+     * Encodes a Url parameter string.
+     *
+     * @param {Object} obj
+     */
+
+    Url.params = function (obj) {
+
+        var params = [];
+
+        params.add = function (key, value) {
+
+            if (_.isFunction (value)) {
+                value = value();
+            }
+
+            if (value === null) {
+                value = '';
+            }
+
+            this.push(encodeUriSegment(key) + '=' + encodeUriSegment(value));
+        };
+
+        serialize(params, obj);
+
+        return params.join('&');
+    };
+
+    /**
+     * Parse a URL and return its components.
+     *
+     * @param {String} url
+     */
+
+    Url.parse = function (url) {
+
+        var pattern = new RegExp("^(?:([^:/?#]+):)?(?://([^/?#]*))?([^?#]*)(?:\\?([^#]*))?(?:#(.*))?"),
+            matches = url.match(pattern);
+
+        return {
+            url: url,
+            scheme: matches[1] || '',
+            host: matches[2] || '',
+            path: matches[3] || '',
+            query: matches[4] || '',
+            fragment: matches[5] || ''
+        };
+    };
+
+    function serialize (params, obj, scope) {
+
+        var array = _.isArray(obj), plain = _.isPlainObject(obj), hash;
+
+        _.each(obj, function (value, key) {
+
+            hash = _.isObject(value) || _.isArray(value);
+
+            if (scope) {
+                key = scope + '[' + (plain || hash ? key : '') + ']';
+            }
+
+            if (!scope && array) {
+                params.add(value.name, value.value);
+            } else if (hash) {
+                serialize(params, value, key);
+            } else {
+                params.add(key, value);
+            }
+        });
+    }
+
+    function encodeUriSegment (value) {
+
+        return encodeUriQuery(value, true).
+            replace(/%26/gi, '&').
+            replace(/%3D/gi, '=').
+            replace(/%2B/gi, '+');
+    }
+
+    function encodeUriQuery (value, spaces) {
+
+        return encodeURIComponent(value).
+            replace(/%40/gi, '@').
+            replace(/%3A/gi, ':').
+            replace(/%24/g, '$').
+            replace(/%2C/gi, ',').
+            replace(/%20/g, (spaces ? '%20' : '+'));
+    }
+
+    Object.defineProperty(Vue.prototype, '$url', {
+
+        get: function () {
+            return _.extend(Url.bind(this), Url);
+        }
+
+    });
+
+    return Url;
+};
+
+},{"./util":11}],11:[function(require,module,exports){
+/**
+ * Utility functions.
+ */
+
+module.exports = function (Vue) {
+
+    var _ = Vue.util.extend({}, Vue.util);
+
+    _.options = function (key, obj, options) {
+
+        var opts = obj.$options || {};
+
+        return _.extend({},
+            opts[key],
+            options
+        );
+    };
+
+    _.each = function (obj, iterator) {
+
+        var i, key;
+
+        if (typeof obj.length == 'number') {
+            for (i = 0; i < obj.length; i++) {
+                iterator.call(obj[i], obj[i], i);
+            }
+        } else if (_.isObject(obj)) {
+            for (key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    iterator.call(obj[key], obj[key], key);
+                }
+            }
+        }
+
+        return obj;
+    };
+
+    _.extend = function (target) {
+
+        var array = [], args = array.slice.call(arguments, 1), deep;
+
+        if (typeof target == 'boolean') {
+            deep = target;
+            target = args.shift();
+        }
+
+        args.forEach(function (arg) {
+            extend(target, arg, deep);
+        });
+
+        return target;
+    };
+
+    function extend (target, source, deep) {
+        for (var key in source) {
+            if (deep && (_.isPlainObject(source[key]) || _.isArray(source[key]))) {
+                if (_.isPlainObject(source[key]) && !_.isPlainObject(target[key])) {
+                    target[key] = {};
+                }
+                if (_.isArray(source[key]) && !_.isArray(target[key])) {
+                    target[key] = [];
+                }
+                extend(target[key], source[key], deep);
+            } else if (source[key] !== undefined) {
+                target[key] = source[key];
+            }
+        }
+    }
+
+    _.isFunction = function (obj) {
+        return obj && typeof obj === 'function';
+    };
+
+    return _;
+};
+
+},{}],12:[function(require,module,exports){
 var _ = require('../util')
 
 /**
@@ -14115,7 +14798,7 @@ exports.$addChild = function (opts, BaseCtor) {
   var child = new ChildVue(opts)
   return child
 }
-},{"../util":63}],7:[function(require,module,exports){
+},{"../util":69}],13:[function(require,module,exports){
 var Watcher = require('../watcher')
 var Path = require('../parsers/path')
 var textParser = require('../parsers/text')
@@ -14271,7 +14954,7 @@ exports.$log = function (path) {
   console.log(data)
 }
 
-},{"../parsers/directive":52,"../parsers/expression":53,"../parsers/path":54,"../parsers/text":56,"../watcher":68}],8:[function(require,module,exports){
+},{"../parsers/directive":58,"../parsers/expression":59,"../parsers/path":60,"../parsers/text":62,"../watcher":74}],14:[function(require,module,exports){
 var _ = require('../util')
 var transition = require('../transition')
 
@@ -14499,7 +15182,7 @@ function remove (el, vm, cb) {
   if (cb) cb()
 }
 
-},{"../transition":57,"../util":63}],9:[function(require,module,exports){
+},{"../transition":63,"../util":69}],15:[function(require,module,exports){
 var _ = require('../util')
 
 /**
@@ -14674,7 +15357,7 @@ function modifyListenerCount (vm, event, count) {
     parent = parent.$parent
   }
 }
-},{"../util":63}],10:[function(require,module,exports){
+},{"../util":69}],16:[function(require,module,exports){
 var _ = require('../util')
 var config = require('../config')
 
@@ -14815,7 +15498,7 @@ function createAssetRegisters (Constructor) {
 
 createAssetRegisters(exports)
 
-},{"../compiler":16,"../config":18,"../parsers/directive":52,"../parsers/expression":53,"../parsers/path":54,"../parsers/template":55,"../parsers/text":56,"../util":63}],11:[function(require,module,exports){
+},{"../compiler":22,"../config":24,"../parsers/directive":58,"../parsers/expression":59,"../parsers/path":60,"../parsers/template":61,"../parsers/text":62,"../util":69}],17:[function(require,module,exports){
 var _ = require('../util')
 var compiler = require('../compiler')
 
@@ -14889,7 +15572,7 @@ exports.$destroy = function (remove, deferCleanup) {
 exports.$compile = function (el, host) {
   return compiler.compile(el, this.$options, true, host)(this, el)
 }
-},{"../compiler":16,"../util":63}],12:[function(require,module,exports){
+},{"../compiler":22,"../util":69}],18:[function(require,module,exports){
 var _ = require('./util')
 var MAX_UPDATE_COUNT = 10
 
@@ -14985,7 +15668,7 @@ exports.push = function (job) {
     }
   }
 }
-},{"./util":63}],13:[function(require,module,exports){
+},{"./util":69}],19:[function(require,module,exports){
 /**
  * A doubly linked list-based Least Recently Used (LRU)
  * cache. Will keep most recently used items while
@@ -15098,7 +15781,7 @@ p.get = function (key, returnEntry) {
 }
 
 module.exports = Cache
-},{}],14:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 var _ = require('../util')
 var config = require('../config')
 var textParser = require('../parsers/text')
@@ -15866,7 +16549,7 @@ function directiveComparator (a, b) {
   return a > b ? 1 : -1
 }
 
-},{"../config":18,"../directives/component":23,"../directives/prop":34,"../parsers/directive":52,"../parsers/path":54,"../parsers/template":55,"../parsers/text":56,"../util":63}],15:[function(require,module,exports){
+},{"../config":24,"../directives/component":29,"../directives/prop":40,"../parsers/directive":58,"../parsers/path":60,"../parsers/template":61,"../parsers/text":62,"../util":69}],21:[function(require,module,exports){
 var _ = require('../util')
 
 // This is the elementDirective that handles <content>
@@ -15979,12 +16662,12 @@ function extractFragment (nodes, parent, main) {
   return frag
 }
 
-},{"../util":63}],16:[function(require,module,exports){
+},{"../util":69}],22:[function(require,module,exports){
 var _ = require('../util')
 
 _.extend(exports, require('./compile'))
 _.extend(exports, require('./transclude'))
-},{"../util":63,"./compile":14,"./transclude":17}],17:[function(require,module,exports){
+},{"../util":69,"./compile":20,"./transclude":23}],23:[function(require,module,exports){
 var _ = require('../util')
 var config = require('../config')
 var templateParser = require('../parsers/template')
@@ -16115,7 +16798,7 @@ function mergeAttrs (from, to) {
   }
 }
 
-},{"../config":18,"../parsers/template":55,"../util":63}],18:[function(require,module,exports){
+},{"../config":24,"../parsers/template":61,"../util":69}],24:[function(require,module,exports){
 module.exports = {
 
   /**
@@ -16226,7 +16909,7 @@ Object.defineProperty(module.exports, 'delimiters', {
   }
 })
 
-},{}],19:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 var _ = require('./util')
 var config = require('./config')
 var Watcher = require('./watcher')
@@ -16447,7 +17130,7 @@ p._withLock = function (fn) {
 }
 
 module.exports = Directive
-},{"./config":18,"./parsers/expression":53,"./parsers/text":56,"./util":63,"./watcher":68}],20:[function(require,module,exports){
+},{"./config":24,"./parsers/expression":59,"./parsers/text":62,"./util":69,"./watcher":74}],26:[function(require,module,exports){
 // xlink
 var xlinkNS = 'http://www.w3.org/1999/xlink'
 var xlinkRE = /^xlink:/
@@ -16498,7 +17181,7 @@ module.exports = {
 
 }
 
-},{}],21:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 var _ = require('../util')
 var addClass = _.addClass
 var removeClass = _.removeClass
@@ -16544,7 +17227,7 @@ module.exports = {
     }
   }
 }
-},{"../util":63}],22:[function(require,module,exports){
+},{"../util":69}],28:[function(require,module,exports){
 var config = require('../config')
 
 module.exports = {
@@ -16557,7 +17240,7 @@ module.exports = {
   }
 
 }
-},{"../config":18}],23:[function(require,module,exports){
+},{"../config":24}],29:[function(require,module,exports){
 var _ = require('../util')
 var templateParser = require('../parsers/template')
 
@@ -16841,7 +17524,7 @@ module.exports = {
 
 }
 
-},{"../parsers/template":55,"../util":63}],24:[function(require,module,exports){
+},{"../parsers/template":61,"../util":69}],30:[function(require,module,exports){
 module.exports = {
 
   isLiteral: true,
@@ -16855,7 +17538,7 @@ module.exports = {
   }
   
 }
-},{}],25:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 var _ = require('../util')
 var templateParser = require('../parsers/template')
 
@@ -16897,7 +17580,7 @@ module.exports = {
   }
 
 }
-},{"../parsers/template":55,"../util":63}],26:[function(require,module,exports){
+},{"../parsers/template":61,"../util":69}],32:[function(require,module,exports){
 var _ = require('../util')
 var compiler = require('../compiler')
 var templateParser = require('../parsers/template')
@@ -17025,7 +17708,7 @@ function callDetach (child) {
     child._callHook('detached')
   }
 }
-},{"../compiler":16,"../parsers/template":55,"../transition":57,"../util":63}],27:[function(require,module,exports){
+},{"../compiler":22,"../parsers/template":61,"../transition":63,"../util":69}],33:[function(require,module,exports){
 // manipulation directives
 exports.text       = require('./text')
 exports.html       = require('./html')
@@ -17050,7 +17733,7 @@ exports['if']      = require('./if')
 // but we still want to expose them for advanced usage.
 exports._component = require('./component')
 exports._prop      = require('./prop')
-},{"./attr":20,"./class":21,"./cloak":22,"./component":23,"./el":24,"./html":25,"./if":26,"./model":29,"./on":33,"./prop":34,"./ref":35,"./repeat":36,"./show":37,"./style":38,"./text":39,"./transition":40}],28:[function(require,module,exports){
+},{"./attr":26,"./class":27,"./cloak":28,"./component":29,"./el":30,"./html":31,"./if":32,"./model":35,"./on":39,"./prop":40,"./ref":41,"./repeat":42,"./show":43,"./style":44,"./text":45,"./transition":46}],34:[function(require,module,exports){
 var _ = require('../../util')
 
 module.exports = {
@@ -17076,7 +17759,7 @@ module.exports = {
   }
 
 }
-},{"../../util":63}],29:[function(require,module,exports){
+},{"../../util":69}],35:[function(require,module,exports){
 var _ = require('../../util')
 
 var handlers = {
@@ -17152,7 +17835,7 @@ module.exports = {
   }
 
 }
-},{"../../util":63,"./checkbox":28,"./radio":30,"./select":31,"./text":32}],30:[function(require,module,exports){
+},{"../../util":69,"./checkbox":34,"./radio":36,"./select":37,"./text":38}],36:[function(require,module,exports){
 var _ = require('../../util')
 
 module.exports = {
@@ -17179,7 +17862,7 @@ module.exports = {
   }
 
 }
-},{"../../util":63}],31:[function(require,module,exports){
+},{"../../util":69}],37:[function(require,module,exports){
 var _ = require('../../util')
 var Watcher = require('../../watcher')
 var dirParser = require('../../parsers/directive')
@@ -17366,7 +18049,7 @@ function indexOf (arr, val) {
   }
   return -1
 }
-},{"../../parsers/directive":52,"../../util":63,"../../watcher":68}],32:[function(require,module,exports){
+},{"../../parsers/directive":58,"../../util":69,"../../watcher":74}],38:[function(require,module,exports){
 var _ = require('../../util')
 
 module.exports = {
@@ -17526,7 +18209,7 @@ module.exports = {
     }
   }
 }
-},{"../../util":63}],33:[function(require,module,exports){
+},{"../../util":69}],39:[function(require,module,exports){
 var _ = require('../util')
 
 module.exports = {
@@ -17586,7 +18269,7 @@ module.exports = {
     _.off(this.el, 'load', this.iframeBind)
   }
 }
-},{"../util":63}],34:[function(require,module,exports){
+},{"../util":69}],40:[function(require,module,exports){
 var _ = require('../util')
 var Watcher = require('../watcher')
 var bindingModes = require('../config')._propBindingModes
@@ -17659,7 +18342,7 @@ module.exports = {
   }
 }
 
-},{"../config":18,"../util":63,"../watcher":68}],35:[function(require,module,exports){
+},{"../config":24,"../util":69,"../watcher":74}],41:[function(require,module,exports){
 var _ = require('../util')
 
 module.exports = {
@@ -17683,7 +18366,7 @@ module.exports = {
   }
   
 }
-},{"../util":63}],36:[function(require,module,exports){
+},{"../util":69}],42:[function(require,module,exports){
 var _ = require('../util')
 var isObject = _.isObject
 var isPlainObject = _.isPlainObject
@@ -18407,7 +19090,7 @@ function toRefObject (vms) {
   return ref
 }
 
-},{"../compiler":16,"../parsers/expression":53,"../parsers/template":55,"../parsers/text":56,"../util":63}],37:[function(require,module,exports){
+},{"../compiler":22,"../parsers/expression":59,"../parsers/template":61,"../parsers/text":62,"../util":69}],43:[function(require,module,exports){
 var transition = require('../transition')
 
 module.exports = function (value) {
@@ -18416,7 +19099,7 @@ module.exports = function (value) {
     el.style.display = value ? '' : 'none'
   }, this.vm)
 }
-},{"../transition":57}],38:[function(require,module,exports){
+},{"../transition":63}],44:[function(require,module,exports){
 var _ = require('../util')
 var prefixes = ['-webkit-', '-moz-', '-ms-']
 var camelPrefixes = ['Webkit', 'Moz', 'ms']
@@ -18527,7 +19210,7 @@ function prefix (prop) {
     }
   }
 }
-},{"../util":63}],39:[function(require,module,exports){
+},{"../util":69}],45:[function(require,module,exports){
 var _ = require('../util')
 
 module.exports = {
@@ -18543,7 +19226,7 @@ module.exports = {
   }
   
 }
-},{"../util":63}],40:[function(require,module,exports){
+},{"../util":69}],46:[function(require,module,exports){
 var _ = require('../util')
 var Transition = require('../transition/transition')
 
@@ -18571,7 +19254,7 @@ module.exports = {
   }
 
 }
-},{"../transition/transition":59,"../util":63}],41:[function(require,module,exports){
+},{"../transition/transition":65,"../util":69}],47:[function(require,module,exports){
 var _ = require('../util')
 var Path = require('../parsers/path')
 
@@ -18659,7 +19342,7 @@ function contains (val, search) {
   }
 }
 
-},{"../parsers/path":54,"../util":63}],42:[function(require,module,exports){
+},{"../parsers/path":60,"../util":69}],48:[function(require,module,exports){
 var _ = require('../util')
 
 /**
@@ -18797,7 +19480,7 @@ exports.key.keyCodes = keyCodes
 
 _.extend(exports, require('./array-filters'))
 
-},{"../util":63,"./array-filters":41}],43:[function(require,module,exports){
+},{"../util":69,"./array-filters":47}],49:[function(require,module,exports){
 var _ = require('../util')
 var Directive = require('../directive')
 var compiler = require('../compiler')
@@ -18986,7 +19669,7 @@ exports._cleanup = function () {
   // turn off all instance listeners.
   this.$off()
 }
-},{"../compiler":16,"../directive":19,"../util":63}],44:[function(require,module,exports){
+},{"../compiler":22,"../directive":25,"../util":69}],50:[function(require,module,exports){
 var _ = require('../util')
 var inDoc = _.inDoc
 
@@ -19125,7 +19808,7 @@ exports._callHook = function (hook) {
   }
   this.$emit('hook:' + hook)
 }
-},{"../util":63}],45:[function(require,module,exports){
+},{"../util":69}],51:[function(require,module,exports){
 var mergeOptions = require('../util').mergeOptions
 
 /**
@@ -19219,7 +19902,7 @@ exports._init = function (options) {
   }
 }
 
-},{"../util":63}],46:[function(require,module,exports){
+},{"../util":69}],52:[function(require,module,exports){
 var _ = require('../util')
 
 /**
@@ -19306,7 +19989,7 @@ exports._resolveComponent = function (id, cb) {
     cb(factory)
   }
 }
-},{"../util":63}],47:[function(require,module,exports){
+},{"../util":69}],53:[function(require,module,exports){
 var _ = require('../util')
 var Observer = require('../observer')
 var Dep = require('../observer/dep')
@@ -19560,7 +20243,7 @@ exports._defineMeta = function (key, value) {
   })
 }
 
-},{"../observer":50,"../observer/dep":49,"../util":63}],48:[function(require,module,exports){
+},{"../observer":56,"../observer/dep":55,"../util":69}],54:[function(require,module,exports){
 var _ = require('../util')
 var arrayProto = Array.prototype
 var arrayMethods = Object.create(arrayProto)
@@ -19653,7 +20336,7 @@ _.define(
 )
 
 module.exports = arrayMethods
-},{"../util":63}],49:[function(require,module,exports){
+},{"../util":69}],55:[function(require,module,exports){
 var _ = require('../util')
 
 /**
@@ -19718,7 +20401,7 @@ p.notify = function () {
 
 module.exports = Dep
 
-},{"../util":63}],50:[function(require,module,exports){
+},{"../util":69}],56:[function(require,module,exports){
 var _ = require('../util')
 var config = require('../config')
 var Dep = require('./dep')
@@ -19966,7 +20649,7 @@ function copyAugment (target, src, keys) {
 
 module.exports = Observer
 
-},{"../config":18,"../util":63,"./array":48,"./dep":49,"./object":51}],51:[function(require,module,exports){
+},{"../config":24,"../util":69,"./array":54,"./dep":55,"./object":57}],57:[function(require,module,exports){
 var _ = require('../util')
 var objProto = Object.prototype
 
@@ -20049,7 +20732,7 @@ _.define(
     }
   }
 )
-},{"../util":63}],52:[function(require,module,exports){
+},{"../util":69}],58:[function(require,module,exports){
 var _ = require('../util')
 var Cache = require('../cache')
 var cache = new Cache(1000)
@@ -20229,7 +20912,7 @@ exports.parse = function (s) {
   cache.put(s, dirs)
   return dirs
 }
-},{"../cache":13,"../util":63}],53:[function(require,module,exports){
+},{"../cache":19,"../util":69}],59:[function(require,module,exports){
 var _ = require('../util')
 var Path = require('./path')
 var Cache = require('../cache')
@@ -20493,7 +21176,7 @@ exports.isSimplePath = function (exp) {
     // Math constants e.g. Math.PI, Math.E etc.
     exp.slice(0, 5) !== 'Math.'
 }
-},{"../cache":13,"../util":63,"./path":54}],54:[function(require,module,exports){
+},{"../cache":19,"../util":69,"./path":60}],60:[function(require,module,exports){
 var _ = require('../util')
 var Cache = require('../cache')
 var pathCache = new Cache(1000)
@@ -20820,7 +21503,7 @@ function warnNonExistent (path) {
   )
 }
 
-},{"../cache":13,"../util":63}],55:[function(require,module,exports){
+},{"../cache":19,"../util":69}],61:[function(require,module,exports){
 var _ = require('../util')
 var Cache = require('../cache')
 var templateCache = new Cache(1000)
@@ -21080,7 +21763,7 @@ exports.parse = function (template, clone, noSelector) {
     ? exports.clone(frag)
     : frag
 }
-},{"../cache":13,"../util":63}],56:[function(require,module,exports){
+},{"../cache":19,"../util":69}],62:[function(require,module,exports){
 var Cache = require('../cache')
 var config = require('../config')
 var dirParser = require('./directive')
@@ -21257,7 +21940,7 @@ function inlineFilters (exp, single) {
   }
 }
 
-},{"../cache":13,"../config":18,"./directive":52}],57:[function(require,module,exports){
+},{"../cache":19,"../config":24,"./directive":58}],63:[function(require,module,exports){
 var _ = require('../util')
 
 /**
@@ -21386,7 +22069,7 @@ var apply = exports.apply = function (el, direction, op, vm, cb) {
   var action = direction > 0 ? 'enter' : 'leave'
   transition[action](op, cb)
 }
-},{"../util":63}],58:[function(require,module,exports){
+},{"../util":69}],64:[function(require,module,exports){
 var _ = require('../util')
 var queue = []
 var queued = false
@@ -21422,7 +22105,7 @@ function flush () {
   // unused variable f
   return f
 }
-},{"../util":63}],59:[function(require,module,exports){
+},{"../util":69}],65:[function(require,module,exports){
 var _ = require('../util')
 var queue = require('./queue')
 var addClass = _.addClass
@@ -21731,7 +22414,7 @@ p.setupCssCb = function (event, cb) {
 }
 
 module.exports = Transition
-},{"../util":63,"./queue":58}],60:[function(require,module,exports){
+},{"../util":69,"./queue":64}],66:[function(require,module,exports){
 var config = require('../config')
 
 /**
@@ -21809,7 +22492,7 @@ function enableDebug () {
     }
   }
 }
-},{"../config":18}],61:[function(require,module,exports){
+},{"../config":24}],67:[function(require,module,exports){
 var config = require('../config')
 
 /**
@@ -22018,7 +22701,7 @@ exports.isTemplate = function (el) {
   return el.tagName &&
     el.tagName.toLowerCase() === 'template'
 }
-},{"../config":18}],62:[function(require,module,exports){
+},{"../config":24}],68:[function(require,module,exports){
 // can we use __proto__?
 exports.hasProto = '__proto__' in {}
 
@@ -22104,7 +22787,7 @@ exports.nextTick = (function () {
     timerFunc(handle, 0)
   }
 })()
-},{}],63:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 var lang   = require('./lang')
 var extend = lang.extend
 
@@ -22114,7 +22797,7 @@ extend(exports, require('./dom'))
 extend(exports, require('./misc'))
 extend(exports, require('./debug'))
 extend(exports, require('./options'))
-},{"./debug":60,"./dom":61,"./env":62,"./lang":64,"./misc":65,"./options":66}],64:[function(require,module,exports){
+},{"./debug":66,"./dom":67,"./env":68,"./lang":70,"./misc":71,"./options":72}],70:[function(require,module,exports){
 /**
  * Check is a string starts with $ or _
  *
@@ -22400,7 +23083,7 @@ exports.cancellable = function (fn) {
   return cb
 }
 
-},{}],65:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 var _ = require('./index')
 var config = require('../config')
 
@@ -22530,7 +23213,7 @@ exports.createAnchor = function (content, persist) {
     : document.createTextNode(persist ? ' ' : '')
 }
 
-},{"../config":18,"./index":63}],66:[function(require,module,exports){
+},{"../config":24,"./index":69}],72:[function(require,module,exports){
 var _ = require('./index')
 var extend = _.extend
 
@@ -22809,7 +23492,7 @@ exports.resolveAsset = function resolve (options, type, id) {
   }
   return asset
 }
-},{"./index":63}],67:[function(require,module,exports){
+},{"./index":69}],73:[function(require,module,exports){
 var _ = require('./util')
 var extend = _.extend
 
@@ -22899,7 +23582,7 @@ extend(p, require('./api/child'))
 extend(p, require('./api/lifecycle'))
 
 module.exports = _.Vue = Vue
-},{"./api/child":6,"./api/data":7,"./api/dom":8,"./api/events":9,"./api/global":10,"./api/lifecycle":11,"./compiler/content":15,"./directives":27,"./filters":42,"./instance/compile":43,"./instance/events":44,"./instance/init":45,"./instance/misc":46,"./instance/scope":47,"./util":63}],68:[function(require,module,exports){
+},{"./api/child":12,"./api/data":13,"./api/dom":14,"./api/events":15,"./api/global":16,"./api/lifecycle":17,"./compiler/content":21,"./directives":33,"./filters":48,"./instance/compile":49,"./instance/events":50,"./instance/init":51,"./instance/misc":52,"./instance/scope":53,"./util":69}],74:[function(require,module,exports){
 var _ = require('./util')
 var config = require('./config')
 var Observer = require('./observer')
@@ -23136,14 +23819,14 @@ function traverse (obj) {
 
 module.exports = Watcher
 
-},{"./batcher":12,"./config":18,"./observer":50,"./parsers/expression":53,"./util":63}],69:[function(require,module,exports){
+},{"./batcher":18,"./config":24,"./observer":56,"./parsers/expression":59,"./util":69}],75:[function(require,module,exports){
 'use strict';
 
 module.exports = function (text) {
     return text.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
 };
 
-},{}],70:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 /**
  * larail.js
  *
@@ -23233,35 +23916,90 @@ module.exports = $(function () {
     larail.initialize();
 });
 
-},{}],71:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 'use strict';
 
 var sluggify = require('../filters/sluggify.js');
 
 module.exports = new Vue({
-	el: '#postForm',
+	el: '#postContent',
 	data: {
 		title: '',
-		oldTitle: '',
 		slug: '',
 		content: ''
 	},
 	filters: {
-		marked: require('marked'),
-		sluggify: sluggify
+		marked: require('marked')
+	},
+	ready: function ready() {
+		if (this.slug != '') this.hasSlug = true;
 	},
 	methods: {
-		resluggifyTitle: function resluggifyTitle(e) {
+		sluggifyTitle: function sluggifyTitle(e) {
 			if (e) e.preventDefault();
 			this.slug = sluggify(this.title);
 		},
 		setNewSlug: function setNewSlug(e) {
-			if (this.oldTitle == '') {
-				this.resluggifyTitle(e);
+			if (this.slug == '') {
+				this.sluggifyTitle(e);
 			}
-			this.oldTitle = this.title;
 		}
 	}
 });
 
-},{"../filters/sluggify.js":69,"marked":3}]},{},[1]);
+},{"../filters/sluggify.js":75,"marked":3}],78:[function(require,module,exports){
+'use strict';
+
+module.exports = new Vue({
+	el: '#postMeta',
+
+	data: {
+		categories: [],
+		checkedCategories: [],
+		newCategory: ''
+	},
+
+	ready: function ready() {
+		this.fetchCategories();
+	},
+
+	methods: {
+		fetchCategories: function fetchCategories() {
+			this.checkedCategories = JSON.parse(this.checkedCategories);
+
+			this.$http.get('/api/categories', function (categories) {
+				categories.map((function (category) {
+					this.categories.push({
+						id: category.id,
+						term: category.term,
+						slug: category.slug,
+						checked: $.inArray(category.id, this.checkedCategories) >= 0
+					});
+				}).bind(this));
+			});
+		},
+		addCategory: function addCategory(e) {
+			if (e) e.preventDefault();
+
+			var postData = {
+				term: this.newCategory,
+				taxonomy: 'category',
+				_token: $('meta[name=csrf-token]').attr('content')
+			};
+
+			this.$http.post('/api/terms', postData, function (newCategory) {
+				this.categories.push({
+					id: newCategory.id,
+					term: newCategory.term,
+					slug: newCategory.slug,
+					checked: true
+				});
+			});
+
+			this.newCategory = '';
+		}
+	}
+
+});
+
+},{}]},{},[1]);

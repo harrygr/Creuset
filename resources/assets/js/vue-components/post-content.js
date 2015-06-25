@@ -1,29 +1,31 @@
 var sluggify = require('../filters/sluggify.js');
 
 module.exports = new Vue({
-	el: '#postForm',
+	el: '#postContent',
 	data: {
 		title: '',
-		oldTitle: '',
 		slug: '',
 		content: '',
 	},
 	filters: {
 		marked: require('marked'),
 	},
+	ready: function()
+	{
+		if (this.slug != '') this.hasSlug = true;
+	},
 	methods: {
-		resluggifyTitle: function(e)
+		sluggifyTitle: function(e)
 		{
 			if (e) e.preventDefault();
 			this.slug = sluggify(this.title);
 		},
 		setNewSlug: function(e)
 		{
-			if (this.oldTitle == '')
+			if (this.slug == '')
 			{
-				this.resluggifyTitle(e);
+				this.sluggifyTitle(e);
 			}
-			this.oldTitle = this.title;
 		}
 	}
 });
