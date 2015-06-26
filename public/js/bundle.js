@@ -23956,7 +23956,15 @@ module.exports = new Vue({
 	data: {
 		categories: [],
 		checkedCategories: [],
-		newCategory: ''
+		newCategory: '',
+		addCatButtonClass: 'fa-plus',
+		addCategoryErrors: []
+	},
+
+	computed: {
+		isLoadingCategories: function isLoadingCategories() {
+			return this.addCatButtonClass !== 'fa-plus';
+		}
 	},
 
 	ready: function ready() {
@@ -23978,8 +23986,11 @@ module.exports = new Vue({
 				}).bind(this));
 			});
 		},
+
 		addCategory: function addCategory(e) {
 			if (e) e.preventDefault();
+
+			this.addCatButtonClass = 'fa-circle-o-notch fa-spin';
 
 			var postData = {
 				term: this.newCategory,
@@ -23987,19 +23998,32 @@ module.exports = new Vue({
 				_token: $('meta[name=csrf-token]').attr('content')
 			};
 
-			this.$http.post('/api/terms', postData, function (newCategory) {
+			this.$http.post('/api/categories', postData, function (newCategory) {
+				// On success get the returned newly created term and append to the existing
 				this.categories.push({
 					id: newCategory.id,
 					term: newCategory.term,
 					slug: newCategory.slug,
 					checked: true
 				});
+
+				this.addCatButtonClass = 'fa-plus';
+			}).error(function (response) {
+				// On failure catch the error response and display it
+				this.addCategoryErrors = response.term;
+				this.addCatButtonClass = 'fa-plus';
+
+				// Wait a bit and reset the errors
+				setTimeout((function () {
+					this.addCategoryErrors = [];
+				}).bind(this), 5000);
 			});
 
 			this.newCategory = '';
+
+			return false;
 		}
 	}
-
 });
 
 },{}]},{},[1]);

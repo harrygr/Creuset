@@ -17,7 +17,7 @@
                     <label for="slug" class="sr-only">Slug</label>
                     <div class="input-group">
                        {!! Form::text('slug', null, ['class' => 'form-control', 'placeholder' => "Slug" , 'v-model' => 'slug']) !!}   
-                       
+
                        <span class="input-group-btn refresh-slug">
                         <button class="btn btn-default" type="button" v-on="click: sluggifyTitle"><i class="fa fa-fw fa-refresh"></i></button>
                     </span>
@@ -87,11 +87,12 @@
                     </label>
                 </div>
                 <div class="input-group">
-                    <input type="text" class="form-control" v-model="newCategory" v-on="keyup:addCategory | key 'enter'" placeholder="New Category">
+                    <input type="text" class="form-control" v-model="newCategory" v-on="keydown:addCategory | key 'enter'" placeholder="New Category" v-attr="disabled: isLoadingCategories">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" v-on="click: addCategory">Add Category</button>
+                    <button class="btn btn-default" v-on="click: addCategory" v-attr="disabled: isLoadingCategories"><i class="fa fa-fw @{{ addCatButtonClass }}"></i></button>
                     </span>
                 </div>
+                <div class="alert alert-danger top-buffer" v-show="addCategoryErrors.length"><p v-repeat="error: addCategoryErrors" v-text="error"></p></div>
             </div>
         </div>
 

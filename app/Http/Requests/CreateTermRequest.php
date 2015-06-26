@@ -11,7 +11,7 @@ class CreateTermRequest extends Request {
 	 */
 	public function authorize()
 	{
-		return false;
+		return true;
 	}
 
 	/**
@@ -22,7 +22,7 @@ class CreateTermRequest extends Request {
 	public function rules()
 	{
 		return [
-			'term'	=> 'required|unique:terms,name'
+			'term'	=> 'required|unique:terms,term'
 		];
 	}
 

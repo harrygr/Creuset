@@ -2,6 +2,7 @@
 
 use Creuset\Http\Controllers\Controller;
 use Creuset\Repositories\Term\TermRepository;
+use Creuset\Http\Requests\CreateTermRequest;
 
 class TermsController extends Controller
 {
@@ -20,8 +21,13 @@ class TermsController extends Controller
 		return $this->terms->getCategories();
 	}
 
-	public function store()
+	public function tags()
 	{
-		return $this->terms->createCategory(\Request::get('term'));
+		return $this->terms->getTags();
+	}
+
+	public function storeCategory(CreateTermRequest $request)
+	{
+		return $this->terms->createCategory($request->get('term'));
 	}
 }

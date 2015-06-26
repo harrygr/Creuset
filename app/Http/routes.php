@@ -47,5 +47,5 @@ Route::group(['prefix' => 'admin'], function()
 Route::group(['prefix' => 'api'], function()
 {
 	Route::get('categories', ['uses' => 'Api\TermsController@categories', 'as' => 'api.categories']);
-	Route::post('terms', ['uses' => 'Api\TermsController@store', 'as' => 'api.terms']);
+	Route::post('categories', ['uses' => 'Api\TermsController@storeCategory', 'as' => 'api.terms']);
 });
