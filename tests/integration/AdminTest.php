@@ -3,7 +3,7 @@
 use TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class AdminTest extends TestCase 
+class AdminTest extends TestCase
 {
 
 	use DatabaseTransactions;
@@ -18,13 +18,15 @@ class AdminTest extends TestCase
 		'email'	=> 'jb@email.com',
 		];
 
-		$this->createUser($credentials);
+		factory('Creuset\User')->create($credentials);
+
+		echo "hello";
 
 		// We should be able to log in
 		// (The factory-defined password is 'password')
 
 		$this->visit('/login')
-			 ->type($credentials['email'], 'email')
+			 ->type($credentials['email'], 'username')
 			 ->type('password', 'password')
 			 ->press('Login')
 			 ->seePageIs('/admin/posts');
@@ -36,7 +38,7 @@ class AdminTest extends TestCase
 	function testCanNotLoginWithInvalidCredentials()
 	{
 		$this->visit('login')
-			 ->type('fakename@noone.com', 'email')
+			 ->type('fakename@noone.com', 'username')
 			 ->type('wrongpw', 'password')
 			 ->press('Login')
 			 ->seePageIs('/login')

@@ -62,7 +62,7 @@ class DatabaseSeeder extends Seeder {
 
 	protected function getForeignKeyCheckStatement()
 	{
-		$driver = Config::get('database.default');
+		$driver = \DB::connection()->getDriverName();
 
 		if ($driver == 'sqlite')
 		{

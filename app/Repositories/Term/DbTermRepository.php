@@ -11,7 +11,6 @@ namespace Creuset\Repositories\Term;
 
 use Creuset\Term;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 class DbTermRepository implements TermRepository {
     /**
@@ -92,7 +91,7 @@ class DbTermRepository implements TermRepository {
 
     private function create($term, $taxonomy, $slug = null)
     {
-        if (!$slug) $slug = Str::slug($term);
+        if (!$slug) $slug = str_slug($term);
 
         return Term::create([
             'term'  => $term,

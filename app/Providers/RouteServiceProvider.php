@@ -24,7 +24,8 @@ class RouteServiceProvider extends ServiceProvider {
 	{
 		parent::boot($router);
 
-		//
+		$router->model('post', 'Creuset\Post');
+		$router->model('term', 'Creuset\Term');
 	}
 
 	/**

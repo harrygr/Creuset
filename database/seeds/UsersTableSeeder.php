@@ -8,19 +8,20 @@ class UsersTableSeeder extends Seeder {
 	{
 		$faker = Faker::create();
 
+		// Make a pre-defined user so we can log into the application and play around
 		User::create([
-			'name' => 'Harry G',
-			'email' => 'harry@laravel.com',
-			'password' => Hash::make('secret'),
+			'name' 		=> 'Harry G',
+			'username'	=> 'harryg',
+			'email' 	=> 'harry@laravel.com',
+			'password' 	=> Hash::make('secret'),
 			]);
 
+		// Make some auto-generated users for extra usage
 		foreach (range(1,4) as $index)
 		{
-			User::create([
-				'name' => $faker->name(),
-				'email' => $faker->email(),
-				'password' => Hash::make($faker->password()),
-				]);
+			$name = $faker->name();
+
+			factory('Creuset\User')->create();
 		}
 	}
 }

@@ -80,11 +80,12 @@
             <input type="hidden" v-model="checkedCategories" value="{{ $post->categories->lists('id')->toJson() }}">
 
             <div class="panel-body">
+                <div id="category-checkboxes">
                 <div class="checkbox" v-repeat="category: categories">
                     <label>
                         <input type="checkbox" name="terms[]" value="@{{ category.id }}" v-model="category.checked"> @{{ category.term }}
-                        <code>@{{ category.checked }}</code>
                     </label>
+                </div>
                 </div>
                 <div class="input-group">
                     <input type="text" class="form-control" v-model="newCategory" v-on="keydown:addCategory | key 'enter'" placeholder="New Category" v-attr="disabled: isLoadingCategories">
@@ -102,7 +103,7 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    {!! Form::select('terms[]', $tagList, isset($post) ? $post->tags->lists('id') : null, ['multiple', 'class' => 'form-control tagSelect']) !!}
+                    {!! Form::select('terms[]', $tagList, isset($post) ? $post->tags->lists('id')->toArray() : null, ['multiple', 'class' => 'form-control tagSelect']) !!}
                 </div>
             </div>
         </div>

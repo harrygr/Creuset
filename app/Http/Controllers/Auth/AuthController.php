@@ -34,12 +34,12 @@ class AuthController extends Controller {
 	public function postLogin(Request $request)
 	{
 		$this->validate($request, [
-			'email' => 'required', 'password' => 'required',
+			'username' => 'required', 'password' => 'required',
 		]);
 
-		$credentials = $request->only('email', 'password');
-
-		if (\Auth::attempt($credentials, $request->has('remember')))
+		// Attempt logging in with username first, or email if that fails
+		if ( \Auth::attempt(['username' => $request->username, 'password' => $request->password], $request->has('remember')) or 
+			 \Auth::attempt(['email' => $request->username, 'password' => $request->password], $request->has('remember')))
 		{
 			return redirect()->intended(route('admin.posts.index'));
 		}
@@ -47,7 +47,7 @@ class AuthController extends Controller {
 		return \Redirect::route('auth.login')
 					->withInput($request->only('email'))
 					->withErrors([
-						'email' => 'These credentials do not match our records.',
+						'username' => 'These credentials do not match our records.',
 					]);
 	}
 

@@ -1,6 +1,10 @@
 <?php
 
-abstract class TestCase extends Illuminate\Foundation\Testing\TestCase{
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+
+abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
+{
+	use DatabaseMigrations;
 
 	protected $baseUrl = 'http://homestead.app';
 
@@ -15,20 +19,22 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase{
 
 		$app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
 
-		$this->setUpDatabase();
+		// $this->setUpDatabase();
 
 		return $app;
 	}
 
 	protected function setUpDatabase()
-	{	 
+	{
 		Artisan::call('migrate:reset');
 		Artisan::call('migrate');
-		//Artisan::call('migrate', ['--seed']);
 	}
 
-	protected function createUser(array $overrides = [])
+
+	protected function loginWithUser(array $overrides = [])
 	{
-		return factory('Creuset\User')->create($overrides);
+		$user = factory('Creuset\User')->create($overrides);
+		\Auth::loginUsingId($user->id);
+		return $user;
 	}
 }

@@ -18,17 +18,25 @@ $factory->define('Creuset\Post', function($faker) {
 });
 
 $factory->define('Creuset\User', function($faker) {
+
+	$name = $faker->name;
+
 	return [
-	'name'			=> $faker->name,
+	'name'			=> $name,
+	'username'		=> str_slug($name),
 	'email'			=> $faker->email,
 	'password'		=> bcrypt('password'),
 	];
 });
 
 $factory->define('Creuset\Term', function($faker) {
+
+	$term = $faker->word;
+	
 	return [
-	'taxonomy'	=> 'category',
-	'term'		=> $faker->word,
+	'taxonomy' => 'category',
+	'term'		 => $term,
+	'slug'		 => str_slug($term),
 	];
 });
 

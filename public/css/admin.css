@@ -6273,6 +6273,12 @@ button.close {
   text-indent: 20px;
   line-height: 40px;
 }
+.sidebar-nav li ul {
+  padding: 0;
+}
+.sidebar-nav li ul li a {
+  padding-left: 20px;
+}
 .sidebar-nav li a {
   display: block;
   text-decoration: none;
@@ -6326,6 +6332,11 @@ button.close {
 }
 #postContent textarea {
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+#category-checkboxes {
+  max-height: 150px;
+  overflow-y: auto;
+  margin-bottom: 15px;
 }
 .wmd-panel {
   width: 100%;

@@ -9,7 +9,7 @@ Posts
 	<div class="panel panel-default">
 		<div class="panel-body">
 
-		<table class="table table-striped table-bordered">
+		<table class="table table-striped">
 			<thead>
 				<tr>
 					<th>Title</th>
@@ -29,20 +29,16 @@ Posts
 						</div>
 					</td>
 					<td>{{ $post->author->name }}</td>
-					<td>
-
-						{{ $post->present()->categoryList() }}
-
-					</td>
-					<td>
-						{{ $post->created_at }}
-					</td>
+					<td>{{ $post->present()->categoryList() }}</td>
+					<td>{{ $post->created_at }}</td>
 				</tr>
 			@endforeach
 			</tbody>
 		</table>
+
+		<!-- Pagination -->
 		{!! $posts->render() !!}
-	</div>
+		</div>
 	</div>
 
 

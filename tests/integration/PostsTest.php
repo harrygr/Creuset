@@ -3,7 +3,7 @@
 use TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class PostsTest extends TestCase 
+class PostsTest extends TestCase
 {
 
 	use DatabaseTransactions;
@@ -16,7 +16,7 @@ class PostsTest extends TestCase
 		// I go to the create posts page
 		$postTitle =  'Awesome Post Title';
 		$postContent = 'Here is some post content';
-		
+
 		$this->visit('/admin/posts/create')
 			 ->type($postTitle, 'title')
 			 ->type(\Str::slug($postTitle), 'slug') //we'll manually type this even though js should generate this for us
@@ -60,12 +60,5 @@ class PostsTest extends TestCase
 			'title' => $postTitle,
 			'type'	=> 'post'
 			]);
-	}
-
-	protected function loginWithUser()
-	{
-		$user = factory('Creuset\User')->create();
-		\Auth::loginUsingId($user->id);
-		return $user;
 	}
 }

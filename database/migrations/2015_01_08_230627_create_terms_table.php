@@ -28,7 +28,7 @@ class CreateTermsTable extends Migration {
 			$table->integer('term_id')->unsigned();
 			$table->integer('termable_id')->unsigned();
 			$table->string('termable_type');
-		});
+		});		
 	}
 
 	/**
