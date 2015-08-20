@@ -7172,5 +7172,11 @@ body {
 .select2 {
   width: 100%!important;
 }
+.nav-avatar {
+  float: left;
+  position: relative;
+  left: -5px;
+  top: -5px;
+}
 
 /*# sourceMappingURL=admin.css.map */
