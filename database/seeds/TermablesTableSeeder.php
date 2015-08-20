@@ -22,4 +22,5 @@ class TermablesTableSeeder extends Seeder {
 				]);
 		}
 	}
+
 }

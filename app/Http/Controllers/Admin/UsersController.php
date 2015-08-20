@@ -22,7 +22,8 @@ class UsersController extends Controller
 
     public function edit(User $user)
     {   
-    	return view('admin.users.edit')->with(compact('user'));
+        $roles = \Creuset\Role::lists('display_name', 'id');
+    	return view('admin.users.edit')->with(compact('user', 'roles'));
     }
 
     public function update(User $user, UpdateUserRequest $request)

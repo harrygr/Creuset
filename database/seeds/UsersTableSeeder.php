@@ -2,26 +2,48 @@
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use Creuset\User;
+use Creuset\Role;
 
 class UsersTableSeeder extends Seeder {
 	public function run()
 	{
 		$faker = Faker::create();
 
+		$roles = $this->seedRoles();
+
 		// Make a pre-defined user so we can log into the application and play around
-		User::create([
+		$admin = User::create([
 			'name' 		=> 'Harry G',
 			'username'	=> 'harryg',
 			'email' 	=> 'harry@laravel.com',
 			'password' 	=> Hash::make('secret'),
 			]);
 
-		// Make some auto-generated users for extra usage
-		foreach (range(1,4) as $index)
-		{
-			$name = $faker->name();
+		$admin->assignRole('admin');
 
-			factory('Creuset\User')->create();
-		}
+		// Make some auto-generated users for extra usage
+		$users = array_map(function($i)
+			{
+				$user = factory('Creuset\User')->create();
+				return $user->enroll();
+			}, range(1,4));
+	}
+
+	private function seedRoles()
+	{
+		$roles = [
+			'subscriber',
+			'contributor',
+			'admin',
+		];
+
+		return array_map(function($role)
+			{
+				return Role::create([
+				'name' => $role,
+				'display_name' => ucwords($role)
+				])->toArray();
+			}, $roles);
+
 	}
 }

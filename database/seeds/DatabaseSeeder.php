@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder {
 		'terms',
 		'posts',
 		'users',
+		'roles',
 	];
 
 	/**

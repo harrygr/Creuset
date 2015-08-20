@@ -13,8 +13,9 @@ class UpdateUserRequest extends Request
      */
     public function authorize()
     {
-        // Needs work:
-        return true;
+        $currentUser = auth()->user();
+
+        return $this->route('user')->id == $currentUser->id or $currentUser->hasRole('admin');
     }
 
     /**
@@ -42,6 +43,7 @@ class UpdateUserRequest extends Request
     public function sanitize()
     {
         $attributes = $this->all();
+        $attributes = $this->filterEditRoles($attributes);
 
         if(!strlen($this->password))
         {
@@ -49,5 +51,19 @@ class UpdateUserRequest extends Request
         }
 
        $this->replace($attributes);
+    }
+
+    /**
+     * If a user is not permissioned to update roles we'll remove this bit from the request
+     * @param  array $attributes The request attributes
+     * @return array             The filtered attributes
+     */
+    protected function filterEditRoles($attributes)
+    {
+        if (!auth()->user()->hasRole('admin') and isset($attributes['role_id']))
+        {
+            unset($attributes['role_id']);
+        }
+        return $attributes;
     }
 }

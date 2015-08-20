@@ -19,6 +19,7 @@ class CreateTermsTable extends Migration {
 			$table->string('term');
 			$table->string('slug');
 			$table->timestamps();
+			
 			$table->unique(['taxonomy', 'term']);
 			$table->unique(['taxonomy', 'slug']);
 		});
