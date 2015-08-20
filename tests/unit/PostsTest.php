@@ -15,7 +15,6 @@ class PostsTest extends TestCase
 	public function setUp()
 	{
 		parent::setUp();
-		//DB::beginTransaction();
 		$this->posts = new DbPostRepository(new \Creuset\Post);
 	}
 

@@ -20,8 +20,6 @@ class AdminTest extends TestCase
 
 		factory('Creuset\User')->create($credentials);
 
-		echo "hello";
-
 		// We should be able to log in
 		// (The factory-defined password is 'password')
 

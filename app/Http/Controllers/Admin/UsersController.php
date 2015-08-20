@@ -4,7 +4,7 @@ namespace Creuset\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 
-use Creuset\Http\Requests;
+use Creuset\Http\Requests\UpdateUserRequest;
 use Creuset\Http\Controllers\Controller;
 use Creuset\User;
 
@@ -17,12 +17,21 @@ class UsersController extends Controller
 
 	public function profile()
 	{
-		return $this->edit(auth()->user()->username);
+		return $this->edit(auth()->user());
 	}
 
-    public function edit($username)
+    public function edit(User $user)
+    {   
+    	return view('admin.users.edit')->with(compact('user'));
+    }
+
+    public function update(User $user, UpdateUserRequest $request)
     {
-    	$user = User::where('username', $username)->first();
-    	var_dump($user);
+    	$user->update($request->all());
+    	
+    	return redirect()->back()->with([
+    		'alert' => 'Profile updated', 
+    		'alert-class' => 'success'
+    		]);
     }
 }

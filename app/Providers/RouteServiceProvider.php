@@ -26,6 +26,12 @@ class RouteServiceProvider extends ServiceProvider {
 
 		$router->model('post', 'Creuset\Post');
 		$router->model('term', 'Creuset\Term');
+		$router->model('user', 'Creuset\User');
+		
+		$router->bind('username', function($username)
+		{
+			return \Creuset\User::where('username', $username)->firstOrFail();
+		});
 	}
 
 	/**

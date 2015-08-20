@@ -52,6 +52,7 @@ Route::group(['prefix' => 'admin'], function()
 	Route::group(['prefix' => 'users'], function()
 	{
 		get('{username}', ['uses' => 'Admin\UsersController@edit', 'as' => 'admin.users.edit']);
+		patch('{user}', ['as' => 'admin.users.update', 'uses' => 'Admin\UsersController@update']);
 	});
 });
 

@@ -57,8 +57,6 @@ class DbPostRepository extends DbRepository implements PostRepository {
 		if ( isset($attributes['terms']) )
 			$post->terms()->sync($attributes['terms']);
 
-		//dd($attributes);
-
 		return $post->update($attributes);
 	}
 
