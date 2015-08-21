@@ -51,6 +51,9 @@ Route::group(['prefix' => 'admin'], function()
 	get('profile', ['uses' => 'Admin\UsersController@profile', 'as' => 'admin.users.profile'] );
 	Route::group(['prefix' => 'users'], function()
 	{
+		get('/', ['uses' => 'Admin\UsersController@index', 'as' => 'admin.users.index']);
+		get('new', ['uses' => 'Admin\UsersController@create', 'as' => 'admin.users.create']);
+		post('/', ['uses' => 'Admin\UsersController@store', 'as' => 'admin.users.store']);
 		get('{username}', ['uses' => 'Admin\UsersController@edit', 'as' => 'admin.users.edit']);
 		patch('{user}', ['as' => 'admin.users.update', 'uses' => 'Admin\UsersController@update']);
 	});
@@ -61,6 +64,6 @@ Route::group(['prefix' => 'admin'], function()
  */
 Route::group(['prefix' => 'api'], function()
 {
-	Route::get('categories', ['uses' => 'Api\TermsController@categories', 'as' => 'api.categories']);
-	Route::post('categories', ['uses' => 'Api\TermsController@storeCategory', 'as' => 'api.terms']);
+	get('categories', ['uses' => 'Api\TermsController@categories', 'as' => 'api.categories']);
+	post('categories', ['uses' => 'Api\TermsController@storeCategory', 'as' => 'api.terms']);
 });

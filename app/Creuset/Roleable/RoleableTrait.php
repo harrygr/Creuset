@@ -22,7 +22,7 @@ trait RoleableTrait {
      */
     public function hasRole($check)
     {
-        if (!is_array($check)) $check = [$check];
+        $check = is_array($check) ? $check : [$check];
 
         return $this->role and in_array($this->role->name, $check);
     }

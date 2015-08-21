@@ -29,6 +29,7 @@
         "Creuset\\Providers\\RouteServiceProvider",
         "Gvb\\Whoops\\ServiceProvider",
         "Creuset\\Providers\\DatabaseServiceProvider",
+        "Creuset\\Providers\\ComposerServiceProvider",
         "Collective\\Html\\HtmlServiceProvider"
     ],
     "eager": [
@@ -49,7 +50,8 @@
         "Creuset\\Providers\\EventServiceProvider",
         "Creuset\\Providers\\RouteServiceProvider",
         "Gvb\\Whoops\\ServiceProvider",
-        "Creuset\\Providers\\DatabaseServiceProvider"
+        "Creuset\\Providers\\DatabaseServiceProvider",
+        "Creuset\\Providers\\ComposerServiceProvider"
     ],
     "deferred": {
         "command.app.name": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",

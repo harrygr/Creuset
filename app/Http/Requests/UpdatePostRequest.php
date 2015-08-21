@@ -11,14 +11,16 @@ class UpdatePostRequest extends Request {
 	 */
 	public function authorize()
 	{
+		// We'll allow users to edit each other's posts for now
+		// Maybe add some role-based authorization at some point
 		return true;
 	}
 
 	public function forbiddenResponse()
 	{
 		return $this->redirector->back()
-		->with('alert-class', 'danger')
-		->with('alert', 'You are not allowed to edit this post');
+        ->with('alert-class', 'danger')
+        ->with('alert', 'You are not allowed to edit this post');
 	}
 
 	/**
@@ -29,11 +31,11 @@ class UpdatePostRequest extends Request {
 	public function rules()
 	{
 		return [
-			'title'			=> 'required',
-			'slug'			=> 'required|alpha_dash|unique:posts,slug,' . $this->route('post')->id,
-			'published_at'	=> 'required|date',
-			'status'		=> 'alpha_dash',
-			'type'			=> 'alpha_dash',
+            'title'			=> 'required',
+            'slug'			=> 'required|alpha_dash|unique:posts,slug,' . $this->route('post')->id,
+            'published_at'	=> 'required|date',
+            'status'		=> 'alpha_dash',
+            'type'			=> 'alpha_dash',
 		];
 	}
 

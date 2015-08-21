@@ -16,4 +16,13 @@
             <li><a href="{{ route('admin.tags.index') }}">Tags</a></li>
         </ul>
     </li>
+
+    <li>
+        <a href="{{ route('admin.users.index') }}"><i class="fa fa-fw fa-users"></i> Users</a>
+        <ul>
+            <li><a href="{{ route('admin.users.profile') }}">My Profile</a></li>
+            <li><a href="{{ route('admin.users.index') }}">All Users</a></li>
+            <li><a href="{{ route('admin.users.create') }}">New User</a></li>
+        </ul>
+    </li>
 </ul>

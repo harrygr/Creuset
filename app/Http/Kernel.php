@@ -27,6 +27,7 @@ class Kernel extends HttpKernel {
 		'auth' => 'Creuset\Http\Middleware\Authenticate',
 		'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
 		'guest' => 'Creuset\Http\Middleware\RedirectIfAuthenticated',
+		'admin'	=> 'Creuset\Http\Middleware\ForbidIfNotAdmin',
 	];
 
 }

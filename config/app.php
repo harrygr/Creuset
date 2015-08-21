@@ -147,6 +147,7 @@ return [
 		//'Cviebrock\EloquentSluggable\SluggableServiceProvider',
 		'Gvb\Whoops\ServiceProvider',
 		'Creuset\Providers\DatabaseServiceProvider',
+		'Creuset\Providers\ComposerServiceProvider',
 		'Collective\Html\HtmlServiceProvider',
 
 	],

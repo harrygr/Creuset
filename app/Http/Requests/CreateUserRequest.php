@@ -4,7 +4,7 @@ namespace Creuset\Http\Requests;
 
 use Creuset\Http\Requests\Request;
 
-class UpdateUserRequest extends UserRequest
+class CreateUserRequest extends UserRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,9 +15,10 @@ class UpdateUserRequest extends UserRequest
     {
         $currentUser = auth()->user();
 
-        return $this->route('user')->id == $currentUser->id or $currentUser->hasRole('admin');
+        return $currentUser->hasRole('admin');
     }
 
+    
     /**
      * Get the validation rules that apply to the request.
      *
@@ -30,9 +31,9 @@ class UpdateUserRequest extends UserRequest
         $user = $this->route('user');
 
         return [
-            'username' => 'required|max:255|unique:users,username,' . $user->id,
-            'email'    => 'required|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'confirmed|min:6'
+            'username' => 'required|max:255|unique:users,username',
+            'email'    => 'required|email|max:255|unique:users,email',
+            'password' => 'required|confirmed|min:6'
         ];
     }
 
@@ -45,13 +46,6 @@ class UpdateUserRequest extends UserRequest
         $attributes = $this->all();
         $attributes = $this->filterEditRoles($attributes);
 
-        if(!strlen($this->password))
-        {
-            unset($attributes['password']);
-        }
-
-       $this->replace($attributes);
+        $this->replace($attributes);
     }
-
-
 }
