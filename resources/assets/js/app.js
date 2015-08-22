@@ -16,6 +16,10 @@ var larail = require('./plugins/larail.js');
 // Activate select2 for multi-select
 var select2 = require('select2');
 
+$(function(){
+	$('.select2').select2();
+});
+
 // $('.tagSelect').select2({
 //    tags: true,
 //    tokenSeparators: [",", " "]

@@ -103,7 +103,7 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    {!! Form::select('terms[]', $tagList, isset($post) ? $post->tags->lists('id')->toArray() : null, ['multiple', 'class' => 'form-control tagSelect']) !!}
+                    {!! Form::select('terms[]', $tagList, isset($post) ? $post->tags->lists('id')->toArray() : null, ['multiple', 'class' => 'form-control hidden select2']) !!}
                 </div>
             </div>
         </div>

@@ -63,7 +63,7 @@
     --}}
 
     {{-- Browserify --}}
-    {!! HTML::script('js/bundle.js') !!}
+    {!! HTML::script('js/app.js') !!}
 
     @yield('admin.scripts')
 </body>
