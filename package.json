@@ -2,13 +2,13 @@
   "private": true,
   "devDependencies": {
     "gulp": "^3.8.8",
-    "laravel-elixir": "^2.0.0",
-    "vue": "*"
-  },
-  "dependencies": {
     "jquery": "^2.1.4",
+    "jquery-mousewheel": "^3.1.13",
+    "jquery.mousewheel": "^3.1.9",
+    "laravel-elixir": "^3.2.5",
     "marked": "^0.3.3",
-    "select2": "^3.5.2-browserify",
+    "select2": "^4.0.0",
+    "vue": "^0.12.10",
     "vue-resource": "^0.1.3"
   }
 }
