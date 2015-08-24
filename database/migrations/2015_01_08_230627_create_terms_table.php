@@ -29,6 +29,8 @@ class CreateTermsTable extends Migration {
 			$table->integer('term_id')->unsigned();
 			$table->integer('termable_id')->unsigned();
 			$table->string('termable_type');
+
+			$table->foreign('term_id')->references('id')->on('terms')->onDelete('cascade');
 		});		
 	}
 
@@ -39,6 +41,11 @@ class CreateTermsTable extends Migration {
 	 */
 	public function down()
 	{
+		Schema::table('termables', function(Blueprint $table)
+		{
+			$table->dropForeign('termables_term_id_foreign');
+		});
+
 		Schema::drop('terms');
 		Schema::drop('termables');
 	}

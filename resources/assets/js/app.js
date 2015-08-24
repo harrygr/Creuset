@@ -17,7 +17,9 @@ var larail = require('./plugins/larail.js');
 var select2 = require('select2');
 
 $(function(){
-	$('.select2').select2();
+	$('.select2').select2({
+        tags: true
+    });
 });
 
 // $('.tagSelect').select2({

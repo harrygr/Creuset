@@ -3,7 +3,7 @@
 use Creuset\Http\Requests\Request;
 use Illuminate\Support\Facades\Log;
 
-class CreatePostRequest extends Request {
+class CreatePostRequest extends PostRequest {
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -22,21 +22,13 @@ class CreatePostRequest extends Request {
 	 */
 	public function rules()
 	{
+		$this->sanitize();
+
 		return [
 			'title'	=> 'required',
 			'slug'	=> 'required|unique:posts,slug',
 			'published_at' => 'required|date',
 		];
-	}
-
-	/**
-	 * Get the sanitized input for the request.
-	 *
-	 * @return array
-	 */
-	public function sanitize()
-	{
-		return $this->all();
 	}
 
 }

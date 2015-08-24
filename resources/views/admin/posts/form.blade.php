@@ -7,7 +7,7 @@
                 <div class="form-group">
                     <label for="title" class="sr-only">Title</label>
                     {!! Form::text('title', null, [
-                        'class' => 'form-control input-lg', 
+                        'class' => 'post-title-input', 
                         'placeholder' => "Title", 
                         'v-model' => 'title',
                         'v-on' => 'blur: setNewSlug'
@@ -41,14 +41,13 @@
 
         <div class="panel-body">
             <div class="form-group">
-
                 {!! Form::label('published_at', 'Publish At') !!}
-                <div class="date datetimepickerx">
+                <div class="date">
                     {!! Form::input('datetime-local', 'published_at', isset($post->published_at) ? $post->published_at->format('Y-m-d\TH:i:s') : date('Y-m-d\TH:i:s'), ['class' => 'form-control']) !!}
                 </div>
+
             </div>
             <div class="form-group">
-                <label for="status">Status</label>
                 {!! Form::label('status') !!}
                 {!! Form::select('status', Creuset\Post::$postStatuses, null, ['class' => 'form-control']) !!}
             </div>
@@ -81,11 +80,11 @@
 
             <div class="panel-body">
                 <div id="category-checkboxes">
-                <div class="checkbox" v-repeat="category: categories">
-                    <label>
-                        <input type="checkbox" name="terms[]" value="@{{ category.id }}" v-model="category.checked"> @{{ category.term }}
-                    </label>
-                </div>
+                    <div class="checkbox" v-repeat="categories | orderBy 'checked' -1">
+                        <label>
+                            <input type="checkbox" name="terms[]" value="@{{ id }}" v-model="checked"> @{{ term }}
+                        </label>
+                    </div>
                 </div>
                 <div class="input-group">
                     <input type="text" class="form-control" v-model="newCategory" v-on="keydown:addCategory | key 'enter'" placeholder="New Category" v-attr="disabled: isLoadingCategories">

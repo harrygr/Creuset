@@ -32,6 +32,10 @@ $factory->define('Creuset\User', function($faker) {
 $factory->define('Creuset\Term', function($faker) {
 
 	$term = $faker->word;
+	if (strlen($term < 3))
+	{
+		$term .= " {$faker->word}";
+	}
 	
 	return [
 	'taxonomy' => 'category',

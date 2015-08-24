@@ -38,12 +38,20 @@ module.exports = new Vue({
 							checked: $.inArray(category.id, this.checkedCategories) >= 0
 						});
 					}.bind(this));					
-				});
-		},
+				});			
+		},		
 
 		addCategory: function(e)
 		{
 			if (e) e.preventDefault();
+
+			this.addCategoryErrors = [];
+
+			if (!this.newCategory)
+			{
+				this.displayErrors(["Please provide a category"]);
+				return false;
+			}
 
 			this.addCatButtonClass = 'fa-circle-o-notch fa-spin';
 
@@ -53,10 +61,11 @@ module.exports = new Vue({
 				_token: $("meta[name=csrf-token]").attr('content')
 			};
 
-			this.$http.post('/api/categories', postData, function(newCategory)
+			this.$http.post('/api/categories', postData)
+				.success(function(newCategory)
 				{
 					// On success get the returned newly created term and append to the existing
-					this.categories.push({
+					this.categories.unshift({
 						id: newCategory.id,
 						term: newCategory.term,
 						slug: newCategory.slug,
@@ -64,22 +73,30 @@ module.exports = new Vue({
 					});
 
 					this.addCatButtonClass = 'fa-plus';
-				}).error(function(response)
+				})
+				.error(function(response)
 				{
-					// On failure catch the error response and display it
-					this.addCategoryErrors = response.term;
-					this.addCatButtonClass = 'fa-plus';
-
-					// Wait a bit and reset the errors
-					setTimeout(function()
-					{
-						this.addCategoryErrors = [];
-					}.bind(this), 5000);
+					this.displayErrors(response.term)
 				});
 
 			this.newCategory = '';
 			
 			return false;
+		},
+
+		displayErrors: function(messages)
+		{
+			var errorDisplayTime = 5000;
+
+			// On failure catch the error response and display it
+			this.addCategoryErrors = messages;
+			this.addCatButtonClass = 'fa-plus';
+
+			// Wait a bit and reset the errors
+			setTimeout(function()
+			{
+				this.addCategoryErrors = [];
+			}.bind(this), errorDisplayTime);
 		}
 	}
 });

@@ -2,7 +2,7 @@
 
 # use Creuset\Http\Requests\Request;
 
-class UpdatePostRequest extends Request {
+class UpdatePostRequest extends PostRequest {
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -30,6 +30,8 @@ class UpdatePostRequest extends Request {
 	 */
 	public function rules()
 	{
+        $this->sanitize();
+        
 		return [
             'title'			=> 'required',
             'slug'			=> 'required|alpha_dash|unique:posts,slug,' . $this->route('post')->id,

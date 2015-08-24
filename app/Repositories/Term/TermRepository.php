@@ -40,5 +40,14 @@ interface TermRepository {
 
     public function createCategory($term, $slug = null);
 
+    /**
+     * Process an array of mixed string and numneric terms, create a new term for each string
+     * 
+     * @param  array $terms The terms to process
+     * @param  string $as   The taxonomy of the terms in question
+     * @return array        An array of the ids of terms, including the newly created ones
+     */
+    public function process($terms, $as = 'tag');
+
 
 }

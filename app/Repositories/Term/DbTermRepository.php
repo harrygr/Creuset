@@ -89,6 +89,14 @@ class DbTermRepository implements TermRepository {
     }
 
 
+    /**
+     * Persist a new term to the database
+     * 
+     * @param  string $term     The term
+     * @param  string $taxonomy The term's taxonomy
+     * @param  string $slug     The slug of the term. A slug will be automatically generated if nothing passed
+     * @return Term             The newly created term object
+     */
     private function create($term, $taxonomy, $slug = null)
     {
         if (!$slug) $slug = str_slug($term);
@@ -98,5 +106,28 @@ class DbTermRepository implements TermRepository {
             'taxonomy'  => $taxonomy,
             'slug'      => $slug,
         ]);
+    }
+
+    /**
+     * Process an array of mixed string and numneric terms, create a new term for each string
+     * 
+     * @param  array $terms The terms to process
+     * @param  string $as   The taxonomy of the terms in question
+     * @return array        An array of the ids of terms, including the newly created ones
+     */
+    public function process($terms, $as = 'tag')
+    {
+        // extract the input into separate integer and string arrays
+        $currentTerms = array_filter($terms, 'is_numeric');     // [1, 3, 5]
+        $newTerms = array_diff($terms, $currentTerms);
+
+        // Create a new tag for each string in the input and update the current tags array
+        foreach ($newTerms as $newTerm)
+        {
+            if ($term = $this->create($newTerm, $as))
+                $currentTerms[] = $term->id;
+        }
+
+        return $currentTerms;
     }
 }
