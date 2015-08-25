@@ -84,6 +84,7 @@ class PostsTest extends TestCase
 		$responseData = json_decode($response->getContent());
 
 		$this->assertFileExists(public_path($responseData->path));
+		$this->assertFileExists(public_path($responseData->thumbnail_path));
 
 		$this->seeInDatabase('images', [
 			'post_id' => $post->id,
@@ -92,5 +93,6 @@ class PostsTest extends TestCase
 
 		// Clean up the file
 		\File::delete(public_path($responseData->path));
+		\File::delete(public_path($responseData->thumbnail_path));
 	}
 }

@@ -32,7 +32,7 @@ Edit Post
 
 <div>
     @foreach ($post->images as $image)
-        <img src="/{{ $image->path }}" alt="">
+        <img src="/{{ $image->thumbnail_path }}" alt="">
 
     @endforeach
 </div>
