@@ -30,7 +30,8 @@
         "Gvb\\Whoops\\ServiceProvider",
         "Creuset\\Providers\\DatabaseServiceProvider",
         "Creuset\\Providers\\ComposerServiceProvider",
-        "Collective\\Html\\HtmlServiceProvider"
+        "Collective\\Html\\HtmlServiceProvider",
+        "Intervention\\Image\\ImageServiceProvider"
     ],
     "eager": [
         "Illuminate\\Auth\\AuthServiceProvider",
@@ -51,7 +52,8 @@
         "Creuset\\Providers\\RouteServiceProvider",
         "Gvb\\Whoops\\ServiceProvider",
         "Creuset\\Providers\\DatabaseServiceProvider",
-        "Creuset\\Providers\\ComposerServiceProvider"
+        "Creuset\\Providers\\ComposerServiceProvider",
+        "Intervention\\Image\\ImageServiceProvider"
     ],
     "deferred": {
         "command.app.name": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",

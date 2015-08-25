@@ -31,4 +31,27 @@ class PostsController extends Controller
     	if (!$id) $id = $request->get('id');
     	var_dump($id);
     }
+
+    public function addImage(Request $request)
+    {
+        $this->validate($request, [
+            'image' => 'required|mimes:jpg,jpeg,png,bmp,gif,svg'
+            ]);
+
+        $post = $request->route('post');
+
+        $file = $request->file('image');
+
+        $name = time() . $file->getClientOriginalName();
+
+        $file->move('uploads/images', $name);
+
+        $image = $post->images()->create([
+            'path'              => "uploads/images/{$name}",
+            'thumbnail_path'   => "uploads/images/{$name}"
+            ]);
+
+
+        return $image;
+    }
 }

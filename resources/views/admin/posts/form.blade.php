@@ -1,5 +1,3 @@
-<div class="row post-form" id="postForm">
-
     <div class="col-md-8" id="postContent">
         <div class="panel panel-default">
             <div class="panel-body">
@@ -107,8 +105,5 @@
             </div>
         </div>
     </div>
-</div>
 
-@section('admin.scripts')
 
-@stop

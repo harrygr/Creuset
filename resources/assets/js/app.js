@@ -2,6 +2,8 @@
 
 global.Vue = require('vue');
 global.$ = require('jquery');
+global.Dropzone = require('dropzone');
+
 require('vue-resource');
 //global.Vue.use(require('vue-resource'));
 
