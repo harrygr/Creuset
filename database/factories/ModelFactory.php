@@ -5,12 +5,13 @@ use Carbon\Carbon;
 $factory->define('Creuset\Post', function($faker) {
 
 	$creationDate = $faker->dateTimeThisMonth();
+	$title = $faker->sentence;	
 
 	return [
-	'title'		   => $faker->sentence,
+	'title'		   => $title,
 	'content'	   => $faker->paragraph,
-	'slug'		   => $faker->slug,
-	'published_at' =>  $creationDate, 
+	'slug'		   => str_slug($title),
+	'published_at' => $creationDate, 
 	'created_at'   => $creationDate,
 	'updated_at'   => $creationDate,
 	'user_id'	   => 'factory:Creuset\User',
@@ -48,6 +49,6 @@ $factory->define('Creuset\Termable', function($faker) {
 	return [
 	'term_id'		=> 'factory:Creuset\Term',
 	'termable_id'	=> 'factory:Creuset\Post',
-	'termable_type'	=> 'Creuset/Post'
+	'termable_type'	=> 'Creuset\Post'
 	];
 });
