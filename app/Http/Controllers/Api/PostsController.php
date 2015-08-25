@@ -8,6 +8,7 @@ use Creuset\Http\Requests;
 use Creuset\Http\Controllers\Controller;
 use Creuset\Repositories\Post\PostRepository;
 use Creuset\Repositories\Term\TermRepository;
+use Creuset\Repositories\Image\ImageRepository;
 
 class PostsController extends Controller
 {
@@ -20,10 +21,13 @@ class PostsController extends Controller
 	 */
 	private $termRepo;
 
-	public function __construct(PostRepository $postRepo, TermRepository $termRepo)
+    private $imageRepo;
+
+	public function __construct(PostRepository $postRepo, TermRepository $termRepo, ImageRepository $imageRepo)
 	{
 		$this->postRepo = $postRepo;
 		$this->termRepo = $termRepo;
+        $this->imageRepo = $imageRepo;
 	}
 
     public function show(Request $request, $id = null)
@@ -40,17 +44,8 @@ class PostsController extends Controller
 
         $post = $request->route('post');
 
-        $file = $request->file('image');
-
-        $name = time() . $file->getClientOriginalName();
-
-        $file->move('uploads/images', $name);
-
-        $image = $post->images()->create([
-            'path'              => "uploads/images/{$name}",
-            'thumbnail_path'   => "uploads/images/{$name}"
-            ]);
-
+        $image = $this->imageRepo->createFromForm($request->file('image'));
+        $post->addImage($image);
 
         return $image;
     }

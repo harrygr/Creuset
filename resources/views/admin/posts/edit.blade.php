@@ -20,7 +20,7 @@ Edit Post
     <div class="col-md-8">
         <div class="panel panel-default">
             <div class="panel-body">
-            {!! Form::open(['route' => ['posts.photos.store', $post->id], 'method' => 'POST', 'enctype' => 'multipart/form-data', 'class' => 'dropzone', 'id' => 'attachImagesForm']) !!}
+            {!! Form::open(['route' => ['posts.image.store', $post->id], 'method' => 'POST', 'enctype' => 'multipart/form-data', 'class' => 'dropzone', 'id' => 'attachImagesForm']) !!}
                 {{ csrf_field() }}
             {!! Form::close() !!}
             </div>

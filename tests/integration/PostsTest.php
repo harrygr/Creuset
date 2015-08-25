@@ -1,7 +1,9 @@
 <?php namespace Integration;
 
 use TestCase;
+use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class PostsTest extends TestCase
 {
@@ -31,8 +33,6 @@ class PostsTest extends TestCase
 			'type'	=> 'post',
 			'user_id' => $user->id
 			]);
-
-
 	}
 
 	public function testICanEditAPost()
@@ -60,5 +60,37 @@ class PostsTest extends TestCase
 			'title' => $postTitle,
 			'type'	=> 'post'
 			]);
+	}
+
+	/**
+	 * Simulate an HTTP request to upload an image to a post
+	 */
+	public function testItCanUploadAnImageToAPost()
+	{
+		$this->withoutMiddleware(); // needed to skip csrf checks etc
+		
+		// Make a post
+		$post = factory('Creuset\Post')->create();
+
+		// And we need a file
+		$faker = Factory::create();
+		$image = $faker->image();
+		$file = new UploadedFile($image, basename($image), null, null, null, true);
+
+		// Send off the request to upload the file
+		$response = $this->call("POST", "/admin/posts/{$post->id}/image", [], [], ['image' => $file]);
+
+		// An Image instance (in JSON) should be returned
+		$responseData = json_decode($response->getContent());
+
+		$this->assertFileExists(public_path($responseData->path));
+
+		$this->seeInDatabase('images', [
+			'post_id' => $post->id,
+			'path'	=> $responseData->path,
+			]);
+
+		// Clean up the file
+		\File::delete(public_path($responseData->path));
 	}
 }

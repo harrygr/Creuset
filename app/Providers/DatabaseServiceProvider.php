@@ -6,6 +6,8 @@ use Creuset\Repositories\Post\DbPostRepository;
 use Creuset\Repositories\Post\PostRepository;
 use Creuset\Repositories\Term\DbTermRepository;
 use Creuset\Repositories\Term\TermRepository;
+use Creuset\Repositories\Image\DbImageRepository;
+use Creuset\Repositories\Image\ImageRepository;
 use Illuminate\Support\ServiceProvider;
 
 class DatabaseServiceProvider extends ServiceProvider {
@@ -38,6 +40,9 @@ class DatabaseServiceProvider extends ServiceProvider {
 		{
 			return app()->make(DbTermRepository::class);
 		});
+
+		$this->app->bind(ImageRepository::class, DbImageRepository::class);
+
 	}
 
 }

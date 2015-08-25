@@ -97,4 +97,9 @@ class Post extends Model {
 		return $this->hasMany('\Creuset\Image');
 	}
 
+	public function addImage(\Creuset\Image $image)
+	{
+		return $this->images()->save($image);
+	}
+
 }
