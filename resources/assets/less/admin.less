@@ -1,14 +1,11 @@
-@import "bootstrap/bootstrap";
+@import "admin/bootstrap";
 
 @import "admin/sidebar";
 @import "admin/post";
 
-@import "pagedown-bootstrap/jquery.pagedown-bootstrap.less";
+@import "vendor/jquery.pagedown-bootstrap.less";
 // @import "vendor/bootstrap-datetimepicker.less";
 @import "vendor/select2.less";
-
-@btn-font-weight: 300;
-@font-family-sans-serif: "Roboto", Helvetica, Arial, sans-serif;
 
 body, label, .checkbox label {
 	font-weight: 300;
@@ -30,4 +27,11 @@ body {
 	position: relative;
 	left: -5px;
 	top:-5px;
+}
+
+.img-thumbnail.selected {
+    border-color: @gray-dark;
+}
+.selectable {
+    cursor: pointer;
 }

@@ -12,6 +12,7 @@
     "tests"
   ],
   "dependencies": {
-    "select2": "4.*"
+    "select2": "4.*",
+    "bootstrap": "~3.3.5"
   }
 }

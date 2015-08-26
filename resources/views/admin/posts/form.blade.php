@@ -14,9 +14,9 @@
 
                     <label for="slug" class="sr-only">Slug</label>
                     <div class="input-group">
-                     {!! Form::text('slug', null, ['class' => 'form-control', 'placeholder' => "Slug" , 'v-model' => 'slug']) !!}   
+                       {!! Form::text('slug', null, ['class' => 'form-control', 'placeholder' => "Slug" , 'v-model' => 'slug']) !!}   
 
-                     <span class="input-group-btn refresh-slug">
+                       <span class="input-group-btn refresh-slug">
                         <button class="btn btn-default" type="button" v-on="click: sluggifyTitle"><i class="fa fa-fw fa-refresh"></i></button>
                     </span>
                 </div>
@@ -25,40 +25,62 @@
                     <label for="content" class="sr-only">Content</label>
                     {!! Form::textarea('content', null, ['class' => 'form-control', 'placeholder' => 'Content (Markdown/HTML)', 'v-model' => 'content']) !!} 
                     
-                <div class="panel panel-default top-buffer">                    
+                    <div class="panel panel-default top-buffer">                    
                       <div class="panel-body" v-html="content | marked"></div>
-                </div>                   
+                  </div>                   
 
               </div>
           </div>
       </div>
-        
+
       <!-- Post images -->  
       <div class="panel panel-default" id="post-images">
-      <div class="panel-heading">
-          Attached Images
-      </div>
-          <div class="panel-body">
-          @if ($post->id)
-
-          <span v-if="imagesLoading"><i class="fa fa-circle-o-notch fa-spin"></i> Loading images...</span>
-
-          <div class="row" v-if="hasImages">
-              <div class="col-md-3 col-sm-4 col-xs-6 top-buffer" v-repeat="images">
-                  <img src="@{{ '/' + thumbnail_path }}" alt="" class="img-responsive img-thumbnail">
-              </div>
+          <div class="panel-heading">
+              Attached Images
           </div>
 
-          <span v-if="!hasImages">No Images yet</span>
-              {{-- <pre>@{{ $data | json }}</pre> --}}
-          @else
-          Save the {{ $post->type }} to attach images
-          @endif
-          </div>
+        <div class="panel-heading" v-if="selectedImage.id">
+            <div class="row">
+                <div class="col-md-4">
+                    <img class="media-object img-thumbnail" src="/@{{ selectedImage.thumbnail_path}}" alt=""> 
+                </div>
+                <div  class="col-md-8">
+                        <p>
+                        <strong>URL: </strong>
+                        <input type="text" class="form-control input-sm" readonly value="{{ url() }}/@{{ selectedImage.path }}">
+                        </p>    
+
+                        {{-- </strong><code>{{ url() }}/@{{ selectedImage.path }}</code> --}}
+                        <p>
+                        <strong>Thumbnail: </strong>
+                        <input type="text" class="form-control input-sm" readonly value="{{ url() }}/@{{ selectedImage.thumbnail_path }}">
+                        </p>
+                </div>
+            </div>
+        </div>
+    <div class="panel-body">
+
+      @if ($post->id)
+
+
+      <span v-if="imagesLoading"><i class="fa fa-circle-o-notch fa-spin"></i> Loading images...</span>
+
+      <div class="row" v-if="hasImages">
+        <div class="col-md-3 col-sm-4 col-xs-6 top-buffer" v-repeat="image: images">
+          <img src="@{{ '/' + image.thumbnail_path }}" alt="" class="img-responsive img-thumbnail selectable" v-class="selected: isSelected(image.id)" v-on="click: selectedImage = image">
       </div>
   </div>
 
-  <div class="col-md-4" id="postMeta">
+  <span v-if="!hasImages">No Images yet</span>
+  {{-- <pre>@{{ $data | json }}</pre> --}}
+  @else
+  Save the {{ $post->type }} to attach images
+  @endif
+</div>
+</div>
+</div>
+
+<div class="col-md-4" id="postMeta">
     <div class="panel panel-default">
 
         <div class="panel-body">
@@ -132,15 +154,16 @@
 
 
     @section('admin.scripts')
-        @parent
-        
-        @if ($post->id)
-        <script>
+    @parent
+
+    @if ($post->id)
+    <script>
         postImageVm = new Vue({
             el: "#post-images",
 
             data: {
                 images: [],
+                selectedImage: {},
                 imagesLoading: false
             },
 
@@ -165,11 +188,16 @@
                     {
                         this.images = response;
                         this.imagesLoading = false;
+
                     });
 
+                },
+                isSelected: function(id)
+                {
+                    return this.selectedImage.id == id;
                 }
             }
         });
-        </script>
-        @endif
+    </script>
+    @endif
     @stop
