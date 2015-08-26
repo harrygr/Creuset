@@ -1,17 +1,18 @@
-<?php namespace Creuset\Http\Controllers\Admin;
+<?php 
 
-use Creuset\Http\Requests;
-use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests\CreatePostRequest;
+namespace Creuset\Http\Controllers\Admin;
+
 use Creuset\Post;
-use Creuset\Http\Requests\UpdatePostRequest;
-
-use Creuset\Repositories\Post\PostRepository;
-use Creuset\Repositories\Term\DbTermRepository;
-use Creuset\Repositories\Term\TermRepository;
 use Creuset\Term;
+use Creuset\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Creuset\Http\Controllers\Controller;
+use Creuset\Http\Requests\CreatePostRequest;
+use Creuset\Http\Requests\UpdatePostRequest;
+use Creuset\Repositories\Post\PostRepository;
+use Creuset\Repositories\Term\TermRepository;
+use Creuset\Repositories\Term\DbTermRepository;
 
 /**
  * Class PostsController
@@ -49,26 +50,29 @@ class PostsController extends Controller {
 	}
 
 	/**
-	 * Show the form for creating a new resource.
+	 * Show the form for creating a new post.
 	 *
 	 * @param DbTermRepository $termRepo
+	 * @param Post $post
 	 * @return Response
 	 */
-	public function create(DbTermRepository $termRepo)
+	public function create(DbTermRepository $termRepo, Post $post)
 	{
 		$selectedCategories = [];
 		$categoryList = $termRepo->getCategoryList();
 		$tagList = $termRepo->getTagList();
+		$post->type = 'post';
 
 		return view('admin.posts.create')->with(compact(
 			'categoryList',
 			'selectedCategories',
-			'tagList'
+			'tagList',
+			'post'
 		));
 	}
 
 	/**
-	 * Store a newly created resource in storage.
+	 * Store a newly created post in storage.
 	 *
 	 * @param CreatePostRequest $request
 	 * @return Response

@@ -1,5 +1,5 @@
-    <div class="col-md-8" id="postContent">
-        <div class="panel panel-default">
+    <div class="col-md-8">
+        <div class="panel panel-default" id="postContent">
             <div class="panel-body">
 
                 <div class="form-group">
@@ -14,9 +14,9 @@
 
                     <label for="slug" class="sr-only">Slug</label>
                     <div class="input-group">
-                       {!! Form::text('slug', null, ['class' => 'form-control', 'placeholder' => "Slug" , 'v-model' => 'slug']) !!}   
+                     {!! Form::text('slug', null, ['class' => 'form-control', 'placeholder' => "Slug" , 'v-model' => 'slug']) !!}   
 
-                       <span class="input-group-btn refresh-slug">
+                     <span class="input-group-btn refresh-slug">
                         <button class="btn btn-default" type="button" v-on="click: sluggifyTitle"><i class="fa fa-fw fa-refresh"></i></button>
                     </span>
                 </div>
@@ -25,11 +25,35 @@
                     <label for="content" class="sr-only">Content</label>
                     {!! Form::textarea('content', null, ['class' => 'form-control', 'placeholder' => 'Content (Markdown/HTML)', 'v-model' => 'content']) !!} 
                     
-                    <div class="panel panel-default top-buffer">                    
+                <div class="panel panel-default top-buffer">                    
                       <div class="panel-body" v-html="content | marked"></div>
-                  </div>                   
+                </div>                   
 
               </div>
+          </div>
+      </div>
+        
+      <!-- Post images -->  
+      <div class="panel panel-default" id="post-images">
+      <div class="panel-heading">
+          Attached Images
+      </div>
+          <div class="panel-body">
+          @if ($post->id)
+
+          <span v-if="imagesLoading"><i class="fa fa-circle-o-notch fa-spin"></i> Loading images...</span>
+
+          <div class="row" v-if="hasImages">
+              <div class="col-md-3 col-sm-4 col-xs-6 top-buffer" v-repeat="images">
+                  <img src="@{{ '/' + thumbnail_path }}" alt="" class="img-responsive img-thumbnail">
+              </div>
+          </div>
+
+          <span v-if="!hasImages">No Images yet</span>
+              {{-- <pre>@{{ $data | json }}</pre> --}}
+          @else
+          Save the {{ $post->type }} to attach images
+          @endif
           </div>
       </div>
   </div>
@@ -87,7 +111,7 @@
                 <div class="input-group">
                     <input type="text" class="form-control" v-model="newCategory" v-on="keydown:addCategory | key 'enter'" placeholder="New Category" v-attr="disabled: isLoadingCategories">
                     <span class="input-group-btn">
-                    <button class="btn btn-default" v-on="click: addCategory" v-attr="disabled: isLoadingCategories"><i class="fa fa-fw @{{ addCatButtonClass }}"></i></button>
+                        <button class="btn btn-default" v-on="click: addCategory" v-attr="disabled: isLoadingCategories"><i class="fa fa-fw @{{ addCatButtonClass }}"></i></button>
                     </span>
                 </div>
                 <div class="alert alert-danger top-buffer" v-show="addCategoryErrors.length"><p v-repeat="error: addCategoryErrors" v-text="error"></p></div>
@@ -107,3 +131,45 @@
     </div>
 
 
+    @section('admin.scripts')
+        @parent
+        
+        @if ($post->id)
+        <script>
+        postImageVm = new Vue({
+            el: "#post-images",
+
+            data: {
+                images: [],
+                imagesLoading: false
+            },
+
+            computed: {
+                hasImages: function()
+                {
+                    return this.images.length > 0;
+                }
+            },
+
+            ready: function()
+            {
+                this.fetchImages();
+            },
+
+            methods: {
+                fetchImages: function()
+                {
+                    this.imagesLoading = true;
+
+                    this.$http.get('{{ route('api.posts.images', $post->id) }}').success(function(response)
+                    {
+                        this.images = response;
+                        this.imagesLoading = false;
+                    });
+
+                }
+            }
+        });
+        </script>
+        @endif
+    @stop

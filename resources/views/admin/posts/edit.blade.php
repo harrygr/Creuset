@@ -30,20 +30,24 @@ Edit Post
 
 </div>
 
-<div>
-    @foreach ($post->images as $image)
-        <img src="/{{ $image->thumbnail_path }}" alt="">
-
-    @endforeach
-</div>
 @stop
 
 @section('admin.scripts')
+  @parent
   <script>
   Dropzone.options.attachImagesForm = {
     paramName: 'image',
     maxFilesize: 5, //5MB limit
-    acceptedFiles: '.jpeg, .jpg, .png, .bmp, .gif, .svg'
+    acceptedFiles: '.jpeg, .jpg, .png, .bmp, .gif, .svg',
+    init: function()
+    {
+      this.on("complete", function(file) 
+      { 
+          this.removeFile(file);
+          postImageVm.fetchImages(); 
+
+      });
+    }
   }
   </script>
   @stop

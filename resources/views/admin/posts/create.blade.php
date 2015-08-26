@@ -9,7 +9,7 @@
 
     @include('partials.errors')
 <div class="row post-form" id="postForm">
-    {!! Form::model($post = new \Creuset\Post, ['route' => 'admin.posts.store', 'method' => 'POST']) !!}
+    {!! Form::model($post, ['route' => 'admin.posts.store', 'method' => 'POST']) !!}
 
         @include('admin.posts.form', ['submitText' => 'Create Post'])
 

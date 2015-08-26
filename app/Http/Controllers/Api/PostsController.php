@@ -4,6 +4,7 @@ namespace Creuset\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 
+use Creuset\Post;
 use Creuset\Http\Requests;
 use Creuset\Http\Controllers\Controller;
 use Creuset\Repositories\Post\PostRepository;
@@ -12,21 +13,11 @@ use Creuset\Repositories\Image\ImageRepository;
 
 class PostsController extends Controller
 {
-	/**
-	 * @var PostRepository
-	 */
-	private $postRepo;
-	/**
-	 * @var TermRepository
-	 */
-	private $termRepo;
-
     private $imageRepo;
 
-	public function __construct(PostRepository $postRepo, TermRepository $termRepo, ImageRepository $imageRepo)
+	public function __construct(ImageRepository $imageRepo)
 	{
-		$this->postRepo = $postRepo;
-		$this->termRepo = $termRepo;
+
         $this->imageRepo = $imageRepo;
 	}
 
@@ -34,6 +25,11 @@ class PostsController extends Controller
     {
     	if (!$id) $id = $request->get('id');
     	var_dump($id);
+    }
+
+    public function images(Post $post)
+    {
+        return $post->images;
     }
 
     public function addImage(Request $request)

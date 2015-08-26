@@ -12,5 +12,3 @@ _ide_helper.php
 npm-debug.log
 npm-debug.log.*
 /public/uploads
-/storage/database.sqlite
-/storage/testing.sqlite
