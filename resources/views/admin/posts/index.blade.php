@@ -5,7 +5,11 @@ Posts
 @stop
 
 @section('admin.content')
-		<h1>{{$title or 'Posts'}} <a href="{{ route('admin.posts.create') }}" class="btn btn-default"><i class="fa fa-plus"></i> Add New</a></h1>
+
+<a href="{{route('admin.posts.create')}}" class="btn btn-success pull-right">New Post</a>
+
+	<h1>{{$title or 'Posts'}}</h1>
+
 	<div class="panel panel-default">
 		<div class="panel-body">
 
