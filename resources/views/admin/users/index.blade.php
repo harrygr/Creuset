@@ -5,6 +5,8 @@ Users
 @stop
 
 @section('admin.content')
+
+<a href="{{route('admin.users.create')}}" class="btn btn-success pull-right">New User</a>
 <h1>Users</h1>
 
 @include('partials.errors')
@@ -12,6 +14,7 @@ Users
 
 <div class="panel panel-default">
 	<div class="panel-body">
+
 
 		<table class="table table-striped">
 			<thead>
@@ -26,9 +29,12 @@ Users
 			<tbody>
 				@foreach ($users as $user)
 				<tr>
-					<td><img src="{{ $user->present()->avatar() }}" alt="Avatar for {{ $user->name }}"></td>
+					<td><img class="img-circle" src="{{ $user->present()->avatar() }}" alt="Avatar for {{ $user->name }}"></td>
 					<td>
-						<span class="strong">{{ $user->username }}</span>
+						<strong>{{ $user->username }}</strong>
+						<br>
+						<small class="text-muted">Last seen: {{ $user->last_seen_at ? $user->last_seen_at->diffForHumans() : "never" }}</small>
+
 						<div class="row-actions">
 							<a href="{{ route('admin.users.edit', $user->username) }}">Edit</a> | 
 							<a href="" data-method="delete" data-confirm="Are you sure?" class="text-danger" rel="nofollow">Delete</a>

@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration {
 			$table->string('email')->unique();
 			$table->string('password', 60);
 			$table->rememberToken();
+			$table->dateTime('last_seen_at')->nullable();
 			$table->timestamps();
 
 			$table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
