@@ -149,6 +149,7 @@ return [
 		'Creuset\Providers\DatabaseServiceProvider',
 		'Creuset\Providers\ComposerServiceProvider',
 		'Collective\Html\HtmlServiceProvider',
+		'Intervention\Image\ImageServiceProvider',
 
 	],
 
@@ -198,6 +199,7 @@ return [
 		'Form'		=> 'Collective\Html\FormFacade',
       	'HTML' 		=> 'Collective\Html\HtmlFacade',
 		'Str'       => 'Illuminate\Support\Str',
+		'Image' 	=> 'Intervention\Image\Facades\Image',
 
 	],
 

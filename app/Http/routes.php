@@ -31,7 +31,9 @@ Route::group(['prefix' => 'admin'], function()
     // Posts
 	get('posts', ['uses' => 'Admin\PostsController@index', 'as' => 'admin.posts.index']);
 	get('posts/create', ['uses' => 'Admin\PostsController@create', 'as' => 'admin.posts.create']);
-	post('posts/store', ['uses' => 'Admin\PostsController@store', 'as' => 'admin.posts.store']);
+	post('posts', ['uses' => 'Admin\PostsController@store', 'as' => 'admin.posts.store']);
+	post('posts/{post}/image', ['uses' => 'Api\PostsController@addImage', 'as' => 'posts.image.store']);
+
 
 	get('posts/{post}/edit', ['uses' => 'Admin\PostsController@edit', 'as' => 'admin.posts.edit']);
 	patch('posts/{post}', ['uses' => 'Admin\PostsController@update', 'as' => 'admin.posts.update']);
@@ -66,4 +68,6 @@ Route::group(['prefix' => 'api'], function()
 {
 	get('categories', ['uses' => 'Api\TermsController@categories', 'as' => 'api.categories']);
 	post('categories', ['uses' => 'Api\TermsController@storeCategory', 'as' => 'api.terms']);
+
+	get('posts/{post}/images', ['uses' => 'Api\PostsController@images', 'as' => 'api.posts.images']);
 });

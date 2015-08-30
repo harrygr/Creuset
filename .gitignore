@@ -10,4 +10,5 @@ Thumbs.db
 _ide_helper.php
 /.idea
 npm-debug.log
-
+npm-debug.log.*
+/public/uploads

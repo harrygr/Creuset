@@ -62,34 +62,44 @@ class Post extends Model {
 
 	public function author()
 	{
-		return $this->belongsTo('Creuset\User', 'user_id', 'id');
+		return $this->belongsTo('\Creuset\User', 'user_id', 'id');
 	}
 
 	public function parent()
 	{
-		return $this->belongsTo('Creuset\Post');
+		return $this->belongsTo('\Creuset\Post');
 	}
 
 	public function children()
 	{
-		return $this->hasMany('Creuset\Post');
+		return $this->hasMany('\Creuset\Post');
 	}
 
 	public function terms()
 	{
-		return $this->morphToMany('Creuset\Term', 'termable');
+		return $this->morphToMany('\Creuset\Term', 'termable');
 	}
 
 	public function categories()
 	{
-		return $this->morphToMany('Creuset\Term', 'termable')
+		return $this->morphToMany('\Creuset\Term', 'termable')
 		->where('taxonomy', 'category');
 	}
 
 	public function tags()
 	{
-		return $this->morphToMany('Creuset\Term', 'termable')
+		return $this->morphToMany('\Creuset\Term', 'termable')
 		->where('taxonomy', 'tag');
+	}
+
+	public function images()
+	{
+		return $this->hasMany('\Creuset\Image');
+	}
+
+	public function addImage(\Creuset\Image $image)
+	{
+		return $this->images()->save($image);
 	}
 
 }
