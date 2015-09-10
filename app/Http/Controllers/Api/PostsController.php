@@ -19,6 +19,7 @@ class PostsController extends Controller
 	{
 
         $this->imageRepo = $imageRepo;
+        $this->middleware('auth.basic', ['except' => ['show', 'images']]);
 	}
 
     public function show(Request $request, $id = null)

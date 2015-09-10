@@ -52,3 +52,12 @@ $factory->define('Creuset\Termable', function($faker) {
 	'termable_type'	=> 'Creuset\Post'
 	];
 });
+
+$factory->define('Creuset\Image', function($faker) {
+	return [
+		'title' 		=> $faker->sentence,
+		'caption' 		=> $faker->paragraph,
+		'path'			=> $faker->imageUrl(),
+		'thumbnail_path'=> $faker->imageUrl(30, 30),
+	];
+});

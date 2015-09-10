@@ -68,6 +68,7 @@ class PostsTest extends TestCase
 	public function testItCanUploadAnImageToAPost()
 	{
 		$this->withoutMiddleware(); // needed to skip csrf checks etc
+		$user = $this->loginWithUser();
 		
 		// Make a post
 		$post = factory('Creuset\Post')->create();
@@ -86,8 +87,10 @@ class PostsTest extends TestCase
 		$this->assertFileExists(public_path($responseData->path));
 		$this->assertFileExists(public_path($responseData->thumbnail_path));
 
+		// Ensure the image has been saved in the db and attached to our post
 		$this->seeInDatabase('images', [
-			'post_id' => $post->id,
+			'imageable_id' => $post->id,
+			'imageable_type' => 'Creuset\Post',
 			'path'	=> $responseData->path,
 			]);
 

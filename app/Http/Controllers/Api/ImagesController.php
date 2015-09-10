@@ -11,6 +11,11 @@ use Creuset\Repositories\Image\ImageRepository;
 
 class ImagesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth.basic');
+    }
+
     public function update(Request $request, Image $image)
     {
         $image->update($request->all());
