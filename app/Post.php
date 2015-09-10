@@ -102,4 +102,22 @@ class Post extends Model {
 		return $this->images()->save($image);
 	}
 
+	/**
+	 * Whether the post is not yet persisted
+	 * @return boolean
+	 */
+	public function isNew()
+	{
+		return !$this->exists();
+	}
+
+	/**
+	 * Whether the post exists in the database yet
+	 * @return boolean
+	 */
+	public function exists()
+	{
+		return $this->id;
+	}
+
 }

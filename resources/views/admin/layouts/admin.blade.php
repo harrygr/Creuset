@@ -58,12 +58,8 @@
 
     @include('admin.layouts.footer')
 
-    {{--  
-    {!! HTML::script('js/admin.js') !!}
-    --}}
-
     {{-- Browserify --}}
-    {!! HTML::script('js/app.js') !!}
+    {!! HTML::script('js/admin.js') !!}
 
     @yield('admin.scripts')
 </body>

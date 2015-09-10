@@ -21,10 +21,6 @@
 	<![endif]-->
 </head>
 <body>
-	@include('layouts.nav')
-
 	@yield('content')
-
-	@include('admin.layouts.footer')
 </body>
 </html>

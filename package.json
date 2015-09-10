@@ -10,7 +10,9 @@
     "select2": "^4.0.0",
     "vue": "^0.12.10",
     "vue-resource": "^0.1.3",
-    "dropzone": "^4.0.1",
-     "highlight.js": "^8.7.0"
+    "dropzone": "^4.0.1"
+  },
+  "browser": {
+     "bootstrap": "./bower_components/bootstrap/dist/js/bootstrap.js"
   }
 }

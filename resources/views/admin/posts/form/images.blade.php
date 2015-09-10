@@ -10,7 +10,7 @@
 
     <div class="row">
       <div class="col-md-4">
-        <img class="media-object img-thumbnail" src="/@{{ selectedImage.thumbnail_path}}" alt=""> 
+        <img class="media-object img-thumbnail" v-attr="src: '/' + selectedImage.thumbnail_path" alt=""> 
       </div>
       <div  class="col-md-8">
         <p>
@@ -32,7 +32,7 @@
 
     <div class="row" v-if="hasImages">
       <div class="col-md-2 col-sm-3 col-xs-6 top-buffer" v-repeat="image: images">
-        <img src="@{{ '/' + image.thumbnail_path }}" alt="" class="img-responsive img-thumbnail selectable" v-class="selected: isSelected(image.id)" v-on="click: selectedImage = image">
+        <img v-attr="src: '/' + image.thumbnail_path" alt="" class="img-responsive img-thumbnail selectable" v-class="selected: isSelected(image.id)" v-on="click: selectedImage = image">
       </div>
     </div>
 

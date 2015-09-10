@@ -1,8 +1,9 @@
 
 @include('admin.posts.form.content')
 
-@include('admin.posts.form.images')
-
+@if ($post->exists())
+    @include('admin.posts.form.images')
+@endif
 
 <div class="row"  id="postMeta">
     <div class="col-md-4"> @include('admin.posts.form.categories')</div>
