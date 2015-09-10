@@ -144,10 +144,15 @@ return [
 		'Creuset\Providers\ConfigServiceProvider',
 		'Creuset\Providers\EventServiceProvider',
 		'Creuset\Providers\RouteServiceProvider',
-		//'Cviebrock\EloquentSluggable\SluggableServiceProvider',
-		'Gvb\Whoops\ServiceProvider',
+		'Creuset\Providers\RouteServiceProvider',
 		'Creuset\Providers\DatabaseServiceProvider',
 		'Creuset\Providers\ComposerServiceProvider',
+		'Creuset\Providers\AuthServiceProvider',
+
+		/**
+		 * 3rd Party Service Providoes
+		 */
+		'Gvb\Whoops\ServiceProvider',
 		'Collective\Html\HtmlServiceProvider',
 		'Intervention\Image\ImageServiceProvider',
 
@@ -200,6 +205,7 @@ return [
       	'HTML' 		=> 'Collective\Html\HtmlFacade',
 		'Str'       => 'Illuminate\Support\Str',
 		'Image' 	=> 'Intervention\Image\Facades\Image',
+		'Gate' 		=> Illuminate\Support\Facades\Gate::class,
 
 	],
 

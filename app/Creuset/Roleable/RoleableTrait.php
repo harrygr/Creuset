@@ -28,29 +28,6 @@ trait RoleableTrait {
     }
 
     /**
-     * Determine if the entity has permission
-     * @param  string $action The permission to check
-     * @return boolean
-     *
-     * This needs to be outsourced to a seperate Permissions model and table 
-     * but we've encapsulated it into a single method for now
-     */
-    public function can($action)
-    {
-        if ('edit_user' == $action)
-            return $this->hasRole(['admin']);
-
-
-        if ('edit_post' == $action)
-            return $this->hasRole(['admin', 'contributor']);
-
-        if ('view_site' == $action)
-            return true;
-
-        return false;
-    }
-
-    /**
      * Give an entity the minimum role of subscriber'
      * @return Model
      */
