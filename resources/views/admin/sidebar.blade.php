@@ -18,6 +18,13 @@
     </li>
 
     <li>
+        <a href="{{ route('admin.images.index') }}"><i class="fa fa-fw fa-image"></i> Images</a>
+        <ul>
+            <li><a href="{{ route('admin.images.index') }}">All Images</a></li>
+        </ul>
+    </li>
+
+    <li>
         <a href="{{ route('admin.users.index') }}"><i class="fa fa-fw fa-users"></i> Users</a>
         <ul>
             <li><a href="{{ route('admin.users.profile') }}">My Profile</a></li>

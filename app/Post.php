@@ -54,6 +54,11 @@ class Post extends Model {
 			$this->attributes['published_at'] = new Carbon($date);
 	}
 
+	/**
+	 * If the post doesn't have a user ID set we'll return the ID of the logged in user
+	 * @param  integer $userId 
+	 * @return integer        
+	 */
 	public function getUserIdAttribute($userId)
 	{
 		return $userId ?: \Auth::user()->id;
@@ -92,11 +97,19 @@ class Post extends Model {
 		->where('taxonomy', 'tag');
 	}
 
+	/**
+	 * A post has mand images
+	 * @return Relation
+	 */
 	public function images()
 	{
-		return $this->hasMany('\Creuset\Image');
+		return $this->morphMany('\Creuset\Image', 'imageable');
 	}
 
+	/**
+	 * Attach an image to the current Post
+	 * @param \Creuset\Image $image
+	 */
 	public function addImage(\Creuset\Image $image)
 	{
 		return $this->images()->save($image);

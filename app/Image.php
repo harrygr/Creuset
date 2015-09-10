@@ -3,13 +3,23 @@
 namespace Creuset;
 
 use Illuminate\Database\Eloquent\Model;
+use Creuset\Presenters\PresentableTrait;
 
 class Image extends Model
 {
-    protected $fillable = ['path', 'thumbnail_path'];
+    use PresentableTrait;
 
-    public function post()
+    protected $presenter = 'Creuset\Presenters\ImagePresenter';
+
+    protected $fillable = ['path', 'thumbnail_path', 'user_id', 'title', 'caption'];
+
+    public function imageable()
     {
-        return $this->belongsTo('\Creuset\Post');
+        return $this->morphTo();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('\Creuset\User', 'user_id', 'id');
     }
 }

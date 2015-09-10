@@ -57,6 +57,7 @@ class DbImageRepository implements ImageRepository {
     return Image::create([
      'path'              => sprintf("%s/%s", $this->baseDir, $this->imageName),
      'thumbnail_path'    => sprintf("%s/%s-%s", $this->baseDir, $this->thumbnailSize, $this->imageName),
+     'user_id'           => auth()->user()->id,
      ]);
     }
 

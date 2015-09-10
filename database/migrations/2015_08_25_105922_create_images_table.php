@@ -14,13 +14,18 @@ class CreateImagesTable extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('title')->nullable();
+            $table->text('caption')->nullable();
 
-            $table->integer('post_id')->unsigned()->nullable();
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+            $table->string('imageable_type')->nullable();
+            $table->integer('imageable_id')->unsigned()->nullable();
 
             $table->string('path');
             $table->string('thumbnail_path');
 
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
+            
             $table->timestamps();
         });
     }

@@ -27,6 +27,7 @@ class RouteServiceProvider extends ServiceProvider {
 		$router->model('post', 'Creuset\Post');
 		$router->model('term', 'Creuset\Term');
 		$router->model('user', 'Creuset\User');
+		$router->model('image', 'Creuset\Image');
 		
 		$router->bind('username', function($username)
 		{

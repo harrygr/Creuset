@@ -10,18 +10,32 @@
 
     <div class="row">
       <div class="col-md-4">
-        <img class="media-object img-thumbnail" v-attr="src: '/' + selectedImage.thumbnail_path" alt=""> 
+        <img class="media-object img-thumbnail img-responsive" v-attr="src: '/' + selectedImage.thumbnail_path" alt=""> 
       </div>
       <div  class="col-md-8">
-        <p>
-          <strong>URL: </strong>
+        <div class="form-group">
+          <label>URL: </label>
           <input type="text" class="form-control input-sm" readonly value="{{ url() }}/@{{ selectedImage.path }}">
-        </p>    
+        </div>    
 
-        <p>
-          <strong>Thumbnail: </strong>
+        <div class="form-group">
+          <label>Thumbnail: </label>
           <input type="text" class="form-control input-sm" readonly value="{{ url() }}/@{{ selectedImage.thumbnail_path }}">
-        </p>
+        </div>
+
+        <div class="form-group">
+            <label>Image Title</label>
+            <input type="text" v-model="selectedImage.title" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>Caption</label>
+            <textarea v-model="selectedImage.caption" class="form-control"></textarea>
+        </div>
+
+        <button v-on="click: updateImage" class="btn btn-primary" v-attr="disabled: imageUpdating">Update Image</button>
+        <span v-if="imageUpdating"><i class="fa fa-circle-o-notch fa-spin"></i> Saving...</span>
+        <span class="text-success" v-if="imageUpdatedMessage"> <i class="fa fa-check"></i> @{{ imageUpdatedMessage }}</span>
       </div>
     </div>
   </div>
@@ -56,7 +70,9 @@
     data: {
       images: [],
       selectedImage: {},
-      imagesLoading: false
+      imagesLoading: false,
+      imageUpdating: false,
+      imageUpdatedMessage: false
     },
 
     computed: {
@@ -84,6 +100,19 @@
         });
 
       },
+
+      updateImage: function(e)
+      {
+        e.preventDefault();
+        this.imageUpdating = true;
+        this.$http.patch('/api/images/' + this.selectedImage.id, this.selectedImage).success(function(response)
+        {
+          this.imageUpdating = false;
+          this.imageUpdatedMessage = 'Done';
+          setTimeout(function(){ this.imageUpdatedMessage = false}.bind(this), 5000);
+        });
+      },
+
       isSelected: function(id)
       {
         return this.selectedImage.id == id;

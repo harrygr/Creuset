@@ -49,6 +49,8 @@ Route::group(['prefix' => 'admin'], function()
 	patch('categories/{term}', ['uses' => 'Admin\TermsController@update', 'as' => 'admin.categories.update']);
 	delete('terms/{term}', ['uses' => 'Admin\TermsController@destroy', 'as' => 'admin.terms.delete']);
 
+	get('images', ['uses' => 'Admin\ImagesController@index', 'as' => 'admin.images.index']);
+
 	// Users
 	get('profile', ['uses' => 'Admin\UsersController@profile', 'as' => 'admin.users.profile'] );
 	Route::group(['prefix' => 'users'], function()
@@ -70,4 +72,7 @@ Route::group(['prefix' => 'api'], function()
 	post('categories', ['uses' => 'Api\TermsController@storeCategory', 'as' => 'api.terms']);
 
 	get('posts/{post}/images', ['uses' => 'Api\PostsController@images', 'as' => 'api.posts.images']);
+
+	patch('images/{image}', ['uses' => 'Api\ImagesController@update', 'as' => 'api.images.update']);
+
 });

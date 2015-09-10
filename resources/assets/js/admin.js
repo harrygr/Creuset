@@ -4,9 +4,12 @@ window.$ = window.jQuery = require('jquery');
 global.Vue = require('vue');
 global.Dropzone = require('dropzone');
 
+
 var bootstrap = require('bootstrap');
 
 require('vue-resource');
+
+Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name=csrf-token]').prop('content');
 
 var postContent = require('./vue-components/post-content.js');
 var postMeta = require('./vue-components/post-meta.js');
