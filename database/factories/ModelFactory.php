@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Image as Intervention;
 
 $factory->define('Creuset\Post', function($faker) {
 
@@ -54,10 +55,15 @@ $factory->define('Creuset\Termable', function($faker) {
 });
 
 $factory->define('Creuset\Image', function($faker) {
+	$filename = str_random() . '.jpg';
+
+	Intervention::make($faker->imageUrl())
+				->save(public_path("uploads/images/{$filename}"))
+				->fit(200)
+				->save(public_path("uploads/images/tn-{$filename}"));
 	return [
 		'title' 		=> $faker->sentence,
 		'caption' 		=> $faker->paragraph,
-		'path'			=> $faker->imageUrl(),
-		'thumbnail_path'=> $faker->imageUrl(30, 30),
+		'filename'		=> $filename,
 	];
 });

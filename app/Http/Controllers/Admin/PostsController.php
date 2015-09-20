@@ -55,7 +55,7 @@ class PostsController extends Controller {
 	 * @param Post $post
 	 * @return Response
 	 */
-	public function create(DbTermRepository $termRepo, Post $post)
+	public function create(TermRepository $termRepo, Post $post)
 	{
 		$selectedCategories = [];
 		$categoryList = $termRepo->getCategoryList();
