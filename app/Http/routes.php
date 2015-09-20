@@ -32,7 +32,7 @@ Route::group(['prefix' => 'admin'], function()
 	get('posts', ['uses' => 'Admin\PostsController@index', 'as' => 'admin.posts.index']);
 	get('posts/create', ['uses' => 'Admin\PostsController@create', 'as' => 'admin.posts.create']);
 	post('posts', ['uses' => 'Admin\PostsController@store', 'as' => 'admin.posts.store']);
-	post('posts/{post}/image', ['uses' => 'Api\PostsController@addImage', 'as' => 'posts.image.store']);
+	post('posts/{post}/image', ['uses' => 'Api\ImagesController@store', 'as' => 'posts.image.store']);
 
 
 	get('posts/{post}/edit', ['uses' => 'Admin\PostsController@edit', 'as' => 'admin.posts.edit']);

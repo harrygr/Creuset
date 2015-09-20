@@ -1,8 +1,8 @@
 <?php namespace Creuset\Http\Controllers\Api;
 
 use Creuset\Http\Controllers\Controller;
-use Creuset\Repositories\Term\TermRepository;
 use Creuset\Http\Requests\CreateTermRequest;
+use Creuset\Repositories\Term\TermRepository;
 
 class TermsController extends Controller
 {

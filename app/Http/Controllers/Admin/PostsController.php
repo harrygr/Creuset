@@ -12,7 +12,6 @@ use Creuset\Http\Requests\CreatePostRequest;
 use Creuset\Http\Requests\UpdatePostRequest;
 use Creuset\Repositories\Post\PostRepository;
 use Creuset\Repositories\Term\TermRepository;
-use Creuset\Repositories\Term\DbTermRepository;
 
 /**
  * Class PostsController
@@ -97,7 +96,7 @@ class PostsController extends Controller {
 	 * @return Response
 	 * @internal param int $id
 	 */
-	public function edit(Post $post, DbTermRepository $termRepo)
+	public function edit(Post $post, TermRepository $termRepo)
 	{
 		$post->load('categories', 'tags');
 

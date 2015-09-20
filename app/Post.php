@@ -1,11 +1,12 @@
 <?php namespace Creuset;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
+use Creuset\Image;
 use Creuset\Presenters\PresentableTrait;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Post extends Model {
+class Post extends Model implements Imageable {
 
 	use PresentableTrait, SoftDeletes;
 	
@@ -98,7 +99,7 @@ class Post extends Model {
 	}
 
 	/**
-	 * A post has mand images
+	 * A post has many images
 	 * @return Relation
 	 */
 	public function images()
@@ -108,9 +109,9 @@ class Post extends Model {
 
 	/**
 	 * Attach an image to the current Post
-	 * @param \Creuset\Image $image
+	 * @param Image $image
 	 */
-	public function addImage(\Creuset\Image $image)
+	public function addImage(Image $image)
 	{
 		return $this->images()->save($image);
 	}
