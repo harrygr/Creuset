@@ -1,12 +1,13 @@
-<?php namespace Unit;
+<?php 
+
+namespace Unit;
 
 use TestCase;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Creuset\Repositories\Post\DbPostRepository;
 
-class PostsTest extends TestCase 
-{
+class PostsTest extends TestCase  {
 
 	use DatabaseTransactions;
 
