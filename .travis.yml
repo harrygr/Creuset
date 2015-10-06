@@ -1,7 +1,6 @@
 language: php
 
 php:
-  - 5.4
   - 5.5
   - 5.6
   - hhvm
@@ -11,4 +10,4 @@ before_script:
   - export APP_ENV=testing
   - touch storage/testing.sqlite
 
-script: vendor/bin/phpspec run
+script: vendor/bin/phpunit
