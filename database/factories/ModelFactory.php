@@ -56,6 +56,11 @@ $factory->define('Creuset\Termable', function($faker) {
 
 $factory->define('Creuset\Image', function($faker) {
 	$filename = str_random() . '.jpg';
+	$image_path = public_path("uploads/images");
+
+	if (!File::exists($image_path)) {
+		File::makeDirectory($image_path, 0777, true);
+	}
 
 	Intervention::make($faker->imageUrl())
 				->save(public_path("uploads/images/{$filename}"))
