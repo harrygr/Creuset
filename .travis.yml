@@ -10,6 +10,6 @@ before_script:
   - composer install --dev --prefer-source --no-interaction
   - export APP_ENV=testing
   - touch storage/testing.sqlite
-  - chmod 777 -R public/uploads/
+  - chmod 777 -R public/
 
 script: vendor/bin/phpspec run
