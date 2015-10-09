@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/harrygr/Creuset.svg?branch=master)](https://travis-ci.org/harrygr/Creuset)
+
 # Creuset
 
 Creuset is a powerful cms and blogging platform built in Laravel. It is intended to use modern design patterns and have a structure that allows it to be flexible to the extent it could be easily extended or adapted; such as, for example, be turned into an ecommerce solution.
