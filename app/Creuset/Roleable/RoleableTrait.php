@@ -15,11 +15,6 @@ trait RoleableTrait {
         return $this->belongsTo('Creuset\Role');
     }
 
-    public function getRoleAttribute($role)
-    {
-        return $role ?: new Role;
-    }
-
     /**
      * Find out if the entity has a specific role
      *
@@ -50,13 +45,11 @@ trait RoleableTrait {
     {
         $role = Role::where('name', $roleName)->first();
 
-        if (!$role)
-        {
+        if (!$role) {
             throw new NonExistantRoleException("The role to assign '$roleName' does not exist");
         }
 
-        if (!$this->hasRole($roleName))
-        {
+        if (!$this->hasRole($roleName)) {
             $this->role()->associate($role);
             $this->save();
         }

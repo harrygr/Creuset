@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
+    public $fillable = ['name', 'display_name'];
+
     /**
      * Set timestamps off
      */

@@ -37,13 +37,12 @@ class UsersTableSeeder extends Seeder {
 			'admin',
 		];
 
-		return array_map(function($role)
-			{
-				return Role::create([
-				'name' => $role,
-				'display_name' => ucwords($role)
-				])->toArray();
-			}, $roles);
+		return array_map(function($role) {
+			return Role::create([
+			'name' => $role,
+			'display_name' => ucwords($role)
+			])->toArray();
+		}, $roles);
 
 	}
 }
