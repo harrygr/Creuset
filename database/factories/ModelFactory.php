@@ -1,6 +1,5 @@
 <?php
 
-use Carbon\Carbon;
 use Image as Intervention;
 
 $factory->define('Creuset\Post', function($faker) {
@@ -9,48 +8,44 @@ $factory->define('Creuset\Post', function($faker) {
 	$title = $faker->sentence;	
 
 	return [
-	'title'		   => $title,
-	'content'	   => $faker->paragraph,
-	'slug'		   => str_slug($title),
-	'published_at' => $creationDate, 
-	'created_at'   => $creationDate,
-	'updated_at'   => $creationDate,
-	'user_id'	   => 'factory:Creuset\User',
+		'title'		   => $title,
+		'content'	   => $faker->paragraph,
+		'slug'		   => str_slug($title),
+		'published_at' => $creationDate, 
+		'created_at'   => $creationDate,
+		'updated_at'   => $creationDate,
+		'user_id'	   => factory(Creuset\User::class)->create()->id,
 	];
 });
 
 $factory->define('Creuset\User', function($faker) {
 
-	$name = $faker->name;
+	$name = $faker->unique()->name;
 
 	return [
-	'name'			=> $name,
-	'username'		=> str_slug($name),
-	'email'			=> $faker->email,
-	'password'		=> bcrypt('password'),
+		'name'			=> $name,
+		'username'		=> str_slug($name),
+		'email'			=> $faker->unique()->email,
+		'password'		=> bcrypt('password'),
 	];
 });
 
 $factory->define('Creuset\Term', function($faker) {
 
-	$term = $faker->word;
-	if (strlen($term < 3))
-	{
-		$term .= " {$faker->word}";
-	}
+	$term = $faker->unique()->word;
 	
 	return [
-	'taxonomy' => 'category',
-	'term'		 => $term,
-	'slug'		 => str_slug($term),
+		'taxonomy'   => 'category',
+		'term'		 => $term,
+		'slug'		 => str_slug($term),
 	];
 });
 
 $factory->define('Creuset\Termable', function($faker) {
 	return [
-	'term_id'		=> 'factory:Creuset\Term',
-	'termable_id'	=> 'factory:Creuset\Post',
-	'termable_type'	=> 'Creuset\Post'
+		'term_id'		=> factory(Creuset\Term::class)->create()->id,
+		'termable_id'	=> factory(Creuset\Post::class)->create()->id,
+		'termable_type'	=> 'Creuset\Post'
 	];
 });
 
@@ -63,13 +58,13 @@ $factory->define('Creuset\Image', function($faker) {
 	}
 
 	Intervention::make($faker->imageUrl())
-				->save(public_path("uploads/images/{$filename}"))
+				->save("{$image_path}/{$filename}")
 				->fit(200)
-				->save(public_path("uploads/images/tn-{$filename}"));
+				->save("{$image_path}/tn-{$filename}");
 	return [
 		'title' 		=> $faker->sentence,
 		'caption' 		=> $faker->paragraph,
 		'filename'		=> $filename,
-		'user_id' 		=> 'factory:Creuset\User',
+		'user_id' 		=> factory(Creuset\User::class)->create()->id,
 	];
 });
