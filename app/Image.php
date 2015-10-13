@@ -44,6 +44,16 @@ class Image extends Model
         $this->attributes['thumbnail_path'] = $this->baseDir() . '/tn-' . $filename;
     }
 
+    public function getFullPathAttribute()
+    {
+        return public_path($this->path);
+    }
+
+    public function getFullThumbnailPathAttribute()
+    {
+        return public_path($this->thumbnail_path);
+    }
+
     /**
      * Generate a thumbnail and save on the filesystem
      * @return void

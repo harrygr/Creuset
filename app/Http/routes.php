@@ -50,6 +50,7 @@ Route::group(['prefix' => 'admin'], function()
 	delete('terms/{term}', ['uses' => 'Admin\TermsController@destroy', 'as' => 'admin.terms.delete']);
 
 	get('images', ['uses' => 'Admin\ImagesController@index', 'as' => 'admin.images.index']);
+	delete('images/{image}', ['uses' => 'Admin\ImagesController@destroy', 'as' => 'admin.images.delete']);
 
 	// Users
 	get('profile', ['uses' => 'Admin\UsersController@profile', 'as' => 'admin.users.profile'] );

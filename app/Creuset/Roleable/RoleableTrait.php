@@ -15,6 +15,11 @@ trait RoleableTrait {
         return $this->belongsTo('Creuset\Role');
     }
 
+    public function getRoleAttribute($role)
+    {
+        return $role ?: new Role;
+    }
+
     /**
      * Find out if the entity has a specific role
      *

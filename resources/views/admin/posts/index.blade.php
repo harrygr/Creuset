@@ -33,7 +33,7 @@ Posts
 						</div>
 					</td>
 					<td>{{ $post->author->name }}</td>
-					<td>{{ $post->present()->categoryList() }}</td>
+					<td>{!! $post->present()->categoryList() !!}</td>
 					<td>{{ $post->created_at }}</td>
 				</tr>
 			@endforeach

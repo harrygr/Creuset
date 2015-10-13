@@ -62,6 +62,23 @@ class PostsTest extends TestCase
 			]);
 	}
 
+	/** @test **/
+	public function it_moves_a_post_to_the_trash()
+	{
+	    $this->withoutMiddleware();
+	    
+	    $user = $this->loginWithUser();
+	    $post = factory('Creuset\Post')->create();
+
+	    $this->visit("/admin/posts")
+	    	 ->see($post->title);
+
+	    $this->delete("/admin/posts/{$post->id}");
+
+	    $this->visit("/admin/posts")
+	     	 ->dontSee($post->title);
+	}
+
 	/**
 	 * Simulate an HTTP request to upload an image to a post
 	 */
@@ -92,6 +109,7 @@ class PostsTest extends TestCase
 			'imageable_id' => $post->id,
 			'imageable_type' => 'Creuset\Post',
 			'path'	=> $responseData->path,
+			'user_id' => $user->id,
 			]);
 
 		// Clean up the file

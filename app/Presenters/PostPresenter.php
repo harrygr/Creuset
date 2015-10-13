@@ -2,10 +2,14 @@
 
 class PostPresenter extends Presenter {
 
-	public function categoryList($delimiter = ", ")
+	public function categoryList($delimiter = ", ", $links = true)
 	{
-		$categoryNames = array_pluck($this->model->categories->toArray(), 'term');
-		return implode($delimiter, $categoryNames);
+		$categoryNames = $links ? $this->model->categories->map(function($category)
+		{
+			return sprintf('<a href="%s" title="edit %s category">%s</a>', route('admin.categories.edit', $category), $category->term, $category->term);
+		}) : $this->model->categories->pluck('term');
+
+		return $categoryNames->implode($delimiter);
 	}
 
 	private $statusClasses = [
@@ -18,7 +22,8 @@ class PostPresenter extends Presenter {
 	public function statusLabel()
 	{
 		$status = strtolower($this->model->status);
-		$labelClass = array_key_exists($status, $this->statusClasses) ? $this->statusClasses[$status] : 'default';
-		return sprintf("<label class='label label-%s pull-right'>%s</label>",$labelClass, ucfirst($status));
+
+		$labelClass = array_get($this->statusClasses, $status, 'default');
+		return sprintf("<label class='label label-%s pull-right'>%s</label>", $labelClass, ucfirst($status));
 	}
 }

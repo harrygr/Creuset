@@ -6,7 +6,8 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
 	use DatabaseMigrations;
 
-	protected $baseUrl = 'http://homestead.app';
+	protected $baseUrl;
+
 
 	/**
 	 * Creates the application.
@@ -18,6 +19,8 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 		$app = require __DIR__.'/../bootstrap/app.php';
 
 		$app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
+
+		$this->baseUrl = \Config::get('app.url', 'http://homestead.app');
 
 		// $this->setUpDatabase();
 

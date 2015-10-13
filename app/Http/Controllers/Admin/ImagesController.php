@@ -21,4 +21,15 @@ class ImagesController extends Controller
         return view('admin.images.index', compact('images'));
     }
 
+    public function destroy($image)
+    {
+        \File::delete(public_path($image->path));
+        \File::delete(public_path($image->thumbnail_path));
+
+        $image->delete();
+
+        return redirect()->route('admin.images.index')
+                         ->with(['alert' => 'Image Deleted', 'alert-class' => 'success']);
+    }
+
 }

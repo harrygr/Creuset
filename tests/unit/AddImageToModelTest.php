@@ -19,6 +19,7 @@ class AddImageToModelTest extends TestCase {
 	/** @test **/
 	public function it_processes_and_saves_an_image_to_a_model()
 	{
+		$this->loginWithUser();
 		$post = factory(Post::class)->create();
 
 		$thumbnail = Mockery::mock(Thumbnailer::class);

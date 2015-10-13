@@ -65,6 +65,18 @@ class Post extends Model implements Imageable {
 		return $userId ?: \Auth::user()->id;
 	}
 
+	/**
+	 * If the author hasn't been set yet just return a new user instance
+	 * @param  User|null $author
+	 * @return User 
+	 */
+	public function getAuthorAttribute($author)
+	{
+		//var_dump($this->relations['author']);
+		return $this->relations['author'] ?: new User;
+	}
+
+	// Relations
 
 	public function author()
 	{

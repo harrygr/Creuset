@@ -70,5 +70,6 @@ $factory->define('Creuset\Image', function($faker) {
 		'title' 		=> $faker->sentence,
 		'caption' 		=> $faker->paragraph,
 		'filename'		=> $filename,
+		'user_id' 		=> 'factory:Creuset\User',
 	];
 });

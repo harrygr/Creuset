@@ -3,12 +3,15 @@
 namespace Creuset\Http\Controllers\Auth;
 
 use Creuset\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
-use Validator;
 use Creuset\User;
+use Illuminate\Auth\Guard;
+use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Http\Request;
+use Validator;
 
 class AuthController extends Controller {
+	private $auth;
+
 
 	use AuthenticatesAndRegistersUsers;
 
@@ -18,9 +21,10 @@ class AuthController extends Controller {
 	 * Create a new authentication controller instance.
 	 *
 	 */
-	public function __construct()
+	public function __construct(Guard $auth)
 	{
 		$this->middleware('guest', ['except' => 'getLogout']);
+		$this->auth = $auth;
 	}
 
 
@@ -99,6 +103,7 @@ class AuthController extends Controller {
 		return User::create([
 			'name' => $data['name'],
 			'email' => $data['email'],
+			'username' => $data['username'],
 			'password' => bcrypt($data['password']),
 		]);
 	}

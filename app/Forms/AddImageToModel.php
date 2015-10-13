@@ -32,7 +32,7 @@ class AddImageToModel {
 
 	protected function makeImage()
 	{
-		return new Image(['filename' => $this->makeFilename()]);
+		return new Image(['filename' => $this->makeFilename(), 'user_id' => \Auth::user()->id]);
 	}
 
 	protected function makeFilename()
