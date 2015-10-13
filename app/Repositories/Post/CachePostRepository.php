@@ -87,4 +87,29 @@ class CachePostRepository implements PostRepository {
         \Cache::flush('posts.index');
         return $this->repository->delete($post);
     }
+
+    /**
+     * @param Post $post
+     * @return mixed
+     */
+    public function restore(Post $post)
+    {
+        \Cache::forget("post.{$post->id}");
+        \Cache::flush('posts.index');
+        return $this->repository->restore($post);
+    }
+
+    public function count()
+    {
+        return \Cache::tags('posts', 'posts.index')->remember("posts.count", env('CACHE_TIME'), function() {
+            return $this->repository->count();
+        });
+    }
+
+    public function trashedCount()
+    {
+        return \Cache::tags('posts', 'posts.index')->remember("posts.count.trashed", env('CACHE_TIME'), function() {
+            return $this->repository->trashedCount();
+        });
+    }
 }

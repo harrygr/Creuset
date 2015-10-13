@@ -66,6 +66,30 @@ class DbPostRepository extends DbRepository implements PostRepository {
      */
 	public function delete(Post $post)
 	{
+		if ($post->trashed()) {
+			return $post->forceDelete();
+		}
+		
 		return $post->delete();
+	}
+
+	/**
+	 * @param Post $post
+	 * @return bool|null
+	 * @throws \Exception
+     */
+	public function restore(Post $post)
+	{	
+		return $post->restore();
+	}
+
+	public function count()
+	{
+		return $this->model->count();
+	}
+
+	public function trashedCount()
+	{
+		return $this->model->onlyTrashed()->count();
 	}
 }

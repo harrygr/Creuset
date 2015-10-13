@@ -8,7 +8,9 @@ Posts
 
 <a href="{{route('admin.posts.create')}}" class="btn btn-success pull-right">New Post</a>
 
-	<h1>{{$title or 'Posts'}}</h1>
+	<h1>{{ $title or 'Posts' }}</h1>
+
+	<a href="{{ route('admin.posts.index') }}">All</a> ({{ $postCount }}) | <a href="{{ route('admin.posts.trash') }}">Trash</a> ({{ $trashedCount }})
 
 	<div class="panel panel-default">
 		<div class="panel-body">
@@ -28,8 +30,7 @@ Posts
 					<td>
 						<strong>{{ $post->title }}</strong> {!! $post->present()->statusLabel() !!}
 						<div class="row-actions">
-							<a href="{{ route('admin.posts.edit', [$post->id]) }}">Edit</a> |
-							<a href="{{ route('admin.posts.delete', [$post->id]) }}" data-method="delete" data-confirm="Are you sure?" class="text-danger" rel="nofollow">Trash</a>
+							{!! $post->present()->indexLinks() !!}
 						</div>
 					</td>
 					<td>{{ $post->author->name }}</td>

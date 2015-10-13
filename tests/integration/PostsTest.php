@@ -63,7 +63,7 @@ class PostsTest extends TestCase
 	}
 
 	/** @test **/
-	public function it_moves_a_post_to_the_trash()
+	public function it_deletes_a_post()
 	{
 	    $this->withoutMiddleware();
 	    
@@ -73,10 +73,37 @@ class PostsTest extends TestCase
 	    $this->visit("/admin/posts")
 	    	 ->see($post->title);
 
+	    // move to trash
 	    $this->delete("/admin/posts/{$post->id}");
 
 	    $this->visit("/admin/posts")
 	     	 ->dontSee($post->title);
+
+	    $this->visit("admin/posts/trash")
+	         ->see($post->title);
+
+	    // Delete permanently
+	    $this->delete("/admin/posts/{$post->id}");
+	    $this->notSeeInDatabase('posts', [
+	    	'title' => $post->title
+	    	]);
+	}
+
+		/** @test **/
+	public function it_restores_a_post()
+	{
+	    $this->withoutMiddleware();
+	    
+	    $user = $this->loginWithUser();
+	    $post = factory('Creuset\Post')->create();
+
+	    // move to trash
+	    $this->delete("/admin/posts/{$post->id}");
+	    // restore
+	    $this->put("/admin/posts/{$post->id}/restore");
+
+	    $this->visit("/admin/posts")
+	    	 ->see($post->title);
 	}
 
 	/**

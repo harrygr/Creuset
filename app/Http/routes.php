@@ -31,13 +31,15 @@ Route::group(['prefix' => 'admin'], function()
     // Posts
 	get('posts', ['uses' => 'Admin\PostsController@index', 'as' => 'admin.posts.index']);
 	get('posts/create', ['uses' => 'Admin\PostsController@create', 'as' => 'admin.posts.create']);
+	get('posts/trash', ['uses' => 'Admin\PostsController@trash', 'as' => 'admin.posts.trash']);
 	post('posts', ['uses' => 'Admin\PostsController@store', 'as' => 'admin.posts.store']);
 	post('posts/{post}/image', ['uses' => 'Api\ImagesController@store', 'as' => 'posts.image.store']);
 
 
+	put('posts/{trashedPost}/restore', ['uses' => 'Admin\PostsController@restore', 'as' => 'admin.posts.restore']);
 	get('posts/{post}/edit', ['uses' => 'Admin\PostsController@edit', 'as' => 'admin.posts.edit']);
 	patch('posts/{post}', ['uses' => 'Admin\PostsController@update', 'as' => 'admin.posts.update']);
-	delete('posts/{post}', ['uses' => 'Admin\PostsController@destroy', 'as' => 'admin.posts.delete']);
+	delete('posts/{trashedPost}', ['uses' => 'Admin\PostsController@destroy', 'as' => 'admin.posts.delete']);
 
 	// Terms
 	get('categories', ['uses' => 'Admin\TermsController@categoriesIndex', 'as' => 'admin.categories.index']);

@@ -45,7 +45,15 @@ class PostsController extends Controller {
 	{
 		$posts = $this->postRepo->getPaginated(['categories', 'author']);
 
+
 		return \View::make('admin.posts.index')->with(compact('posts'));
+	}
+
+	public function trash()
+	{
+		$posts = Post::onlyTrashed()->latest()->paginate(10);
+		$title = 'Trash';
+		return \View::make('admin.posts.index')->with(compact('posts', 'title'));
 	}
 
 	/**
@@ -146,10 +154,24 @@ class PostsController extends Controller {
 	 */
 	public function destroy(Post $post)
 	{
+		$alert = 'Post moved to trash';
+		
+		if ($post->trashed()) {
+			$alert = "Post permanently deleted";
+		}
+
 		$this->postRepo->delete($post);
 		
 		return redirect()->route('admin.posts.index')
-			->with(['alert' => 'Post moved to trash', 'alert-class' => 'success']);
+			->with(['alert' => $alert, 'alert-class' => 'success']);
+	}
+
+	public function restore(Post $post)
+	{
+		$this->postRepo->restore($post);
+
+		return redirect()->route('admin.posts.index')
+			->with(['alert' => 'Post Restored', 'alert-class' => 'success']);
 	}
 
 }

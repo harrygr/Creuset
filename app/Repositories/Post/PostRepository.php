@@ -43,4 +43,10 @@ interface PostRepository {
 	 * @return mixed
      */
 	public function delete(Post $post);
+
+	public function restore(Post $post);
+
+	public function count();
+	
+	public function trashedCount();
 }

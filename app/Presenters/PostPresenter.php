@@ -13,10 +13,10 @@ class PostPresenter extends Presenter {
 	}
 
 	private $statusClasses = [
-		'published'	=> 'success',
-		'draft'		=> 'warning',
-		'private'	=> 'danger',
-		'pending'	=> 'info',
+	'published'	=> 'success',
+	'draft'		=> 'warning',
+	'private'	=> 'danger',
+	'pending'	=> 'info',
 	];
 
 	public function statusLabel()
@@ -25,5 +25,16 @@ class PostPresenter extends Presenter {
 
 		$labelClass = array_get($this->statusClasses, $status, 'default');
 		return sprintf("<label class='label label-%s pull-right'>%s</label>", $labelClass, ucfirst($status));
+	}
+
+	public function indexLinks()
+	{
+		if ($this->model->trashed()) {
+			return sprintf('<a href="%s" data-method="put">Restore</a> | ', route('admin.posts.restore', [$this->model->id])) . 
+			sprintf('<a href="%s" data-method="delete" data-confirm="Are you sure?" class="text-danger" rel="nofollow">Delete Permanently</a>', route('admin.posts.delete', [$this->model->id]));
+		}
+
+		return sprintf('<a href="%s">Edit</a> | ', route('admin.posts.edit', [$this->model->id])) . 
+		sprintf('<a href="%s" data-method="delete" data-confirm="Are you sure?" class="text-danger" rel="nofollow">Trash</a>', route('admin.posts.delete', [$this->model->id]));
 	}
 }

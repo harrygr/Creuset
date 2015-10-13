@@ -1,7 +1,8 @@
 <?php namespace Creuset\Providers;
 
-use Illuminate\Routing\Router;
+use Creuset\Post;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Routing\Router;
 
 class RouteServiceProvider extends ServiceProvider {
 
@@ -24,11 +25,15 @@ class RouteServiceProvider extends ServiceProvider {
 	{
 		parent::boot($router);
 
-		$router->model('post', 'Creuset\Post');
 		$router->model('term', 'Creuset\Term');
 		$router->model('user', 'Creuset\User');
 		$router->model('image', 'Creuset\Image');
+		$router->model('post', 'Creuset\Post');
 		
+		$router->bind('trashedPost', function($id) {
+			return Post::withTrashed()->find($id);
+		});
+
 		$router->bind('username', function($username)
 		{
 			return \Creuset\User::where('username', $username)->firstOrFail();

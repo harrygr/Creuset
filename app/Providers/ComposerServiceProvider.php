@@ -2,6 +2,7 @@
 
 namespace Creuset\Providers;
 
+use Creuset\Repositories\Post\PostRepository;
 use Illuminate\Support\ServiceProvider;
 
 class ComposerServiceProvider extends ServiceProvider
@@ -20,6 +21,20 @@ class ComposerServiceProvider extends ServiceProvider
 
             $view->with(compact('roles'));
 
+        });
+
+        $this->givePostCountsToPostIndex();
+    }
+
+    private function givePostCountsToPostIndex()
+    {
+        view()->composer('admin.posts.index', function($view) {
+            $posts = $this->app->make(PostRepository::class);
+
+            $view->with([
+            'postCount' => $posts->count(),
+            'trashedCount' => $posts->trashedCount(),
+             ]);
         });
     }
 
