@@ -28,9 +28,9 @@ Posts
 			@foreach ($posts as $post)
 				<tr>
 					<td>
-						<strong>{{ $post->title }}</strong> {!! $post->present()->statusLabel() !!}
+						<strong>{{ $post->title }}</strong> {{ $post->present()->statusLabel() }}
 						<div class="row-actions">
-							{!! $post->present()->indexLinks() !!}
+							{{ $post->present()->indexLinks() }}
 						</div>
 					</td>
 					<td>{{ $post->author->name }}</td>
