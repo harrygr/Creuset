@@ -1,5 +1,9 @@
 <?php namespace Creuset\Presenters;
 
+use Illuminate\View\Expression;
+
+
+
 class ImagePresenter extends Presenter {
 
 	public function parent($attribute = 'title')
@@ -41,10 +45,11 @@ class ImagePresenter extends Presenter {
 
 	public function title()
 	{
+		$link = sprintf('<a href="%s" title="Permalink">%s</a>', $this->model->url(), basename($this->model->path));
 		if ($this->model->title) {
-			return sprintf("<strong>%s</strong><br>%s",  $this->model->title, basename($this->model->path));
+			return new Expression(sprintf("<strong>%s</strong><br>%s",  $this->model->title, $link));
 		}
 
-		return basename($this->model->path);
+		return new Expression($link);
 	}
 }

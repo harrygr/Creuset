@@ -10,17 +10,17 @@
 
     <div class="row">
       <div class="col-md-4">
-        <img class="media-object img-thumbnail img-responsive" v-attr="src: '/' + selectedImage.thumbnail_path" alt=""> 
+        <img class="media-object img-thumbnail img-responsive" v-attr="src: selectedImage.thumbnail_url" alt=""> 
       </div>
       <div  class="col-md-8">
         <div class="form-group">
           <label>URL: </label>
-          <input type="text" class="form-control input-sm" readonly value="{{ url() }}/@{{ selectedImage.path }}">
+          <input type="text" class="form-control input-sm" readonly value="@{{ selectedImage.url }}">
         </div>    
 
         <div class="form-group">
           <label>Thumbnail: </label>
-          <input type="text" class="form-control input-sm" readonly value="{{ url() }}/@{{ selectedImage.thumbnail_path }}">
+          <input type="text" class="form-control input-sm" readonly value="@{{ selectedImage.thumbnail_url }}">
         </div>
 
         <div class="form-group">
@@ -46,7 +46,7 @@
 
     <div class="row" v-if="hasImages">
       <div class="col-md-2 col-sm-3 col-xs-6 top-buffer" v-repeat="image: images">
-        <img v-attr="src: '/' + image.thumbnail_path" alt="" class="img-responsive img-thumbnail selectable" v-class="selected: isSelected(image.id)" v-on="click: selectedImage = image">
+        <img v-attr="src: image.thumbnail_url" alt="" class="img-responsive img-thumbnail selectable" v-class="selected: isSelected(image.id)" v-on="click: selectedImage = image">
       </div>
     </div>
 
@@ -116,6 +116,17 @@
       isSelected: function(id)
       {
         return this.selectedImage.id == id;
+      },
+
+      url: function(image, thumbnail)
+      {
+        thumbnail = thumbnail || false;
+
+        var url = '{{ url('/images') }}' + '/' + image.id;
+        if (thumbnail) {
+          url += '?thumbnail=1';
+        }
+        return url;
       }
     }
   });

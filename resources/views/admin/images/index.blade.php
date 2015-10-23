@@ -24,9 +24,9 @@ Images
             <tbody>
             @foreach ($images as $image)
                 <tr>
-                    <td><img src="/{{ $image->thumbnail_path }}" alt="" width="50" height="50"></td>
+                    <td><img src="{{ $image->thumbnail_url }}" alt="" width="50" height="50"></td>
                     <td>
-                    {!! $image->present()->title() !!}
+                    {{ $image->present()->title() }}
                     <br>
                     <a href="{{ route('admin.images.delete', $image->id) }}" id="delete-{{ $image->id }}" data-method="delete" class="text-danger" data-confirm="Are you sure?">Delete</a>
                     </td>

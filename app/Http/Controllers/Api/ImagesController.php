@@ -44,23 +44,4 @@ class ImagesController extends Controller
 
         return $image;
     }
-
-    public function show($filename)
-    {
-        $path = \Config::get('filesystems.images_location') . '/' . $filename;
-        if (!$this->filesystem->exists($path)) {
-            abort(404);
-        }
-
-        if (\Config::get('filesystems.default') == 's3') {
-            return redirect($this->getS3Url($path));
-        }
-        $file = $this->filesystem->get($path);
-        return Intervention::make($file)->response();
-    }
-
-    private function getS3Url($path)
-    {
-        return  $this->filesystem->getAdapter()->getClient()->getObjectUrl(\Config::get('filesystems.disks.s3.bucket'), $path);
-    }
 }

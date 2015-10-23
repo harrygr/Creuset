@@ -21,8 +21,6 @@ Route::get('login', ['uses' => 'Auth\AuthController@getLogin', 'as' => 'auth.log
 Route::post('login', ['uses' => 'Auth\AuthController@postLogin', 'as' => 'auth.login']);
 Route::get('logout', ['uses' => 'Auth\AuthController@getLogout', 'as' => 'auth.logout']);
 
-get(\Config::get('filesystems.images_location') .'/{filename}', ['uses' => 'Api\ImagesController@show', 'as' => 'admin.images.show']);
-
 /**
  * Admin Area
  */
