@@ -1,6 +1,7 @@
 <?php namespace Integration;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 use TestCase;
 
@@ -76,14 +77,13 @@ class ImagesTest extends TestCase
 		$this->notSeeInDataBase('images', ['id' => $image->id, 'title' => $image->title]);
 
 		// Ensure both image files have been deleted
-		$this->assertFileNotExists($image->full_path);
-		$this->assertFileNotExists($image->full_thumbnail_path);
+		$this->assertFalse(Storage::exists($image->path));
+		$this->assertFalse(Storage::exists($image->thumbnail_path));
 	}
 
 	private function cleanUpImage($image)
 	{
-		\File::delete($image->full_path);
-		\File::delete($image->full_thumbnail_path);
+		$image->deleteFiles();
 	}
 
 }

@@ -2,17 +2,22 @@
 
 namespace Creuset\Http\Controllers\Api;
 
-use Creuset\Image;
-use Creuset\Http\Requests;
-use Illuminate\Http\Request;
 use Creuset\Forms\AddImageToModel;
 use Creuset\Http\Controllers\Controller;
+use Creuset\Http\Requests;
+use Creuset\Image;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image as Intervention;
 
 class ImagesController extends Controller
 {
-    public function __construct()
+    private $filesystem;
+
+    public function __construct(Filesystem $filesystem)
     {
         $this->middleware('auth.basic');
+        $this->filesystem = $filesystem;
     }
 
     public function update(Request $request, Image $image)
@@ -36,6 +41,26 @@ class ImagesController extends Controller
         $file = $request->file('image');
 
         $image = (new AddImageToModel($post, $file))->save();
+
         return $image;
+    }
+
+    public function show($filename)
+    {
+        $path = \Config::get('filesystems.images_location') . '/' . $filename;
+        if (!$this->filesystem->exists($path)) {
+            abort(404);
+        }
+
+        if (\Config::get('filesystems.default') == 's3') {
+            return redirect($this->getS3Url($path));
+        }
+        $file = $this->filesystem->get($path);
+        return Intervention::make($file)->response();
+    }
+
+    private function getS3Url($path)
+    {
+        return  $this->filesystem->getAdapter()->getClient()->getObjectUrl(\Config::get('filesystems.disks.s3.bucket'), $path);
     }
 }

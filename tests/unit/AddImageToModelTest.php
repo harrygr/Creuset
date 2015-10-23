@@ -2,13 +2,14 @@
 
 namespace Creuset\Forms;
 
-use Mockery;
-use TestCase;
+use Creuset\Forms\AddImageToModel;
 use Creuset\Post;
 use Creuset\Services\Thumbnailer;
-use Creuset\Forms\AddImageToModel;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Mockery;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use TestCase;
 
 /**
 * 
@@ -23,20 +24,21 @@ class AddImageToModelTest extends TestCase {
 		$post = factory(Post::class)->create();
 
 		$thumbnail = Mockery::mock(Thumbnailer::class);
+		$filesystem = Mockery::mock(Filesystem::class);
 
 		$file = Mockery::mock(UploadedFile::class, [
-			'getClientOriginalName' => 'foo.jpg'
+			'getClientOriginalName' => 'foo.jpg',
 			]);
 
 		$thumbnail->shouldReceive('make')
 		->once()
-		->with(public_path('uploads/images/now_foo.jpg'), public_path('uploads/images/tn-now_foo.jpg'));
+		->with($file, 'uploads/images/tn-now_foo.jpg');
 
-		$file->shouldReceive('move')
+		$filesystem->shouldReceive('put')
 		->once()
-		->with(public_path('uploads/images'), 'now_foo.jpg');
+		->with('uploads/images/now_foo.jpg', 'abc123');
 
-		$form = (new AddImageToModel($post, $file, $thumbnail))->save();
+		$form = (new AddImageToModel($post, $file, $thumbnail, $filesystem))->save();
 
 		$this->assertCount(1, $post->images);
 	}
@@ -45,4 +47,9 @@ class AddImageToModelTest extends TestCase {
 function time()
 {
 	return 'now';
+}
+
+function file_get_contents($file)
+{
+	return 'abc123';
 }

@@ -29,5 +29,6 @@
         <env name="SESSION_DRIVER" value="array"/>
         <env name="DB_DRIVER" value="sqlite" />
         <env name="DB_PATH" value="testing.sqlite" />
+        <env name="DEFAULT_FILESYSTEM" value="local" />
     </php>
 </phpunit>

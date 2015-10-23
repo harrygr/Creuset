@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Storage;
 use Image as Intervention;
 
 $factory->define('Creuset\Post', function($faker) {
@@ -51,16 +52,16 @@ $factory->define('Creuset\Termable', function($faker) {
 
 $factory->define('Creuset\Image', function($faker) {
 	$filename = str_random() . '.jpg';
-	$image_path = public_path("uploads/images");
+	$image_path = "uploads/images";
 
-	if (!File::exists($image_path)) {
-		File::makeDirectory($image_path, 0777, true);
-	}
 
-	Intervention::make($faker->imageUrl())
-				->save("{$image_path}/{$filename}")
-				->fit(200)
-				->save("{$image_path}/tn-{$filename}");
+
+	$image = Intervention::make($faker->imageUrl());
+	Storage::put("{$image_path}/{$filename}", (string) $image->encode());
+				
+	$image->fit(200);
+	Storage::put("{$image_path}/tn-{$filename}", (string) $image->encode());
+
 	return [
 		'title' 		=> $faker->sentence,
 		'caption' 		=> $faker->paragraph,

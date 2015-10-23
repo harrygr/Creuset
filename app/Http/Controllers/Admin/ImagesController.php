@@ -3,10 +3,10 @@
 namespace Creuset\Http\Controllers\Admin;
 
 
-use Creuset\Image;
-use Creuset\Http\Requests;
-use Illuminate\Http\Request;
 use Creuset\Http\Controllers\Controller;
+use Creuset\Http\Requests;
+use Creuset\Image;
+use Illuminate\Http\Request;
 
 class ImagesController extends Controller
 {
@@ -23,13 +23,9 @@ class ImagesController extends Controller
 
     public function destroy($image)
     {
-        \File::delete(public_path($image->path));
-        \File::delete(public_path($image->thumbnail_path));
-
         $image->delete();
 
         return redirect()->route('admin.images.index')
                          ->with(['alert' => 'Image Deleted', 'alert-class' => 'success']);
     }
-
 }

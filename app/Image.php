@@ -2,9 +2,11 @@
 
 namespace Creuset;
 
-use Image as Intervention;
-use Illuminate\Database\Eloquent\Model;
 use Creuset\Presenters\PresentableTrait;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Image as Intervention;
 
 class Image extends Model
 {
@@ -30,7 +32,7 @@ class Image extends Model
      */
     public function baseDir()
     {
-        return 'uploads/images';
+        return \Config::get('filesystems.images_location');
     }
 
     /**
@@ -44,24 +46,18 @@ class Image extends Model
         $this->attributes['thumbnail_path'] = $this->baseDir() . '/tn-' . $filename;
     }
 
-    public function getFullPathAttribute()
-    {
-        return public_path($this->path);
-    }
-
-    public function getFullThumbnailPathAttribute()
-    {
-        return public_path($this->thumbnail_path);
-    }
-
     /**
-     * Generate a thumbnail and save on the filesystem
-     * @return void
+     * Delete the image's files from storage
      */
-    public function makeThumbnail()
+    public function deleteFiles()
     {
-        Intervention::make(public_path($this->path))
-            ->fit(200)
-            ->save(public_path($this->thumbnail_path));
+        $filesystem = app(Filesystem::class);
+        
+        if ($filesystem->exists($this->path)) {
+            $filesystem->delete($this->path);            
+        }
+        if ($filesystem->exists($this->thumbnail_path)) {
+            $filesystem->delete($this->thumbnail_path);
+        }
     }
 }

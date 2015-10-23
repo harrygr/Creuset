@@ -1,9 +1,10 @@
 <?php namespace Integration;
 
-use TestCase;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use TestCase;
 
 class PostsTest extends TestCase
 {
@@ -128,8 +129,8 @@ class PostsTest extends TestCase
 		// An Image instance (in JSON) should be returned
 		$responseData = json_decode($response->getContent());
 
-		$this->assertFileExists(public_path($responseData->path));
-		$this->assertFileExists(public_path($responseData->thumbnail_path));
+		$this->assertTrue(Storage::exists($responseData->path));
+		$this->assertTrue(Storage::exists($responseData->thumbnail_path));
 
 		// Ensure the image has been saved in the db and attached to our post
 		$this->seeInDatabase('images', [
@@ -140,7 +141,8 @@ class PostsTest extends TestCase
 			]);
 
 		// Clean up the file
-		\File::delete(public_path($responseData->path));
-		\File::delete(public_path($responseData->thumbnail_path));
+		Storage::delete($responseData->path);
+		Storage::delete($responseData->thumbnail_path);
+
 	}
 }

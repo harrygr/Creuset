@@ -15,7 +15,7 @@ return [
 	|
 	*/
 
-	'default' => 'local',
+	'default' => env('DEFAULT_FILESYSTEM', 'local'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -50,9 +50,10 @@ return [
 
 		's3' => [
 			'driver' => 's3',
-			'key'    => 'your-key',
-			'secret' => 'your-secret',
-			'bucket' => 'your-bucket',
+			'key'    => env('AWS_KEY'),
+			'secret' => env('AWS_SECRET'),
+			'bucket' => env('S3_BUCKET'),
+			'region' => env('S3_REGION'),
 		],
 
 		'rackspace' => [
@@ -65,5 +66,7 @@ return [
 		],
 
 	],
+
+	'images_location' => 'uploads/images',
 
 ];
