@@ -11,12 +11,24 @@ require('vue-resource');
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name=csrf-token]').prop('content');
 
-var postContent = require('./vue-components/post-content.js');
-var postMeta = require('./vue-components/post-meta.js');
+//var postContent = require('./vue-components/post-content.js');
+//var postMeta = require('./vue-components/post-meta.js');
+
 
 // Larail allows sending POST/PUT/DELETE requests using an a tag
 var larail = require('./plugins/larail.js');
 
+Vue.config.debug = true;
+new Vue({
+	el: '#admin',
+
+	components: {
+		crdatepicker: require('./components/crdatepicker.vue'),
+		crmarkarea:  require('./components/crmarkarea.vue'),
+		'cr-title-slugger': require('./components/cr-title-slugger.vue'),
+		'cr-category-chooser': require('./components/cr-category-chooser.vue'),
+	}
+})
 
 // Activate select2 for multi-select
 var select2 = require('select2');

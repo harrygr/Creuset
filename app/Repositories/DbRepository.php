@@ -9,7 +9,7 @@ abstract class DbRepository {
 	 * @param array $with
 	 * @return \Illuminate\Support\Collection|mixed|null|static
 	 */
-	public function getById($id, $with = [])
+	public function fetch($id, $with = [])
 	{
 		return $this->model->with($with)->find($id);
 	}
@@ -18,7 +18,7 @@ abstract class DbRepository {
 	 * @param array $with
 	 * @return mixed
 	 */
-	public function getAll($with = [])
+	public function all($with = [])
 	{
 		return $this->model->with($with)->latest()->get();
 	}

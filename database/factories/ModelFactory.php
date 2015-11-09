@@ -19,6 +19,22 @@ $factory->define('Creuset\Post', function($faker) {
 	];
 });
 
+$factory->define('Creuset\Product', function($faker) {
+	$name = $faker->sentence(3);
+	$price = $faker->numberBetween(3,300);
+
+	return [
+		'name' => $name,
+		'slug' => str_slug($name),
+		'sku' => $faker->bothify('###????'),
+		'description' => $faker->paragraph(3),
+		'price' => $price,
+		'sale_price' => $faker->randomElement([null, $faker->numberBetween(2, $price)]),
+		'stock_qty' => $faker->numberBetween(0,15),
+		'user_id'	   => factory(Creuset\User::class)->create()->id,
+	];
+});
+
 $factory->define('Creuset\User', function($faker) {
 
 	$name = $faker->unique()->name;

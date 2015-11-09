@@ -2,13 +2,17 @@
 
 use Carbon\Carbon;
 use Creuset\Image;
+use Creuset\Contracts\Imageable;
 use Creuset\Presenters\PresentableTrait;
+use Creuset\Traits\AttachesImages;
+use Creuset\Traits\Termable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
 class Post extends Model implements Imageable {
 
-	use PresentableTrait, SoftDeletes;
+	use PresentableTrait, SoftDeletes, Termable, AttachesImages;
 	
 	/**
      * The attributes that should be mutated to dates.
@@ -55,6 +59,7 @@ class Post extends Model implements Imageable {
 			$this->attributes['published_at'] = new Carbon($date);
 	}
 
+
 	/**
 	 * If the post doesn't have a user ID set we'll return the ID of the logged in user
 	 * @param  integer $userId 
@@ -82,41 +87,7 @@ class Post extends Model implements Imageable {
 		return $this->hasMany('\Creuset\Post');
 	}
 
-	public function terms()
-	{
-		return $this->morphToMany('\Creuset\Term', 'termable');
-	}
-
-	public function categories()
-	{
-		return $this->morphToMany('\Creuset\Term', 'termable')
-		->where('taxonomy', 'category');
-	}
-
-	public function tags()
-	{
-		return $this->morphToMany('\Creuset\Term', 'termable')
-		->where('taxonomy', 'tag');
-	}
-
-	/**
-	 * A post has many images
-	 * @return Relation
-	 */
-	public function images()
-	{
-		return $this->morphMany('\Creuset\Image', 'imageable');
-	}
-
-	/**
-	 * Attach an image to the current Post
-	 * @param Image $image
-	 */
-	public function addImage(Image $image)
-	{
-		return $this->images()->save($image);
-	}
-
+	
 	/**
 	 * Whether the post is not yet persisted
 	 * @return boolean

@@ -23,27 +23,27 @@ class PostsController extends Controller {
 	/**
 	 * @var PostRepository
 	 */
-	private $postRepo;
+	private $posts;
 	/**
 	 * @var TermRepository
 	 */
-	private $termRepo;
+	private $terms;
 
-	public function __construct(PostRepository $postRepo, TermRepository $termRepo)
+	public function __construct(PostRepository $posts, TermRepository $terms)
 	{
 		$this->middleware('auth');
-		$this->postRepo = $postRepo;
-		$this->termRepo = $termRepo;
+		$this->posts = $posts;
+		$this->terms = $terms;
 	}
 
 
 	/**
 	 * @return Response
-	 * @internal param PostRepository $postRepo
+	 * @internal param PostRepository $posts
 	 */
 	public function index()
 	{
-		$posts = $this->postRepo->getPaginated(['categories', 'author']);
+		$posts = $this->posts->getPaginated(['categories', 'author']);
 
 
 		return \View::make('admin.posts.index')->with(compact('posts'));
@@ -59,15 +59,15 @@ class PostsController extends Controller {
 	/**
 	 * Show the form for creating a new post.
 	 *
-	 * @param DbTermRepository $termRepo
+	 * @param DbTermRepository $terms
 	 * @param Post $post
 	 * @return Response
 	 */
-	public function create(TermRepository $termRepo, Post $post)
+	public function create(TermRepository $terms, Post $post)
 	{
 		$selectedCategories = [];
-		$categoryList = $termRepo->getCategoryList();
-		$tagList = $termRepo->getTagList();
+		$categoryList = $terms->getCategoryList();
+		$tagList = $terms->getTagList();
 		$post->type = 'post';
 
 		return view('admin.posts.create')->with(compact(
@@ -83,12 +83,12 @@ class PostsController extends Controller {
 	 *
 	 * @param CreatePostRequest $request
 	 * @return Response
-	 * @internal param PostRepository $postRepo
+	 * @internal param PostRepository $posts
 	 * @internal param Post $post
 	 */
 	public function store(CreatePostRequest $request)
 	{
-		$post = $this->postRepo->create($request->all());
+		$post = $this->posts->create($request->all());
 
 		return redirect()->route('admin.posts.edit', [$post->id])
 			->with(['alert' => 'Post saved', 'alert-class' => 'success']);
@@ -100,18 +100,18 @@ class PostsController extends Controller {
 	 * Show the form for editing the specified resource.
 	 *
 	 * @param Post $post
-	 * @param DbTermRepository $termRepo
+	 * @param DbTermRepository $terms
 	 * @return Response
 	 * @internal param int $id
 	 */
-	public function edit(Post $post, TermRepository $termRepo)
+	public function edit(Post $post, TermRepository $terms)
 	{
 		$post->load('categories', 'tags');
 
 		$selectedCategories = $post->categories->lists('id')->toArray();
 		
-		$categoryList = $termRepo->getCategoryList($post);
-		$tagList = $termRepo->getTagList();
+		$categoryList = $terms->getCategoryList($post);
+		$tagList = $terms->getTagList();
 
 		return view('admin.posts.edit')->with(compact(
 			'post',
@@ -132,9 +132,9 @@ class PostsController extends Controller {
 	public function update(Post $post, UpdatePostRequest $request)
 	{
 		$attributes = $request->all();
-		$attributes['terms'] = $this->termRepo->process($request->input('terms', []), 'tag');
+		$attributes['terms'] = $this->terms->process($request->input('terms', []), 'tag');
 
-		$this->postRepo->update($post, $attributes);
+		$this->posts->update($post, $attributes);
 		$alert = "Post Updated!";
 
 		return redirect()->route('admin.posts.edit', [$post])
@@ -160,7 +160,7 @@ class PostsController extends Controller {
 			$alert = "Post permanently deleted";
 		}
 
-		$this->postRepo->delete($post);
+		$this->posts->delete($post);
 		
 		return redirect()->route('admin.posts.index')
 			->with(['alert' => $alert, 'alert-class' => 'success']);
@@ -168,7 +168,7 @@ class PostsController extends Controller {
 
 	public function restore(Post $post)
 	{
-		$this->postRepo->restore($post);
+		$this->posts->restore($post);
 
 		return redirect()->route('admin.posts.index')
 			->with(['alert' => 'Post Restored', 'alert-class' => 'success']);

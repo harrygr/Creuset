@@ -33,9 +33,8 @@ class UpdatePostRequest extends PostRequest {
         $this->sanitize();
         
 		return [
-            'title'			=> 'required',
-            'slug'			=> 'required|alpha_dash|unique:posts,slug,' . $this->route('post')->id,
-            'published_at'	=> 'required|date',
+            'slug'			=> 'alpha_dash|unique:posts,slug,' . $this->route('post')->id,
+            'published_at'	=> 'date',
             'status'		=> 'alpha_dash',
             'type'			=> 'alpha_dash',
 		];

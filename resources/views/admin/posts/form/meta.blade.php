@@ -6,8 +6,8 @@
             <div class="date">
                 {!! Form::input('datetime-local', 'published_at', isset($post->published_at) ? $post->published_at->format('Y-m-d\TH:i:s') : date('Y-m-d\TH:i:s'), ['class' => 'form-control']) !!}
             </div>
-
         </div>
+        
         <div class="form-group">
             {!! Form::label('status') !!}
             {!! Form::select('status', Creuset\Post::$postStatuses, null, ['class' => 'form-control']) !!}

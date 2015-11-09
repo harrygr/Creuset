@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset;
+namespace Creuset\Contracts;
 
 use Creuset\Image;
 

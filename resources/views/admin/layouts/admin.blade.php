@@ -31,7 +31,7 @@
 </head>
 
 <body>
-
+    <div id="admin">
     <div id="wrapper">
 
         <!-- Sidebar -->
@@ -41,7 +41,7 @@
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
-            @include('admin.layouts.nav')
+        @include('admin.layouts.nav')
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
@@ -55,6 +55,7 @@
 
     </div>
     <!-- /#wrapper -->
+    </div>
 
     @include('admin.layouts.footer')
 

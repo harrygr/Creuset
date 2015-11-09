@@ -35,6 +35,12 @@ Route::group(['prefix' => 'admin'], function()
 	post('posts', ['uses' => 'Admin\PostsController@store', 'as' => 'admin.posts.store']);
 	post('posts/{post}/image', ['uses' => 'Api\ImagesController@store', 'as' => 'posts.image.store']);
 
+	get('products/create', ['uses' => 'Admin\ProductsController@create', 'as' => 'admin.products.create']);
+	get('products/{product}/edit', ['uses' => 'Admin\ProductsController@edit', 'as' => 'admin.products.edit']);
+	post('products', ['uses' => 'Admin\ProductsController@store', 'as' => 'admin.products.store']);
+	patch('products/{product}', ['uses' => 'Admin\ProductsController@update', 'as' => 'admin.products.update']);
+	get('products', ['uses' => 'Admin\ProductsController@index', 'as' => 'admin.products.index']);
+	delete('products/{trashedProduct}', ['uses' => 'Admin\ProductsController@destroy', 'as' => 'admin.products.delete']);
 
 	put('posts/{trashedPost}/restore', ['uses' => 'Admin\PostsController@restore', 'as' => 'admin.posts.restore']);
 	get('posts/{post}/edit', ['uses' => 'Admin\PostsController@edit', 'as' => 'admin.posts.edit']);

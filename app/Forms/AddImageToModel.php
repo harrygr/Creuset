@@ -3,7 +3,7 @@
 namespace Creuset\Forms;
 
 use Creuset\Image;
-use Creuset\Imageable;
+use Creuset\Contracts\Imageable;
 use Creuset\Services\Thumbnailer;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

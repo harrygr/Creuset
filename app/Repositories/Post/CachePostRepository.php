@@ -23,12 +23,12 @@ class CachePostRepository implements PostRepository {
      * @param array $with
      * @return mixed
      */
-    public function getById($id, $with = [])
+    public function fetch($id, $with = [])
     {
         $withs = implode('-', $with);
         return \Cache::remember("post.{$id}.{$withs}", env('CACHE_TIME'), function() use ($id)
         {
-           return $this->repository->getById($id);
+           return $this->repository->fetch($id);
         });
     }
 

@@ -11,7 +11,7 @@ interface PostRepository {
 	 * @param array $with
 	 * @return mixed
 	 */
-	public function getById($id, $with = []);
+	public function fetch($id, $with = []);
 
 	/**
 	 * @param array $with

@@ -7,6 +7,7 @@
     <li>
         <a href="{{ route('admin.dashboard') }}"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
     </li>
+
     <li>
         <a href="{{ route('admin.posts.index') }}"><i class="fa fa-fw fa-files-o"></i> Posts</a>
         <ul>
@@ -14,6 +15,14 @@
             <li><a href="{{ route('admin.posts.create') }}">New Post</a></li>
             <li><a href="{{ route('admin.categories.index') }}">Categories</a></li>
             <li><a href="{{ route('admin.tags.index') }}">Tags</a></li>
+        </ul>
+    </li>
+
+    <li>
+        <a href="{{ route('admin.products.index') }}"><i class="fa fa-fw fa-shopping-cart"></i> Products</a>
+        <ul>
+            <li><a href="{{ route('admin.products.index') }}">All Products</a></li>
+            <li><a href="{{ route('admin.products.create') }}">New Product</a></li>
         </ul>
     </li>
 

@@ -48,7 +48,7 @@ class PostsTest extends TestCase  {
 	{
 		$postDummy = factory('Creuset\Post')->create();
 
-		$post = $this->posts->getById($postDummy->id);
+		$post = $this->posts->fetch($postDummy->id);
 		$this->assertEquals($post->slug, $postDummy->slug);
 
 		$postDummy = factory('Creuset\Post')->create();

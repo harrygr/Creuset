@@ -1,0 +1,17 @@
+#postContent textarea {
+	font-family: $font-family-monospace;
+}
+
+#category-checkboxes {
+	max-height: 150px;
+	overflow-y: auto;
+	margin-bottom: 15px;
+}
+
+.post-title-input {
+    border: 0;
+    border-bottom: 1px #ccc solid;
+    width: 100%;
+    font-size: 29px;
+    outline: none;
+}

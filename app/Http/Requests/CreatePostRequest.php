@@ -28,6 +28,7 @@ class CreatePostRequest extends PostRequest {
 			'title'	=> 'required',
 			'slug'	=> 'required|unique:posts,slug',
 			'published_at' => 'required|date',
+			'user_id' => 'required|integer',
 		];
 	}
 

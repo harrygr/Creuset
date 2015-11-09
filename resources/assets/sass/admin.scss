@@ -1,0 +1,41 @@
+@import "admin/bootstrap";
+
+@import "admin/sidebar";
+@import "admin/post";
+
+//@import "vendor/jquery.pagedown-bootstrap.less";
+// @import "vendor/bootstrap-datetimepicker.less";
+//@import "vendor/select2.less";
+
+@import "dropzone/src/dropzone";
+
+@import "select2/src/scss/core";
+
+body, label, .checkbox label {
+	font-weight: 300;
+}
+body {
+  	background-color: $gray-lighter;
+}
+
+.top-buffer {
+  margin-top: 15px;
+}
+
+.select2 {
+  width: 100%!important;
+}
+
+.nav-avatar {
+	float: left;
+	position: relative;
+	left: -5px;
+	top:-5px;
+}
+
+.img-thumbnail.selected {
+    border-color: $gray-dark;
+}
+.selectable {
+    cursor: pointer;
+}
