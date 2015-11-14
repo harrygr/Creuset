@@ -22,7 +22,7 @@ class CreateTermRequest extends Request {
 	public function rules()
 	{
 		// If no category in the request we assume it's a category as that's the db default
-		$taxonomy = $this->get('taxonomy', 'category'); 
+		$taxonomy = $this->get('taxonomy', 'category');
 
 		return [
 			'term'	=> 'required|unique:terms,term,NULL,id,taxonomy,' . $taxonomy // term is only unique for a given taxonomy

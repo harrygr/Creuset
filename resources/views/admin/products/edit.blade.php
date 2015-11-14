@@ -1,10 +1,13 @@
 @extends('admin.layouts.admin')
 
 @section('title')
-Edit Post
+Edit Product
 @stop
 
 @section('admin.content')
+
+@include('partials.nav')
+
 <h1>Edit Product</h1>
 
 @include('partials.errors')

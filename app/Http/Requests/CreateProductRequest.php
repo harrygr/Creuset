@@ -27,8 +27,8 @@ class CreateProductRequest extends Request
             'name'  => 'required',
             'slug'  => 'required|alpha_dash|unique:products,slug',
             'sku'   => 'unique:products,sku',
-            'price' => 'numeric',
-            'sale_price' => 'numeric',
+            'price' => 'numeric|min:0',
+            'sale_price' => 'numeric|min:0',
             'stock_qty' => 'numeric',
             'user_id' => 'required|integer',
         ];

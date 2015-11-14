@@ -2,13 +2,12 @@
 
 namespace Creuset\Http\Controllers\Api;
 
+use Creuset\Image;
+use Illuminate\Http\Request;
+use Creuset\Contracts\Imageable;
 use Creuset\Forms\AddImageToModel;
 use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests;
-use Creuset\Image;
 use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image as Intervention;
 
 class ImagesController extends Controller
 {
@@ -31,17 +30,29 @@ class ImagesController extends Controller
      * @param  Request
      * @return Image The stored image
      */
-    public function store(Request $request)
+    public function store(Imageable $imageable, Request $request)
     {
     	$this->validate($request, [
             'image' => 'required|mimes:jpg,jpeg,png,bmp,gif,svg'
             ]);
 
-        $post = $request->route('post');
         $file = $request->file('image');
 
-        $image = (new AddImageToModel($post, $file))->save();
+        $image = (new AddImageToModel($imageable, $file))->save();
 
         return $image;
+    }
+
+    public function destroy(Image $image)
+    {
+        $image->deleteFiles();
+        $image->delete();
+        return 'Image Deleted';
+
+    }
+
+    public function images(Imageable $imageable)
+    {
+        return $imageable->images;
     }
 }

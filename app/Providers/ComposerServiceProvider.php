@@ -23,20 +23,14 @@ class ComposerServiceProvider extends ServiceProvider
 
         });
 
-        $this->givePostCountsToPostIndex();
+        view()->composer(
+            ['admin.products.images', 'admin.products.edit'],
+            \Creuset\Composers\NavViewComposer::class . '@productLinks'
+        );
+
+        view()->composer('admin.posts.index', \Creuset\Composers\Admin\PostViewComposer::class . '@postCount');
     }
 
-    private function givePostCountsToPostIndex()
-    {
-        view()->composer('admin.posts.index', function($view) {
-            $posts = $this->app->make(PostRepository::class);
-
-            $view->with([
-            'postCount' => $posts->count(),
-            'trashedCount' => $posts->trashedCount(),
-             ]);
-        });
-    }
 
     /**
      * Register the application services.

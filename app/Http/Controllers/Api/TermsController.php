@@ -14,6 +14,12 @@ class TermsController extends Controller
 	public function __construct(TermRepository $terms)
 	{
 		$this->terms = $terms;
+		$this->middleware('auth', ['only' => ['store', 'storeCategory']]);
+	}
+
+	public function terms($taxonomy)
+	{
+		return $this->terms->getTerms($taxonomy);
 	}
 
 	public function categories()
@@ -29,5 +35,10 @@ class TermsController extends Controller
 	public function storeCategory(CreateTermRequest $request)
 	{
 		return $this->terms->createCategory($request->get('term'));
+	}
+
+	public function store(CreateTermRequest $request)
+	{
+		return $this->terms->create($request->all());
 	}
 }

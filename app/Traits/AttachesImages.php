@@ -23,4 +23,13 @@ trait AttachesImages {
 		return $this->images()->save($image);
 	}
 
+	/**
+	 * The field to use to display the parent name
+	 * @return string
+	 */
+	public function getImageableField()
+	{
+		return 'title';
+	}
+
 }

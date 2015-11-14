@@ -26,7 +26,7 @@ $factory->define('Creuset\Product', function($faker) {
 	return [
 		'name' => $name,
 		'slug' => str_slug($name),
-		'sku' => $faker->bothify('###????'),
+		'sku' => strtoupper($faker->unique()->bothify('???###')),
 		'description' => $faker->paragraph(3),
 		'price' => $price,
 		'sale_price' => $faker->randomElement([null, $faker->numberBetween(2, $price)]),

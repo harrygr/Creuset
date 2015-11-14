@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder {
 		'termables',
 		'terms',
 		'posts',
+		'products',
 		'users',
 		'roles',
 		'images',
@@ -27,11 +28,13 @@ class DatabaseSeeder extends Seeder {
 	public function run()
 	{
 		$this->cleanDatabase();
+		$this->command->getOutput()->writeln("Truncated Tables");
 
 		Model::unguard();
 
 		$this->call('UsersTableSeeder');
 		$this->call('PostsTableSeeder');
+		$this->call('ProductsTableSeeder');
 		$this->call('TermsTableSeeder');
 		$this->call('TermablesTableSeeder');
 

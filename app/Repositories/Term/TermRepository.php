@@ -5,6 +5,13 @@
 use Illuminate\Database\Eloquent\Model;
 
 interface TermRepository {
+
+    /**
+     * @param $taxonomy
+     * @return mixed
+     */
+    public function getTerms($taxonomy);
+    
     /**
      * Get all the categories
      *
@@ -40,14 +47,16 @@ interface TermRepository {
 
     public function createCategory($term, $slug = null);
 
+    public function create($attributes);
+
     /**
      * Process an array of mixed string and numneric terms, create a new term for each string
      * 
      * @param  array $terms The terms to process
-     * @param  string $as   The taxonomy of the terms in question
+     * @param  string $taxonomy   The taxonomy of the terms in question
      * @return array        An array of the ids of terms, including the newly created ones
      */
-    public function process($terms, $as = 'tag');
+    public function process($terms, $taxonomy = 'tag');
 
 
 }

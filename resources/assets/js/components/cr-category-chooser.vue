@@ -1,7 +1,7 @@
 <template>
     <div class="panel panel-default" id="postCategories">
         <div class="panel-heading">
-            Categories
+            {{ heading || 'Categories' }}
         </div>
 
 
@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="input-group">
-                <input type="text" class="form-control" v-model="newCategory" @keydown.enter="addCategory" placeholder="New Category">
+                <input type="text" class="form-control" v-model="newCategory" @keydown.enter="addCategory" placeholder="New {{ taxonomy | unsluggify }}">
                 <span class="input-group-btn">
                     <button class="btn btn-default" @click="addCategory"><i class="fa fa-fw {{ addCatButtonClass }}"></i></button>
                 </span>
@@ -28,11 +28,10 @@
     var $ = require('jquery');
 
     module.exports = {
-        props: ['checkedcategories'],
+        props: ['checkedcategories', 'taxonomy', 'heading'],
 
         data: function() {
             return {
-                //checkedCategories: [],
                 categories: [],
                 newCategory: '',
                 addCatButtonClass: 'fa-plus',
@@ -49,17 +48,19 @@
 
         ready: function()
         {
+            this.taxonomy = this.taxonomy || 'category'
             this.fetchCategories();
+        },
 
+        filters: {
+            unsluggify: require('../filters/unsluggify.js'),
         },
 
         methods: {
             fetchCategories: function()
             {
-                console.log(this.checkedcategories);
-                //this.checkedCategories = JSON.parse(this.checkedCategories);
-                //this.checkedCategories = [];
-                this.$http.get('/api/categories', function(categories)
+
+                this.$http.get('/api/terms/' + this.taxonomy, function(categories)
                 {
                     this.categories = categories.map(function(category)
                     {
@@ -78,7 +79,8 @@
 
                 if (!this.newCategory)
                 {
-                    this.displayErrors(["Please provide a category"]);
+                    var unsluggify = require('../filters/unsluggify.js');
+                    this.displayErrors(["Please provide a " + unsluggify(this.taxonomy)]);
                     return false;
                 }
 
@@ -86,11 +88,11 @@
 
                 var postData = {
                     term: this.newCategory,
-                    taxonomy: 'category',
+                    taxonomy: this.taxonomy,
                     _token: $("meta[name=csrf-token]").attr('content')
                 };
 
-                this.$http.post('/api/categories', postData)
+                this.$http.post('/api/terms', postData)
                 .success(function(newCategory)
                 {
                     // On success get the returned newly created term and append to the existing

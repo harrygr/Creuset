@@ -37,7 +37,7 @@ Products
 					<td>{{ $product->sku }}</td>
 					<td>{{ $product->stock_qty }}</td>
 					<td>{{ $product->present()->price() }}</td>
-					<td></td>
+					<td>{{ $product->present()->categoryList() }}</td>
 				</tr>
 			@endforeach
 			</tbody>

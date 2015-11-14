@@ -33,14 +33,22 @@ Route::group(['prefix' => 'admin'], function()
 	get('posts/create', ['uses' => 'Admin\PostsController@create', 'as' => 'admin.posts.create']);
 	get('posts/trash', ['uses' => 'Admin\PostsController@trash', 'as' => 'admin.posts.trash']);
 	post('posts', ['uses' => 'Admin\PostsController@store', 'as' => 'admin.posts.store']);
+
+	// Deprecate this in favor of generic images route
 	post('posts/{post}/image', ['uses' => 'Api\ImagesController@store', 'as' => 'posts.image.store']);
 
+	/**
+	 * PRODUCTS
+	 */
 	get('products/create', ['uses' => 'Admin\ProductsController@create', 'as' => 'admin.products.create']);
 	get('products/{product}/edit', ['uses' => 'Admin\ProductsController@edit', 'as' => 'admin.products.edit']);
+	get('products/{product}/images', ['uses' => 'Admin\ProductsController@images', 'as' => 'admin.products.images'] );
 	post('products', ['uses' => 'Admin\ProductsController@store', 'as' => 'admin.products.store']);
 	patch('products/{product}', ['uses' => 'Admin\ProductsController@update', 'as' => 'admin.products.update']);
 	get('products', ['uses' => 'Admin\ProductsController@index', 'as' => 'admin.products.index']);
 	delete('products/{trashedProduct}', ['uses' => 'Admin\ProductsController@destroy', 'as' => 'admin.products.delete']);
+	post('products/{product}/image', ['uses' => 'Api\ImagesController@store', 'as' => 'admin.products.attach_image']);
+
 
 	put('posts/{trashedPost}/restore', ['uses' => 'Admin\PostsController@restore', 'as' => 'admin.posts.restore']);
 	get('posts/{post}/edit', ['uses' => 'Admin\PostsController@edit', 'as' => 'admin.posts.edit']);
@@ -58,7 +66,6 @@ Route::group(['prefix' => 'admin'], function()
 	delete('terms/{term}', ['uses' => 'Admin\TermsController@destroy', 'as' => 'admin.terms.delete']);
 
 	get('images', ['uses' => 'Admin\ImagesController@index', 'as' => 'admin.images.index']);
-
 	delete('images/{image}', ['uses' => 'Admin\ImagesController@destroy', 'as' => 'admin.images.delete']);
 
 	// Users
@@ -78,11 +85,17 @@ Route::group(['prefix' => 'admin'], function()
  */
 Route::group(['prefix' => 'api'], function()
 {
+	get('terms/{taxonomy}', ['uses' => 'Api\TermsController@terms', 'as' => 'api.terms']);
+	post('terms', ['uses' => 'Api\TermsController@store', 'as' => 'api.terms.store']);
+	
 	get('categories', ['uses' => 'Api\TermsController@categories', 'as' => 'api.categories']);
-	post('categories', ['uses' => 'Api\TermsController@storeCategory', 'as' => 'api.terms']);
+	post('categories', ['uses' => 'Api\TermsController@storeCategory', 'as' => 'api.categories']);
 
-	get('posts/{post}/images', ['uses' => 'Api\PostsController@images', 'as' => 'api.posts.images']);
+	get('posts/{post}/images', ['uses' => 'Api\ImagesController@images', 'as' => 'api.posts.images']);
+	get('products/{product}/images', ['uses' => 'Api\ImagesController@images', 'as' => 'api.products.images']);
+
 
 	patch('images/{image}', ['uses' => 'Api\ImagesController@update', 'as' => 'api.images.update']);
+	delete('images/{image}', ['uses' => 'Api\ImagesController@destroy', 'as' => 'api.images.destroy']);
 
 });

@@ -39,7 +39,7 @@ class DbTermRepository implements TermRepository {
      * @param $taxonomy
      * @return mixed
      */
-    protected function getTerms($taxonomy)
+    public function getTerms($taxonomy)
     {
         return Term::where('taxonomy', $taxonomy)->orderBy('term')->get();
     }
@@ -80,12 +80,14 @@ class DbTermRepository implements TermRepository {
 
     public function createTag($term, $slug = null)
     {
-        return $this->create($term, 'tag', $slug);
+        $taxonomy = 'tag';
+        return $this->create(compact('term', 'slug', 'taxonomy'));   
     }
 
     public function createCategory($term, $slug = null)
     {
-        return $this->create($term, 'category', $slug);
+        $taxonomy = 'category';
+        return $this->create(compact('term', 'slug', 'taxonomy'));
     }
 
 
@@ -97,25 +99,21 @@ class DbTermRepository implements TermRepository {
      * @param  string $slug     The slug of the term. A slug will be automatically generated if nothing passed
      * @return Term             The newly created term object
      */
-    private function create($term, $taxonomy, $slug = null)
+    public function create($attributes)
     {
-        if (!$slug) $slug = str_slug($term);
+        if (!isset($attributes['slug']) or !$attributes['slug']) $attributes['slug'] = str_slug($attributes['term']);
 
-        return Term::create([
-            'term'  => $term,
-            'taxonomy'  => $taxonomy,
-            'slug'      => $slug,
-        ]);
+        return Term::create($attributes);
     }
 
     /**
      * Process an array of mixed string and numneric terms, create a new term for each string
      * 
      * @param  array $terms The terms to process
-     * @param  string $as   The taxonomy of the terms in question
+     * @param  string $taxonomy   The taxonomy of the terms in question
      * @return array        An array of the ids of terms, including the newly created ones
      */
-    public function process($terms, $as = 'tag')
+    public function process($terms, $taxonomy = 'tag')
     {
         // extract the input into separate integer and string arrays
         $currentTerms = array_filter($terms, 'is_numeric');     // [1, 3, 5]
@@ -124,7 +122,7 @@ class DbTermRepository implements TermRepository {
         // Create a new tag for each string in the input and update the current tags array
         foreach ($newTerms as $newTerm)
         {
-            if ($term = $this->create($newTerm, $as))
+            if ($term = $this->create(['term' => $newTerm, 'taxonomy' => $taxonomy]))
                 $currentTerms[] = $term->id;
         }
 

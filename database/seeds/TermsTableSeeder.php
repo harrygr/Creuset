@@ -11,11 +11,11 @@ class TermsTableSeeder extends Seeder {
 
 	public function run()
 	{
-		$taxonomies = ['category', 'tag'];
+		$taxonomies = ['category', 'tag', 'product_category'];
 		$usedWords = [];
 		$this->faker = Faker::create();
 
-		foreach (range(1,15) as $index)
+		foreach (range(1,30) as $index)
 		{
 			$term = $this->getUniqueWord();
 
@@ -32,12 +32,6 @@ class TermsTableSeeder extends Seeder {
 	 */
 	private function getUniqueWord()
 	{
-		$word = $this->faker->word(1);
-		if (! in_array($word, $this->usedWords))
-		{
-			$this->usedWords[] = $word;
-			return $word;
-		}
-		return $this->getUniqueWord();
+		return str_replace('.', '', $this->faker->unique()->sentence(2));
 	}
 }

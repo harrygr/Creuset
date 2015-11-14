@@ -14,12 +14,16 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name=csrf-token]').prop('conte
 //var postContent = require('./vue-components/post-content.js');
 //var postMeta = require('./vue-components/post-meta.js');
 
+String.prototype.toProperCase = function () {
+    return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+};
+
 
 // Larail allows sending POST/PUT/DELETE requests using an a tag
 var larail = require('./plugins/larail.js');
 
 Vue.config.debug = true;
-new Vue({
+global.vm = new Vue({
 	el: '#admin',
 
 	components: {
@@ -27,6 +31,7 @@ new Vue({
 		crmarkarea:  require('./components/crmarkarea.vue'),
 		'cr-title-slugger': require('./components/cr-title-slugger.vue'),
 		'cr-category-chooser': require('./components/cr-category-chooser.vue'),
+		'cr-imageable-gallery': require('./components/cr-imageable-gallery.vue'),
 	}
 })
 

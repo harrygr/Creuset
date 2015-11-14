@@ -8,6 +8,7 @@ use Creuset\Http\Requests\CreateProductRequest;
 use Creuset\Http\Requests\UpdateProductRequest;
 use Creuset\Product;
 use Creuset\Repositories\Product\ProductRepository;
+use Creuset\Repositories\Term\TermRepository;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
@@ -28,29 +29,41 @@ class ProductsController extends Controller
         var_dump(Product::all()->toArray());
     }
 
-    public function create()
+    public function create(Product $product)
     {
-    	$product = new Product;
-
     	return view('admin.products.create')->with(compact('product'));
     }
 
     public function store(CreateProductRequest $request)
     {
     	$this->products->create($request->all());
-    	return redirect()->route('admin.products.index')
+
+    	return redirect()->route('admin.products.edit', $product)
                          ->withAlert('Product Saved')
                          ->with('alert-class', 'success');
     }
 
     public function edit(Product $product)
     {
-    	return view('admin.products.edit')->with(compact('product'));
+        $selected_product_categories = $product->terms()->where('taxonomy', 'product_category')->lists('id');
+
+    	return view('admin.products.edit')->with(compact('product', 'selected_product_categories'));
     }
 
     public function update(Product $product, UpdateProductRequest $request)
     {
     	$product->update($request->all());
-    	return redirect()->route('admin.products.index')->withAlert('Product Updated')->with('alert-class', 'success');
+        if ($request->has('terms')) {
+            $product->terms()->sync($request->terms);
+        }
+
+    	return redirect()->route('admin.products.edit', $product)
+                         ->withAlert('Product Updated')
+                         ->with('alert-class', 'success');
+    }
+
+    public function images(Product $product)
+    {
+        return view('admin.products.images')->with(compact('product'));
     }
 }

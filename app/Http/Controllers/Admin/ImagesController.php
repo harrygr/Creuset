@@ -3,6 +3,7 @@
 namespace Creuset\Http\Controllers\Admin;
 
 
+use Creuset\Contracts\Imageable;
 use Creuset\Http\Controllers\Controller;
 use Creuset\Http\Requests;
 use Creuset\Image;
@@ -21,11 +22,13 @@ class ImagesController extends Controller
         return view('admin.images.index', compact('images'));
     }
 
-    public function destroy($image)
+    public function destroy(Image $image)
     {
+        $image->deleteFiles();
         $image->delete();
 
         return redirect()->route('admin.images.index')
                          ->with(['alert' => 'Image Deleted', 'alert-class' => 'success']);
     }
+
 }

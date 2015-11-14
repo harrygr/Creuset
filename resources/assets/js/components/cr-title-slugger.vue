@@ -31,7 +31,7 @@
 
 		data: function() {
 			return {
-				hasSlug: false;
+				hasSlug: false,
 			};
 		},
 

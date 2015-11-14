@@ -31545,18 +31545,25 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name=csrf-token]').prop('conte
 //var postContent = require('./vue-components/post-content.js');
 //var postMeta = require('./vue-components/post-meta.js');
 
+String.prototype.toProperCase = function () {
+	return this.replace(/\w\S*/g, function (txt) {
+		return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+	});
+};
+
 // Larail allows sending POST/PUT/DELETE requests using an a tag
 var larail = require('./plugins/larail.js');
 
 Vue.config.debug = true;
-new Vue({
+global.vm = new Vue({
 	el: '#admin',
 
 	components: {
 		crdatepicker: require('./components/crdatepicker.vue'),
 		crmarkarea: require('./components/crmarkarea.vue'),
 		'cr-title-slugger': require('./components/cr-title-slugger.vue'),
-		'cr-category-chooser': require('./components/cr-category-chooser.vue')
+		'cr-category-chooser': require('./components/cr-category-chooser.vue'),
+		'cr-imageable-gallery': require('./components/cr-imageable-gallery.vue')
 	}
 });
 
@@ -31576,17 +31583,16 @@ $("#menu-toggle").click(function (e) {
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./components/cr-category-chooser.vue":85,"./components/cr-title-slugger.vue":86,"./components/crdatepicker.vue":87,"./components/crmarkarea.vue":88,"./plugins/larail.js":90,"bootstrap":1,"dropzone":2,"jquery":4,"select2":7,"vue":82,"vue-resource":10}],85:[function(require,module,exports){
+},{"./components/cr-category-chooser.vue":85,"./components/cr-imageable-gallery.vue":86,"./components/cr-title-slugger.vue":87,"./components/crdatepicker.vue":88,"./components/crmarkarea.vue":89,"./plugins/larail.js":92,"bootstrap":1,"dropzone":2,"jquery":4,"select2":7,"vue":82,"vue-resource":10}],85:[function(require,module,exports){
 'use strict';
 
 var $ = require('jquery');
 
 module.exports = {
-    props: ['checkedcategories'],
+    props: ['checkedcategories', 'taxonomy', 'heading'],
 
     data: function data() {
         return {
-            //checkedCategories: [],
             categories: [],
             newCategory: '',
             addCatButtonClass: 'fa-plus',
@@ -31601,15 +31607,18 @@ module.exports = {
     },
 
     ready: function ready() {
+        this.taxonomy = this.taxonomy || 'category';
         this.fetchCategories();
+    },
+
+    filters: {
+        unsluggify: require('../filters/unsluggify.js')
     },
 
     methods: {
         fetchCategories: function fetchCategories() {
-            console.log(this.checkedcategories);
-            //this.checkedCategories = JSON.parse(this.checkedCategories);
-            //this.checkedCategories = [];
-            this.$http.get('/api/categories', function (categories) {
+
+            this.$http.get('/api/terms/' + this.taxonomy, function (categories) {
                 this.categories = categories.map((function (category) {
                     category.checked = $.inArray(parseInt(category.id), this.checkedcategories) >= 0;
                     return category;
@@ -31623,7 +31632,8 @@ module.exports = {
             this.addCategoryErrors = [];
 
             if (!this.newCategory) {
-                this.displayErrors(["Please provide a category"]);
+                var unsluggify = require('../filters/unsluggify.js');
+                this.displayErrors(["Please provide a " + unsluggify(this.taxonomy)]);
                 return false;
             }
 
@@ -31631,11 +31641,11 @@ module.exports = {
 
             var postData = {
                 term: this.newCategory,
-                taxonomy: 'category',
+                taxonomy: this.taxonomy,
                 _token: $("meta[name=csrf-token]").attr('content')
             };
 
-            this.$http.post('/api/categories', postData).success(function (newCategory) {
+            this.$http.post('/api/terms', postData).success(function (newCategory) {
                 // On success get the returned newly created term and append to the existing
                 this.categories.unshift({
                     id: newCategory.id,
@@ -31668,19 +31678,113 @@ module.exports = {
         }
     }
 };
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"panel panel-default\" id=\"postCategories\">\n        <div class=\"panel-heading\">\n            Categories\n        </div>\n\n\n        <div class=\"panel-body\">\n            <div id=\"category-checkboxes\">\n                <div class=\"checkbox\" v-for=\"category in categories\">\n                    <label>\n                        <input type=\"checkbox\" name=\"terms[]\" value=\"{{ category.id }}\" v-model=\"category.checked\"> {{ category.term }}\n                    </label>\n                </div>\n            </div>\n            <div class=\"input-group\">\n                <input type=\"text\" class=\"form-control\" v-model=\"newCategory\" @keydown.enter=\"addCategory\" placeholder=\"New Category\">\n                <span class=\"input-group-btn\">\n                    <button class=\"btn btn-default\" @click=\"addCategory\"><i class=\"fa fa-fw {{ addCatButtonClass }}\"></i></button>\n                </span>\n            </div>\n            <div class=\"alert alert-danger top-buffer\" v-show=\"addCategoryErrors.length\"><p v-for=\"error in addCategoryErrors\" v-text=\"error\"></p></div>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"panel panel-default\" id=\"postCategories\">\n        <div class=\"panel-heading\">\n            {{ heading || 'Categories' }}\n        </div>\n\n\n        <div class=\"panel-body\">\n            <div id=\"category-checkboxes\">\n                <div class=\"checkbox\" v-for=\"category in categories\">\n                    <label>\n                        <input type=\"checkbox\" name=\"terms[]\" value=\"{{ category.id }}\" v-model=\"category.checked\"> {{ category.term }}\n                    </label>\n                </div>\n            </div>\n            <div class=\"input-group\">\n                <input type=\"text\" class=\"form-control\" v-model=\"newCategory\" @keydown.enter=\"addCategory\" placeholder=\"New {{ taxonomy | unsluggify }}\">\n                <span class=\"input-group-btn\">\n                    <button class=\"btn btn-default\" @click=\"addCategory\"><i class=\"fa fa-fw {{ addCatButtonClass }}\"></i></button>\n                </span>\n            </div>\n            <div class=\"alert alert-danger top-buffer\" v-show=\"addCategoryErrors.length\"><p v-for=\"error in addCategoryErrors\" v-text=\"error\"></p></div>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/Sites/creuset/resources/assets/js/components/cr-category-chooser.vue"
+  var id = "/Users/harryg/Sites/creuset/resources/assets/js/components/cr-category-chooser.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"jquery":4,"vue":82,"vue-hot-reload-api":8}],86:[function(require,module,exports){
+},{"../filters/unsluggify.js":91,"jquery":4,"vue":82,"vue-hot-reload-api":8}],86:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+	props: ['imageableUrl'],
+
+	data: function data() {
+		return {
+			images: [],
+			selectedImage: {},
+			imagesLoading: false,
+			imageUpdating: false,
+			imageUpdatedMessage: false
+		};
+	},
+
+	computed: {
+		hasImages: function hasImages() {
+			return this.images.length > 0;
+		}
+	},
+
+	ready: function ready() {
+		this.fetchImages();
+	},
+
+	methods: {
+		fetchImages: function fetchImages() {
+			this.imagesLoading = true;
+
+			this.$http.get(this.imageableUrl).success(function (response) {
+				this.images = response;
+				this.imagesLoading = false;
+			});
+		},
+
+		updateImage: function updateImage(e) {
+			e.preventDefault();
+			this.imageUpdating = true;
+			this.$http.patch('/api/images/' + this.selectedImage.id, this.selectedImage).success(function (response) {
+				this.imageUpdating = false;
+				this.showMessage('Done');
+			});
+		},
+
+		deleteImage: function deleteImage(e) {
+			e.preventDefault();
+			if (confirm("Are you sure?")) {
+				this.$http['delete']('/api/images/' + this.selectedImage.id).success(function (response) {
+					this.showMessage(response);
+					this.fetchImages();
+					this.selectedImage = {};
+				});
+			}
+		},
+
+		showMessage: function showMessage(message) {
+			this.imageUpdatedMessage = message;
+			setTimeout((function () {
+				this.imageUpdatedMessage = false;
+			}).bind(this), 5000);
+		},
+
+		selectImage: function selectImage(image) {
+			this.selectedImage = image;
+		},
+
+		isSelected: function isSelected(id) {
+			return this.selectedImage.id == id;
+		},
+
+		url: function url(image, thumbnail) {
+			thumbnail = thumbnail || false;
+
+			var url = '/images/' + image.id;
+			if (thumbnail) {
+				url += '?thumbnail=1';
+			}
+			return url;
+		}
+	}
+};
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<!-- Post images -->  \n\t<div class=\"panel panel-default\" id=\"post-images\">\n\t\t<div class=\"panel-heading\">\n\t\t\tAttached Images\n\t\t</div>\n\n\t\t<div class=\"panel-heading\" v-if=\"selectedImage.id\">\n\n\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\" @click=\"selectedImage = {}\">×</span></button>\n\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col-md-4\">\n\t\t\t\t\t<img class=\"media-object img-thumbnail img-responsive\" v-bind:src=\"selectedImage.thumbnail_url\" alt=\"\"> \n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-md-8\">\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>URL: </label>\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control input-sm\" readonly=\"\" value=\"{{ selectedImage.url }}\">\n\t\t\t\t\t</div>    \n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Thumbnail: </label>\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control input-sm\" readonly=\"\" value=\"{{ selectedImage.thumbnail_url }}\">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Image Title</label>\n\t\t\t\t\t\t<input type=\"text\" v-model=\"selectedImage.title\" class=\"form-control\">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Caption</label>\n\t\t\t\t\t\t<textarea v-model=\"selectedImage.caption\" class=\"form-control\"></textarea>\n\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t\t\t<button @click=\"updateImage\" class=\"btn btn-primary\">Update Image</button>\n\t\t\t\t\t<a @click=\"deleteImage\" class=\"btn btn-danger\">Delete Image</a>\n\t\t\t\t\t<button @click=\"selectedImage = {}\" class=\"btn btn-link\">Cancel</button>\n\n\t\t\t\t\t<p class=\"form-group\">\n\t\t\t\t\t<span v-if=\"imageUpdating\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Working...</span>\n\t\t\t\t\t<span class=\"text-success\" v-if=\"imageUpdatedMessage\"> <i class=\"fa fa-check\"></i> {{ imageUpdatedMessage }}</span>\n\t\t\t\t\t</p>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"panel-body\">\n\n\t\t\t<span v-if=\"imagesLoading\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Loading images...</span>\n\n\t\t\t<div class=\"row\" v-if=\"hasImages\">\n\t\t\t<div class=\"col-md-2 col-sm-3 col-xs-6 top-buffer\" v-for=\"image in images\">\n\t\t\t\t\t<img v-bind:src=\"image.thumbnail_url\" alt=\"\" class=\"img-responsive img-thumbnail selectable\" v-bind:class=\"{'selected': isSelected(image.id)}\" @click=\"selectImage(image)\">\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<span v-if=\"!hasImages\">No Images yet</span>\n\n\t\t</div>\n\t</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/harryg/Sites/creuset/resources/assets/js/components/cr-imageable-gallery.vue"
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":82,"vue-hot-reload-api":8}],87:[function(require,module,exports){
 'use strict';
 
 var sluggify = require('../filters/sluggify.js');
@@ -31689,7 +31793,9 @@ module.exports = {
 	props: ['value', 'slug', 'name'],
 
 	data: function data() {
-		return {};
+		return {
+			hasSlug: false
+		};
 	},
 
 	ready: function ready() {
@@ -31712,14 +31818,14 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/Sites/creuset/resources/assets/js/components/cr-title-slugger.vue"
+  var id = "/Users/harryg/Sites/creuset/resources/assets/js/components/cr-title-slugger.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"../filters/sluggify.js":89,"vue":82,"vue-hot-reload-api":8}],87:[function(require,module,exports){
+},{"../filters/sluggify.js":90,"vue":82,"vue-hot-reload-api":8}],88:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -31732,14 +31838,14 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/Sites/creuset/resources/assets/js/components/crdatepicker.vue"
+  var id = "/Users/harryg/Sites/creuset/resources/assets/js/components/crdatepicker.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":82,"vue-hot-reload-api":8}],88:[function(require,module,exports){
+},{"vue":82,"vue-hot-reload-api":8}],89:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -31757,21 +31863,28 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/home/vagrant/Sites/creuset/resources/assets/js/components/crmarkarea.vue"
+  var id = "/Users/harryg/Sites/creuset/resources/assets/js/components/crmarkarea.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"marked":6,"vue":82,"vue-hot-reload-api":8}],89:[function(require,module,exports){
+},{"marked":6,"vue":82,"vue-hot-reload-api":8}],90:[function(require,module,exports){
 'use strict';
 
 module.exports = function (text) {
     return text.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
 };
 
-},{}],90:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
+'use strict';
+
+module.exports = function (text) {
+    return text.replace('-', ' ').replace('_', ' ');
+};
+
+},{}],92:[function(require,module,exports){
 /**
  * larail.js
  *

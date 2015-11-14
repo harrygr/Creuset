@@ -3,13 +3,15 @@
 namespace Creuset;
 
 use Carbon\Carbon;
+use Creuset\Contracts\Imageable;
 use Creuset\Presenters\PresentableTrait;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Creuset\Traits\AttachesImages;
 
-class Product extends Model
+class Product extends Model implements Imageable
 {
-	use PresentableTrait, SoftDeletes;
+	use PresentableTrait, AttachesImages, SoftDeletes;
 	/**
      * The attributes that should be mutated to dates.
      *
@@ -43,7 +45,18 @@ class Product extends Model
 	 'published_at',
 	 ];
 
-	 protected $presenter = 'Creuset\Presenters\ProductPresenter';
+	protected $presenter = 'Creuset\Presenters\ProductPresenter';
+
+	public function terms()
+	{
+		return $this->morphToMany('\Creuset\Term', 'termable');
+	}
+
+	public function product_categories()
+	{
+		return $this->morphToMany('\Creuset\Term', 'termable')
+				    ->where('taxonomy', 'product_category');
+	}
 
 	 	/**
 	 * Parses a date string into a Carbon instance for saving
@@ -80,6 +93,15 @@ class Product extends Model
 	public function getSalePriceAttribute($price)
 	{
 		return $price / 100;
+	}
+
+		/**
+	 * The field to use to display the parent name
+	 * @return string
+	 */
+	public function getImageableField()
+	{
+		return 'name';
 	}
 
 }

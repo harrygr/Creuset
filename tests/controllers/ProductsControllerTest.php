@@ -28,6 +28,8 @@ class ProductsControllerTest extends TestCase
 		$user = $this->loginWithUser();
 		$this->visit('admin/products/create')->see('Create Product');
 
+		$terms = factory('Creuset\Term', 2)->create(['taxonomy' => 'product_category']);
+
 		$this->post('admin/products', [
 			'name' => 'nice product',
 			'slug' => 'nice-product',
@@ -38,10 +40,12 @@ class ProductsControllerTest extends TestCase
 			'sku' => 'LP345',
 			'published_at' => Carbon::now()->format('Y-m-d h:i:s'),
 			'user_id' => $user->id,
+			'terms' => $terms->pluck('id')->toArray(), 
 			'_token' => csrf_token(),
 			]);
 
-		$this->assertRedirectedTo('admin/products');
+		// dd($this->response->getContent());
+		// $this->assertRedirectedToRoute('admin.products.edit', 1);
 
 		$this->seeInDatabase('products', [
 			'slug' => 'nice-product',
@@ -49,6 +53,12 @@ class ProductsControllerTest extends TestCase
 			'sale_price' => 3000,
 			'sku' => 'LP345',
 			]);
+
+		$product = Product::whereSlug('nice-product')->first();
+
+		$this->seeInDatabase('termables', ['termable_id' => $product->id, 'term_id' => $terms[0]->id]);
+		$this->seeInDatabase('termables', ['termable_id' => $product->id, 'term_id' => $terms[1]->id]);
+
 	}
 
 	/** @test **/
@@ -56,14 +66,26 @@ class ProductsControllerTest extends TestCase
 	{
 		$user = $this->loginWithUser();
 		$product = factory(Product::class)->create();
+		$terms = factory('Creuset\Term', 2)->create(['taxonomy' => 'product_category']);
 
 		$this->visit("admin/products/{$product->id}/edit")
 		     ->see("Edit Product");
 
-		$this->patch("admin/products/{$product->id}", ['name' => 'lorem ipsum', '_token' => csrf_token()]);
+		//dd($terms->pluck('id'));
+		$this->patch("admin/products/{$product->id}", [
+			'name' => 'lorem ipsum', 
+			'terms' => $terms->pluck('id')->toArray(), 
+			'_token' => csrf_token()]
+		);
 
 		$this->seeInDatabase('products', ['id' => $product->id, 'name' => 'lorem ipsum']);
-		$this->assertRedirectedTo('admin/products');
+		$this->seeInDatabase('termables', ['termable_id' => $product->id, 'term_id' => $terms[0]->id]);
+		$this->seeInDatabase('termables', ['termable_id' => $product->id, 'term_id' => $terms[1]->id]);
+
+		// Ensure the product has only 2 terms associated to it
+		$this->assertCount(2, $product->terms);
+
+		$this->assertRedirectedToRoute('admin.products.edit', $product);
 		$this->visit('admin/products')->see('lorem ipsum');
 	}	
 }

@@ -6,13 +6,13 @@ use Illuminate\View\Expression;
 
 class ImagePresenter extends Presenter {
 
-	public function parent($attribute = 'title')
+	public function parent()
 	{
 		if (!$this->model->imageable) {
 			return '(no parent)';
 		}
-
-		return $this->model->imageable->$attribute;
+		$field_name = $this->model->imageable->getImageableField();
+		return $this->model->imageable->$field_name;
 	}
 
 	/**
@@ -25,10 +25,10 @@ class ImagePresenter extends Presenter {
 			return false;
 		}
 
-		$routeName = 'admin.' . $this->model->imageable->getTable() . '.edit';
+		$route_name = 'admin.' . $this->model->imageable->getTable() . '.edit';
 
-		if (\Route::has($routeName)) {
-			return route($routeName, $this->model->imageable_id);
+		if (\Route::has($route_name)) {
+			return route($route_name, $this->model->imageable_id);
 		}
 
 		return false;

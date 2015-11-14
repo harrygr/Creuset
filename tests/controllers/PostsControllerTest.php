@@ -21,11 +21,6 @@ class PostsControllerTest extends TestCase
 		$postContent = 'Here is some post content';
 
 		$this->visit('/admin/posts/create');
-			 // ->type($postTitle, 'title')
-			 // ->type(\Str::slug($postTitle), 'slug') //we'll manually type this even though js should generate this for us
-			 // ->type($postContent, 'content')
-			 // ->press('Create Post')
-			 // ->see('Post saved');
 
 		$this->post('admin/posts', [
 			'title' => $postTitle,
@@ -57,11 +52,7 @@ class PostsControllerTest extends TestCase
 
 		$this->visit("/admin/posts/{$post->id}/edit")
 			 ->see('Edit Post');
-			 // ->type($postTitle, 'title')
-			 // ->type(\Str::slug($postTitle), 'slug')
-			 // ->press('Update')
-			 // ->seePageIs("/admin/posts/{$post->id}/edit")
-			 // ->see('Post Updated');
+
 		$this->patch("admin/posts/{$post->id}", [
 			'title' => $postTitle,
 			'slug' => str_slug($postTitle),

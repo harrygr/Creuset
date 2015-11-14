@@ -12,7 +12,7 @@ class EventServiceProvider extends ServiceProvider {
 	protected $listen = [
 		'auth.login' => [
 			'Creuset\Handlers\Events\UserLoggedInHandler',
-		],
+		]
 	];
 
 }

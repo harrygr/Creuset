@@ -19,8 +19,8 @@ class CreateProductsTable extends Migration
             $table->text('description')->nullable();
             $table->string('status', 20)->default('published');
 
-            $table->integer('price')->default(0);
-            $table->integer('sale_price')->nullable();
+            $table->integer('price')->unsigned()->default(0);
+            $table->integer('sale_price')->unsigned()->nullable();
             $table->integer('stock_qty')->nullable();
             $table->string('sku')->unique()->nullable();
 
