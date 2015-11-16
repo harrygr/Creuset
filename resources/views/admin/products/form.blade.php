@@ -4,7 +4,7 @@
 		<div class="panel-body">
 			<cr-title-slugger name="name" value="{{ old('name', $product->name) }}" slug="{{ old('slug', $product->slug) }}"></cr-title-slugger>
 
-			<crmarkarea value="{{ old('description', $product->description) }}" name="description" title="description"></crmarkarea>
+			<cr-markarea value="{{ old('description', $product->description) }}" name="description" title="description"></cr-markarea>
 
 		</div>
 	</div>
@@ -53,6 +53,8 @@
 	</div>
 
 	<cr-category-chooser taxonomy="product_category" heading="Product Categories" :checkedcategories="{{ isset($selected_product_categories) ? $selected_product_categories->toJson(JSON_NUMERIC_CHECK) : '[]' }}"></cr-category-chooser>
+
+	<cr-image-chooser image="{{ old('image_id', $product->image_id) }}"></cr-image-chooser>
 	</div>
 
 

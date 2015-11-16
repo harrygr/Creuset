@@ -10,7 +10,7 @@ Posts
 
 	<h1>{{ $title or 'Posts' }}</h1>
 
-	<a href="{{ route('admin.posts.index') }}">All</a> ({{ $postCount }}) | <a href="{{ route('admin.posts.trash') }}">Trash</a> ({{ $trashedCount }})
+	<p><a href="{{ route('admin.posts.index') }}">All</a> ({{ $postCount }}) | <a href="{{ route('admin.posts.trash') }}">Trash</a> ({{ $trashedCount }})</p>
 
 	<div class="panel panel-default">
 		<div class="panel-body">

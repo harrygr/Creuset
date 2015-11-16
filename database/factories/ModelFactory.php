@@ -47,6 +47,16 @@ $factory->define('Creuset\User', function($faker) {
 	];
 });
 
+$factory->define('Creuset\Role', function($faker) {
+	$name = $faker->unique()->word;
+
+	return [
+		'name' => str_slug($name),
+		'display_name' => $name,
+		'description' => $faker->sentence,
+	];
+});
+
 $factory->define('Creuset\Term', function($faker) {
 
 	$term = $faker->unique()->word;

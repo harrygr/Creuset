@@ -1,18 +1,19 @@
 <?php
 
-namespace Creuset\Creuset\Roleable;
+namespace Creuset\Traits;
 
-use Illuminate\Database\Eloquent\Model;
 use Creuset\Role;
+use Creuset\Exceptions\NonExistantRoleException;
 
-trait RoleableTrait {
+trait RoleableTrait 
+{
 	
 	/**
      * A model belongs to a single role
      */
     public function role()
     {
-        return $this->belongsTo('Creuset\Role');
+        return $this->belongsTo(Role::class);
     }
 
     /**
@@ -28,8 +29,8 @@ trait RoleableTrait {
     }
 
     /**
-     * Give an entity the minimum role of subscriber'
-     * @return Model
+     * Give an entity the minimum role of subscriber
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function enroll()
     {
@@ -38,18 +39,18 @@ trait RoleableTrait {
 
     /**
      * Assign a role by name to the entity
-     * @param  string $role The role to assign
-     * @return Model       
+     * @param  string $role_name The role to assign
+     * @return \Illuminate\Database\Eloquent\Model       
      */
-    public function assignRole($roleName)
+    public function assignRole($role_name)
     {
-        $role = Role::where('name', $roleName)->first();
+        $role = Role::where('name', $role_name)->first();
 
         if (!$role) {
-            throw new NonExistantRoleException("The role to assign '$roleName' does not exist");
+            throw new NonExistantRoleException("The role to assign '$role_name' does not exist");
         }
 
-        if (!$this->hasRole($roleName)) {
+        if (!$this->hasRole($role_name)) {
             $this->role()->associate($role);
             $this->save();
         }

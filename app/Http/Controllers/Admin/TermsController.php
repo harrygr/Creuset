@@ -2,12 +2,11 @@
 
 namespace Creuset\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-
-use Creuset\Http\Requests;
 use Creuset\Http\Controllers\Controller;
+use Creuset\Http\Requests;
 use Creuset\Repositories\Term\TermRepository;
 use Creuset\Term;
+use Illuminate\Http\Request;
 
 class TermsController extends Controller
 {
@@ -19,20 +18,40 @@ class TermsController extends Controller
         $this->terms = $terms;
     }
 
+    public function index($taxonomies)
+    {
+        $taxonomy = str_singular($taxonomies);
+        $terms = $this->terms->getTerms($taxonomy);
+        if ( !isset(Term::$taxonomies[$taxonomy])) {
+            abort(404);
+        }
+        $term_name = Term::$taxonomies[$taxonomy];
+
+        return view('admin.terms.index')->with(compact('terms', 'term_name'));
+    }
+
     public function categoriesIndex()
     {
         $terms = $this->terms->getCategories();
-        $termName = 'Categories';
+        $term_name = 'Categories';
 
-        return view('admin.terms.index')->with(compact('terms', 'termName'));
+        return view('admin.terms.index')->with(compact('terms', 'term_name'));
     }
 
     public function tagsIndex()
     {
         $terms = $this->terms->getTags();
-        $termName = 'Tags';
+        $term_name = 'Tags';
 
-        return view('admin.terms.index')->with(compact('terms', 'termName'));
+        return view('admin.terms.index')->with(compact('terms', 'term_name'));
+    }
+
+    public function productCategoriesIndex()
+    {
+        $terms = $this->terms->getTags();
+        $term_name = 'Tags';
+
+        return view('admin.terms.index')->with(compact('terms', 'term_name'));
     }
 
     public function edit($term)

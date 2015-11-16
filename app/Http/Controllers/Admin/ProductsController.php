@@ -3,12 +3,10 @@
 namespace Creuset\Http\Controllers\Admin;
 
 use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests;
 use Creuset\Http\Requests\CreateProductRequest;
 use Creuset\Http\Requests\UpdateProductRequest;
 use Creuset\Product;
 use Creuset\Repositories\Product\ProductRepository;
-use Creuset\Repositories\Term\TermRepository;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
@@ -26,7 +24,6 @@ class ProductsController extends Controller
         $products = Product::paginate();
         $productCount = Product::count();
         return view('admin.products.index', compact('products', 'productCount'));
-        var_dump(Product::all()->toArray());
     }
 
     public function create(Product $product)
@@ -36,7 +33,7 @@ class ProductsController extends Controller
 
     public function store(CreateProductRequest $request)
     {
-    	$this->products->create($request->all());
+    	$product = $this->products->create($request->all());
 
     	return redirect()->route('admin.products.edit', $product)
                          ->withAlert('Product Saved')

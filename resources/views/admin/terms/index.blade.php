@@ -5,7 +5,7 @@
 @stop
 
 @section('admin.content')
-<h1>{{ $termName or 'Terms'}}</h1>
+<h1>{{ $term_name or 'Terms'}}</h1>
 
 <div class="panel panel-default">
     <div class="panel-body">

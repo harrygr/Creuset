@@ -4,14 +4,16 @@ namespace Creuset;
 
 use Carbon\Carbon;
 use Creuset\Contracts\Imageable;
+use Creuset\Contracts\Termable;
 use Creuset\Presenters\PresentableTrait;
+use Creuset\Traits\AttachesImages;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Creuset\Traits\AttachesImages;
 
-class Product extends Model implements Imageable
+class Product extends Model implements Imageable, Termable 
 {
 	use PresentableTrait, AttachesImages, SoftDeletes;
+	
 	/**
      * The attributes that should be mutated to dates.
      *
@@ -58,7 +60,7 @@ class Product extends Model implements Imageable
 				    ->where('taxonomy', 'product_category');
 	}
 
-	 	/**
+	/**
 	 * Parses a date string into a Carbon instance for saving
 	 * 
 	 * This shouldn't really need to be done, but Laravel's automatic date
@@ -70,10 +72,10 @@ class Product extends Model implements Imageable
 	 */
 	public function setPublishedAtAttribute($date)
 	{
-		if (is_string($date))
+		if (is_string($date)) {
 			$this->attributes['published_at'] = new Carbon($date);
+		}
 	}
-
 
 	public function setPriceAttribute($price)
 	{
@@ -95,7 +97,7 @@ class Product extends Model implements Imageable
 		return $price / 100;
 	}
 
-		/**
+	/**
 	 * The field to use to display the parent name
 	 * @return string
 	 */

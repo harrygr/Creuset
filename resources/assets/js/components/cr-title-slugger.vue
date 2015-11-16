@@ -4,7 +4,6 @@
 		<input 
 		type="text" 
 		name="{{ name }}" 
-		value="{{ value }}"
 		class="post-title-input" 
 		placeholder="{{ name | capitalize }}" 
 		v-model="value" 
@@ -17,7 +16,7 @@
 		<input type="text" name="slug" class="form-control" placeholder="slug" v-model="slug">
 
 		<span class="input-group-btn refresh-slug">
-			<button class="btn btn-default" value="{{ slug }}" type="button" @click="sluggifyTitle"><i class="fa fa-fw fa-refresh"></i></button>
+			<button class="btn btn-default" value="{{ slug }}" type="button" @click="sluggifyTitle"><i class="fa fa-refresh"></i></button>
 		</span>
 	</div>
 	</div>

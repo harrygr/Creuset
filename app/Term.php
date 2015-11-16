@@ -5,6 +5,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Term extends Model {
 
+	/**
+	 * The taxonomies in use
+	 * @var array
+	 */
+	public static $taxonomies = [
+		'category' 			=> 'Categories',
+		'tag'	  			=> 'Tags',
+		'product_category'	=> 'Product Categories'	
+	];
 
 	/**
 	 * The database table used by the model.

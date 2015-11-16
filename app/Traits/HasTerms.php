@@ -2,7 +2,8 @@
 
 namespace Creuset\Traits;
 
-trait Termable {
+trait HasTerms 
+{
 	public function terms()
 	{
 		return $this->morphToMany('\Creuset\Term', 'termable');

@@ -26,11 +26,12 @@ class CreateProductRequest extends Request
         return [
             'name'  => 'required',
             'slug'  => 'required|alpha_dash|unique:products,slug',
-            'sku'   => 'unique:products,sku',
+            'sku'   => 'required|unique:products,sku',
             'price' => 'numeric|min:0',
             'sale_price' => 'numeric|min:0',
             'stock_qty' => 'numeric',
             'user_id' => 'required|integer',
+            'image_id' => 'integer',
         ];
     }
 }

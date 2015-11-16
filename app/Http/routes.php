@@ -56,6 +56,7 @@ Route::group(['prefix' => 'admin'], function()
 	delete('posts/{trashedPost}', ['uses' => 'Admin\PostsController@destroy', 'as' => 'admin.posts.delete']);
 
 	// Terms
+	get('terms/{taxonomy}', ['uses' => 'Admin\TermsController@index', 'as' => 'admin.terms.index']);
 	get('categories', ['uses' => 'Admin\TermsController@categoriesIndex', 'as' => 'admin.categories.index']);
 	get('tags', ['uses' => 'Admin\TermsController@tagsIndex', 'as' => 'admin.tags.index']);
 
@@ -94,7 +95,8 @@ Route::group(['prefix' => 'api'], function()
 	get('posts/{post}/images', ['uses' => 'Api\ImagesController@images', 'as' => 'api.posts.images']);
 	get('products/{product}/images', ['uses' => 'Api\ImagesController@images', 'as' => 'api.products.images']);
 
-
+	get('images', ['uses' => 'Api\ImagesController@index', 'as' => 'api.images.index']);
+	get('images/{image}', ['uses' => 'Api\ImagesController@show', 'as' => 'api.images.show']);
 	patch('images/{image}', ['uses' => 'Api\ImagesController@update', 'as' => 'api.images.update']);
 	delete('images/{image}', ['uses' => 'Api\ImagesController@destroy', 'as' => 'api.images.destroy']);
 

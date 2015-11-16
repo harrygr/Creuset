@@ -1,7 +1,9 @@
 <?php namespace Unit;
 
+use Creuset\Post;
 use Creuset\Repositories\Term\DbTermRepository;
 use Creuset\Repositories\Term\TermRepository;
+use Creuset\Term;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use TestCase;
 
@@ -74,5 +76,24 @@ class DbTermRepositoryTest extends TestCase
 		// ..and the array returned contains their IDs. 
 		// I.e no longer the strings
 		$this->assertContainsOnly('integer', $tagIds);
+	}
+
+	/** @test **/
+	public function it_lists_a_models_terms_with_selected_first()
+	{
+		$post = factory(Post::class)->create();
+
+		// Create some terms
+		$unattached_terms = factory(Term::class, 5)->create(['taxonomy' => 'category']);
+
+		// Create some more and attach them to our post
+		$attached_terms = factory(Term::class, 2)->create(['taxonomy' => 'category']);
+		$post->terms()->sync($attached_terms);
+
+		// Ensure the top two items in the list are the post's categories
+		$categories = $this->terms->getCategoryList($post);
+
+		$this->assertContains($post->terms[0]->term, array_slice($categories, 0, 2));
+		$this->assertContains($post->terms[1]->term, array_slice($categories, 0, 2));
 	}
 }

@@ -5,15 +5,15 @@ namespace Creuset;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Creuset\Presenters\PresentableTrait;
-use Creuset\Creuset\Roleable\RoleableTrait;
+use Creuset\Traits\RoleableTrait;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract {
-
+class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract 
+{
 	use Authenticatable, Authorizable, CanResetPassword, PresentableTrait, RoleableTrait;
 
 	/**
@@ -23,12 +23,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 	protected $presenter = 'Creuset\Presenters\UserPresenter';
 
 	/**
-	 * The database table used by the model.
-	 *
+	 * The database table used by the model
 	 * @var string
 	 */
 	protected $table = 'users';
 
+	/**
+	 * The fields to be parsed into Carbon instance
+	 * @var array
+	 */
 	protected $dates = ['last_seen_at'];
 
 	/**
@@ -44,7 +47,5 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 	 * @var array
 	 */
 	protected $hidden = ['password', 'remember_token'];
-
-
 
 }

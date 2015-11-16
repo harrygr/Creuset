@@ -9,10 +9,12 @@
 namespace Creuset\Repositories\Term;
 
 
+use Creuset\Contracts\Termable;
 use Creuset\Term;
 use Illuminate\Database\Eloquent\Model;
 
-class DbTermRepository implements TermRepository {
+class DbTermRepository implements TermRepository 
+{
     /**
      * @return mixed
      */
@@ -22,15 +24,16 @@ class DbTermRepository implements TermRepository {
     }
 
     /**
-     * @param Model $relatedModel
+     * @param Termable $related_model
      * @return array
      */
-    public function getCategoryList(Model $relatedModel = null)
+    public function getCategoryList(Termable $related_model = null)
     {
         $categories = $this->getCategories()->lists('term', 'id')->toArray();
 
-        if ( ! is_null($relatedModel) )
-            $categories = $this->orderBySelected($categories, $relatedModel);
+        if ( ! is_null($related_model) ) {
+            $categories = $this->orderBySelected($categories, $related_model);
+        }
 
         return $categories;
     }
@@ -48,13 +51,13 @@ class DbTermRepository implements TermRepository {
      * Orders the term list to put the terms currently attached to the model at the top
      *
      * @param array $terms The list of terms
-     * @param Model $relatedModel The model with terms
+     * @param Termable $related_model The model with terms
      * @param string $termType Categories, tags etc - corresponds with the relationship name
      * @return array The reordered term list
      */
-    protected function orderBySelected($terms, Model $relatedModel, $termType = 'categories')
+    protected function orderBySelected($terms, Termable $related_model, $termType = 'categories')
     {
-        $selectedTerms = array_pluck($relatedModel->{$termType}->toArray(), 'pivot.term_id');
+        $selectedTerms = array_pluck($related_model->{$termType}->toArray(), 'pivot.term_id');
 
         foreach ($selectedTerms as $selectedTerm)
             $terms = [$selectedTerm => $terms[$selectedTerm]] + $terms;
@@ -101,7 +104,9 @@ class DbTermRepository implements TermRepository {
      */
     public function create($attributes)
     {
-        if (!isset($attributes['slug']) or !$attributes['slug']) $attributes['slug'] = str_slug($attributes['term']);
+        if (!isset($attributes['slug']) or !$attributes['slug']) {
+            $attributes['slug'] = str_slug($attributes['term']);
+        }
 
         return Term::create($attributes);
     }
@@ -122,8 +127,9 @@ class DbTermRepository implements TermRepository {
         // Create a new tag for each string in the input and update the current tags array
         foreach ($newTerms as $newTerm)
         {
-            if ($term = $this->create(['term' => $newTerm, 'taxonomy' => $taxonomy]))
+            if ($term = $this->create(['term' => $newTerm, 'taxonomy' => $taxonomy])) {
                 $currentTerms[] = $term->id;
+            }
         }
 
         return $currentTerms;

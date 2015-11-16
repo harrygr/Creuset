@@ -1,4 +1,6 @@
-<?php namespace Creuset\Exceptions;
+<?php 
+
+namespace Creuset\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;

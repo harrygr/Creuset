@@ -1,18 +1,19 @@
 <?php namespace Creuset;
 
 use Carbon\Carbon;
-use Creuset\Image;
 use Creuset\Contracts\Imageable;
+use Creuset\Contracts\Termable;
+use Creuset\Image;
 use Creuset\Presenters\PresentableTrait;
 use Creuset\Traits\AttachesImages;
-use Creuset\Traits\Termable;
+use Creuset\Traits\HasTerms;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class Post extends Model implements Imageable {
+class Post extends Model implements Imageable, Termable {
 
-	use PresentableTrait, SoftDeletes, Termable, AttachesImages;
+	use PresentableTrait, SoftDeletes, HasTerms, AttachesImages;
 	
 	/**
      * The attributes that should be mutated to dates.

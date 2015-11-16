@@ -15,8 +15,18 @@ class ImagesController extends Controller
 
     public function __construct(Filesystem $filesystem)
     {
-        $this->middleware('auth.basic');
+        $this->middleware('auth.basic', ['only' => ['store', 'update', 'destroy']]);
         $this->filesystem = $filesystem;
+    }
+
+    public function index()
+    {
+        return Image::paginate();
+    }
+
+    public function show(Image $image)
+    {
+        return $image;
     }
 
     public function update(Request $request, Image $image)
@@ -32,7 +42,7 @@ class ImagesController extends Controller
      */
     public function store(Imageable $imageable, Request $request)
     {
-    	$this->validate($request, [
+        $this->validate($request, [
             'image' => 'required|mimes:jpg,jpeg,png,bmp,gif,svg'
             ]);
 
@@ -48,7 +58,6 @@ class ImagesController extends Controller
         $image->deleteFiles();
         $image->delete();
         return 'Image Deleted';
-
     }
 
     public function images(Imageable $imageable)

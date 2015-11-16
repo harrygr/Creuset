@@ -4,7 +4,7 @@
 
     <div class="form-group top-buffer" id="postContent">
 
-      <crmarkarea value="{{ $post->content }}" name="content" title="Content"></crmarkarea>                
+      <cr-markarea value="{{ $post->content }}" name="content" title="Content"></cr-markarea>                
 
     </div>
   </div>

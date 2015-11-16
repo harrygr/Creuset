@@ -1,5 +1,5 @@
 <?php
 
-namespace Creuset\Creuset\Roleable;
+namespace Creuset\Exceptions;
 
 class NonExistantRoleException extends \Exception {}

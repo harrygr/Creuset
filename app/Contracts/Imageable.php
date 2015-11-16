@@ -9,8 +9,8 @@ use Creuset\Image;
  * a model. The Creuset\Traits\AttachedImages trait can be 
  * used to get an implentation of the below.
  */
-interface Imageable {
-
+interface Imageable 
+{
 	/**
 	 * An entity has many images
 	 * @return Relation

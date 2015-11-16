@@ -30,6 +30,7 @@ class UpdateProductRequest extends Request
             'sale_price' => 'numeric',
             'stock_qty' => 'numeric',
             'user_id' => 'integer',
+            'image_id'  => 'integer',
         ];
     }
 }

@@ -26,7 +26,7 @@
 
 					<div class="form-group">
 						<label>Image Title</label>
-						<input type="text" v-model="selectedImage.title" class="form-control">
+						<input type="text" v-model="selectedImage.title" class="form-control" @keyup.enter="updateImage">
 					</div>
 
 					<div class="form-group">
@@ -38,7 +38,7 @@
 					<a @click="deleteImage" class="btn btn-danger">Delete Image</a>
 					<button @click="selectedImage = {}" class="btn btn-link">Cancel</button>
 
-					<p class="form-group">
+					<p class="form-group top-buffer">
 					<span v-if="imageUpdating"><i class="fa fa-circle-o-notch fa-spin"></i> Working...</span>
 					<span class="text-success" v-if="imageUpdatedMessage"> <i class="fa fa-check"></i> {{ imageUpdatedMessage }}</span>
 					</p>

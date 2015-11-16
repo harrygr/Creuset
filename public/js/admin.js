@@ -31559,11 +31559,12 @@ global.vm = new Vue({
 	el: '#admin',
 
 	components: {
-		crdatepicker: require('./components/crdatepicker.vue'),
-		crmarkarea: require('./components/crmarkarea.vue'),
+		//'cr-datepicker': require('./components/cr-datepicker.vue'),
+		'cr-markarea': require('./components/cr-markarea.vue'),
 		'cr-title-slugger': require('./components/cr-title-slugger.vue'),
 		'cr-category-chooser': require('./components/cr-category-chooser.vue'),
-		'cr-imageable-gallery': require('./components/cr-imageable-gallery.vue')
+		'cr-imageable-gallery': require('./components/cr-imageable-gallery.vue'),
+		'cr-image-chooser': require('./components/cr-image-chooser.vue')
 	}
 });
 
@@ -31583,7 +31584,7 @@ $("#menu-toggle").click(function (e) {
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./components/cr-category-chooser.vue":85,"./components/cr-imageable-gallery.vue":86,"./components/cr-title-slugger.vue":87,"./components/crdatepicker.vue":88,"./components/crmarkarea.vue":89,"./plugins/larail.js":92,"bootstrap":1,"dropzone":2,"jquery":4,"select2":7,"vue":82,"vue-resource":10}],85:[function(require,module,exports){
+},{"./components/cr-category-chooser.vue":85,"./components/cr-image-chooser.vue":86,"./components/cr-imageable-gallery.vue":87,"./components/cr-markarea.vue":88,"./components/cr-title-slugger.vue":89,"./plugins/larail.js":92,"bootstrap":1,"dropzone":2,"jquery":4,"select2":7,"vue":82,"vue-resource":10}],85:[function(require,module,exports){
 'use strict';
 
 var $ = require('jquery');
@@ -31694,6 +31695,80 @@ if (module.hot) {(function () {  module.hot.accept()
 'use strict';
 
 module.exports = {
+	props: ['image'],
+
+	ready: function ready() {
+		this.fetchChosenImage();
+	},
+
+	data: function data() {
+		return {
+			selectedImage: null,
+			chosenImage: null,
+			page: 1,
+			lastPage: null,
+			images: null
+		};
+	},
+
+	methods: {
+		fetchImages: function fetchImages() {
+			this.images = null;
+			this.$http.get('/api/images', { page: this.page }).success((function (response) {
+				this.images = response.data;
+				this.lastPage = response.last_page;
+			}).bind(this));
+		},
+		fetchChosenImage: function fetchChosenImage() {
+			if (this.image) {
+				this.$http.get('/api/images/' + this.image).success((function (response) {
+					this.chosenImage = response;
+				}).bind(this));
+			}
+		},
+
+		selectImage: function selectImage(image, e) {
+			this.selectedImage = image;
+		},
+		chooseImage: function chooseImage() {
+			this.chosenImage = this.selectedImage;
+			this.selectedImage = {};
+		},
+		isSelected: function isSelected(image) {
+			return this.selectedImage ? this.selectedImage.id == image.id : false;
+		},
+
+		nextPage: function nextPage() {
+			console.log("incrementing page");
+			if (this.page < this.lastPage) {
+				this.page++;
+				this.fetchImages();
+			}
+		},
+		prevPage: function prevPage() {
+			if (this.page > 1) {
+				this.page--;
+				this.fetchImages();
+			}
+		}
+	}
+};
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"panel panel-default\" id=\"featuredImageChooser\">\n\t\t<div class=\"panel-heading\">\n\t\t\tFeatured Image\n\t\t</div>\n\t\t<div class=\"panel-body\">\n\t\t\t<p v-if=\"!chosenImage\" class=\"text-center\">None Chosen</p>\n\n\t\t\t<img v-if=\"chosenImage\" v-bind:src=\"chosenImage.thumbnail_url\" alt=\"chosenImage.description\" class=\"img-responsive thumbnail\" style=\"width:100%;\">\n\n\t\t\t<!-- Button trigger modal -->\n\t\t\t<button type=\"button\" class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#imagesModal\" @click=\"fetchImages()\">Choose</button>\n\n\t\t\t<button type=\"button\" class=\"btn btn-link text-danger\" v-if=\"chosenImage\" @click=\"chosenImage = {}\">Remove Image</button>\n\n\t\t\t<input type=\"hidden\" name=\"image_id\" value=\"{{ chosenImage ? chosenImage.id : null }}\">\n\t\t</div>\n\t</div>\n\n\n\t<!-- Modal -->\n\t<div class=\"modal fade\" id=\"imagesModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-title\">\n\t\t<div class=\"modal-dialog modal-lg\" role=\"document\">\n\t\t\t<div class=\"modal-content\">\n\t\t\t\t<div class=\"modal-header\">\n\t\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button>\n\t\t\t\t\t<h4 class=\"modal-title\" id=\"myModalLabel\">Choose Featured Image</h4>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"modal-body\">\n\n\t\t\t\t\t<span v-if=\"!images\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Fetching Images</span>\n\n\t\t\t\t\t<div class=\"row\" v-if=\"images\">\n\t\t\t\t\t\t<p class=\"col-xs-12\">\n\t\t\t\t\t\t\tPage {{ page }} of {{ lastPage }}\n\t\t\t\t\t\t</p>\n\t\t\t\t\t\t<div class=\"col-xs-3 top-buffer\" v-for=\"image in images\">\n\n\t\t\t\t\t\t\t<img @click=\"selectImage(image)\" class=\"img-responsive img-thumbnail selectable\" v-bind:src=\"image.thumbnail_url\" alt=\"\" v-bind:class=\"{'selected': isSelected(image)}\">\n\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<p class=\"clearfix col-xs-12\">\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-link pull-left\" @click=\"prevPage\"><i class=\"fa fa-chevron-left\"></i> Prev</button>\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-link pull-right\" @click=\"nextPage\">Next <i class=\"fa fa-chevron-right\"></i></button>\n\t\t\t\t\t\t</p>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"modal-footer\">\n\t\t\t\t\t<span class=\"pull-left\">{{ selectedImage ? selectedImage.title : '' }}</span>\n\t\t\t\t\t<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n\t\t\t\t\t<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\" @click=\"chooseImage()\">Select</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/harryg/Sites/creuset/resources/assets/js/components/cr-image-chooser.vue"
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":82,"vue-hot-reload-api":8}],87:[function(require,module,exports){
+'use strict';
+
+module.exports = {
 	props: ['imageableUrl'],
 
 	data: function data() {
@@ -31772,7 +31847,7 @@ module.exports = {
 		}
 	}
 };
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<!-- Post images -->  \n\t<div class=\"panel panel-default\" id=\"post-images\">\n\t\t<div class=\"panel-heading\">\n\t\t\tAttached Images\n\t\t</div>\n\n\t\t<div class=\"panel-heading\" v-if=\"selectedImage.id\">\n\n\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\" @click=\"selectedImage = {}\">×</span></button>\n\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col-md-4\">\n\t\t\t\t\t<img class=\"media-object img-thumbnail img-responsive\" v-bind:src=\"selectedImage.thumbnail_url\" alt=\"\"> \n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-md-8\">\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>URL: </label>\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control input-sm\" readonly=\"\" value=\"{{ selectedImage.url }}\">\n\t\t\t\t\t</div>    \n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Thumbnail: </label>\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control input-sm\" readonly=\"\" value=\"{{ selectedImage.thumbnail_url }}\">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Image Title</label>\n\t\t\t\t\t\t<input type=\"text\" v-model=\"selectedImage.title\" class=\"form-control\">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Caption</label>\n\t\t\t\t\t\t<textarea v-model=\"selectedImage.caption\" class=\"form-control\"></textarea>\n\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t\t\t<button @click=\"updateImage\" class=\"btn btn-primary\">Update Image</button>\n\t\t\t\t\t<a @click=\"deleteImage\" class=\"btn btn-danger\">Delete Image</a>\n\t\t\t\t\t<button @click=\"selectedImage = {}\" class=\"btn btn-link\">Cancel</button>\n\n\t\t\t\t\t<p class=\"form-group\">\n\t\t\t\t\t<span v-if=\"imageUpdating\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Working...</span>\n\t\t\t\t\t<span class=\"text-success\" v-if=\"imageUpdatedMessage\"> <i class=\"fa fa-check\"></i> {{ imageUpdatedMessage }}</span>\n\t\t\t\t\t</p>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"panel-body\">\n\n\t\t\t<span v-if=\"imagesLoading\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Loading images...</span>\n\n\t\t\t<div class=\"row\" v-if=\"hasImages\">\n\t\t\t<div class=\"col-md-2 col-sm-3 col-xs-6 top-buffer\" v-for=\"image in images\">\n\t\t\t\t\t<img v-bind:src=\"image.thumbnail_url\" alt=\"\" class=\"img-responsive img-thumbnail selectable\" v-bind:class=\"{'selected': isSelected(image.id)}\" @click=\"selectImage(image)\">\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<span v-if=\"!hasImages\">No Images yet</span>\n\n\t\t</div>\n\t</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<!-- Post images -->  \n\t<div class=\"panel panel-default\" id=\"post-images\">\n\t\t<div class=\"panel-heading\">\n\t\t\tAttached Images\n\t\t</div>\n\n\t\t<div class=\"panel-heading\" v-if=\"selectedImage.id\">\n\n\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\" @click=\"selectedImage = {}\">×</span></button>\n\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col-md-4\">\n\t\t\t\t\t<img class=\"media-object img-thumbnail img-responsive\" v-bind:src=\"selectedImage.thumbnail_url\" alt=\"\"> \n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-md-8\">\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>URL: </label>\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control input-sm\" readonly=\"\" value=\"{{ selectedImage.url }}\">\n\t\t\t\t\t</div>    \n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Thumbnail: </label>\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control input-sm\" readonly=\"\" value=\"{{ selectedImage.thumbnail_url }}\">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Image Title</label>\n\t\t\t\t\t\t<input type=\"text\" v-model=\"selectedImage.title\" class=\"form-control\" @keyup.enter=\"updateImage\">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Caption</label>\n\t\t\t\t\t\t<textarea v-model=\"selectedImage.caption\" class=\"form-control\"></textarea>\n\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t\t\t<button @click=\"updateImage\" class=\"btn btn-primary\">Update Image</button>\n\t\t\t\t\t<a @click=\"deleteImage\" class=\"btn btn-danger\">Delete Image</a>\n\t\t\t\t\t<button @click=\"selectedImage = {}\" class=\"btn btn-link\">Cancel</button>\n\n\t\t\t\t\t<p class=\"form-group top-buffer\">\n\t\t\t\t\t<span v-if=\"imageUpdating\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Working...</span>\n\t\t\t\t\t<span class=\"text-success\" v-if=\"imageUpdatedMessage\"> <i class=\"fa fa-check\"></i> {{ imageUpdatedMessage }}</span>\n\t\t\t\t\t</p>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"panel-body\">\n\n\t\t\t<span v-if=\"imagesLoading\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Loading images...</span>\n\n\t\t\t<div class=\"row\" v-if=\"hasImages\">\n\t\t\t<div class=\"col-md-2 col-sm-3 col-xs-6 top-buffer\" v-for=\"image in images\">\n\t\t\t\t\t<img v-bind:src=\"image.thumbnail_url\" alt=\"\" class=\"img-responsive img-thumbnail selectable\" v-bind:class=\"{'selected': isSelected(image.id)}\" @click=\"selectImage(image)\">\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<span v-if=\"!hasImages\">No Images yet</span>\n\n\t\t</div>\n\t</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -31784,7 +31859,32 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":82,"vue-hot-reload-api":8}],87:[function(require,module,exports){
+},{"vue":82,"vue-hot-reload-api":8}],88:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+	props: ['name', 'title', 'value'],
+
+	data: function data() {
+		return {};
+	},
+	filters: {
+		marked: require('marked')
+	}
+};
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<div class=\"\">\n\t\t\t<label for=\"{{ name }}\" class=\"sr-only\">Content</label>\n\t\t\t<textarea class=\"form-control\" name=\"{{ name }}\" placeholder=\"Content (Markdown/HTML)\" v-model=\"value\" cols=\"50\" rows=\"10\">\t\t\t</textarea>\n\t\t</div>\n\n\t\t<div class=\"panel panel-default top-buffer\">                    \n\t\t\t<div class=\"panel-body\" v-html=\"value | marked\"></div>\n\t\t</div>\n\t</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/harryg/Sites/creuset/resources/assets/js/components/cr-markarea.vue"
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"marked":6,"vue":82,"vue-hot-reload-api":8}],89:[function(require,module,exports){
 'use strict';
 
 var sluggify = require('../filters/sluggify.js');
@@ -31813,7 +31913,7 @@ module.exports = {
 		}
 	}
 };
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"form-group\">\n\t\t<label for=\"title\" class=\"sr-only\">{{ name | capitalize }}</label>\n\t\t<input type=\"text\" name=\"{{ name }}\" value=\"{{ value }}\" class=\"post-title-input\" placeholder=\"{{ name | capitalize }}\" v-model=\"value\" @blur=\"setNewSlug()\">                 \n\t</div>\n\t<div class=\"form-group\">\n\t<label for=\"slug\" class=\"sr-only\">Slug</label>\n\t<div class=\"input-group\">\n  \n\t\t<input type=\"text\" name=\"slug\" class=\"form-control\" placeholder=\"slug\" v-model=\"slug\">\n\n\t\t<span class=\"input-group-btn refresh-slug\">\n\t\t\t<button class=\"btn btn-default\" value=\"{{ slug }}\" type=\"button\" @click=\"sluggifyTitle\"><i class=\"fa fa-fw fa-refresh\"></i></button>\n\t\t</span>\n\t</div>\n\t</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"form-group\">\n\t\t<label for=\"title\" class=\"sr-only\">{{ name | capitalize }}</label>\n\t\t<input type=\"text\" name=\"{{ name }}\" class=\"post-title-input\" placeholder=\"{{ name | capitalize }}\" v-model=\"value\" @blur=\"setNewSlug()\">                 \n\t</div>\n\t<div class=\"form-group\">\n\t<label for=\"slug\" class=\"sr-only\">Slug</label>\n\t<div class=\"input-group\">\n  \n\t\t<input type=\"text\" name=\"slug\" class=\"form-control\" placeholder=\"slug\" v-model=\"slug\">\n\n\t\t<span class=\"input-group-btn refresh-slug\">\n\t\t\t<button class=\"btn btn-default\" value=\"{{ slug }}\" type=\"button\" @click=\"sluggifyTitle\"><i class=\"fa fa-refresh\"></i></button>\n\t\t</span>\n\t</div>\n\t</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -31825,52 +31925,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"../filters/sluggify.js":90,"vue":82,"vue-hot-reload-api":8}],88:[function(require,module,exports){
-'use strict';
-
-module.exports = {
-		props: ['name', 'value', 'title'],
-
-		data: function data() {}
-};
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"form-group\">\n        <label for=\"{{ name }}\">{{ title }}</label>\n        <div class=\"date\">\n        \t<input type=\"datetime-local\" name=\"{{ name }}\" value=\"{{ value }}\" class=\"form-control\">\n        </div>\n    </div>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  var id = "/Users/harryg/Sites/creuset/resources/assets/js/components/crdatepicker.vue"
-  if (!module.hot.data) {
-    hotAPI.createRecord(id, module.exports)
-  } else {
-    hotAPI.update(id, module.exports, module.exports.template)
-  }
-})()}
-},{"vue":82,"vue-hot-reload-api":8}],89:[function(require,module,exports){
-'use strict';
-
-module.exports = {
-	props: ['name', 'title', 'value'],
-
-	data: function data() {
-		return {};
-	},
-	filters: {
-		marked: require('marked')
-	}
-};
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div>\n\t\t<div class=\"\">\n\t\t\t<label for=\"{{ name }}\" class=\"sr-only\">Content</label>\n\t\t\t<textarea class=\"form-control\" name=\"{{ name }}\" placeholder=\"Content (Markdown/HTML)\" v-model=\"value\" cols=\"50\" rows=\"10\">\t\t\t</textarea>\n\t\t</div>\n\n\t\t<div class=\"panel panel-default top-buffer\">                    \n\t\t\t<div class=\"panel-body\" v-html=\"value | marked\"></div>\n\t\t</div>\n\t</div>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  var id = "/Users/harryg/Sites/creuset/resources/assets/js/components/crmarkarea.vue"
-  if (!module.hot.data) {
-    hotAPI.createRecord(id, module.exports)
-  } else {
-    hotAPI.update(id, module.exports, module.exports.template)
-  }
-})()}
-},{"marked":6,"vue":82,"vue-hot-reload-api":8}],90:[function(require,module,exports){
+},{"../filters/sluggify.js":90,"vue":82,"vue-hot-reload-api":8}],90:[function(require,module,exports){
 'use strict';
 
 module.exports = function (text) {

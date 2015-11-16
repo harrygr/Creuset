@@ -12,7 +12,8 @@ class Thumbnailer {
 	public function make(UploadedFile $source, $destination)
 	{
 		$image = Image::make(file_get_contents($source))
-            ->fit(200)->encode();
+            		  ->fit(200)
+            		  ->encode();
 
         Storage::put($destination, (string) $image);
 	}

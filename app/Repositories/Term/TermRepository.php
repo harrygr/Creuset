@@ -1,10 +1,11 @@
-<?php namespace Creuset\Repositories\Term;
+<?php 
 
+namespace Creuset\Repositories\Term;
 
+use Creuset\Contracts\Termable;
 
-use Illuminate\Database\Eloquent\Model;
-
-interface TermRepository {
+interface TermRepository 
+{
 
     /**
      * @param $taxonomy
@@ -22,10 +23,10 @@ interface TermRepository {
     /**
      * Get a list of all the categories
      *
-     * @param Model $relatedModel If passed will put attached categories at the top of the list
+     * @param \Creuset\Contracts\Termable $related_model If passed will put attached categories at the top of the list
      * @return mixed
      */
-    public function getCategoryList(Model $relatedModel);
+    public function getCategoryList(Termable $related_model);
 
     /**
      * Get all the tags
@@ -41,20 +42,35 @@ interface TermRepository {
      */
     public function getTagList();
 
-
+    /**
+     * Create a new Tag Term
+     * @param  string $term The tag name
+     * @param  string $slug The slug of the tag
+     * @return \Creuset\Term
+     */
     public function createTag($term, $slug = null);
 
-
+    /**
+     * Create a new Category Term
+     * @param  string $term The category name
+     * @param  string $slug The slug of the category
+     * @return \Creuset\Term
+     */
     public function createCategory($term, $slug = null);
 
+    /**
+     * Create new term
+     * @param  array $attributes
+     * @return \Creuset\Term
+     */
     public function create($attributes);
 
     /**
      * Process an array of mixed string and numneric terms, create a new term for each string
      * 
-     * @param  array $terms The terms to process
+     * @param  array $terms       The terms to process
      * @param  string $taxonomy   The taxonomy of the terms in question
-     * @return array        An array of the ids of terms, including the newly created ones
+     * @return array              An array of the ids of terms, including the newly created ones
      */
     public function process($terms, $taxonomy = 'tag');
 
