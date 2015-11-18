@@ -4,36 +4,36 @@
 			Featured Image
 		</div>
 		<div class="panel-body">
-			<p v-if="!chosenImage" class="text-center">None Chosen</p>
+			<p v-if="!selectedImage" class="text-center">None Chosen</p>
 
-			<img 
-				v-if="chosenImage" 
-				v-bind:src="chosenImage.thumbnail_url" 
-				alt="chosenImage.description" 
+			<img
+				v-if="selectedImage"
+				v-bind:src="selectedImage.thumbnail_url"
+				alt="{{ selectedImage.description }}"
 				class="img-responsive thumbnail"
 				style="width:100%;"
 			>
 
 			<!-- Button trigger modal -->
-			<button 
-				type="button" 
-				class="btn btn-default" 
-				data-toggle="modal" 
-				data-target="#imagesModal" 
+			<button
+				type="button"
+				class="btn btn-default"
+				data-toggle="modal"
+				data-target="#imagesModal"
 				@click="fetchImages()"
 			>Choose</button>
 
-			<button 
-				type="button" 
-				class="btn btn-link text-danger" 
-				v-if="chosenImage"
-				@click="chosenImage = {}"
+			<button
+				type="button"
+				class="btn btn-link text-danger"
+				v-if="selectedImage"
+				@click="selectedImage = null"
 			>Remove Image</button>
 
-			<input 
-				type="hidden" 
-				name="image_id" 
-				value="{{ chosenImage ? chosenImage.id : null }}"
+			<input
+				type="hidden"
+				name="image_id"
+				value="{{ selectedImage ? selectedImage.id : null }}"
 			>
 		</div>
 	</div>
@@ -52,12 +52,17 @@
 					<span v-if="!images"><i class="fa fa-circle-o-notch fa-spin"></i> Fetching Images</span>
 
 					<div class="row" v-if="images">
-						<p class="col-xs-12">
+						<p class="col-xs-12" v-if="images">
 							Page {{ page }} of {{ lastPage }}
 						</p>
 						<div class="col-xs-3 top-buffer" v-for="image in images">
-
-							<img  @click="selectImage(image)" class="img-responsive img-thumbnail selectable" v-bind:src="image.thumbnail_url" alt="" v-bind:class="{'selected': isSelected(image)}" >
+							<a href="#" @click="selectImage(image, $event)" data-dismiss="modal">
+							<img
+								class="img-responsive img-thumbnail selectable"
+								v-bind:src="image.thumbnail_url"
+								alt="{{ image.title }}"
+							>
+							</a>
 
 						</div>
 						<p class="clearfix col-xs-12">
@@ -67,9 +72,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<span class="pull-left">{{ selectedImage ? selectedImage.title : '' }}</span>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal" @click="chooseImage()">Select</button>
 				</div>
 			</div>
 		</div>
@@ -103,28 +106,26 @@
 					this.lastPage = response.last_page;
 				}.bind(this));
 			},
+			
 			fetchChosenImage: function() {
 				if (this.image) {
 				this.$http.get('/api/images/' + this.image)
 					.success(function(response) {
-						this.chosenImage = response;
+						this.selectedImage = response;
 					}.bind(this));
 				}
 			},
 
 			selectImage: function(image, e) {
+				if (e) e.preventDefault();
 				this.selectedImage = image;
 			},
-			chooseImage: function() {
-				this.chosenImage = this.selectedImage;
-				this.selectedImage = {};
-			},
+
 			isSelected: function(image) {
 				return this.selectedImage ? this.selectedImage.id == image.id : false;
 			},
 
 			nextPage: function() {
-				console.log("incrementing page");
 				if (this.page < this.lastPage) {
 					this.page++;
 					this.fetchImages();

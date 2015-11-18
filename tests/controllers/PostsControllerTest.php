@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Carbon\Carbon;
 use Faker\Factory;
@@ -69,10 +69,10 @@ class PostsControllerTest extends TestCase
 	}
 
 	/** @test **/
-	public function it_deletes_a_post()
+	public function it_trashes_a_post()
 	{
 	    $this->withoutMiddleware();
-	    
+
 	    $user = $this->loginWithUser();
 	    $post = factory('Creuset\Post')->create();
 
@@ -81,6 +81,19 @@ class PostsControllerTest extends TestCase
 
 	    // move to trash
 	    $this->delete("/admin/posts/{$post->id}");
+		$this->assertSessionHas('alert', 'Post moved to trash');
+	}
+
+	/** @test **/
+	public function it_permanently_deletes_a_post()
+	{
+		$this->withoutMiddleware();
+
+		$user = $this->loginWithUser();
+
+		$post = factory('Creuset\Post')->create([
+			'deleted_at' => Carbon::now()->subDay()
+		]);
 
 	    $this->visit("/admin/posts")
 	     	 ->dontSee($post->title);
@@ -88,18 +101,20 @@ class PostsControllerTest extends TestCase
 	    $this->visit("admin/posts/trash")
 	         ->see($post->title);
 
-	    // Delete permanently
+		// Delete permanently
 	    $this->delete("/admin/posts/{$post->id}");
+		$this->assertSessionHas('alert', 'Post permanently deleted');
+
 	    $this->notSeeInDatabase('posts', [
 	    	'title' => $post->title
 	    	]);
 	}
 
-		/** @test **/
+	/** @test **/
 	public function it_restores_a_post()
 	{
 	    $this->withoutMiddleware();
-	    
+
 	    $user = $this->loginWithUser();
 	    $post = factory('Creuset\Post')->create();
 
@@ -119,7 +134,7 @@ class PostsControllerTest extends TestCase
 	{
 		$this->withoutMiddleware(); // needed to skip csrf checks etc
 		$user = $this->loginWithUser();
-		
+
 		// Make a post
 		$post = factory('Creuset\Post')->create();
 

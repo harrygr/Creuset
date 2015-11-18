@@ -34,6 +34,10 @@ Route::group(['prefix' => 'admin'], function()
 	get('posts/trash', ['uses' => 'Admin\PostsController@trash', 'as' => 'admin.posts.trash']);
 	post('posts', ['uses' => 'Admin\PostsController@store', 'as' => 'admin.posts.store']);
 
+	put('posts/{trashedPost}/restore', ['uses' => 'Admin\PostsController@restore', 'as' => 'admin.posts.restore']);
+	get('posts/{post}/edit', ['uses' => 'Admin\PostsController@edit', 'as' => 'admin.posts.edit']);
+	patch('posts/{post}', ['uses' => 'Admin\PostsController@update', 'as' => 'admin.posts.update']);
+	delete('posts/{trashedPost}', ['uses' => 'Admin\PostsController@destroy', 'as' => 'admin.posts.delete']);
 	// Deprecate this in favor of generic images route
 	post('posts/{post}/image', ['uses' => 'Api\ImagesController@store', 'as' => 'posts.image.store']);
 
@@ -50,10 +54,7 @@ Route::group(['prefix' => 'admin'], function()
 	post('products/{product}/image', ['uses' => 'Api\ImagesController@store', 'as' => 'admin.products.attach_image']);
 
 
-	put('posts/{trashedPost}/restore', ['uses' => 'Admin\PostsController@restore', 'as' => 'admin.posts.restore']);
-	get('posts/{post}/edit', ['uses' => 'Admin\PostsController@edit', 'as' => 'admin.posts.edit']);
-	patch('posts/{post}', ['uses' => 'Admin\PostsController@update', 'as' => 'admin.posts.update']);
-	delete('posts/{trashedPost}', ['uses' => 'Admin\PostsController@destroy', 'as' => 'admin.posts.delete']);
+
 
 	// Terms
 	get('terms/{taxonomy}', ['uses' => 'Admin\TermsController@index', 'as' => 'admin.terms.index']);
@@ -88,7 +89,7 @@ Route::group(['prefix' => 'api'], function()
 {
 	get('terms/{taxonomy}', ['uses' => 'Api\TermsController@terms', 'as' => 'api.terms']);
 	post('terms', ['uses' => 'Api\TermsController@store', 'as' => 'api.terms.store']);
-	
+
 	get('categories', ['uses' => 'Api\TermsController@categories', 'as' => 'api.categories']);
 	post('categories', ['uses' => 'Api\TermsController@storeCategory', 'as' => 'api.categories']);
 

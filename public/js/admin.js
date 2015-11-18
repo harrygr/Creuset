@@ -31719,27 +31719,25 @@ module.exports = {
 				this.lastPage = response.last_page;
 			}).bind(this));
 		},
+
 		fetchChosenImage: function fetchChosenImage() {
 			if (this.image) {
 				this.$http.get('/api/images/' + this.image).success((function (response) {
-					this.chosenImage = response;
+					this.selectedImage = response;
 				}).bind(this));
 			}
 		},
 
 		selectImage: function selectImage(image, e) {
+			if (e) e.preventDefault();
 			this.selectedImage = image;
 		},
-		chooseImage: function chooseImage() {
-			this.chosenImage = this.selectedImage;
-			this.selectedImage = {};
-		},
+
 		isSelected: function isSelected(image) {
 			return this.selectedImage ? this.selectedImage.id == image.id : false;
 		},
 
 		nextPage: function nextPage() {
-			console.log("incrementing page");
 			if (this.page < this.lastPage) {
 				this.page++;
 				this.fetchImages();
@@ -31753,7 +31751,7 @@ module.exports = {
 		}
 	}
 };
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"panel panel-default\" id=\"featuredImageChooser\">\n\t\t<div class=\"panel-heading\">\n\t\t\tFeatured Image\n\t\t</div>\n\t\t<div class=\"panel-body\">\n\t\t\t<p v-if=\"!chosenImage\" class=\"text-center\">None Chosen</p>\n\n\t\t\t<img v-if=\"chosenImage\" v-bind:src=\"chosenImage.thumbnail_url\" alt=\"chosenImage.description\" class=\"img-responsive thumbnail\" style=\"width:100%;\">\n\n\t\t\t<!-- Button trigger modal -->\n\t\t\t<button type=\"button\" class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#imagesModal\" @click=\"fetchImages()\">Choose</button>\n\n\t\t\t<button type=\"button\" class=\"btn btn-link text-danger\" v-if=\"chosenImage\" @click=\"chosenImage = {}\">Remove Image</button>\n\n\t\t\t<input type=\"hidden\" name=\"image_id\" value=\"{{ chosenImage ? chosenImage.id : null }}\">\n\t\t</div>\n\t</div>\n\n\n\t<!-- Modal -->\n\t<div class=\"modal fade\" id=\"imagesModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-title\">\n\t\t<div class=\"modal-dialog modal-lg\" role=\"document\">\n\t\t\t<div class=\"modal-content\">\n\t\t\t\t<div class=\"modal-header\">\n\t\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button>\n\t\t\t\t\t<h4 class=\"modal-title\" id=\"myModalLabel\">Choose Featured Image</h4>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"modal-body\">\n\n\t\t\t\t\t<span v-if=\"!images\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Fetching Images</span>\n\n\t\t\t\t\t<div class=\"row\" v-if=\"images\">\n\t\t\t\t\t\t<p class=\"col-xs-12\">\n\t\t\t\t\t\t\tPage {{ page }} of {{ lastPage }}\n\t\t\t\t\t\t</p>\n\t\t\t\t\t\t<div class=\"col-xs-3 top-buffer\" v-for=\"image in images\">\n\n\t\t\t\t\t\t\t<img @click=\"selectImage(image)\" class=\"img-responsive img-thumbnail selectable\" v-bind:src=\"image.thumbnail_url\" alt=\"\" v-bind:class=\"{'selected': isSelected(image)}\">\n\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<p class=\"clearfix col-xs-12\">\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-link pull-left\" @click=\"prevPage\"><i class=\"fa fa-chevron-left\"></i> Prev</button>\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-link pull-right\" @click=\"nextPage\">Next <i class=\"fa fa-chevron-right\"></i></button>\n\t\t\t\t\t\t</p>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"modal-footer\">\n\t\t\t\t\t<span class=\"pull-left\">{{ selectedImage ? selectedImage.title : '' }}</span>\n\t\t\t\t\t<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n\t\t\t\t\t<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\" @click=\"chooseImage()\">Select</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"panel panel-default\" id=\"featuredImageChooser\">\n\t\t<div class=\"panel-heading\">\n\t\t\tFeatured Image\n\t\t</div>\n\t\t<div class=\"panel-body\">\n\t\t\t<p v-if=\"!selectedImage\" class=\"text-center\">None Chosen</p>\n\n\t\t\t<img v-if=\"selectedImage\" v-bind:src=\"selectedImage.thumbnail_url\" alt=\"{{ selectedImage.description }}\" class=\"img-responsive thumbnail\" style=\"width:100%;\">\n\n\t\t\t<!-- Button trigger modal -->\n\t\t\t<button type=\"button\" class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#imagesModal\" @click=\"fetchImages()\">Choose</button>\n\n\t\t\t<button type=\"button\" class=\"btn btn-link text-danger\" v-if=\"selectedImage\" @click=\"selectedImage = null\">Remove Image</button>\n\n\t\t\t<input type=\"hidden\" name=\"image_id\" value=\"{{ selectedImage ? selectedImage.id : null }}\">\n\t\t</div>\n\t</div>\n\n\n\t<!-- Modal -->\n\t<div class=\"modal fade\" id=\"imagesModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-title\">\n\t\t<div class=\"modal-dialog modal-lg\" role=\"document\">\n\t\t\t<div class=\"modal-content\">\n\t\t\t\t<div class=\"modal-header\">\n\t\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button>\n\t\t\t\t\t<h4 class=\"modal-title\" id=\"myModalLabel\">Choose Featured Image</h4>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"modal-body\">\n\n\t\t\t\t\t<span v-if=\"!images\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Fetching Images</span>\n\n\t\t\t\t\t<div class=\"row\" v-if=\"images\">\n\t\t\t\t\t\t<p class=\"col-xs-12\" v-if=\"images\">\n\t\t\t\t\t\t\tPage {{ page }} of {{ lastPage }}\n\t\t\t\t\t\t</p>\n\t\t\t\t\t\t<div class=\"col-xs-3 top-buffer\" v-for=\"image in images\">\n\t\t\t\t\t\t\t<a href=\"#\" @click=\"selectImage(image, $event)\" data-dismiss=\"modal\">\n\t\t\t\t\t\t\t<img class=\"img-responsive img-thumbnail selectable\" v-bind:src=\"image.thumbnail_url\" alt=\"{{ image.title }}\">\n\t\t\t\t\t\t\t</a>\n\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<p class=\"clearfix col-xs-12\">\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-link pull-left\" @click=\"prevPage\"><i class=\"fa fa-chevron-left\"></i> Prev</button>\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-link pull-right\" @click=\"nextPage\">Next <i class=\"fa fa-chevron-right\"></i></button>\n\t\t\t\t\t\t</p>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"modal-footer\">\n\t\t\t\t\t<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

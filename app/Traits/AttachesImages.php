@@ -11,7 +11,12 @@ trait AttachesImages {
 	 */
 	public function images()
 	{
-		return $this->morphMany('\Creuset\Image', 'imageable');
+		return $this->morphMany(Image::class, 'imageable');
+	}
+
+	public function image()
+	{
+		return $this->belongsTo(Image::class);
 	}
 
 	/**

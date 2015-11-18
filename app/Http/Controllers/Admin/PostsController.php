@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Creuset\Http\Controllers\Admin;
 
@@ -19,6 +19,7 @@ use Creuset\Repositories\Term\TermRepository;
  */
 class PostsController extends Controller {
 
+	use \Creuset\Traits\TrashesModels;
 
 	/**
 	 * @var PostRepository
@@ -94,7 +95,7 @@ class PostsController extends Controller {
 			->with(['alert' => 'Post saved', 'alert-class' => 'success']);
 	}
 
-	
+
 
 	/**
 	 * Show the form for editing the specified resource.
@@ -109,7 +110,7 @@ class PostsController extends Controller {
 		$post->load('categories', 'tags');
 
 		$selectedCategories = $post->categories->lists('id')->toArray();
-		
+
 		$categoryList = $terms->getCategoryList($post);
 		$tagList = $terms->getTagList();
 
@@ -152,19 +153,19 @@ class PostsController extends Controller {
 	 * @internal param int $id
 	 * @internal param Request $request
 	 */
-	public function destroy(Post $post)
-	{
-		$alert = 'Post moved to trash';
-		
-		if ($post->trashed()) {
-			$alert = "Post permanently deleted";
-		}
-
-		$this->posts->delete($post);
-		
-		return redirect()->route('admin.posts.index')
-			->with(['alert' => $alert, 'alert-class' => 'success']);
-	}
+	// public function destroy(Post $post)
+	// {
+	// 	$alert = 'Post moved to trash';
+	//
+	// 	if ($post->trashed()) {
+	// 		$alert = "Post permanently deleted";
+	// 	}
+	//
+	// 	$this->posts->delete($post);
+	//
+	// 	return redirect()->route('admin.posts.index')
+	// 		->with(['alert' => $alert, 'alert-class' => 'success']);
+	// }
 
 	public function restore(Post $post)
 	{

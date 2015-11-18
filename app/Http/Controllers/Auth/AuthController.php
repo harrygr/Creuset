@@ -8,12 +8,13 @@ use Illuminate\Auth\Guard;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
 use Validator;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
 
 class AuthController extends Controller {
-	private $auth;
 
+    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
-	use AuthenticatesAndRegistersUsers;
+    private $auth;
 
 	protected $redirectTo = '/';
 
@@ -35,25 +36,25 @@ class AuthController extends Controller {
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function postLogin(Request $request)
-	{
-		$this->validate($request, [
-			'username' => 'required', 'password' => 'required',
-		]);
+	// public function postLogin(Request $request)
+	// {
+	// 	$this->validate($request, [
+	// 		'username' => 'required', 'password' => 'required',
+	// 	]);
 
-		// Attempt logging in with username first, or email if that fails
-		if ( \Auth::attempt(['username' => $request->username, 'password' => $request->password], $request->has('remember')) or 
-			 \Auth::attempt(['email' => $request->username, 'password' => $request->password], $request->has('remember')))
-		{
-			return redirect()->intended(route('admin.posts.index'));
-		}
+	// 	// Attempt logging in with username first, or email if that fails
+	// 	if ( \Auth::attempt(['username' => $request->username, 'password' => $request->password], $request->has('remember')) or
+	// 		 \Auth::attempt(['email' => $request->username, 'password' => $request->password], $request->has('remember')))
+	// 	{
+	// 		return redirect()->intended(route('admin.posts.index'));
+	// 	}
 
-		return \Redirect::route('auth.login')
-					->withInput($request->only('email'))
-					->withErrors([
-						'username' => 'These credentials do not match our records.',
-					]);
-	}
+	// 	return \Redirect::route('auth.login')
+	// 				->withInput($request->only('email'))
+	// 				->withErrors([
+	// 					'username' => 'These credentials do not match our records.',
+	// 				]);
+	// }
 
 	/**
 	 * Handle a registration request for the application.
@@ -107,5 +108,26 @@ class AuthController extends Controller {
 			'password' => bcrypt($data['password']),
 		]);
 	}
+
+
+    /**
+     * Get the path to the login route.
+     *
+     * @return string
+     */
+    public function loginPath()
+    {
+        return route('auth.login');
+    }
+
+    /**
+     * Get the post register / login redirect path.
+     *
+     * @return string
+     */
+    public function redirectPath()
+    {
+        return route('admin.posts.index');
+    }
 
 }

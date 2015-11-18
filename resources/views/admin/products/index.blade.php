@@ -18,6 +18,7 @@ Products
 		<table class="table table-striped">
 			<thead>
 				<tr>
+					<th></th>
 					<th>Product</th>
 					<th>SKU</th>
 					<th>Stock</th>
@@ -28,6 +29,11 @@ Products
 			<tbody>
 			@foreach ($products as $product)
 				<tr>
+					<td>
+						@if ($product->image)
+							<img src="{{ $product->image->thumbnail_url }}" alt="{{ $product->image->title }}" width="40" height="40" class="pull-left" />
+						@endif
+					</td>
 					<td>
 						<strong>{{ $product->name }}</strong>
 						<div class="row-actions">
