@@ -155,6 +155,7 @@ return [
 		'Gvb\Whoops\ServiceProvider',
 		'Collective\Html\HtmlServiceProvider',
 		'Intervention\Image\ImageServiceProvider',
+        Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
 
 	],
 

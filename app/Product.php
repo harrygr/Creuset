@@ -3,16 +3,23 @@
 namespace Creuset;
 
 use Carbon\Carbon;
-use Creuset\Contracts\Imageable;
 use Creuset\Contracts\Termable;
 use Creuset\Presenters\PresentableTrait;
-use Creuset\Traits\AttachesImages;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
-class Product extends Model implements Imageable, Termable 
+class Product extends Model implements HasMediaConversions, Termable 
 {
-	use PresentableTrait, AttachesImages, SoftDeletes;
+	use PresentableTrait, HasMediaTrait, SoftDeletes;
+
+    public function registerMediaConversions()
+    {
+        $this->addMediaConversion('thumb')
+             ->setManipulations(['w' => 300, 'h' => 300])
+             ->performOnCollections('images');
+    }
 	
 	/**
      * The attributes that should be mutated to dates.
@@ -38,7 +45,7 @@ class Product extends Model implements Imageable, Termable
 	 'slug',
 	 'description',
 	 'user_id',
-	 'image_id',
+	 'media_id',
 	 'status',
 	 'price',
 	 'sale_price',

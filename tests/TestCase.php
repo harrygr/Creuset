@@ -1,6 +1,8 @@
 <?php
 
+use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
@@ -59,4 +61,21 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 		}
 		return $role;
 	}
+
+    protected function createImage($quantity = 1)
+    {
+        // Make a post
+        $post = factory('Creuset\Post')->create();
+        $faker = Factory::create();
+        $image = base_path('tests/resources/images/image-1.jpg');
+
+        // And we need a file
+        foreach (range(1, $quantity) as $creation) {
+            $image_name = $faker->bothify('??#?#??') . '.jpg';
+            $file = new UploadedFile($image, $image_name, null, null, null, true);
+            $post->addMedia($file)->preservingOriginal()->toMediaLibrary();
+        }
+
+        return $quantity > 1 ? $post->getMedia() : $post->getMedia()->first();
+    }
 }

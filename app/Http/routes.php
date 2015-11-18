@@ -36,10 +36,13 @@ Route::group(['prefix' => 'admin'], function()
 
 	put('posts/{trashedPost}/restore', ['uses' => 'Admin\PostsController@restore', 'as' => 'admin.posts.restore']);
 	get('posts/{post}/edit', ['uses' => 'Admin\PostsController@edit', 'as' => 'admin.posts.edit']);
+    
+    get('posts/{post}/images', ['uses' => 'Admin\PostsController@images', 'as' => 'admin.posts.images'] );
+
 	patch('posts/{post}', ['uses' => 'Admin\PostsController@update', 'as' => 'admin.posts.update']);
 	delete('posts/{trashedPost}', ['uses' => 'Admin\PostsController@destroy', 'as' => 'admin.posts.delete']);
 	// Deprecate this in favor of generic images route
-	post('posts/{post}/image', ['uses' => 'Api\ImagesController@store', 'as' => 'posts.image.store']);
+	post('posts/{post}/image', ['uses' => 'Api\ImagesController@store', 'as' => 'admin.posts.attach_image']);
 
 	/**
 	 * PRODUCTS
@@ -93,12 +96,13 @@ Route::group(['prefix' => 'api'], function()
 	get('categories', ['uses' => 'Api\TermsController@categories', 'as' => 'api.categories']);
 	post('categories', ['uses' => 'Api\TermsController@storeCategory', 'as' => 'api.categories']);
 
-	get('posts/{post}/images', ['uses' => 'Api\ImagesController@images', 'as' => 'api.posts.images']);
-	get('products/{product}/images', ['uses' => 'Api\ImagesController@images', 'as' => 'api.products.images']);
+	get('posts/{post}/images', ['uses' => 'Api\MediaController@modelImages', 'as' => 'api.posts.images']);
+	get('products/{product}/images', ['uses' => 'Api\MediaController@modelImages', 'as' => 'api.products.images']);
 
-	get('images', ['uses' => 'Api\ImagesController@index', 'as' => 'api.images.index']);
-	get('images/{image}', ['uses' => 'Api\ImagesController@show', 'as' => 'api.images.show']);
-	patch('images/{image}', ['uses' => 'Api\ImagesController@update', 'as' => 'api.images.update']);
-	delete('images/{image}', ['uses' => 'Api\ImagesController@destroy', 'as' => 'api.images.destroy']);
+    patch('images/{image}', ['uses' => 'Api\ImagesController@update', 'as' => 'api.images.update']);
+    delete('images/{image}', ['uses' => 'Api\ImagesController@destroy', 'as' => 'api.images.destroy']);
+
+	get('media/{media}', ['uses' => 'Api\MediaController@show', 'as' => 'api.media.show'])->where('id', '[0-9]+');
+    get('media/{collection?}', ['uses' => 'Api\MediaController@index', 'as' => 'api.media.index']);
 
 });

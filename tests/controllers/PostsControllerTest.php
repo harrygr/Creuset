@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Creuset\Media;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Storage;
@@ -127,10 +128,8 @@ class PostsControllerTest extends TestCase
 	    	 ->see($post->title);
 	}
 
-	/**
-	 * Simulate an HTTP request to upload an image to a post
-	 */
-	public function testItCanUploadAnImageToAPost()
+    /** @test **/
+	public function it_can_upload_an_image_to_a_post()
 	{
 		$this->withoutMiddleware(); // needed to skip csrf checks etc
 		$user = $this->loginWithUser();
@@ -149,20 +148,19 @@ class PostsControllerTest extends TestCase
 		// An Image instance (in JSON) should be returned
 		$responseData = json_decode($response->getContent());
 
-		$this->assertTrue(Storage::exists($responseData->path));
-		$this->assertTrue(Storage::exists($responseData->thumbnail_path));
-
 		// Ensure the image has been saved in the db and attached to our post
-		$this->seeInDatabase('images', [
-			'imageable_id' => $post->id,
-			'imageable_type' => 'Creuset\Post',
-			'path'	=> $responseData->path,
-			'user_id' => $user->id,
+		$this->seeInDatabase('media', [
+			'model_id' => $post->id,
+			'model_type' => 'Creuset\Post',
+            'file_name' => basename($image),
 			]);
 
-		// Clean up the file
-		Storage::delete($responseData->path);
-		Storage::delete($responseData->thumbnail_path);
+        foreach ($post->getMedia() as $media_item) {
+            $this->assertFileExists($media_item->getPath());
+        }
+
+        // Delete the post which should also delete its associated media
+        $post->delete();
 
 	}
 }

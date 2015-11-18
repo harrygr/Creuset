@@ -9,7 +9,9 @@
 		"laravelcollective/html": "5.*",
 		"guidovanbiemen/laravel-whoops": "dev-master",
 		"intervention/image": "^2.3",
-		"league/flysystem-aws-s3-v3": "^1.0@dev"
+		"league/flysystem-aws-s3-v3": "^1.0@dev",
+		"spatie/laravel-medialibrary": "dev-master",
+        "league/glide": "0.3.5"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "<5.1",

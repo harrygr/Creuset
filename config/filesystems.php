@@ -48,6 +48,11 @@ return [
 			'root'   => public_path(),
 		],
 
+        'media' => [
+            'driver' => 'local',
+            'root'   => public_path().'/media',
+        ],
+
 		's3' => [
 			'driver' => 's3',
 			'key'    => env('AWS_KEY'),

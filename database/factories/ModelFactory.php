@@ -75,23 +75,3 @@ $factory->define('Creuset\Termable', function($faker) {
 		'termable_type'	=> 'Creuset\Post'
 	];
 });
-
-$factory->define('Creuset\Image', function($faker) {
-	$filename = str_random() . '.jpg';
-	$image_path = "uploads/images";
-
-
-
-	$image = Intervention::make($faker->imageUrl());
-	Storage::put("{$image_path}/{$filename}", (string) $image->encode());
-				
-	$image->fit(200);
-	Storage::put("{$image_path}/tn-{$filename}", (string) $image->encode());
-
-	return [
-		'title' 		=> $faker->sentence,
-		'caption' 		=> $faker->paragraph,
-		'filename'		=> $filename,
-		'user_id' 		=> factory(Creuset\User::class)->create()->id,
-	];
-});

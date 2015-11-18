@@ -11,7 +11,7 @@
 
 			<div class="row">
 				<div class="col-md-4">
-					<img class="media-object img-thumbnail img-responsive" v-bind:src="selectedImage.thumbnail_url" alt=""> 
+					<img class="img-thumbnail img-responsive" v-bind:src="selectedImage.thumbnail_url" alt=""> 
 				</div>
 				<div  class="col-md-8">
 					<div class="form-group">

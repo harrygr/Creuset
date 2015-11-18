@@ -1,6 +1,7 @@
-<?php namespace Creuset\Providers;
+<?php 
 
-use Creuset\Image;
+namespace Creuset\Providers;
+
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider {
@@ -12,9 +13,7 @@ class AppServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		Image::deleted(function ($image) {
-			$image->deleteFiles();
-        });
+
 	}
 
 	/**

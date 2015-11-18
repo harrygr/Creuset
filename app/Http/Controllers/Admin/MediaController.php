@@ -6,10 +6,10 @@ namespace Creuset\Http\Controllers\Admin;
 use Creuset\Contracts\Imageable;
 use Creuset\Http\Controllers\Controller;
 use Creuset\Http\Requests;
-use Creuset\Image;
+use Creuset\Media;
 use Illuminate\Http\Request;
 
-class ImagesController extends Controller
+class MediaController extends Controller
 {
     /**
      * Display a listing of images.
@@ -18,14 +18,13 @@ class ImagesController extends Controller
      */
     public function index()
     {
-        $images = Image::latest()->paginate(10);
+        $images = Media::latest()->paginate(10);
         return view('admin.images.index', compact('images'));
     }
 
-    public function destroy(Image $image)
+    public function destroy(Media $media)
     {
-        $image->deleteFiles();
-        $image->delete();
+        $media->delete();
 
         return redirect()->route('admin.images.index')
                          ->with(['alert' => 'Image Deleted', 'alert-class' => 'success']);

@@ -143,6 +143,10 @@ class PostsController extends Controller {
 			->with(['alert-class' => "success"]);
 	}
 
+    public function images(Post $post)
+    {
+        return view('admin.posts.images')->with(compact('post'));
+    }
 
 	/**
 	 * Remove the specified resource from storage.

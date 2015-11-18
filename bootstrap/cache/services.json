@@ -33,7 +33,8 @@
         "Creuset\\Providers\\AuthServiceProvider",
         "Gvb\\Whoops\\ServiceProvider",
         "Collective\\Html\\HtmlServiceProvider",
-        "Intervention\\Image\\ImageServiceProvider"
+        "Intervention\\Image\\ImageServiceProvider",
+        "Spatie\\MediaLibrary\\MediaLibraryServiceProvider"
     ],
     "eager": [
         "Illuminate\\Auth\\AuthServiceProvider",
@@ -57,7 +58,8 @@
         "Creuset\\Providers\\ComposerServiceProvider",
         "Creuset\\Providers\\AuthServiceProvider",
         "Gvb\\Whoops\\ServiceProvider",
-        "Intervention\\Image\\ImageServiceProvider"
+        "Intervention\\Image\\ImageServiceProvider",
+        "Spatie\\MediaLibrary\\MediaLibraryServiceProvider"
     ],
     "deferred": {
         "command.app.name": "Illuminate\\Foundation\\Providers\\ArtisanServiceProvider",

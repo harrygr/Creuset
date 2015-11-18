@@ -26,7 +26,7 @@ class CreateProductsTable extends Migration
 
             $table->integer('user_id')->unsigned();
             $table->integer('post_id')->unsigned()->nullable();
-            $table->integer('image_id')->unsigned()->nullable();
+            $table->integer('media_id')->unsigned()->nullable();
 
             $table->timestamp('published_at')->nullable();
             $table->softDeletes();
@@ -36,7 +36,7 @@ class CreateProductsTable extends Migration
         Schema::table('products', function($table)
         {
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('image_id')->references('id')->on('images');
+            //$table->foreign('image_id')->references('id')->on('images');
         });
     }
 
@@ -50,7 +50,7 @@ class CreateProductsTable extends Migration
         Schema::table('products', function($table)
         {
             $table->dropForeign('posts_user_id_foreign');
-            $table->dropForeign('posts_image_id_foreign');
+            //$table->dropForeign('posts_image_id_foreign');
         });
 
         Schema::drop('products');

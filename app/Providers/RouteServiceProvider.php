@@ -27,9 +27,9 @@ class RouteServiceProvider extends ServiceProvider {
 
 		$router->model('term', 'Creuset\Term');
 		$router->model('user', 'Creuset\User');
-		$router->model('image', 'Creuset\Image');
 		$router->model('post', 'Creuset\Post');
 		$router->model('product', 'Creuset\Product');
+        $router->model('media', 'Creuset\Media');
 		
 		$router->bind('trashedPost', function($id) {
 			return Post::withTrashed()->find($id);
