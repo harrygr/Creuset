@@ -20736,13 +20736,13 @@ function install(Vue) {
 
         $url: {
             get: function () {
-                return this._url || (this._url = _.options(Vue.url, this, this.$options.url));
+                return _.options(Vue.url, this, this.$options.url);
             }
         },
 
         $http: {
             get: function () {
-                return this._http || (this._http = _.options(Vue.http, this, this.$options.http));
+                return _.options(Vue.http, this, this.$options.http);
             }
         },
 
@@ -21166,7 +21166,7 @@ module.exports = function (_, options) {
 
 module.exports = function (_) {
 
-    function Resource(url, params, actions) {
+    function Resource(url, params, actions, options) {
 
         var self = this, resource = {};
 
@@ -21177,7 +21177,7 @@ module.exports = function (_) {
 
         _.each(actions, function (action, name) {
 
-            action = _.extend(true, {url: url, params: params || {}}, action);
+            action = _.extend(true, {url: url, params: params || {}}, options, action);
 
             resource[name] = function () {
                 return (self.$http || _.http)(opts(action, arguments));
@@ -21985,6 +21985,7 @@ function modifyListenerCount (vm, event, count) {
 }
 
 },{"../util":79}],20:[function(require,module,exports){
+(function (process){
 var _ = require('../util')
 var config = require('../config')
 
@@ -22125,6 +22126,15 @@ config._assetTypes.forEach(function (type) {
     if (!definition) {
       return this.options[type + 's'][id]
     } else {
+      /* istanbul ignore if */
+      if (process.env.NODE_ENV !== 'production') {
+        if (type === 'component' && _.commonTagRE.test(id)) {
+          _.warn(
+            'Do not use built-in HTML elements as component ' +
+            'id: ' + id
+          )
+        }
+      }
       if (
         type === 'component' &&
         _.isPlainObject(definition)
@@ -22138,7 +22148,8 @@ config._assetTypes.forEach(function (type) {
   }
 })
 
-},{"../compiler":26,"../config":28,"../directives/internal":35,"../fragment/factory":57,"../parsers/directive":67,"../parsers/expression":68,"../parsers/path":69,"../parsers/template":70,"../parsers/text":71,"../util":79}],21:[function(require,module,exports){
+}).call(this,require('_process'))
+},{"../compiler":26,"../config":28,"../directives/internal":35,"../fragment/factory":57,"../parsers/directive":67,"../parsers/expression":68,"../parsers/path":69,"../parsers/template":70,"../parsers/text":71,"../util":79,"_process":5}],21:[function(require,module,exports){
 (function (process){
 var _ = require('../util')
 var compiler = require('../compiler')
@@ -22458,7 +22469,7 @@ module.exports = function compileProps (el, propOptions) {
   var props = []
   var names = Object.keys(propOptions)
   var i = names.length
-  var options, name, attr, value, path, parsed, prop, isTitleBinding
+  var options, name, attr, value, path, parsed, prop
   while (i--) {
     name = names[i]
     options = propOptions[name] || empty
@@ -22484,72 +22495,65 @@ module.exports = function compileProps (el, propOptions) {
       name: name,
       path: path,
       options: options,
-      mode: propBindingModes.ONE_WAY
+      mode: propBindingModes.ONE_WAY,
+      raw: null
     }
 
-    // IE title issues
-    isTitleBinding = false
-    if (name === 'title' && (el.getAttribute(':title') || el.getAttribute('v-bind:title'))) {
-      isTitleBinding = true
-    }
-
-    // first check literal version
     attr = _.hyphenate(name)
-    value = prop.raw = _.attr(el, attr)
-    if (value === null || isTitleBinding) {
-      // then check dynamic version
-      if ((value = _.getBindAttr(el, attr)) === null) {
-        if ((value = _.getBindAttr(el, attr + '.sync')) !== null) {
-          prop.mode = propBindingModes.TWO_WAY
-        } else if ((value = _.getBindAttr(el, attr + '.once')) !== null) {
-          prop.mode = propBindingModes.ONE_TIME
-        }
+    // first check dynamic version
+    if ((value = _.getBindAttr(el, attr)) === null) {
+      if ((value = _.getBindAttr(el, attr + '.sync')) !== null) {
+        prop.mode = propBindingModes.TWO_WAY
+      } else if ((value = _.getBindAttr(el, attr + '.once')) !== null) {
+        prop.mode = propBindingModes.ONE_TIME
       }
+    }
+    if (value !== null) {
+      // has dynamic binding!
       prop.raw = value
-      if (value !== null) {
-        parsed = dirParser.parse(value)
-        value = parsed.expression
-        prop.filters = parsed.filters
-        // check binding type
-        if (_.isLiteral(value)) {
-          // for expressions containing literal numbers and
-          // booleans, there's no need to setup a prop binding,
-          // so we can optimize them as a one-time set.
-          prop.optimizedLiteral = true
-        } else {
-          prop.dynamic = true
-          // check non-settable path for two-way bindings
-          if (process.env.NODE_ENV !== 'production' &&
-              prop.mode === propBindingModes.TWO_WAY &&
-              !settablePathRE.test(value)) {
-            prop.mode = propBindingModes.ONE_WAY
-            _.warn(
-              'Cannot bind two-way prop with non-settable ' +
-              'parent path: ' + value
-            )
-          }
-        }
-        prop.parentPath = value
-
-        // warn required two-way
-        if (
-          process.env.NODE_ENV !== 'production' &&
-          options.twoWay &&
-          prop.mode !== propBindingModes.TWO_WAY
-        ) {
+      parsed = dirParser.parse(value)
+      value = parsed.expression
+      prop.filters = parsed.filters
+      // check binding type
+      if (_.isLiteral(value)) {
+        // for expressions containing literal numbers and
+        // booleans, there's no need to setup a prop binding,
+        // so we can optimize them as a one-time set.
+        prop.optimizedLiteral = true
+      } else {
+        prop.dynamic = true
+        // check non-settable path for two-way bindings
+        if (process.env.NODE_ENV !== 'production' &&
+            prop.mode === propBindingModes.TWO_WAY &&
+            !settablePathRE.test(value)) {
+          prop.mode = propBindingModes.ONE_WAY
           _.warn(
-            'Prop "' + name + '" expects a two-way binding type.'
+            'Cannot bind two-way prop with non-settable ' +
+            'parent path: ' + value
           )
         }
+      }
+      prop.parentPath = value
 
-      } else if (options.required) {
-        // warn missing required
-        process.env.NODE_ENV !== 'production' && _.warn(
-          'Missing required prop: ' + name
+      // warn required two-way
+      if (
+        process.env.NODE_ENV !== 'production' &&
+        options.twoWay &&
+        prop.mode !== propBindingModes.TWO_WAY
+      ) {
+        _.warn(
+          'Prop "' + name + '" expects a two-way binding type.'
         )
       }
+    } else if ((value = _.attr(el, attr)) !== null) {
+      // has literal binding!
+      prop.raw = value
+    } else if (options.required) {
+      // warn missing required
+      process.env.NODE_ENV !== 'production' && _.warn(
+        'Missing required prop: ' + name
+      )
     }
-
     // push prop
     props.push(prop)
   }
@@ -22602,8 +22606,10 @@ function makePropsLinkFn (props) {
         }
       } else if (prop.optimizedLiteral) {
         // optimized literal, cast it and just set once
-        raw = _.stripQuotes(raw)
-        value = _.toBoolean(_.toNumber(raw))
+        var stripped = _.stripQuotes(raw)
+        value = stripped === raw
+          ? _.toBoolean(_.toNumber(raw))
+          : stripped
         _.initProp(vm, prop, value)
       } else {
         // string literal, but we need to cater for
@@ -22864,17 +22870,28 @@ exports.compileRoot = function (el, options, contextOptions) {
     }
   } else if (process.env.NODE_ENV !== 'production' && containerAttrs) {
     // warn container directives for fragment instances
-    var names = containerAttrs.map(function (attr) {
-      return '"' + attr.name + '"'
-    }).join(', ')
-    var plural = containerAttrs.length > 1
-    _.warn(
-      'Attribute' + (plural ? 's ' : ' ') + names +
-      (plural ? ' are' : ' is') + ' ignored on component ' +
-      '<' + options.el.tagName.toLowerCase() + '> because ' +
-      'the component is a fragment instance: ' +
-      'http://vuejs.org/guide/components.html#Fragment_Instance'
-    )
+    var names = containerAttrs
+      .filter(function (attr) {
+        // allow vue-loader/vueify scoped css attributes
+        return attr.name.indexOf('_v-') < 0 &&
+          // allow event listeners
+          !onRE.test(attr.name) &&
+          // allow slots
+          attr.name !== 'slot'
+      })
+      .map(function (attr) {
+        return '"' + attr.name + '"'
+      })
+    if (names.length) {
+      var plural = names.length > 1
+      _.warn(
+        'Attribute' + (plural ? 's ' : ' ') + names.join(', ') +
+        (plural ? ' are' : ' is') + ' ignored on component ' +
+        '<' + options.el.tagName.toLowerCase() + '> because ' +
+        'the component is a fragment instance: ' +
+        'http://vuejs.org/guide/components.html#Fragment_Instance'
+      )
+    }
   }
 
   return function rootLinkFn (vm, el, scope) {
@@ -22967,10 +22984,27 @@ function compileElement (el, options) {
  */
 
 function compileTextNode (node, options) {
-  var tokens = textParser.parse(node.data)
+  // skip marked text nodes
+  if (node._skip) {
+    return removeText
+  }
+
+  var tokens = textParser.parse(node.wholeText)
   if (!tokens) {
     return null
   }
+
+  // mark adjacent text nodes as skipped,
+  // because we are using node.wholeText to compile
+  // all adjacent text nodes together. This fixes
+  // issues in IE where sometimes it splits up a single
+  // text node into multiple ones.
+  var next = node.nextSibling
+  while (next && next.nodeType === 3) {
+    next._skip = true
+    next = next.nextSibling
+  }
+
   var frag = document.createDocumentFragment()
   var el, token
   for (var i = 0, l = tokens.length; i < l; i++) {
@@ -22981,6 +23015,17 @@ function compileTextNode (node, options) {
     frag.appendChild(el)
   }
   return makeTextNodeLinkFn(tokens, frag, options)
+}
+
+/**
+ * Linker for an skipped text node.
+ *
+ * @param {Vue} vm
+ * @param {Text} node
+ */
+
+function removeText (vm, node) {
+  _.remove(node)
 }
 
 /**
@@ -23135,8 +23180,10 @@ function checkElementDirectives (el, options) {
 function checkComponent (el, options) {
   var component = _.checkComponent(el, options)
   if (component) {
+    var ref = _.findRef(el)
     var descriptor = {
       name: 'component',
+      ref: ref,
       expression: component.id,
       def: internalDirectives.component,
       modifiers: {
@@ -23144,6 +23191,9 @@ function checkComponent (el, options) {
       }
     }
     var componentLinkFn = function (vm, el, host, scope, frag) {
+      if (ref) {
+        _.defineReactive((scope || vm).$refs, ref, null)
+      }
       vm._bindDir(descriptor, el, host, scope, frag)
     }
     componentLinkFn.terminal = true
@@ -23210,7 +23260,14 @@ function makeTerminalNodeLinkFn (el, dirName, value, options, def) {
     // either an element directive, or if/for
     def: def || publicDirectives[dirName]
   }
+  // check ref for v-for and router-view
+  if (dirName === 'for' || dirName === 'router-view') {
+    descriptor.ref = _.findRef(el)
+  }
   var fn = function terminalNodeLinkFn (vm, el, host, scope, frag) {
+    if (descriptor.ref) {
+      _.defineReactive((scope || vm).$refs, descriptor.ref, null)
+    }
     vm._bindDir(descriptor, el, host, scope, frag)
   }
   fn.terminal = true
@@ -23245,6 +23302,17 @@ function compileDirectives (attrs, options) {
       value = textParser.tokensToExp(tokens)
       arg = name
       pushDir('bind', publicDirectives.bind, true)
+      // warn against mixing mustaches with v-bind
+      if (process.env.NODE_ENV !== 'production') {
+        if (name === 'class' && Array.prototype.some.call(attrs, function (attr) {
+          return attr.name === ':class' || attr.name === 'v-bind:class'
+        })) {
+          _.warn(
+            'class="' + rawValue + '": Do not mix mustache interpolation ' +
+            'and v-bind for "class" on the same element. Use one or the other.'
+          )
+        }
+      }
     } else
 
     // special attribute: transition
@@ -23292,10 +23360,6 @@ function compileDirectives (attrs, options) {
       }
 
       if (dirDef) {
-        if (_.isLiteral(value)) {
-          value = _.stripQuotes(value)
-          modifiers.literal = true
-        }
         pushDir(dirName, dirDef)
       }
     }
@@ -23556,6 +23620,14 @@ module.exports = {
    */
 
   warnExpressionErrors: true,
+
+  /**
+   * Whether or not to handle fully object properties which
+   * are already backed by getters and seters. Depending on
+   * use case and environment, this might introduce non-neglible
+   * performance penalties.
+   */
+  convertAllProperties: false,
 
   /**
    * Internal flag to indicate the delimiters have been
@@ -23851,8 +23923,10 @@ Directive.prototype._checkStatement = function () {
   ) {
     var fn = expParser.parse(expression).get
     var scope = this._scope || this.vm
-    var handler = function () {
+    var handler = function (e) {
+      scope.$event = e
       fn.call(scope, scope)
+      scope.$event = null
     }
     if (this.filters) {
       handler = scope._applyFilters(handler, null, this.filters)
@@ -24231,12 +24305,6 @@ module.exports = {
 
   bind: function () {
     if (!this.el.__vue__) {
-      // check ref
-      this.ref = _.findRef(this.el)
-      var refs = (this._scope || this.vm).$refs
-      if (this.ref && !refs.hasOwnProperty(this.ref)) {
-        _.defineReactive(refs, this.ref, null)
-      }
       // keep-alive cache
       this.keepAlive = this.params.keepAlive
       if (this.keepAlive) {
@@ -24253,10 +24321,18 @@ module.exports = {
       // transition related state
       this.pendingRemovals = 0
       this.pendingRemovalCb = null
-      // check dynamic component params
-        // create a ref anchor
+      // create a ref anchor
       this.anchor = _.createAnchor('v-component')
       _.replace(this.el, this.anchor)
+      // remove is attribute.
+      // this is removed during compilation, but because compilation is
+      // cached, when the component is used elsewhere this attribute
+      // will remain at link time.
+      this.el.removeAttribute('is')
+      // remove ref, same as above
+      if (this.descriptor.ref) {
+        this.el.removeAttribute('v-ref:' + _.hyphenate(this.descriptor.ref))
+      }
       // if static, build right now.
       if (this.literal) {
         this.setComponent(this.expression)
@@ -24346,6 +24422,10 @@ module.exports = {
         self.transition(newComponent, cb)
       })
     } else {
+      // update ref for kept-alive component
+      if (cached) {
+        newComponent._updateRef()
+      }
       this.transition(newComponent, cb)
     }
   },
@@ -24390,7 +24470,7 @@ module.exports = {
         // if no inline-template, then the compiled
         // linker can be cached for better performance.
         _linkerCachable: !this.inlineTemplate,
-        _ref: this.ref,
+        _ref: this.descriptor.ref,
         _asComponent: true,
         _isRouterView: this._isRouterView,
         // if this is a transcluded component, context
@@ -24455,6 +24535,10 @@ module.exports = {
     }
     var child = this.childVM
     if (!child || this.keepAlive) {
+      if (child) {
+        // remove ref
+        child._updateRef(true)
+      }
       return
     }
     // the sole purpose of `deferCleanup` is so that we can
@@ -24605,6 +24689,11 @@ module.exports = {
           childKey,
           function (val) {
             parentWatcher.set(val)
+          }, {
+            // ensure sync upward before parent sync down.
+            // this is necessary in cases e.g. the child
+            // mutates a prop array, then replaces it. (#1683)
+            sync: true
           }
         )
       })
@@ -24734,7 +24823,7 @@ var Transition = require('../../transition/transition')
 
 module.exports = {
 
-  priority: 1000,
+  priority: 1100,
 
   update: function (id, oldId) {
     var el = this.el
@@ -24975,9 +25064,6 @@ module.exports = {
     _.replace(this.el, this.end)
     _.before(this.start, this.end)
 
-    // check ref
-    this.ref = _.findRef(this.el)
-
     // cache
     this.cache = Object.create(null)
 
@@ -25151,7 +25237,7 @@ module.exports = {
    */
 
   updateRef: function () {
-    var ref = this.ref
+    var ref = this.descriptor.ref
     if (!ref) return
     var hash = (this._scope || this.vm).$refs
     var refs
@@ -25163,11 +25249,7 @@ module.exports = {
         refs[frag.scope.$key] = findVmFromFrag(frag)
       })
     }
-    if (!hash.hasOwnProperty(ref)) {
-      _.defineReactive(hash, ref, refs)
-    } else {
-      hash[ref] = refs
-    }
+    hash[ref] = refs
   },
 
   /**
@@ -25245,11 +25327,11 @@ module.exports = {
     if (inDoc && staggerAmount) {
       var op = frag.staggerCb = _.cancellable(function () {
         frag.staggerCb = null
-        frag.remove(true)
+        frag.remove()
       })
       setTimeout(op, staggerAmount)
     } else {
-      frag.remove(true)
+      frag.remove()
     }
   },
 
@@ -25422,19 +25504,16 @@ module.exports = {
       }
       return res
     } else {
-      var type = typeof value
-      if (type === 'number') {
+      if (typeof value === 'number') {
         value = range(value)
-      } else if (type === 'string') {
-        value = _.toArray(value)
       }
       return value || []
     }
   },
 
   unbind: function () {
-    if (this.ref) {
-      (this._scope || this.vm).$refs[this.ref] = null
+    if (this.descriptor.ref) {
+      (this._scope || this.vm).$refs[this.descriptor.ref] = null
     }
     if (this.frags) {
       var i = this.frags.length
@@ -25605,7 +25684,7 @@ module.exports = {
 
   insert: function () {
     if (this.elseFrag) {
-      this.elseFrag.remove(true)
+      this.elseFrag.remove()
       this.elseFrag = null
     }
     this.frag = this.factory.create(this._host, this._scope, this._frag)
@@ -25614,10 +25693,10 @@ module.exports = {
 
   remove: function () {
     if (this.frag) {
-      this.frag.remove(true)
+      this.frag.remove()
       this.frag = null
     }
-    if (this.elseFactory) {
+    if (this.elseFactory && !this.elseFrag) {
       this.elseFrag = this.elseFactory.create(this._host, this._scope, this._frag)
       this.elseFrag.before(this.anchor)
     }
@@ -26111,11 +26190,17 @@ var keyCodes = {
 
 function keyFilter (handler, keys) {
   var codes = keys.map(function (key) {
-    var code = keyCodes[key]
-    if (!code) {
-      code = parseInt(key, 10)
+    var charCode = key.charCodeAt(0)
+    if (charCode > 47 && charCode < 58) {
+      return parseInt(key, 10)
     }
-    return code
+    if (key.length === 1) {
+      charCode = key.toUpperCase().charCodeAt(0)
+      if (charCode > 64 && charCode < 91) {
+        return charCode
+      }
+    }
+    return keyCodes[key]
   })
   return function keyHandler (e) {
     if (codes.indexOf(e.keyCode) > -1) {
@@ -26190,13 +26275,8 @@ module.exports = {
     }
 
     this.reset()
-    var scope = this._scope || this.vm
-    this.handler = function (e) {
-      scope.$event = e
-      var res = handler(e)
-      scope.$event = null
-      return res
-    }
+    this.handler = handler
+
     if (this.iframeBind) {
       this.iframeBind()
     } else {
@@ -26248,16 +26328,16 @@ module.exports = {
   },
 
   update: function (value) {
-    var el = this.el
+    this.apply(this.el, value)
+    if (this.elseEl) {
+      this.apply(this.elseEl, !value)
+    }
+  },
+
+  apply: function (el, value) {
     transition.apply(el, value ? 1 : -1, function () {
       el.style.display = value ? '' : 'none'
     }, this.vm)
-    var elseEl = this.elseEl
-    if (elseEl) {
-      transition.apply(elseEl, value ? -1 : 1, function () {
-        elseEl.style.display = value ? 'none' : ''
-      }, this.vm)
-    }
   }
 }
 
@@ -26286,23 +26366,25 @@ var toArray = require('../directives/public/for')._postProcess
  * Limit filter for arrays
  *
  * @param {Number} n
+ * @param {Number} offset (Decimal expected)
  */
 
-exports.limitBy = function (arr, n) {
+exports.limitBy = function (arr, n, offset) {
+  offset = offset ? parseInt(offset, 10) : 0
   return typeof n === 'number'
-    ? arr.slice(0, n)
+    ? arr.slice(offset, offset + n)
     : arr
 }
 
 /**
  * Filter filter for arrays
  *
- * @param {String} searchKey
+ * @param {String} search
  * @param {String} [delimiter]
- * @param {String} dataKey
+ * @param {String} ...dataKeys
  */
 
-exports.filterBy = function (arr, search, delimiter /* ...dataKeys */) {
+exports.filterBy = function (arr, search, delimiter) {
   arr = toArray(arr)
   if (search == null) {
     return arr
@@ -26599,7 +26681,10 @@ function Fragment (linker, vm, frag, host, scope, parentFrag) {
     parentFrag.childFrags.push(this)
   }
   this.unlink = linker(vm, frag, host, scope, this)
-  var single = this.single = frag.childNodes.length === 1
+  var single = this.single =
+    frag.childNodes.length === 1 &&
+    // do not go single mode if the only node is an anchor
+    !(frag.childNodes[0].__vue_anchor)
   if (single) {
     this.node = frag.childNodes[0]
     this.before = singleBefore
@@ -26665,21 +26750,18 @@ function singleBefore (target, withTransition) {
 
 /**
  * Remove fragment, single node version
- *
- * @param {Boolean} [destroy]
  */
 
-function singleRemove (destroy) {
+function singleRemove () {
   this.inserted = false
   var shouldCallRemove = _.inDoc(this.node)
   var self = this
+  self.callHook(destroyChild)
   transition.remove(this.node, this.vm, function () {
     if (shouldCallRemove) {
       self.callHook(detach)
     }
-    if (destroy) {
-      self.destroy()
-    }
+    self.destroy()
   })
 }
 
@@ -26706,21 +26788,18 @@ function multiBefore (target, withTransition) {
 
 /**
  * Remove fragment, multi-nodes version
- *
- * @param {Boolean} [destroy]
  */
 
-function multiRemove (destroy) {
+function multiRemove () {
   this.inserted = false
   var self = this
   var shouldCallRemove = _.inDoc(this.node)
+  self.callHook(destroyChild)
   _.removeNodeRange(this.node, this.end, this.vm, this.frag, function () {
     if (shouldCallRemove) {
       self.callHook(detach)
     }
-    if (destroy) {
-      self.destroy()
-    }
+    self.destroy()
   })
 }
 
@@ -26734,6 +26813,20 @@ function attach (child) {
   if (!child._isAttached) {
     child._callHook('attached')
   }
+}
+
+/**
+ * Call destroy for all contained instances,
+ * with remove:false and defer:true.
+ * Defer is necessary because we need to
+ * keep the children to call detach hooks
+ * on them.
+ *
+ * @param {Vue} child
+ */
+
+function destroyChild (child) {
+  child.$destroy(false, true)
 }
 
 /**
@@ -26999,17 +27092,15 @@ exports._init = function (options) {
     this.$parent.$children.push(this)
   }
 
-  // set ref
-  if (options._ref) {
-    (this._scope || this._context).$refs[options._ref] = this
-  }
-
   // merge options.
   options = this.$options = mergeOptions(
     this.constructor.options,
     options,
     this
   )
+
+  // set ref
+  this._updateRef()
 
   // initialize data as empty object.
   // it will be filled up in _initScope().
@@ -27037,6 +27128,26 @@ exports._init = function (options) {
 var _ = require('../util')
 var Directive = require('../directive')
 var compiler = require('../compiler')
+
+/**
+ * Update v-ref for component.
+ *
+ * @param {Boolean} remove
+ */
+
+exports._updateRef = function (remove) {
+  var ref = this.$options._ref
+  if (ref) {
+    var refs = (this._scope || this._context).$refs
+    if (remove) {
+      if (refs[ref] === this) {
+        refs[ref] = null
+      }
+    } else {
+      refs[ref] = this
+    }
+  }
+}
 
 /**
  * Transclude, compile and link element.
@@ -27159,6 +27270,9 @@ exports._bindDir = function (descriptor, node, host, scope, frag) {
 
 exports._destroy = function (remove, deferCleanup) {
   if (this._isBeingDestroyed) {
+    if (!deferCleanup) {
+      this._cleanup()
+    }
     return
   }
   this._callHook('beforeDestroy')
@@ -27169,18 +27283,8 @@ exports._destroy = function (remove, deferCleanup) {
   var parent = this.$parent
   if (parent && !parent._isBeingDestroyed) {
     parent.$children.$remove(this)
-    // unregister ref
-    var ref = this.$options._ref
-    if (ref) {
-      var scope = this._scope || this._context
-      if (scope.$refs[ref] === this) {
-        scope.$refs[ref] = null
-      }
-    }
-  }
-  // remove self from owner fragment
-  if (this._frag) {
-    this._frag.children.$remove(this)
+    // unregister ref (remove: true)
+    this._updateRef(true)
   }
   // destroy all children.
   i = this.$children.length
@@ -27222,6 +27326,15 @@ exports._destroy = function (remove, deferCleanup) {
  */
 
 exports._cleanup = function () {
+  if (this._isDestroyed) {
+    return
+  }
+  // remove self from owner fragment
+  // do it in cleanup so that we can call $destroy with
+  // defer right when a fragment is about to be removed.
+  if (this._frag) {
+    this._frag.children.$remove(this)
+  }
   // remove reference from data ob
   // frozen object may not have observer.
   if (this._data.__ob__) {
@@ -27431,7 +27544,7 @@ exports._initData = function () {
 }
 
 /**
- * Swap the isntance's $data. Called in $data's setter.
+ * Swap the instance's $data. Called in $data's setter.
  *
  * @param {Object} newData
  */
@@ -27749,6 +27862,7 @@ module.exports = Dep
 
 },{"../util":79}],66:[function(require,module,exports){
 var _ = require('../util')
+var config = require('../config')
 var Dep = require('./dep')
 var arrayMethods = require('./array')
 var arrayKeys = Object.getOwnPropertyNames(arrayMethods)
@@ -27797,7 +27911,7 @@ Observer.create = function (value, vm) {
   }
   var ob
   if (
-    value.hasOwnProperty('__ob__') &&
+    Object.prototype.hasOwnProperty.call(value, '__ob__') &&
     value.__ob__ instanceof Observer
   ) {
     ob = value.__ob__
@@ -27922,28 +28036,48 @@ function copyAugment (target, src, keys) {
 
 function defineReactive (obj, key, val) {
   var dep = new Dep()
+
+  // cater for pre-defined getter/setters
+  var getter, setter
+  if (config.convertAllProperties) {
+    var property = Object.getOwnPropertyDescriptor(obj, key)
+    if (property && property.configurable === false) {
+      return
+    }
+    getter = property && property.get
+    setter = property && property.set
+  }
+
   var childOb = Observer.create(val)
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
-    get: function metaGetter () {
+    get: function reactiveGetter () {
+      var value = getter ? getter.call(obj) : val
       if (Dep.target) {
         dep.depend()
         if (childOb) {
           childOb.dep.depend()
         }
-        if (_.isArray(val)) {
-          for (var e, i = 0, l = val.length; i < l; i++) {
-            e = val[i]
+        if (_.isArray(value)) {
+          for (var e, i = 0, l = value.length; i < l; i++) {
+            e = value[i]
             e && e.__ob__ && e.__ob__.dep.depend()
           }
         }
       }
-      return val
+      return value
     },
-    set: function metaSetter (newVal) {
-      if (newVal === val) return
-      val = newVal
+    set: function reactiveSetter (newVal) {
+      var value = getter ? getter.call(obj) : val
+      if (newVal === value) {
+        return
+      }
+      if (setter) {
+        setter.call(obj, newVal)
+      } else {
+        val = newVal
+      }
       childOb = Observer.create(newVal)
       dep.notify()
     }
@@ -27955,7 +28089,7 @@ _.defineReactive = defineReactive
 
 module.exports = Observer
 
-},{"../util":79,"./array":64,"./dep":65}],67:[function(require,module,exports){
+},{"../config":28,"../util":79,"./array":64,"./dep":65}],67:[function(require,module,exports){
 var _ = require('../util')
 var Cache = require('../cache')
 var cache = new Cache(1000)
@@ -29652,8 +29786,8 @@ p.setupCssCb = function (event, cb) {
 
 function isHidden (el) {
   return !(
-    el.offsetWidth &&
-    el.offsetHeight &&
+    el.offsetWidth ||
+    el.offsetHeight ||
     el.getClientRects().length
   )
 }
@@ -30154,9 +30288,11 @@ exports.isTemplate = function (el) {
  */
 
 exports.createAnchor = function (content, persist) {
-  return config.debug
+  var anchor = config.debug
     ? document.createComment(content)
     : document.createTextNode(persist ? ' ' : '')
+  anchor.__vue_anchor = true
+  return anchor
 }
 
 /**
@@ -30173,7 +30309,6 @@ exports.findRef = function (node) {
     for (var i = 0, l = attrs.length; i < l; i++) {
       var name = attrs[i].name
       if (refRE.test(name)) {
-        node.removeAttribute(name)
         return _.camelize(name.replace(refRE, ''))
       }
     }
@@ -30972,18 +31107,23 @@ function guardComponents (options) {
 
 function guardProps (options) {
   var props = options.props
-  var i
+  var i, val
   if (_.isArray(props)) {
     options.props = {}
     i = props.length
     while (i--) {
-      options.props[props[i]] = null
+      val = props[i]
+      if (typeof val === 'string') {
+        options.props[val] = null
+      } else if (val.name) {
+        options.props[val.name] = val
+      }
     }
   } else if (_.isPlainObject(props)) {
     var keys = Object.keys(props)
     i = keys.length
     while (i--) {
-      var val = props[keys[i]]
+      val = props[keys[i]]
       if (typeof val === 'function') {
         props[keys[i]] = { type: val }
       }
@@ -31168,7 +31308,7 @@ extend(p, require('./api/dom'))
 extend(p, require('./api/events'))
 extend(p, require('./api/lifecycle'))
 
-Vue.version = '1.0.4'
+Vue.version = '1.0.8'
 module.exports = _.Vue = Vue
 
 /* istanbul ignore if */
@@ -31328,31 +31468,24 @@ Watcher.prototype.set = function (value) {
   }
   // two-way sync for v-for alias
   var forContext = scope.$forContext
-  if (process.env.NODE_ENV !== 'production') {
-    if (
-      forContext &&
-      forContext.filters &&
-      (new RegExp(forContext.alias + '\\b')).test(this.expression)
-    ) {
-      _.warn(
+  if (forContext && forContext.alias === this.expression) {
+    if (forContext.filters) {
+      process.env.NODE_ENV !== 'production' && _.warn(
         'It seems you are using two-way binding on ' +
         'a v-for alias (' + this.expression + '), and the ' +
         'v-for has filters. This will not work properly. ' +
         'Either remove the filters or use an array of ' +
         'objects and bind to object properties instead.'
       )
+      return
     }
-  }
-  if (
-    forContext &&
-    forContext.alias === this.expression &&
-    !forContext.filters
-  ) {
-    if (scope.$key) { // original is an object
-      forContext.rawValue[scope.$key] = value
-    } else {
-      forContext.rawValue.$set(scope.$index, value)
-    }
+    forContext._withLock(function () {
+      if (scope.$key) { // original is an object
+        forContext.rawValue[scope.$key] = value
+      } else {
+        forContext.rawValue.$set(scope.$index, value)
+      }
+    })
   }
 }
 
@@ -31684,7 +31817,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/Users/harryg/Sites/creuset/resources/assets/js/components/cr-category-chooser.vue"
+  var id = "C:\\Users\\hgrumbar\\code\\Creuset\\resources\\assets\\js\\components\\cr-category-chooser.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
@@ -31751,12 +31884,12 @@ module.exports = {
 		}
 	}
 };
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"panel panel-default\" id=\"featuredImageChooser\">\n\t\t<div class=\"panel-heading\">\n\t\t\tFeatured Image\n\t\t</div>\n\t\t<div class=\"panel-body\">\n\t\t\t<p v-if=\"!selectedImage\" class=\"text-center\">None Chosen</p>\n\n\t\t\t<img v-if=\"selectedImage\" v-bind:src=\"selectedImage.thumbnail_url\" alt=\"{{ selectedImage.name }}\" class=\"img-responsive thumbnail\" style=\"width:100%;\">\n\n\t\t\t<!-- Button trigger modal -->\n\t\t\t<button type=\"button\" class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#imagesModal\" @click=\"fetchImages()\">Choose</button>\n\n\t\t\t<button type=\"button\" class=\"btn btn-link text-danger\" v-if=\"selectedImage\" @click=\"selectedImage = null\">Remove Image</button>\n\n\t\t\t<input type=\"hidden\" name=\"image_id\" value=\"{{ selectedImage ? selectedImage.id : null }}\">\n\t\t</div>\n\t</div>\n\n\n\t<!-- Modal -->\n\t<div class=\"modal fade\" id=\"imagesModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-title\">\n\t\t<div class=\"modal-dialog modal-lg\" role=\"document\">\n\t\t\t<div class=\"modal-content\">\n\t\t\t\t<div class=\"modal-header\">\n\t\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button>\n\t\t\t\t\t<h4 class=\"modal-title\" id=\"myModalLabel\">Choose Featured Image</h4>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"modal-body\">\n\n\t\t\t\t\t<span v-if=\"!images\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Fetching Images</span>\n\n\t\t\t\t\t<div class=\"row\" v-if=\"images\">\n\t\t\t\t\t\t<p class=\"col-xs-12\" v-if=\"images\">\n\t\t\t\t\t\t\tPage {{ page }} of {{ lastPage }}\n\t\t\t\t\t\t</p>\n\t\t\t\t\t\t<div class=\"col-xs-3 top-buffer\" v-for=\"image in images\">\n\t\t\t\t\t\t\t<a href=\"#\" @click=\"selectImage(image, $event)\" data-dismiss=\"modal\">\n\t\t\t\t\t\t\t<img class=\"img-responsive img-thumbnail selectable\" v-bind:src=\"image.thumbnail_url\" alt=\"{{ image.title }}\">\n\t\t\t\t\t\t\t</a>\n\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<p class=\"clearfix col-xs-12\">\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-link pull-left\" @click=\"prevPage\"><i class=\"fa fa-chevron-left\"></i> Prev</button>\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-link pull-right\" @click=\"nextPage\">Next <i class=\"fa fa-chevron-right\"></i></button>\n\t\t\t\t\t\t</p>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"modal-footer\">\n\t\t\t\t\t<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"panel panel-default\" id=\"featuredImageChooser\">\n\t\t<div class=\"panel-heading\">\n\t\t\tFeatured Image\n\t\t</div>\n\t\t<div class=\"panel-body\">\n\t\t\t<p v-if=\"!selectedImage\" class=\"text-center\">None Chosen</p>\n\n\t\t\t<img v-if=\"selectedImage\" v-bind:src=\"selectedImage.thumbnail_url\" alt=\"{{ selectedImage.name }}\" class=\"img-responsive thumbnail\" style=\"width:100%;\">\n\n\t\t\t<!-- Button trigger modal -->\n\t\t\t<button type=\"button\" class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#imagesModal\" @click=\"fetchImages()\">Choose</button>\n\n\t\t\t<button type=\"button\" class=\"btn btn-link text-danger\" v-if=\"selectedImage\" @click=\"selectedImage = null\">Remove Image</button>\n\n\t\t\t<input type=\"hidden\" name=\"media_id\" value=\"{{ selectedImage ? selectedImage.id : null }}\">\n\t\t</div>\n\t</div>\n\n\n\t<!-- Modal -->\n\t<div class=\"modal fade\" id=\"imagesModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-title\">\n\t\t<div class=\"modal-dialog modal-lg\" role=\"document\">\n\t\t\t<div class=\"modal-content\">\n\t\t\t\t<div class=\"modal-header\">\n\t\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button>\n\t\t\t\t\t<h4 class=\"modal-title\" id=\"myModalLabel\">Choose Featured Image</h4>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"modal-body\">\n\n\t\t\t\t\t<span v-if=\"!images\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Fetching Images</span>\n\n\t\t\t\t\t<div class=\"row\" v-if=\"images\">\n\t\t\t\t\t\t<p class=\"col-xs-12\" v-if=\"images\">\n\t\t\t\t\t\t\tPage {{ page }} of {{ lastPage }}\n\t\t\t\t\t\t</p>\n\t\t\t\t\t\t<div class=\"col-xs-3 top-buffer\" v-for=\"image in images\">\n\t\t\t\t\t\t\t<a href=\"#\" @click=\"selectImage(image, $event)\" data-dismiss=\"modal\">\n\t\t\t\t\t\t\t<img class=\"img-responsive img-thumbnail selectable\" v-bind:src=\"image.thumbnail_url\" alt=\"{{ image.title }}\">\n\t\t\t\t\t\t\t</a>\n\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<p class=\"clearfix col-xs-12\">\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-link pull-left\" @click=\"prevPage\"><i class=\"fa fa-chevron-left\"></i> Prev</button>\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-link pull-right\" @click=\"nextPage\">Next <i class=\"fa fa-chevron-right\"></i></button>\n\t\t\t\t\t\t</p>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"modal-footer\">\n\t\t\t\t\t<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/Users/harryg/Sites/creuset/resources/assets/js/components/cr-image-chooser.vue"
+  var id = "C:\\Users\\hgrumbar\\code\\Creuset\\resources\\assets\\js\\components\\cr-image-chooser.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
@@ -31764,6 +31897,7 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":82,"vue-hot-reload-api":8}],87:[function(require,module,exports){
+"use strict";
 'use strict';
 
 module.exports = {
@@ -31845,12 +31979,12 @@ module.exports = {
 		}
 	}
 };
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<!-- Post images -->  \n\t<div class=\"panel panel-default\" id=\"post-images\">\n\t\t<div class=\"panel-heading\">\n\t\t\tAttached Images\n\t\t</div>\n\n\t\t<div class=\"panel-heading\" v-if=\"selectedImage.id\">\n\n\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\" @click=\"selectedImage = {}\">×</span></button>\n\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col-md-4\">\n\t\t\t\t\t<img class=\"img-thumbnail img-responsive\" v-bind:src=\"selectedImage.thumbnail_url\" alt=\"\"> \n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-md-8\">\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>URL: </label>\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control input-sm\" readonly=\"\" value=\"{{ selectedImage.url }}\">\n\t\t\t\t\t</div>    \n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Thumbnail: </label>\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control input-sm\" readonly=\"\" value=\"{{ selectedImage.thumbnail_url }}\">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Image Title</label>\n\t\t\t\t\t\t<input type=\"text\" v-model=\"selectedImage.title\" class=\"form-control\" @keyup.enter=\"updateImage\">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Caption</label>\n\t\t\t\t\t\t<textarea v-model=\"selectedImage.caption\" class=\"form-control\"></textarea>\n\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t\t\t<button @click=\"updateImage\" class=\"btn btn-primary\">Update Image</button>\n\t\t\t\t\t<a @click=\"deleteImage\" class=\"btn btn-danger\">Delete Image</a>\n\t\t\t\t\t<button @click=\"selectedImage = {}\" class=\"btn btn-link\">Cancel</button>\n\n\t\t\t\t\t<p class=\"form-group top-buffer\">\n\t\t\t\t\t<span v-if=\"imageUpdating\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Working...</span>\n\t\t\t\t\t<span class=\"text-success\" v-if=\"imageUpdatedMessage\"> <i class=\"fa fa-check\"></i> {{ imageUpdatedMessage }}</span>\n\t\t\t\t\t</p>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"panel-body\">\n\n\t\t\t<span v-if=\"imagesLoading\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Loading images...</span>\n\n\t\t\t<div class=\"row\" v-if=\"hasImages\">\n\t\t\t<div class=\"col-md-2 col-sm-3 col-xs-6 top-buffer\" v-for=\"image in images\">\n\t\t\t\t\t<img v-bind:src=\"image.thumbnail_url\" alt=\"\" class=\"img-responsive img-thumbnail selectable\" v-bind:class=\"{'selected': isSelected(image.id)}\" @click=\"selectImage(image)\">\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<span v-if=\"!hasImages\">No Images yet</span>\n\n\t\t</div>\n\t</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<!-- Post images -->  \n\t<div class=\"panel panel-default\" id=\"post-images\">\n\t\t<div class=\"panel-heading\">\n\t\t\tAttached Images\n\t\t</div>\n\n\t\t<div class=\"panel-heading\" v-if=\"selectedImage.id\">\n\n\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\" @click=\"selectedImage = {}\">×</span></button>\n\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col-md-4\">\n\t\t\t\t\t<img class=\"img-thumbnail img-responsive\" v-bind:src=\"selectedImage.thumbnail_url\" alt=\"\"> \n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-md-8\">\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>URL: </label>\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control input-sm\" readonly=\"\" value=\"{{ selectedImage.url }}\">\n\t\t\t\t\t</div>    \n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Thumbnail: </label>\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control input-sm\" readonly=\"\" value=\"{{ selectedImage.thumbnail_url }}\">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Image Title</label>\n\t\t\t\t\t\t<input type=\"text\" v-model=\"selectedImage.custom_properties[title]\" class=\"form-control\" @keyup.enter=\"updateImage\">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Caption</label>\n\t\t\t\t\t\t<textarea v-model=\"selectedImage.custom_properties[caption]\" class=\"form-control\"></textarea>\n\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t\t\t<button @click=\"updateImage\" class=\"btn btn-primary\">Update Image</button>\n\t\t\t\t\t<a @click=\"deleteImage\" class=\"btn btn-danger\">Delete Image</a>\n\t\t\t\t\t<button @click=\"selectedImage = {}\" class=\"btn btn-link\">Cancel</button>\n\n\t\t\t\t\t<p class=\"form-group top-buffer\">\n\t\t\t\t\t<span v-if=\"imageUpdating\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Working...</span>\n\t\t\t\t\t<span class=\"text-success\" v-if=\"imageUpdatedMessage\"> <i class=\"fa fa-check\"></i> {{ imageUpdatedMessage }}</span>\n\t\t\t\t\t</p>\n\n\t\t\t\t\t<pre>{{ selectedImage | json }}</pre>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"panel-body\">\n\n\t\t\t<span v-if=\"imagesLoading\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Loading images...</span>\n\n\t\t\t<div class=\"row\" v-if=\"hasImages\">\n\t\t\t<div class=\"col-md-2 col-sm-3 col-xs-6 top-buffer\" v-for=\"image in images\">\n\t\t\t\t\t<img v-bind:src=\"image.thumbnail_url\" alt=\"\" class=\"img-responsive img-thumbnail selectable\" v-bind:class=\"{'selected': isSelected(image.id)}\" @click=\"selectImage(image)\">\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<span v-if=\"!hasImages\">No Images yet</span>\n\n\t\t</div>\n\t</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/Users/harryg/Sites/creuset/resources/assets/js/components/cr-imageable-gallery.vue"
+  var id = "C:\\Users\\hgrumbar\\code\\Creuset\\resources\\assets\\js\\components\\cr-imageable-gallery.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
@@ -31875,7 +32009,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/Users/harryg/Sites/creuset/resources/assets/js/components/cr-markarea.vue"
+  var id = "C:\\Users\\hgrumbar\\code\\Creuset\\resources\\assets\\js\\components\\cr-markarea.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {
@@ -31916,7 +32050,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/Users/harryg/Sites/creuset/resources/assets/js/components/cr-title-slugger.vue"
+  var id = "C:\\Users\\hgrumbar\\code\\Creuset\\resources\\assets\\js\\components\\cr-title-slugger.vue"
   if (!module.hot.data) {
     hotAPI.createRecord(id, module.exports)
   } else {

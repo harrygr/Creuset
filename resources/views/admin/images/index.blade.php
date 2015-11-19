@@ -22,28 +22,28 @@ Images
                 </tr>
             </thead>
             <tbody>
-            @foreach ($images as $image)
+            @foreach ($media as $item)
                 <tr>
-                    <td><img src="{{ $image->thumbnail_url }}" alt="" width="50" height="50"></td>
+                    <td><img src="{{ $item->thumbnail_url }}" alt="" width="50" height="50"></td>
                     <td>
-                    {{ $image->present()->title() }}
+                    {{ $item->name }}
                     <br>
-                    <a href="{{ route('admin.images.delete', $image->id) }}" id="delete-{{ $image->id }}" data-method="delete" class="text-danger" data-confirm="Are you sure?">Delete</a>
+                    <a href="{{ route('admin.images.delete', $item->id) }}" id="delete-{{ $item->id }}" data-method="delete" class="text-danger" data-confirm="Are you sure?">Delete</a>
                     </td>
-                    <td>{{ $image->present()->owner() }}</td>
+                    <td>{{-- $image->present()->owner() --}}</td>
                     <td>
-                    <a href="{{ $image->present()->parentUrl() }}">
-                    {{ $image->present()->parent() }}
+                    <a href="">
+                    {{-- $image->present()->parent() --}}
                     </a>
                     </td>
-                    <td>{{ $image->created_at }}</td>
+                    <td>{{ $item->created_at }}</td>
                 </tr>
             @endforeach
             </tbody>
         </table>
 
         <!-- Pagination -->
-        {!! $images->render() !!}
+        {!! $media->render() !!}
         </div>
     </div>
 @stop

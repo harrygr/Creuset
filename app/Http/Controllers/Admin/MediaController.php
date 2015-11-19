@@ -18,8 +18,8 @@ class MediaController extends Controller
      */
     public function index()
     {
-        $images = Media::latest()->paginate(10);
-        return view('admin.images.index', compact('images'));
+        $media = Media::latest()->paginate(10);
+        return view('admin.images.index', compact('media'));
     }
 
     public function destroy(Media $media)

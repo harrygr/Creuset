@@ -23,8 +23,31 @@ class MediaController extends Controller
         return $media;
     }
 
+    public function store(HasMedia $model, Request $request)
+    {
+        $this->validate($request, [
+            'image' => 'required|mimes:jpg,jpeg,png,bmp,gif,svg'
+            ]);
+        $file = $request->file('image');
+
+        return $model->addMedia($file)->toCollection('images');
+    }
+
+    public function update(Media $media, Request $request)
+    {
+        dd($resquest->all());
+    }
     public function modelImages(HasMedia $model)
     {
+
         return $model->getMedia();
+    }
+
+
+    public function destroy(Media $media)
+    {
+        $media->delete();
+
+        return 'Deleted';
     }
 }

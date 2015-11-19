@@ -26,12 +26,12 @@
 
 					<div class="form-group">
 						<label>Image Title</label>
-						<input type="text" v-model="selectedImage.title" class="form-control" @keyup.enter="updateImage">
+						<input type="text" v-model="selectedImage.custom_properties.title" class="form-control" @keyup.enter="updateImage">
 					</div>
 
 					<div class="form-group">
 						<label>Caption</label>
-						<textarea v-model="selectedImage.caption" class="form-control"></textarea>
+						<textarea v-model="selectedImage.custom_properties.caption" class="form-control"></textarea>
 					</div>
 					
 					<button @click="updateImage" class="btn btn-primary">Update Image</button>
@@ -42,6 +42,8 @@
 					<span v-if="imageUpdating"><i class="fa fa-circle-o-notch fa-spin"></i> Working...</span>
 					<span class="text-success" v-if="imageUpdatedMessage"> <i class="fa fa-check"></i> {{ imageUpdatedMessage }}</span>
 					</p>
+
+					<pre>{{ selectedImage | json }}</pre>
 				</div>
 			</div>
 		</div>
