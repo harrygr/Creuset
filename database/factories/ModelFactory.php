@@ -60,6 +60,9 @@ $factory->define('Creuset\Role', function($faker) {
 $factory->define('Creuset\Term', function($faker) {
 
 	$term = $faker->unique()->word;
+    if (strlen($term) < 4) {
+        $term .= ' ' . $faker->word;
+    }
 	
 	return [
 		'taxonomy'   => 'category',
