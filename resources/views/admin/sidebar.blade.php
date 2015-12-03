@@ -27,9 +27,9 @@
     </li>
 
     <li>
-        <a href="{{ route('admin.images.index') }}"><i class="fa fa-fw fa-image"></i> Images</a>
+        <a href="{{ route('admin.media.index') }}"><i class="fa fa-fw fa-image"></i> Media</a>
         <ul>
-            <li><a href="{{ route('admin.images.index') }}">All Images</a></li>
+            <li><a href="{{ route('admin.media.index') }}">All Images</a></li>
         </ul>
     </li>
 

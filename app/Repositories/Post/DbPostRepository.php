@@ -2,7 +2,7 @@
 
 namespace Creuset\Repositories\Post;
 
-use \Creuset\Post;
+use Creuset\Post;
 use Creuset\Repositories\DbRepository;
 
 class DbPostRepository extends DbRepository implements PostRepository {

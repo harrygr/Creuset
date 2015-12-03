@@ -9,11 +9,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMedia;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Creuset\Traits\Postable;
+
 
 
 class Post extends Model implements HasMediaConversions, Termable {
 
-	use PresentableTrait, SoftDeletes, HasTerms, HasMediaTrait;
+	use PresentableTrait, SoftDeletes, HasTerms, HasMediaTrait, Postable;
 	
     public function registerMediaConversions()
     {
@@ -113,5 +115,14 @@ class Post extends Model implements HasMediaConversions, Termable {
 	{
 		return $this->id;
 	}
+
+    /**
+     * The field to use to display the parent name
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->title;
+    }
 
 }

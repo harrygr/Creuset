@@ -9,18 +9,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Creuset\Traits\Postable;
 
 class Product extends Model implements HasMediaConversions, Termable 
 {
-	use PresentableTrait, HasMediaTrait, SoftDeletes;
+	use PresentableTrait, HasMediaTrait, SoftDeletes, Postable;
 
     public function registerMediaConversions()
     {
         $this->addMediaConversion('thumb')
-             ->setManipulations(['w' => 300, 'h' => 300])
+             ->setManipulations(['w' => 300, 'h' => 300, 'fit' => 'crop'])
              ->performOnCollections('images');
     }
-	
+
 	/**
      * The attributes that should be mutated to dates.
      *
@@ -108,9 +109,9 @@ class Product extends Model implements HasMediaConversions, Termable
 	 * The field to use to display the parent name
 	 * @return string
 	 */
-	public function getImageableField()
+	public function getName()
 	{
-		return 'name';
+		return $this->name;
 	}
 
 }

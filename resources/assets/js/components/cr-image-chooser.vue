@@ -100,7 +100,7 @@
 		methods: {
 			fetchImages: function() {
 				this.images = null;
-				this.$http.get('/api/media/images', {page: this.page})
+				this.$http.get('/api/media', {page: this.page})
 				.success(function(response) {
 					this.images = response.data
 					this.lastPage = response.last_page;
@@ -109,7 +109,7 @@
 			
 			fetchChosenImage: function() {
 				if (this.image) {
-				this.$http.get('/api/images/' + this.image)
+				this.$http.get('/api/media/' + this.image)
 					.success(function(response) {
 						this.selectedImage = response;
 					}.bind(this));

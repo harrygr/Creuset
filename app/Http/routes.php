@@ -70,8 +70,8 @@ Route::group(['prefix' => 'admin'], function()
 	patch('categories/{term}', ['uses' => 'Admin\TermsController@update', 'as' => 'admin.categories.update']);
 	delete('terms/{term}', ['uses' => 'Admin\TermsController@destroy', 'as' => 'admin.terms.delete']);
 
-	get('images', ['uses' => 'Admin\MediaController@index', 'as' => 'admin.images.index']);
-	delete('images/{media}', ['uses' => 'Admin\MediaController@destroy', 'as' => 'admin.images.delete']);
+	get('media', ['uses' => 'Admin\MediaController@index', 'as' => 'admin.media.index']);
+	delete('media/{media}', ['uses' => 'Admin\MediaController@destroy', 'as' => 'admin.media.delete']);
 
 	// Users
 	get('profile', ['uses' => 'Admin\UsersController@profile', 'as' => 'admin.users.profile'] );
@@ -99,8 +99,8 @@ Route::group(['prefix' => 'api'], function()
 	get('posts/{post}/images', ['uses' => 'Api\MediaController@modelImages', 'as' => 'api.posts.images']);
 	get('products/{product}/images', ['uses' => 'Api\MediaController@modelImages', 'as' => 'api.products.images']);
 
-    patch('images/{image}', ['uses' => 'Api\ImagesController@update', 'as' => 'api.images.update']);
-    delete('images/{media}', ['uses' => 'Api\MediaController@destroy', 'as' => 'api.images.destroy']);
+    patch('media/{media}', ['uses' => 'Api\MediaController@update', 'as' => 'api.images.update']);
+    delete('media/{media}', ['uses' => 'Api\MediaController@destroy', 'as' => 'api.images.destroy']);
 
 	get('media/{media}', ['uses' => 'Api\MediaController@show', 'as' => 'api.media.show'])->where('id', '[0-9]+');
     get('media/{collection?}', ['uses' => 'Api\MediaController@index', 'as' => 'api.media.index']);

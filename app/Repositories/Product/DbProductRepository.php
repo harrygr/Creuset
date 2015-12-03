@@ -22,8 +22,9 @@ class DbProductRepository  extends DbRepository implements ProductRepository {
 	public function create($attributes)
 	{
 		$product = $this->model->create($attributes);
-		if ( isset($attributes['terms']) )
+		if ( isset($attributes['terms']) ) {
 			$product->terms()->sync($attributes['terms']);
+        }
 
 		return $product;
 	}

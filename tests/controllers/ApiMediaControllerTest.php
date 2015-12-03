@@ -20,6 +20,7 @@ class ApiMediaControllerTest extends TestCase
         $this->get('api/media')
              ->seeJson(['name' => $images->first()->name]);
 
+        // deleting the parent model will also delete the child images
         $images->first()->model->forceDelete();
     }
 

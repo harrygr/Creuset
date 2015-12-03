@@ -35,11 +35,13 @@ class MediaController extends Controller
 
     public function update(Media $media, Request $request)
     {
-        dd($resquest->all());
+        $media->update($request->all());
+
+        return $media;
     }
+
     public function modelImages(HasMedia $model)
     {
-
         return $model->getMedia();
     }
 

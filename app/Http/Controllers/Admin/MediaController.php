@@ -19,14 +19,14 @@ class MediaController extends Controller
     public function index()
     {
         $media = Media::latest()->paginate(10);
-        return view('admin.images.index', compact('media'));
+        return view('admin.media.index', compact('media'));
     }
 
     public function destroy(Media $media)
     {
         $media->delete();
 
-        return redirect()->route('admin.images.index')
+        return redirect()->route('admin.media.index')
                          ->with(['alert' => 'Image Deleted', 'alert-class' => 'success']);
     }
 
