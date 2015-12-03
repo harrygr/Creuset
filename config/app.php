@@ -154,7 +154,6 @@ return [
 		 */
 		'Gvb\Whoops\ServiceProvider',
 		'Collective\Html\HtmlServiceProvider',
-		'Intervention\Image\ImageServiceProvider',
         Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
 
 	],
@@ -205,7 +204,6 @@ return [
 		'Form'		=> 'Collective\Html\FormFacade',
       	'HTML' 		=> 'Collective\Html\HtmlFacade',
 		'Str'       => 'Illuminate\Support\Str',
-		'Image' 	=> 'Intervention\Image\Facades\Image',
 		'Gate' 		=> Illuminate\Support\Facades\Gate::class,
 
 	],
