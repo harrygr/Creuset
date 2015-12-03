@@ -2,8 +2,6 @@
 
 namespace Creuset\Http\Requests;
 
-use Creuset\Http\Requests\Request;
-
 class UpdateProductRequest extends Request
 {
     /**
@@ -24,13 +22,13 @@ class UpdateProductRequest extends Request
     public function rules()
     {
         return [
-            'slug'  => 'alpha_dash|unique:products,slug,' . $this->route('product')->id,
-            'sku'   => 'unique:products,sku,' . $this->route('product')->id,
-            'price' => 'numeric',
+            'slug'       => 'alpha_dash|unique:products,slug,'.$this->route('product')->id,
+            'sku'        => 'unique:products,sku,'.$this->route('product')->id,
+            'price'      => 'numeric',
             'sale_price' => 'numeric',
-            'stock_qty' => 'numeric',
-            'user_id' => 'integer',
-            'image_id'  => 'integer',
+            'stock_qty'  => 'numeric',
+            'user_id'    => 'integer',
+            'image_id'   => 'integer',
         ];
     }
 }

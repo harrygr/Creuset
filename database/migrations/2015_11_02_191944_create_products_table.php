@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateProductsTable extends Migration
 {
@@ -33,8 +33,7 @@ class CreateProductsTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('products', function($table)
-        {
+        Schema::table('products', function ($table) {
             $table->foreign('user_id')->references('id')->on('users');
             //$table->foreign('image_id')->references('id')->on('images');
         });
@@ -47,8 +46,7 @@ class CreateProductsTable extends Migration
      */
     public function down()
     {
-        Schema::table('products', function($table)
-        {
+        Schema::table('products', function ($table) {
             $table->dropForeign('posts_user_id_foreign');
             //$table->dropForeign('posts_image_id_foreign');
         });

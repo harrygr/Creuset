@@ -1,7 +1,8 @@
-<?php namespace Creuset\Commands;
+<?php
 
-abstract class Command {
+namespace Creuset\Commands;
 
-	//
-
+abstract class Command
+{
+    //
 }

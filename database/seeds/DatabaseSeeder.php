@@ -1,87 +1,77 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Seeder;
 
-use Creuset\Post;
-use Creuset\User;
-use Creuset\Term;
+class DatabaseSeeder extends Seeder
+{
+    private $tables = [
+        'termables',
+        'terms',
+        'posts',
+        'products',
+        'users',
+        'roles',
+        'images',
+    ];
 
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $this->cleanDatabase();
+        $this->command->getOutput()->writeln('Truncated Tables');
 
-class DatabaseSeeder extends Seeder {
+        Model::unguard();
 
-	private $tables = [
-		'termables',
-		'terms',
-		'posts',
-		'products',
-		'users',
-		'roles',
-		'images',
-	];
+        $this->call('UsersTableSeeder');
+        $this->call('PostsTableSeeder');
+        $this->call('ProductsTableSeeder');
+        $this->call('TermsTableSeeder');
+        $this->call('TermablesTableSeeder');
+    }
 
-	/**
-	 * Run the database seeds.
-	 *
-	 * @return void
-	 */
-	public function run()
-	{
-		$this->cleanDatabase();
-		$this->command->getOutput()->writeln("Truncated Tables");
+    /**
+     * Remove any data currently in the database tables.
+     */
+    protected function cleanDatabase()
+    {
+        $this->disableForeignKeyCheck();
+        foreach ($this->tables as $table) {
+            DB::table($table)->truncate();
+        }
+        $this->enableForeignKeyCheck();
+    }
 
-		Model::unguard();
+    protected function disableForeignKeyCheck()
+    {
+        $statement = $this->getForeignKeyCheckStatement();
+        DB::statement($statement['disable']);
+    }
 
-		$this->call('UsersTableSeeder');
-		$this->call('PostsTableSeeder');
-		$this->call('ProductsTableSeeder');
-		$this->call('TermsTableSeeder');
-		$this->call('TermablesTableSeeder');
+    protected function enableForeignKeyCheck()
+    {
+        $statement = $this->getForeignKeyCheckStatement();
+        DB::statement($statement['enable']);
+    }
 
-	}
+    protected function getForeignKeyCheckStatement()
+    {
+        $driver = \DB::connection()->getDriverName();
 
-	/**
-	 * Remove any data currently in the database tables
-	 */
-	protected function cleanDatabase()
-	{
-		$this->disableForeignKeyCheck();
-		foreach ($this->tables as $table)
-		{
-			DB::table($table)->truncate();
-		}
-		$this->enableForeignKeyCheck();
-	}
+        if ($driver == 'sqlite') {
+            return [
+            'disable' => 'PRAGMA foreign_keys = OFF',
+            'enable'  => 'PRAGMA foreign_keys = ON',
+            ];
+        }
 
-	protected function disableForeignKeyCheck()
-	{
-		$statement = $this->getForeignKeyCheckStatement();
-		DB::statement($statement['disable']);
-	}
-
-	protected function enableForeignKeyCheck()
-	{
-		$statement = $this->getForeignKeyCheckStatement();
-		DB::statement($statement['enable']);
-	}
-
-	protected function getForeignKeyCheckStatement()
-	{
-		$driver = \DB::connection()->getDriverName();
-
-		if ($driver == 'sqlite')
-		{
-			return [
-			'disable' => 'PRAGMA foreign_keys = OFF',
-			'enable'  => 'PRAGMA foreign_keys = ON',
-			];
-
-		}
-
-		return [
-		'disable' => 'SET FOREIGN_KEY_CHECKS=0',
-		'enable'  => 'SET FOREIGN_KEY_CHECKS=1',
-		];
-	}
-
+        return [
+        'disable' => 'SET FOREIGN_KEY_CHECKS=0',
+        'enable'  => 'SET FOREIGN_KEY_CHECKS=1',
+        ];
+    }
 }

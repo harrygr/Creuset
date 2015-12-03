@@ -7,18 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 trait TrashesModels
 {
     /**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param Model $model
-	 * @return Response
-	 * @throws \Exception
-	 * @internal param int $id
-	 * @internal param Request $request
-	 */
-	public function destroy(Model $model)
-	{
+     * Remove the specified resource from storage.
+     *
+     * @param Model $model
+     *
+     * @throws \Exception
+     *
+     * @return Response
+     *
+     * @internal param int $id
+     * @internal param Request $request
+     */
+    public function destroy(Model $model)
+    {
         $model_name = ucwords(class_basename($model));
-     
+
         $alert = "$model_name moved to trash";
 
         if ($model->trashed()) {
@@ -27,9 +30,9 @@ trait TrashesModels
 
         $this->delete($model);
 
-		return redirect()->to($this->getIndexUrl())
-			->with(['alert' => $alert, 'alert-class' => 'success']);
-	}
+        return redirect()->to($this->getIndexUrl())
+            ->with(['alert' => $alert, 'alert-class' => 'success']);
+    }
 
     protected function delete(Model $model)
     {
@@ -41,12 +44,12 @@ trait TrashesModels
     }
 
     /**
-     * Get the URL to the index page for the model
+     * Get the URL to the index page for the model.
+     *
      * @return string
      */
     protected function getIndexUrl()
     {
         return property_exists($this, 'index_url') ? $this->index_url : route('admin.posts.index');
     }
-
 }

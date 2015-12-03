@@ -1,9 +1,10 @@
-<?php namespace Creuset\Http\Requests;
+<?php
+
+namespace Creuset\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-abstract class Request extends FormRequest {
-
-	//
-
+abstract class Request extends FormRequest
+{
+    //
 }

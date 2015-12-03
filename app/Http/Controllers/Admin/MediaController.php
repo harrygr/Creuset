@@ -2,12 +2,8 @@
 
 namespace Creuset\Http\Controllers\Admin;
 
-
-use Creuset\Contracts\Imageable;
 use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests;
 use Creuset\Media;
-use Illuminate\Http\Request;
 
 class MediaController extends Controller
 {
@@ -19,6 +15,7 @@ class MediaController extends Controller
     public function index()
     {
         $media = Media::latest()->paginate(10);
+
         return view('admin.media.index', compact('media'));
     }
 
@@ -29,5 +26,4 @@ class MediaController extends Controller
         return redirect()->route('admin.media.index')
                          ->with(['alert' => 'Image Deleted', 'alert-class' => 'success']);
     }
-
 }
