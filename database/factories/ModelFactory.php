@@ -57,16 +57,16 @@ $factory->define('Creuset\Role', function ($faker) {
 
 $factory->define('Creuset\Term', function ($faker) {
 
-	$term = $faker->unique()->word;
+    $term = $faker->unique()->word;
     if (strlen($term) < 4) {
-        $term .= ' ' . $faker->word;
+        $term .= ' '.$faker->word;
     }
-	
-	return [
-		'taxonomy'   => 'category',
-		'term'		 => $term,
-		'slug'		 => str_slug($term),
-	];
+
+    return [
+        'taxonomy'     => 'category',
+        'term'         => $term,
+        'slug'         => str_slug($term),
+    ];
 });
 
 $factory->define('Creuset\Termable', function ($faker) {
