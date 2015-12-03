@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Creuset\Exceptions;
 
 use Exception;

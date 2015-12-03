@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Unit;
 
 use Creuset\Repositories\Post\DbPostRepository;

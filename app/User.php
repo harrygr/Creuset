@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Creuset;
 
 use Creuset\Presenters\PresentableTrait;

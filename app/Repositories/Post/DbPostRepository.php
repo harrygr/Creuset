@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Creuset\Repositories\Post;
 
 use Creuset\Post;

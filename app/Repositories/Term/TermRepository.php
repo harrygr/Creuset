@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Creuset\Repositories\Term;
 
 use Creuset\Contracts\Termable;

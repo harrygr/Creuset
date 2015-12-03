@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Creuset\Composers\Admin;
 
 use Creuset\Repositories\Post\PostRepository;

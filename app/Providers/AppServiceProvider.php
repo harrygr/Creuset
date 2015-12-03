@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Creuset\Providers;
 
 use Illuminate\Support\ServiceProvider;
