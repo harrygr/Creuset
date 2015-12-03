@@ -31714,7 +31714,7 @@ module.exports = {
 	methods: {
 		fetchImages: function fetchImages() {
 			this.images = null;
-			this.$http.get('/api/images', { page: this.page }).success((function (response) {
+			this.$http.get('/api/media', { page: this.page }).success((function (response) {
 				this.images = response.data;
 				this.lastPage = response.last_page;
 			}).bind(this));
@@ -31722,7 +31722,7 @@ module.exports = {
 
 		fetchChosenImage: function fetchChosenImage() {
 			if (this.image) {
-				this.$http.get('/api/images/' + this.image).success((function (response) {
+				this.$http.get('/api/media/' + this.image).success((function (response) {
 					this.selectedImage = response;
 				}).bind(this));
 			}
@@ -31751,7 +31751,7 @@ module.exports = {
 		}
 	}
 };
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"panel panel-default\" id=\"featuredImageChooser\">\n\t\t<div class=\"panel-heading\">\n\t\t\tFeatured Image\n\t\t</div>\n\t\t<div class=\"panel-body\">\n\t\t\t<p v-if=\"!selectedImage\" class=\"text-center\">None Chosen</p>\n\n\t\t\t<img v-if=\"selectedImage\" v-bind:src=\"selectedImage.thumbnail_url\" alt=\"{{ selectedImage.description }}\" class=\"img-responsive thumbnail\" style=\"width:100%;\">\n\n\t\t\t<!-- Button trigger modal -->\n\t\t\t<button type=\"button\" class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#imagesModal\" @click=\"fetchImages()\">Choose</button>\n\n\t\t\t<button type=\"button\" class=\"btn btn-link text-danger\" v-if=\"selectedImage\" @click=\"selectedImage = null\">Remove Image</button>\n\n\t\t\t<input type=\"hidden\" name=\"image_id\" value=\"{{ selectedImage ? selectedImage.id : null }}\">\n\t\t</div>\n\t</div>\n\n\n\t<!-- Modal -->\n\t<div class=\"modal fade\" id=\"imagesModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-title\">\n\t\t<div class=\"modal-dialog modal-lg\" role=\"document\">\n\t\t\t<div class=\"modal-content\">\n\t\t\t\t<div class=\"modal-header\">\n\t\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button>\n\t\t\t\t\t<h4 class=\"modal-title\" id=\"myModalLabel\">Choose Featured Image</h4>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"modal-body\">\n\n\t\t\t\t\t<span v-if=\"!images\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Fetching Images</span>\n\n\t\t\t\t\t<div class=\"row\" v-if=\"images\">\n\t\t\t\t\t\t<p class=\"col-xs-12\" v-if=\"images\">\n\t\t\t\t\t\t\tPage {{ page }} of {{ lastPage }}\n\t\t\t\t\t\t</p>\n\t\t\t\t\t\t<div class=\"col-xs-3 top-buffer\" v-for=\"image in images\">\n\t\t\t\t\t\t\t<a href=\"#\" @click=\"selectImage(image, $event)\" data-dismiss=\"modal\">\n\t\t\t\t\t\t\t<img class=\"img-responsive img-thumbnail selectable\" v-bind:src=\"image.thumbnail_url\" alt=\"{{ image.title }}\">\n\t\t\t\t\t\t\t</a>\n\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<p class=\"clearfix col-xs-12\">\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-link pull-left\" @click=\"prevPage\"><i class=\"fa fa-chevron-left\"></i> Prev</button>\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-link pull-right\" @click=\"nextPage\">Next <i class=\"fa fa-chevron-right\"></i></button>\n\t\t\t\t\t\t</p>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"modal-footer\">\n\t\t\t\t\t<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"panel panel-default\" id=\"featuredImageChooser\">\n\t\t<div class=\"panel-heading\">\n\t\t\tFeatured Image\n\t\t</div>\n\t\t<div class=\"panel-body\">\n\t\t\t<p v-if=\"!selectedImage\" class=\"text-center\">None Chosen</p>\n\n\t\t\t<img v-if=\"selectedImage\" v-bind:src=\"selectedImage.thumbnail_url\" alt=\"{{ selectedImage.name }}\" class=\"img-responsive thumbnail\" style=\"width:100%;\">\n\n\t\t\t<!-- Button trigger modal -->\n\t\t\t<button type=\"button\" class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#imagesModal\" @click=\"fetchImages()\">Choose</button>\n\n\t\t\t<button type=\"button\" class=\"btn btn-link text-danger\" v-if=\"selectedImage\" @click=\"selectedImage = null\">Remove Image</button>\n\n\t\t\t<input type=\"hidden\" name=\"media_id\" value=\"{{ selectedImage ? selectedImage.id : null }}\">\n\t\t</div>\n\t</div>\n\n\n\t<!-- Modal -->\n\t<div class=\"modal fade\" id=\"imagesModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-title\">\n\t\t<div class=\"modal-dialog modal-lg\" role=\"document\">\n\t\t\t<div class=\"modal-content\">\n\t\t\t\t<div class=\"modal-header\">\n\t\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">×</span></button>\n\t\t\t\t\t<h4 class=\"modal-title\" id=\"myModalLabel\">Choose Featured Image</h4>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"modal-body\">\n\n\t\t\t\t\t<span v-if=\"!images\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Fetching Images</span>\n\n\t\t\t\t\t<div class=\"row\" v-if=\"images\">\n\t\t\t\t\t\t<p class=\"col-xs-12\" v-if=\"images\">\n\t\t\t\t\t\t\tPage {{ page }} of {{ lastPage }}\n\t\t\t\t\t\t</p>\n\t\t\t\t\t\t<div class=\"col-xs-3 top-buffer\" v-for=\"image in images\">\n\t\t\t\t\t\t\t<a href=\"#\" @click=\"selectImage(image, $event)\" data-dismiss=\"modal\">\n\t\t\t\t\t\t\t<img class=\"img-responsive img-thumbnail selectable\" v-bind:src=\"image.thumbnail_url\" alt=\"{{ image.title }}\">\n\t\t\t\t\t\t\t</a>\n\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<p class=\"clearfix col-xs-12\">\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-link pull-left\" @click=\"prevPage\"><i class=\"fa fa-chevron-left\"></i> Prev</button>\n\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-link pull-right\" @click=\"nextPage\">Next <i class=\"fa fa-chevron-right\"></i></button>\n\t\t\t\t\t\t</p>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"modal-footer\">\n\t\t\t\t\t<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -31772,10 +31772,14 @@ module.exports = {
 	data: function data() {
 		return {
 			images: [],
-			selectedImage: {},
+			selectedImage: -1,
 			imagesLoading: false,
 			imageUpdating: false,
-			imageUpdatedMessage: false
+			imageUpdatedMessage: false,
+			customProperties: {
+				title: '',
+				caption: ''
+			}
 		};
 	},
 
@@ -31800,22 +31804,26 @@ module.exports = {
 		},
 
 		updateImage: function updateImage(e) {
-			e.preventDefault();
+			var selectedImage = this.selectedImage;
+
 			this.imageUpdating = true;
-			this.$http.patch('/api/images/' + this.selectedImage.id, this.selectedImage).success(function (response) {
+			this.images[selectedImage].custom_properties = this.customProperties;
+			this.$http.patch('/api/media/' + this.images[selectedImage].id, this.images[selectedImage]).success(function (response) {
+				this.images[selectedImage] = response;
 				this.imageUpdating = false;
 				this.showMessage('Done');
 			});
 		},
 
 		deleteImage: function deleteImage(e) {
-			e.preventDefault();
 			if (confirm("Are you sure?")) {
-				this.$http['delete']('/api/images/' + this.selectedImage.id).success(function (response) {
+				var selectedImage = this.selectedImage;
+
+				this.$http['delete']('/api/media/' + this.images[selectedImage].id).success((function (response) {
 					this.showMessage(response);
 					this.fetchImages();
-					this.selectedImage = {};
-				});
+					this.selectedImage = -1;
+				}).bind(this));
 			}
 		},
 
@@ -31826,12 +31834,15 @@ module.exports = {
 			}).bind(this), 5000);
 		},
 
-		selectImage: function selectImage(image) {
-			this.selectedImage = image;
+		selectImage: function selectImage(index) {
+			this.selectedImage = index;
+			console.log(index);
+			this.customProperties.title = this.images[index].custom_properties.title || '';
+			this.customProperties.caption = this.images[index].custom_properties.caption || '';
 		},
 
 		isSelected: function isSelected(id) {
-			return this.selectedImage.id == id;
+			return this.selectedImage > -1 && this.images[this.selectedImage].id == id;
 		},
 
 		url: function url(image, thumbnail) {
@@ -31845,7 +31856,7 @@ module.exports = {
 		}
 	}
 };
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<!-- Post images -->  \n\t<div class=\"panel panel-default\" id=\"post-images\">\n\t\t<div class=\"panel-heading\">\n\t\t\tAttached Images\n\t\t</div>\n\n\t\t<div class=\"panel-heading\" v-if=\"selectedImage.id\">\n\n\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\" @click=\"selectedImage = {}\">×</span></button>\n\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col-md-4\">\n\t\t\t\t\t<img class=\"media-object img-thumbnail img-responsive\" v-bind:src=\"selectedImage.thumbnail_url\" alt=\"\"> \n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-md-8\">\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>URL: </label>\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control input-sm\" readonly=\"\" value=\"{{ selectedImage.url }}\">\n\t\t\t\t\t</div>    \n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Thumbnail: </label>\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control input-sm\" readonly=\"\" value=\"{{ selectedImage.thumbnail_url }}\">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Image Title</label>\n\t\t\t\t\t\t<input type=\"text\" v-model=\"selectedImage.title\" class=\"form-control\" @keyup.enter=\"updateImage\">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Caption</label>\n\t\t\t\t\t\t<textarea v-model=\"selectedImage.caption\" class=\"form-control\"></textarea>\n\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t\t\t<button @click=\"updateImage\" class=\"btn btn-primary\">Update Image</button>\n\t\t\t\t\t<a @click=\"deleteImage\" class=\"btn btn-danger\">Delete Image</a>\n\t\t\t\t\t<button @click=\"selectedImage = {}\" class=\"btn btn-link\">Cancel</button>\n\n\t\t\t\t\t<p class=\"form-group top-buffer\">\n\t\t\t\t\t<span v-if=\"imageUpdating\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Working...</span>\n\t\t\t\t\t<span class=\"text-success\" v-if=\"imageUpdatedMessage\"> <i class=\"fa fa-check\"></i> {{ imageUpdatedMessage }}</span>\n\t\t\t\t\t</p>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"panel-body\">\n\n\t\t\t<span v-if=\"imagesLoading\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Loading images...</span>\n\n\t\t\t<div class=\"row\" v-if=\"hasImages\">\n\t\t\t<div class=\"col-md-2 col-sm-3 col-xs-6 top-buffer\" v-for=\"image in images\">\n\t\t\t\t\t<img v-bind:src=\"image.thumbnail_url\" alt=\"\" class=\"img-responsive img-thumbnail selectable\" v-bind:class=\"{'selected': isSelected(image.id)}\" @click=\"selectImage(image)\">\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<span v-if=\"!hasImages\">No Images yet</span>\n\n\t\t</div>\n\t</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<!-- Post images -->  \n\t<div class=\"panel panel-default\" id=\"post-images\">\n\t\t<div class=\"panel-heading\">\n\t\t\tAttached Images\n\t\t</div>\n\n\t\t<div class=\"panel-heading\" v-if=\"selectedImage > -1\">\n\n\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\" @click=\"selectedImage = -1\">×</span></button>\n\n\t\t\t<div class=\"row\">\n\t\t\t\t<div class=\"col-md-4\">\n\t\t\t\t\t<img class=\"img-thumbnail img-responsive\" v-bind:src=\"images[selectedImage].thumbnail_url\" alt=\"\"> \n\t\t\t\t</div>\n\t\t\t\t<div class=\"col-md-8\">\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>URL: </label>\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control input-sm\" readonly=\"\" value=\"{{ images[selectedImage].url }}\">\n\t\t\t\t\t</div>    \n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Thumbnail: </label>\n\t\t\t\t\t\t<input type=\"text\" class=\"form-control input-sm\" readonly=\"\" value=\"{{ images[selectedImage].thumbnail_url }}\">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Image Title</label>\n\t\t\t\t\t\t<input type=\"text\" v-model=\"customProperties.title\" class=\"form-control\" @keyup.enter=\"updateImage\">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t<label>Caption</label>\n\t\t\t\t\t\t<textarea v-model=\"customProperties.caption\" class=\"form-control\"></textarea>\n\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t\t\t<button type=\"button\" @click=\"updateImage\" class=\"btn btn-primary\">Update Image</button>\n\t\t\t\t\t<button type=\"button\" @click=\"deleteImage\" class=\"btn btn-danger\">Delete Image</button>\n\t\t\t\t\t<button type=\"button\" @click=\"selectedImage = -1\" class=\"btn btn-link\">Cancel</button>\n\n\t\t\t\t\t<p class=\"form-group top-buffer\">\n\t\t\t\t\t<span v-if=\"imageUpdating\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Working...</span>\n\t\t\t\t\t<span class=\"text-success\" v-if=\"imageUpdatedMessage\"> <i class=\"fa fa-check\"></i> {{ imageUpdatedMessage }}</span>\n\t\t\t\t\t</p>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"panel-body\">\n\n\t\t\t<span v-if=\"imagesLoading\"><i class=\"fa fa-circle-o-notch fa-spin\"></i> Loading images...</span>\n\n\t\t\t<div class=\"row\" v-if=\"hasImages\">\n\t\t\t    <div class=\"col-md-2 col-sm-3 col-xs-6 top-buffer\" v-for=\"image in images\">\n\t\t\t\t\t<img v-bind:src=\"image.thumbnail_url\" alt=\"\" class=\"img-responsive img-thumbnail selectable\" v-bind:class=\"{'selected': isSelected(image.id)}\" @click=\"selectImage($index)\">\n\t\t\t\t</div>\n\t\t\t</div>\n\n\t\t\t<span v-if=\"!hasImages\">No Images yet</span>\n\n\t\t</div>\n\t</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

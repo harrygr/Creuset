@@ -2,14 +2,13 @@
 
 namespace Creuset\Traits;
 
-use Creuset\Role;
 use Creuset\Exceptions\NonExistantRoleException;
+use Creuset\Role;
 
-trait RoleableTrait 
+trait RoleableTrait
 {
-	
-	/**
-     * A model belongs to a single role
+    /**
+     * A model belongs to a single role.
      */
     public function role()
     {
@@ -17,9 +16,9 @@ trait RoleableTrait
     }
 
     /**
-     * Find out if the entity has a specific role
+     * Find out if the entity has a specific role.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasRole($check)
     {
@@ -29,7 +28,8 @@ trait RoleableTrait
     }
 
     /**
-     * Give an entity the minimum role of subscriber
+     * Give an entity the minimum role of subscriber.
+     *
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function enroll()
@@ -38,9 +38,11 @@ trait RoleableTrait
     }
 
     /**
-     * Assign a role by name to the entity
-     * @param  string $role_name The role to assign
-     * @return \Illuminate\Database\Eloquent\Model       
+     * Assign a role by name to the entity.
+     *
+     * @param string $role_name The role to assign
+     *
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function assignRole($role_name)
     {
@@ -57,5 +59,4 @@ trait RoleableTrait
 
         return $this;
     }
-
 }

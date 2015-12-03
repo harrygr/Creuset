@@ -9,7 +9,7 @@
 			<img
 				v-if="selectedImage"
 				v-bind:src="selectedImage.thumbnail_url"
-				alt="{{ selectedImage.description }}"
+				alt="{{ selectedImage.name }}"
 				class="img-responsive thumbnail"
 				style="width:100%;"
 			>
@@ -32,7 +32,7 @@
 
 			<input
 				type="hidden"
-				name="image_id"
+				name="media_id"
 				value="{{ selectedImage ? selectedImage.id : null }}"
 			>
 		</div>
@@ -100,7 +100,7 @@
 		methods: {
 			fetchImages: function() {
 				this.images = null;
-				this.$http.get('/api/images', {page: this.page})
+				this.$http.get('/api/media', {page: this.page})
 				.success(function(response) {
 					this.images = response.data
 					this.lastPage = response.last_page;
@@ -109,7 +109,7 @@
 			
 			fetchChosenImage: function() {
 				if (this.image) {
-				this.$http.get('/api/images/' + this.image)
+				this.$http.get('/api/media/' + this.image)
 					.success(function(response) {
 						this.selectedImage = response;
 					}.bind(this));

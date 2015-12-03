@@ -1,20 +1,22 @@
-<?php namespace Creuset\Presenters;
+<?php
 
-abstract class Presenter {
-	protected $model;
+namespace Creuset\Presenters;
 
-	public function __construct($model)
-	{
-		$this->model = $model;
-	}
+abstract class Presenter
+{
+    protected $model;
 
-	public function __get($property)
-	{
-		if (! method_exists($this, $property))
-		{
-			return $this->{$property}();
-		}
+    public function __construct($model)
+    {
+        $this->model = $model;
+    }
 
-		return $this->model->{$property};
-	}
+    public function __get($property)
+    {
+        if (!method_exists($this, $property)) {
+            return $this->{$property}();
+        }
+
+        return $this->model->{$property};
+    }
 }

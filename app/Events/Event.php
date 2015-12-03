@@ -1,7 +1,8 @@
-<?php namespace Creuset\Events;
+<?php
 
-abstract class Event {
+namespace Creuset\Events;
 
-	//
-
+abstract class Event
+{
+    //
 }

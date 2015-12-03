@@ -9,16 +9,15 @@ class Role extends Model
     public $fillable = ['name', 'display_name'];
 
     /**
-     * Set timestamps off
+     * Set timestamps off.
      */
     public $timestamps = false;
- 
+
     /**
-     * Get users with a certain role
+     * Get users with a certain role.
      */
     public function users()
     {
         return $this->hasMany('Creuset\User', 'users');
     }
-
 }
