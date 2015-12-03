@@ -4,156 +4,154 @@ use Carbon\Carbon;
 use Creuset\Media;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class PostsControllerTest extends TestCase
 {
+    use DatabaseTransactions;
 
-	use DatabaseTransactions;
+    public function testICanCreateAPost()
+    {
+        // Given I have and account and am logged in
+        $user = $this->loginWithUser();
 
-	public function testICanCreateAPost()
-	{
-		// Given I have and account and am logged in
-		$user = $this->loginWithUser();
+        // I go to the create posts page
+        $postTitle = 'Awesome Post Title';
+        $postContent = 'Here is some post content';
 
-		// I go to the create posts page
-		$postTitle =  'Awesome Post Title';
-		$postContent = 'Here is some post content';
+        $this->visit('/admin/posts/create');
 
-		$this->visit('/admin/posts/create');
+        $this->post('admin/posts', [
+            'title'        => $postTitle,
+            'slug'         => str_slug($postTitle),
+            'content'      => $postContent,
+            'published_at' => Carbon::now(),
+            'user_id'      => $user->id,
+            '_token'       => csrf_token(),
+            ]);
+        // And see that I created a post successfully
+        $this->seeInDatabase('posts', [
+            'title'   => $postTitle,
+            'content' => $postContent,
+            'type'    => 'post',
+            'user_id' => $user->id,
+            ]);
+    }
 
-		$this->post('admin/posts', [
-			'title' => $postTitle,
-			'slug' => str_slug($postTitle),
-			'content' => $postContent,
-			'published_at' => Carbon::now(),
-			'user_id' => $user->id,
-			'_token' => csrf_token(),
-			]);
-		// And see that I created a post successfully
-		$this->seeInDatabase('posts', [
-			'title' => $postTitle,
-			'content' => $postContent,
-			'type'	=> 'post',
-			'user_id' => $user->id
-			]);
-	}
+    public function testICanEditAPost()
+    {
+        // Given I have and account and am logged in
+        $user = $this->loginWithUser();
 
-	public function testICanEditAPost()
-	{
-		// Given I have and account and am logged in
-		$user = $this->loginWithUser();
+        // And a post exists in the database
+        $post = factory('Creuset\Post')->create();
 
-		// And a post exists in the database
-		$post = factory('Creuset\Post')->create();
+        // I update the post
+        $postTitle = 'Edited Title';
 
-		// I update the post
-		$postTitle =  'Edited Title';
+        $this->visit("/admin/posts/{$post->id}/edit")
+             ->see('Edit Post');
 
-		$this->visit("/admin/posts/{$post->id}/edit")
-			 ->see('Edit Post');
-
-		$this->patch("admin/posts/{$post->id}", [
-			'title' => $postTitle,
-			'slug' => str_slug($postTitle),
-			'_token' => csrf_token(),
-			]);
-		//dd($this->response->getContent());
+        $this->patch("admin/posts/{$post->id}", [
+            'title'  => $postTitle,
+            'slug'   => str_slug($postTitle),
+            '_token' => csrf_token(),
+            ]);
+        //dd($this->response->getContent());
 
         // And see that I edited the post successfully
-		$this->seeInDatabase('posts', [
-			'id'	=> $post->id,
-			'title' => $postTitle,
-			'type'	=> 'post'
-			]);
-	}
-
-	/** @test **/
-	public function it_trashes_a_post()
-	{
-	    $this->withoutMiddleware();
-
-	    $user = $this->loginWithUser();
-	    $post = factory('Creuset\Post')->create();
-
-	    $this->visit("/admin/posts")
-	    	 ->see($post->title);
-
-	    // move to trash
-	    $this->delete("/admin/posts/{$post->id}");
-		$this->assertSessionHas('alert', 'Post moved to trash');
-	}
-
-	/** @test **/
-	public function it_permanently_deletes_a_post()
-	{
-		$this->withoutMiddleware();
-
-		$user = $this->loginWithUser();
-
-		$post = factory('Creuset\Post')->create([
-			'deleted_at' => Carbon::now()->subDay()
-		]);
-
-	    $this->visit("/admin/posts")
-	     	 ->dontSee($post->title);
-
-	    $this->visit("admin/posts/trash")
-	         ->see($post->title);
-
-		// Delete permanently
-	    $this->delete("/admin/posts/{$post->id}");
-		$this->assertSessionHas('alert', 'Post permanently deleted');
-
-	    $this->notSeeInDatabase('posts', [
-	    	'title' => $post->title
-	    	]);
-	}
-
-	/** @test **/
-	public function it_restores_a_post()
-	{
-	    $this->withoutMiddleware();
-
-	    $user = $this->loginWithUser();
-	    $post = factory('Creuset\Post')->create();
-
-	    // move to trash
-	    $this->delete("/admin/posts/{$post->id}");
-	    // restore
-	    $this->put("/admin/posts/{$post->id}/restore");
-
-	    $this->visit("/admin/posts")
-	    	 ->see($post->title);
-	}
+        $this->seeInDatabase('posts', [
+            'id'      => $post->id,
+            'title'   => $postTitle,
+            'type'    => 'post',
+            ]);
+    }
 
     /** @test **/
-	public function it_can_upload_an_image_to_a_post()
-	{
-		$this->withoutMiddleware(); // needed to skip csrf checks etc
-		$user = $this->loginWithUser();
+    public function it_trashes_a_post()
+    {
+        $this->withoutMiddleware();
 
-		// Make a post
-		$post = factory('Creuset\Post')->create();
+        $user = $this->loginWithUser();
+        $post = factory('Creuset\Post')->create();
 
-		// And we need a file
-		$faker = Factory::create();
-		$image = $faker->image();
-		$file = new UploadedFile($image, basename($image), null, null, null, true);
+        $this->visit('/admin/posts')
+             ->see($post->title);
 
-		// Send off the request to upload the file
-		$response = $this->call("POST", "/admin/posts/{$post->id}/image", [], [], ['image' => $file]);
+        // move to trash
+        $this->delete("/admin/posts/{$post->id}");
+        $this->assertSessionHas('alert', 'Post moved to trash');
+    }
 
-		// An Image instance (in JSON) should be returned
-		$responseData = json_decode($response->getContent());
+    /** @test **/
+    public function it_permanently_deletes_a_post()
+    {
+        $this->withoutMiddleware();
 
-		// Ensure the image has been saved in the db and attached to our post
-		$this->seeInDatabase('media', [
-			'model_id' => $post->id,
-			'model_type' => 'Creuset\Post',
-            'file_name' => basename($image),
-			]);
+        $user = $this->loginWithUser();
+
+        $post = factory('Creuset\Post')->create([
+            'deleted_at' => Carbon::now()->subDay(),
+        ]);
+
+        $this->visit('/admin/posts')
+              ->dontSee($post->title);
+
+        $this->visit('admin/posts/trash')
+             ->see($post->title);
+
+        // Delete permanently
+        $this->delete("/admin/posts/{$post->id}");
+        $this->assertSessionHas('alert', 'Post permanently deleted');
+
+        $this->notSeeInDatabase('posts', [
+            'title' => $post->title,
+            ]);
+    }
+
+    /** @test **/
+    public function it_restores_a_post()
+    {
+        $this->withoutMiddleware();
+
+        $user = $this->loginWithUser();
+        $post = factory('Creuset\Post')->create();
+
+        // move to trash
+        $this->delete("/admin/posts/{$post->id}");
+        // restore
+        $this->put("/admin/posts/{$post->id}/restore");
+
+        $this->visit('/admin/posts')
+             ->see($post->title);
+    }
+
+    /** @test **/
+    public function it_can_upload_an_image_to_a_post()
+    {
+        $this->withoutMiddleware(); // needed to skip csrf checks etc
+        $user = $this->loginWithUser();
+
+        // Make a post
+        $post = factory('Creuset\Post')->create();
+
+        // And we need a file
+        $faker = Factory::create();
+        $image = $faker->image();
+        $file = new UploadedFile($image, basename($image), null, null, null, true);
+
+        // Send off the request to upload the file
+        $response = $this->call('POST', "/admin/posts/{$post->id}/image", [], [], ['image' => $file]);
+
+        // An Image instance (in JSON) should be returned
+        $responseData = json_decode($response->getContent());
+
+        // Ensure the image has been saved in the db and attached to our post
+        $this->seeInDatabase('media', [
+            'model_id'   => $post->id,
+            'model_type' => 'Creuset\Post',
+            'file_name'  => basename($image),
+            ]);
 
         foreach ($post->getMedia() as $media_item) {
             $this->assertFileExists($media_item->getPath());
@@ -161,6 +159,5 @@ class PostsControllerTest extends TestCase
 
         // Delete the post which should also delete its associated media
         $post->delete();
-
-	}
+    }
 }

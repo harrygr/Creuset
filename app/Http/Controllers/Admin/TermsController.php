@@ -3,10 +3,8 @@
 namespace Creuset\Http\Controllers\Admin;
 
 use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests;
 use Creuset\Repositories\Term\TermRepository;
 use Creuset\Term;
-use Illuminate\Http\Request;
 
 class TermsController extends Controller
 {
@@ -22,7 +20,7 @@ class TermsController extends Controller
     {
         $taxonomy = str_singular($taxonomies);
         $terms = $this->terms->getTerms($taxonomy);
-        if ( !isset(Term::$taxonomies[$taxonomy])) {
+        if (!isset(Term::$taxonomies[$taxonomy])) {
             abort(404);
         }
         $term_name = Term::$taxonomies[$taxonomy];
@@ -69,7 +67,7 @@ class TermsController extends Controller
         $oldTerm = $term;
         $taxonomy = ucfirst($term->taxonomy);
         $term->delete();
-        
+
         return redirect()
             ->route('admin.categories.index')
             ->with(['alert' => "$taxonomy \"{$oldTerm->term}\" deleted!", 'alert-class' => 'success']);

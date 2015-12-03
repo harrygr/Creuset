@@ -2,8 +2,6 @@
 
 namespace Creuset\Http\Requests;
 
-use Creuset\Http\Requests\Request;
-
 class CreateProductRequest extends Request
 {
     /**
@@ -24,14 +22,14 @@ class CreateProductRequest extends Request
     public function rules()
     {
         return [
-            'name'  => 'required',
-            'slug'  => 'required|alpha_dash|unique:products,slug',
-            'sku'   => 'required|unique:products,sku',
-            'price' => 'numeric|min:0',
+            'name'       => 'required',
+            'slug'       => 'required|alpha_dash|unique:products,slug',
+            'sku'        => 'required|unique:products,sku',
+            'price'      => 'numeric|min:0',
             'sale_price' => 'numeric|min:0',
-            'stock_qty' => 'numeric',
-            'user_id' => 'required|integer',
-            'image_id' => 'integer',
+            'stock_qty'  => 'numeric',
+            'user_id'    => 'required|integer',
+            'image_id'   => 'integer',
         ];
     }
 }

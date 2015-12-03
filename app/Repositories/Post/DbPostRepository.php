@@ -1,95 +1,106 @@
-<?php 
+<?php
+
 
 namespace Creuset\Repositories\Post;
 
 use Creuset\Post;
 use Creuset\Repositories\DbRepository;
 
-class DbPostRepository extends DbRepository implements PostRepository {
-
-	/**
-	 * @param Post $post
-	 */
-	public function __construct(Post $post)
-	{
-		$this->model = $post;
-	}
-
-	/**
-	 * @param $userId
-	 * @return mixed
+class DbPostRepository extends DbRepository implements PostRepository
+{
+    /**
+     * @param Post $post
      */
-	function getByUserId($userId)
-	{
-		return $this->model->where('user_id', $userId)->get();
-	}
+    public function __construct(Post $post)
+    {
+        $this->model = $post;
+    }
 
-	/**
-	 * @param array $with
-	 * @return mixed
+    /**
+     * @param $userId
+     *
+     * @return mixed
      */
-	public function getPaginated($with = [])
-	{
-		return $this->model->with($with)->latest()->paginate(10);
-	}
+    public function getByUserId($userId)
+    {
+        return $this->model->where('user_id', $userId)->get();
+    }
 
-	/**
-	 * @param array $attributes
-	 * @return static
+    /**
+     * @param array $with
+     *
+     * @return mixed
      */
-	public function create($attributes)
-	{
-		$post = $this->model->create($attributes);
-		if ( isset($attributes['terms']) )
-			$post->terms()->sync($attributes['terms']);
+    public function getPaginated($with = [])
+    {
+        return $this->model->with($with)->latest()->paginate(10);
+    }
 
-		return $post;
-	}
-
-	/**
-	 * @param Post $post
-	 * @param array $attributes
-	 * @return bool|int
+    /**
+     * @param array $attributes
+     *
+     * @return static
      */
-	public function update(Post $post, $attributes)
-	{
-		if ( isset($attributes['terms']) )
-			$post->terms()->sync($attributes['terms']);
+    public function create($attributes)
+    {
+        $post = $this->model->create($attributes);
+        if (isset($attributes['terms'])) {
+            $post->terms()->sync($attributes['terms']);
+        }
 
-		return $post->update($attributes);
-	}
+        return $post;
+    }
 
-	/**
-	 * @param Post $post
-	 * @return bool|null
-	 * @throws \Exception
+    /**
+     * @param Post  $post
+     * @param array $attributes
+     *
+     * @return bool|int
      */
-	public function delete(Post $post)
-	{
-		if ($post->trashed()) {
-			return $post->forceDelete();
-		}
-		
-		return $post->delete();
-	}
+    public function update(Post $post, $attributes)
+    {
+        if (isset($attributes['terms'])) {
+            $post->terms()->sync($attributes['terms']);
+        }
 
-	/**
-	 * @param Post $post
-	 * @return bool|null
-	 * @throws \Exception
+        return $post->update($attributes);
+    }
+
+    /**
+     * @param Post $post
+     *
+     * @throws \Exception
+     *
+     * @return bool|null
      */
-	public function restore(Post $post)
-	{	
-		return $post->restore();
-	}
+    public function delete(Post $post)
+    {
+        if ($post->trashed()) {
+            return $post->forceDelete();
+        }
 
-	public function count()
-	{
-		return $this->model->count();
-	}
+        return $post->delete();
+    }
 
-	public function trashedCount()
-	{
-		return $this->model->onlyTrashed()->count();
-	}
+    /**
+     * @param Post $post
+     *
+     * @throws \Exception
+     *
+     * @return bool|null
+     */
+    public function restore(Post $post)
+    {
+        return $post->restore();
+    }
+
+    public function count()
+    {
+        return $this->model->count();
+    }
+
+    public function trashedCount()
+    {
+        return $this->model->onlyTrashed()->count();
+    }
 }

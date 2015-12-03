@@ -3,8 +3,6 @@
 namespace Creuset\Handlers\Events;
 
 use Creuset\User;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class UserLoggedInHandler
 {
@@ -21,7 +19,8 @@ class UserLoggedInHandler
     /**
      * Handle the event.
      *
-     * @param  Events  $event
+     * @param Events $event
+     *
      * @return void
      */
     public function handle(User $user, $remember)
@@ -29,7 +28,7 @@ class UserLoggedInHandler
         $ip = \Request::getClientIp();
         \Log::info("the user {$user->name} <{$user->username}> logged in from IP $ip");
 
-        $user->last_seen_at = new \DateTime;
+        $user->last_seen_at = new \DateTime();
         $user->save();
     }
 }

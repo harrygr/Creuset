@@ -1,14 +1,10 @@
-<?php 
+<?php
 
-use Carbon\Carbon;
-use Creuset\Product;
-use Faker\Factory;
+
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Symfony\Component\HttpFoundation\Response; 
 
 class ApiMediaControllerTest extends TestCase
 {
-
     use DatabaseTransactions;
 
     /** @test **/
@@ -29,10 +25,9 @@ class ApiMediaControllerTest extends TestCase
     {
         $image = $this->createImage();
 
-        $this->get('api/media/' . $image->id)
+        $this->get('api/media/'.$image->id)
              ->seeJson(['name' => $image->name]);
 
         $image->model->forceDelete();
     }
-
 }

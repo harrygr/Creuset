@@ -1,52 +1,59 @@
-<?php 
+<?php
+
 
 namespace Creuset\Repositories\Post;
 
 use Creuset\Post;
 
-interface PostRepository {
-
-	/**
-	 * @param integer $id
-	 * @param array $with
-	 * @return mixed
-	 */
-	public function fetch($id, $with = []);
-
-	/**
-	 * @param array $with
-	 * @return mixed
+interface PostRepository
+{
+    /**
+     * @param int   $id
+     * @param array $with
+     *
+     * @return mixed
      */
-	public function getPaginated($with);
+    public function fetch($id, $with = []);
 
-	/**
-	 * @param string $slug
-	 * @return mixed
+    /**
+     * @param array $with
+     *
+     * @return mixed
      */
-	public function getBySlug($slug);
+    public function getPaginated($with);
 
-	/**
-	 * @param array $attributes
-	 * @return mixed
+    /**
+     * @param string $slug
+     *
+     * @return mixed
      */
-	public function create($attributes);
+    public function getBySlug($slug);
 
-	/**
-	 * @param Post $post
-	 * @param array $attributes
-	 * @return mixed
+    /**
+     * @param array $attributes
+     *
+     * @return mixed
      */
-	public function update(Post $post, $attributes);
+    public function create($attributes);
 
-	/**
-	 * @param Post $post
-	 * @return mixed
+    /**
+     * @param Post  $post
+     * @param array $attributes
+     *
+     * @return mixed
      */
-	public function delete(Post $post);
+    public function update(Post $post, $attributes);
 
-	public function restore(Post $post);
+    /**
+     * @param Post $post
+     *
+     * @return mixed
+     */
+    public function delete(Post $post);
 
-	public function count();
-	
-	public function trashedCount();
+    public function restore(Post $post);
+
+    public function count();
+
+    public function trashedCount();
 }

@@ -2,4 +2,6 @@
 
 namespace Creuset\Exceptions;
 
-class NonExistantRoleException extends \Exception {}
+class NonExistantRoleException extends \Exception
+{
+}

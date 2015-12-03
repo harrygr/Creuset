@@ -3,9 +3,9 @@
 namespace Creuset\Contracts;
 
 /**
- * The contract for a model that has terms attached
+ * The contract for a model that has terms attached.
  */
-interface Termable 
+interface Termable
 {
-	public function terms();
+    public function terms();
 }

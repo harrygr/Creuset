@@ -2,10 +2,10 @@
 
 namespace Creuset\Traits;
 
-trait Postable {
-
+trait Postable
+{
     public function getEditUri()
     {
-        return route('admin.' . $this->getTable() . '.edit', $this->id);
+        return route('admin.'.$this->getTable().'.edit', $this->id);
     }
 }

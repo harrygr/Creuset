@@ -1,14 +1,13 @@
-<?php namespace Integration;
+<?php
 
-use TestCase;
+namespace Integration;
+
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use TestCase;
 
 class AuthTest extends TestCase
 {
-
     use DatabaseTransactions;
-
-
 
     /** @test **/
     public function it_can_login_with_valid_credentials()
@@ -47,7 +46,7 @@ class AuthTest extends TestCase
     // }
 
     /** @test **/
-    function it_cannot_login_with_invalid_credentials()
+    public function it_cannot_login_with_invalid_credentials()
     {
         $this->visit('login')
         ->type('fakename@noone.com', 'email')
@@ -62,7 +61,7 @@ class AuthTest extends TestCase
     {
         $this->visit('login');
 
-        foreach (range(0,5) as $attempt) {
+        foreach (range(0, 5) as $attempt) {
             $this->type('fakename@noone.com', 'email')
                  ->type('wrongpw', 'password')
                  ->press('Login');
@@ -71,5 +70,4 @@ class AuthTest extends TestCase
         $this->seePageIs('/login')
              ->see('Too many login attempts');
     }
-
 }

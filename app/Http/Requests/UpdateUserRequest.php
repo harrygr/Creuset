@@ -2,8 +2,6 @@
 
 namespace Creuset\Http\Requests;
 
-use Creuset\Http\Requests\Request;
-
 class UpdateUserRequest extends UserRequest
 {
     /**
@@ -24,34 +22,30 @@ class UpdateUserRequest extends UserRequest
      * @return array
      */
     public function rules()
-    {        
+    {
         $this->sanitize();
 
         $user = $this->route('user');
 
         return [
-            'username' => 'required|max:255|unique:users,username,' . $user->id,
-            'email'    => 'required|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'confirmed|min:6'
+            'username' => 'required|max:255|unique:users,username,'.$user->id,
+            'email'    => 'required|email|max:255|unique:users,email,'.$user->id,
+            'password' => 'confirmed|min:6',
         ];
     }
 
     /**
      * Sanitize the input for the request.
-     *
      */
     public function sanitize()
     {
         $attributes = $this->all();
         $attributes = $this->filterEditRoles($attributes);
 
-        if(!strlen($this->password))
-        {
+        if (!strlen($this->password)) {
             unset($attributes['password']);
         }
 
-       $this->replace($attributes);
+        $this->replace($attributes);
     }
-
-
 }

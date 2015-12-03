@@ -1,5 +1,8 @@
-<?php 
+<?php
+
 
 namespace Creuset\Exceptions;
 
-class PresenterException extends \Exception {}
+class PresenterException extends \Exception
+{
+}
