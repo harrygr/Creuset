@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Creuset\Repositories\Product;
 
 use Creuset\Product;

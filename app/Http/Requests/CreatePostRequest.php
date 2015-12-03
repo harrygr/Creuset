@@ -2,8 +2,6 @@
 
 namespace Creuset\Http\Requests;
 
-
-
 class CreatePostRequest extends PostRequest
 {
     /**
