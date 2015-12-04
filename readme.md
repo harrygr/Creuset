@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/harrygr/Creuset.svg?branch=master)](https://travis-ci.org/harrygr/Creuset)
+[![Build Status](https://travis-ci.org/harrygr/Creuset.svg?branch=master)](https://travis-ci.org/harrygr/Creuset) 
+[![StyleCI](https://styleci.io/repos/29702560/shield)](https://styleci.io/repos/29702560)
 
 # Creuset
 
@@ -27,9 +28,9 @@ PSR-2 code style should be used throughout.
 
 ### Front End
 
-Creuset uses npm modules with browserify for front-end scripts. You should install the node dependencies with `npm install` before making changes.
+Creuset uses npm modules with browserify for front-end scripts.  Vue components are used and compiled with vueify. You should install the node dependencies with `npm install` before making changes.
 
-Styles are compiled from LESS. Some bower dependencies are used (install them with `bower install`).
+Styles are compiled from SASS. Some bower dependencies are used (install them with `bower install`).
 
 The whole lot can then be recompiled by running `gulp`.
 

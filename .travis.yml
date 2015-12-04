@@ -9,6 +9,5 @@ before_script:
   - composer self-update
   - composer update --dev --prefer-source --no-interaction
   - export APP_ENV=testing
-  - touch storage/testing.sqlite
 
 script: vendor/bin/phpunit

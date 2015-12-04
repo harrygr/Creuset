@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
         'products',
         'users',
         'roles',
-        'images',
+        'media',
     ];
 
     /**

@@ -27,8 +27,8 @@
         <env name="APP_URL" value="http://creuset.app"/>
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
-        <env name="DB_DRIVER" value="sqlite" />
-        <env name="DB_PATH" value="testing.sqlite" />
+        <env name="DB_DRIVER" value="testing" />
         <env name="DEFAULT_FILESYSTEM" value="local" />
+        <env name="MEDIA_FILESYSTEM" value="testmedia" />
     </php>
 </phpunit>

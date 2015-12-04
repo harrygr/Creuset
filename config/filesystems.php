@@ -53,6 +53,11 @@ return [
             'root'   => public_path().'/media',
         ],
 
+        'testmedia' => [
+            'driver' => 'local',
+            'root'   => public_path().'/testmedia',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key'    => env('AWS_KEY'),
