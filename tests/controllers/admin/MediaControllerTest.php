@@ -1,12 +1,11 @@
 <?php
 
+namespace Creuset\Http\Controllers\Admin;
+
 use Creuset\Media;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class MediaControllerTest extends TestCase
+class MediaControllerTest extends \TestCase
 {
-    use DatabaseTransactions;
-
     /** @test **/
     public function it_shows_the_media_index_page()
     {

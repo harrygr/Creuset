@@ -18,11 +18,6 @@ class PostsTest extends TestCase
         $this->posts = new DbPostRepository(new \Creuset\Post());
     }
 
-    /**
-     * A basic functional test example.
-     *
-     * @return void
-     */
     public function testHomePageWorks()
     {
         $response = $this->call('GET', '/');

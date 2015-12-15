@@ -1,12 +1,13 @@
 <?php
 
+namespace Creuset\Http\Controllers\Api;
 
 use Creuset\Term;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Symfony\Component\HttpFoundation\Response;
 
-class ApiTermsControllerTest extends TestCase
+class TermsControllerTest extends \TestCase
 {
     use DatabaseTransactions;
 

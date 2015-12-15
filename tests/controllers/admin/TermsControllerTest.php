@@ -1,12 +1,11 @@
 <?php
 
+namespace Creuset\Http\Controllers\Admin;
+
 use Creuset\Term;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class TermsControllerTest extends TestCase
+class TermsControllerTest extends \TestCase
 {
-    use DatabaseTransactions;
-
     /** @test **/
     public function it_lists_the_terms_by_taxonomy()
     {

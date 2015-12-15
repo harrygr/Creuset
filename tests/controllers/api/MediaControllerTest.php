@@ -1,11 +1,9 @@
 <?php
 
+namespace Creuset\Http\Controllers\Api;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-
-class ApiMediaControllerTest extends TestCase
+class MediaControllerTest extends \TestCase
 {
-    use DatabaseTransactions;
 
     /** @test **/
     public function it_gets_the_images()

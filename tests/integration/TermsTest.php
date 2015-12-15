@@ -2,12 +2,10 @@
 
 namespace Integration;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use TestCase;
 
 class TermsTest extends TestCase
 {
-    use DatabaseTransactions;
 
     public function testICanSeeAListOfCategories()
     {

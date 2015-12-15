@@ -4,6 +4,7 @@ namespace Creuset;
 
 use Carbon\Carbon;
 use Creuset\Contracts\Termable;
+use Creuset\Media;
 use Creuset\Presenters\PresentableTrait;
 use Creuset\Traits\Postable;
 use Illuminate\Database\Eloquent\Model;
@@ -68,6 +69,11 @@ class Product extends Model implements HasMediaConversions, Termable
                     ->where('taxonomy', 'product_category');
     }
 
+    public function image()
+    {
+        return $this->belongsTo(Media::class, 'media_id');
+    }
+
     /**
      * Parses a date string into a Carbon instance for saving.
      * 
@@ -112,5 +118,14 @@ class Product extends Model implements HasMediaConversions, Termable
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Get the price of the product
+     * @return float 
+     */
+    public function getPrice()
+    {
+        return $this->sale_price > 0 ? $this->sale_price : $this->price;
     }
 }

@@ -155,6 +155,7 @@ return [
         'Gvb\Whoops\ServiceProvider',
         'Collective\Html\HtmlServiceProvider',
         Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
+        Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
 
     ],
 
@@ -202,9 +203,10 @@ return [
         'Validator'     => 'Illuminate\Support\Facades\Validator',
         'View'          => 'Illuminate\Support\Facades\View',
         'Form'          => 'Collective\Html\FormFacade',
-          'HTML'        => 'Collective\Html\HtmlFacade',
+        'HTML'          => 'Collective\Html\HtmlFacade',
         'Str'           => 'Illuminate\Support\Str',
         'Gate'          => Illuminate\Support\Facades\Gate::class,
+        'Cart'          => 'Gloudemans\Shoppingcart\Facades\Cart',
 
     ],
 

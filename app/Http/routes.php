@@ -21,6 +21,15 @@ Route::post('login', ['uses' => 'Auth\AuthController@postLogin', 'as' => 'auth.l
 Route::get('logout', ['uses' => 'Auth\AuthController@getLogout', 'as' => 'auth.logout']);
 
 /*
+ * Shop
+ */
+
+get('shop', ['uses' => 'ShopController@index', 'as' => 'products.index']);
+get('shop/{product_slug}', ['uses' => 'ShopController@show', 'as' => 'products.show']);
+
+post('cart', ['uses' => 'CartController@store']);
+
+/*
  * Admin Area
  */
 Route::group(['prefix' => 'admin'], function () {
@@ -97,5 +106,9 @@ Route::group(['prefix' => 'api'], function () {
 
     get('media/{media}', ['uses' => 'Api\MediaController@show', 'as' => 'api.media.show'])->where('id', '[0-9]+');
     get('media/{collection?}', ['uses' => 'Api\MediaController@index', 'as' => 'api.media.index']);
+
+    Route::group(['prefix' => 'cart'], function() {
+        post('/', ['uses' => 'Api\CartController@store']);
+    });
 
 });

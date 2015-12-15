@@ -5,7 +5,7 @@ namespace Creuset\Repositories\Product;
 use Creuset\Product;
 use Creuset\Repositories\DbRepository;
 
-class DbProductRepository  extends DbRepository implements ProductRepository
+class DbProductRepository extends DbRepository implements ProductRepository
 {
     /**
      * @param Product $product

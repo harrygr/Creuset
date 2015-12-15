@@ -1,15 +1,14 @@
 <?php
 
+namespace Creuset\Http\Controllers\Admin;
+
 use Carbon\Carbon;
 use Creuset\Media;
 use Faker\Factory;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class PostsControllerTest extends TestCase
+class PostsControllerTest extends \TestCase
 {
-    use DatabaseTransactions;
-
     public function testICanCreateAPost()
     {
         // Given I have and account and am logged in
