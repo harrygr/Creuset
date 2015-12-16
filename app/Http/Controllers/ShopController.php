@@ -6,6 +6,7 @@ use Creuset\Http\Controllers\Controller;
 use Creuset\Http\Requests;
 use Creuset\Product;
 use Creuset\Repositories\Product\ProductRepository;
+use Creuset\Term;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
@@ -22,10 +23,14 @@ class ShopController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Term $product_category = null)
     {
-        $products = $this->products->all();
-        return view('shop.index')->with(compact('products'));
+        if (!$product_category->slug) {
+            $products = $this->products->all();
+        } else {
+            $products = $this->products->inCategory($product_category);
+        }
+        return view('shop.index')->with(compact('product_category', 'products'));
     }
 
     /**
@@ -55,7 +60,7 @@ class ShopController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(Term $product_category, Product $product)
     {
         return view('shop.single_product', compact('product'));
     }

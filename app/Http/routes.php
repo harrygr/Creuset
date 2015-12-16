@@ -24,10 +24,12 @@ Route::get('logout', ['uses' => 'Auth\AuthController@getLogout', 'as' => 'auth.l
  * Shop
  */
 
-get('shop', ['uses' => 'ShopController@index', 'as' => 'products.index']);
-get('shop/{product_slug}', ['uses' => 'ShopController@show', 'as' => 'products.show']);
+get('shop/{product_category?}', ['uses' => 'ShopController@index', 'as' => 'products.index']);
+get('shop/{product_category}/{product_slug}', ['uses' => 'ShopController@show', 'as' => 'products.show']);
 
+get('cart', ['uses' => 'CartController@index', 'as' => 'cart.index']);
 post('cart', ['uses' => 'CartController@store']);
+delete('cart/{rowid}', ['uses' => 'CartController@remove', 'as' => 'cart.remove']);
 
 /*
  * Admin Area

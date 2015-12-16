@@ -22,12 +22,13 @@
 </head>
 <body>
     <div class="container">
-    <header>
+    <header class="clearfix">
         <h1>Creuset</h1>
         <div class="pull-right">
             @include('partials.cart')
         </div>
     </header>
+    @include('partials.alert')
     @yield('content')
     </div>
 </body>

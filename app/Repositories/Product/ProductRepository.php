@@ -2,6 +2,8 @@
 
 namespace Creuset\Repositories\Product;
 
+use Creuset\Term;
+
 interface ProductRepository
 {
     /**
@@ -20,4 +22,6 @@ interface ProductRepository
      * @return mixed
      */
     public function create($attributes);
+
+    public function inCategory(Term $product_category);
 }

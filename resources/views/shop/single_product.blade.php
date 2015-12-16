@@ -1,26 +1,41 @@
 @extends('layouts.main')
 
 @section('content')
+
+<ol class="breadcrumb">
+  <li><a href="/shop">Shop</a></li>
+  <li><a href="/shop/{{ $product->product_category->slug }}">{{ $product->product_category->term }}</a></li>
+  <li class="active">{{ $product->name }}</li>
+</ol>
+
+@include('partials.errors')
+
     <div class="row">
         <div class="col-md-4">
             {{ $product->present()->thumbnail() }}
         </div>
         <div class="col-md-8">
             <h2>{{ $product->name }}</h2>
-            <span class="price">
+
+            <p class="price">
                 {{ $product->present()->price() }}
-            </span>
-            <span class="stock">
+            </p>
+            <p class="stock">
                 {{ $product->present()->stock() }}
-            </span>
-            <form action="/cart" method="POST">
-            {{ csrf_field() }}
-            <input type="hidden" name="product_id" value="{{ $product->id }}">
-            <input type="hidden" name="quantity" value="1">
-            <input type="submit" class="btn btn-success" value="Add To Cart">
+            </p>
+
+            <form action="/cart" method="POST" class="form-inline">
+                {{ csrf_field() }}
+                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                <div class="form-group">
+                    <label for="quantity" class="sr-only">Quantity</label>
+                    <input type="number" name="quantity" value="1" min="1" step="1" max="{{ $product->stock_qty }}" class="form-control">
+                </div>
+                <input type="submit" class="btn btn-success" value="Add To Cart">
             </form>
+
             <div class="description">
-                {{ $product->description }}
+                {!! $product->getDescriptionHtml() !!}
             </div>
         </div>
     </div>

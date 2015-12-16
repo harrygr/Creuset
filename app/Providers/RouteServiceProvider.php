@@ -4,6 +4,7 @@ namespace Creuset\Providers;
 
 use Creuset\Post;
 use Creuset\Product;
+use Creuset\Term;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
 
@@ -45,6 +46,12 @@ class RouteServiceProvider extends ServiceProvider
 
         $router->bind('product_slug', function($slug) {
             return Product::where('slug', $slug)->firstOrFail();
+        });
+
+        $router->bind('product_category', function($slug) {
+            return Term::where('slug', $slug)
+            ->where('taxonomy', 'product_category')
+            ->first();
         });
     }
 

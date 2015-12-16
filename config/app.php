@@ -156,6 +156,7 @@ return [
         'Collective\Html\HtmlServiceProvider',
         Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
+        GrahamCampbell\Markdown\MarkdownServiceProvider::class,
 
     ],
 
@@ -207,6 +208,7 @@ return [
         'Str'           => 'Illuminate\Support\Str',
         'Gate'          => Illuminate\Support\Facades\Gate::class,
         'Cart'          => 'Gloudemans\Shoppingcart\Facades\Cart',
+        'Markdown'      => 'GrahamCampbell\Markdown\Facades\Markdown',
 
     ],
 

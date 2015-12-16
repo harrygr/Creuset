@@ -4,6 +4,7 @@ namespace Creuset\Providers;
 
 use Creuset\Cart\Cart;
 use Illuminate\Support\ServiceProvider;
+use League\CommonMark\CommonMarkConverter;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class AppServiceProvider extends ServiceProvider

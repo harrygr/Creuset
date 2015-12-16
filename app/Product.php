@@ -9,6 +9,7 @@ use Creuset\Presenters\PresentableTrait;
 use Creuset\Traits\Postable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use League\CommonMark\CommonMarkConverter;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 
@@ -19,8 +20,8 @@ class Product extends Model implements HasMediaConversions, Termable
     public function registerMediaConversions()
     {
         $this->addMediaConversion('thumb')
-             ->setManipulations(['w' => 300, 'h' => 300, 'fit' => 'crop'])
-             ->performOnCollections('images');
+        ->setManipulations(['w' => 300, 'h' => 300, 'fit' => 'crop'])
+        ->performOnCollections('images');
     }
 
     /**
@@ -43,18 +44,18 @@ class Product extends Model implements HasMediaConversions, Termable
      * @var array
      */
     protected $fillable = [
-     'name',
-     'slug',
-     'description',
-     'user_id',
-     'media_id',
-     'status',
-     'price',
-     'sale_price',
-     'sku',
-     'stock_qty',
-     'published_at',
-     ];
+    'name',
+    'slug',
+    'description',
+    'user_id',
+    'media_id',
+    'status',
+    'price',
+    'sale_price',
+    'sku',
+    'stock_qty',
+    'published_at',
+    ];
 
     protected $presenter = 'Creuset\Presenters\ProductPresenter';
 
@@ -66,7 +67,7 @@ class Product extends Model implements HasMediaConversions, Termable
     public function product_categories()
     {
         return $this->morphToMany('\Creuset\Term', 'termable')
-                    ->where('taxonomy', 'product_category');
+        ->where('taxonomy', 'product_category');
     }
 
     public function image()
@@ -110,6 +111,16 @@ class Product extends Model implements HasMediaConversions, Termable
         return $price / 100;
     }
 
+    public function getDescriptionHtml()
+    {
+        return \Markdown::convertToHtml($this->description);
+    }
+
+    public function getUrlAttribute()
+    {
+        return route('products.show', [$this->product_category->slug, $this->slug]);
+    }
+
     /**
      * The field to use to display the parent name.
      *
@@ -118,6 +129,19 @@ class Product extends Model implements HasMediaConversions, Termable
     public function getName()
     {
         return $this->name;
+    }
+
+    public function getProductCategoryAttribute()
+    {   
+        if ($this->product_categories->count() == 0) {
+            return new Term([
+              'taxonomy' => 'product_category',
+              'slug'  => 'uncategorised',
+              'term'  => 'Uncategorised',
+              ]);
+        }
+
+        return $this->product_categories->first();
     }
 
     /**

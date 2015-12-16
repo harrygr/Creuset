@@ -35,4 +35,9 @@ class Term extends Model
     {
         return $this->morphedByMany('Creuset\Post', 'termable');
     }
+
+    public function products()
+    {
+        return $this->morphedByMany('Creuset\Product', 'termable');
+    }
 }

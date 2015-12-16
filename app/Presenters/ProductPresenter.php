@@ -30,12 +30,16 @@ class ProductPresenter extends ModelPresenter
                               ));
     }
 
-    public function thumbnail()
+    public function thumbnail($w = 300, $h = null)
     {
+        if(!$h) $h = $w;
+
         return new Expression(sprintf(
-                              '<img src="%s" alt="%s" width="300" height="300">',
-                              $this->model->image ? $this->model->image->thumbnail_url : 'http://placehold.it/300/300',
-                              $this->model->name
+                              '<img src="%s" alt="%s" width="%s" height="$s">',
+                              $this->model->image ? $this->model->image->thumbnail_url : "http://placehold.it/$w/$h",
+                              $this->model->name,
+                              $w,
+                              $h
                               ));
     }
 
