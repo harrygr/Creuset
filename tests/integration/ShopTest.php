@@ -7,9 +7,10 @@ use TestCase;
 
 class ShopTest extends TestCase
 {
-    private function putProductInCart()
+    private function putProductInCart($product = null)
     {
-        $product = factory(Product::class)->create();
+        $product = $product ? $product : factory(Product::class)->create();
+
         \Cart::associate('Product', 'Creuset')->add([
                   'id'    => $product->id,
                   'qty'   => 1,
@@ -53,11 +54,30 @@ class ShopTest extends TestCase
     }
 
     /** @test **/
+    public function it_cannot_add_more_than_available_products_including_whats_in_cart()
+    {
+        $product = factory(Product::class)->create([
+          'stock_qty' => 2
+          ]);
+
+        $product_url = route('products.show', [$product->product_category->slug, $product->slug]);
+
+        // there is already 1 of the product in the cart, we shouldn't be able 
+        // to add 2 more even though there is 2 in stock
+        $this->visit($product_url)
+             ->type(1, 'quantity')
+             ->press('Add To Cart')
+             ->type(2, 'quantity')             
+             ->seePageIs($product_url)
+             ->see('You cannot add that amount to the cart because there is not enough stock');
+    }
+
+    /** @test **/
     public function it_can_remove_an_item_from_the_cart()
     {
         $product = $this->putProductInCart();
 
-        $this->visit(route('products.show', ['uncategorised', $product->slug]))
+        $this->visit(route('cart.index', ['uncategorised', $product->slug]))
              ->press("X")
              ->see("{$product->name} removed from cart");
     }

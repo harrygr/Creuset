@@ -9,8 +9,6 @@ class AddToCartRequest extends Request
 {
     private $products;
 
-
-
     public function __construct(ProductRepository $products)
     {
         $this->products = $products;
@@ -34,10 +32,10 @@ class AddToCartRequest extends Request
      */
     public function rules()
     {
-        $product = $this->products->fetch($this->product_id);
+        $available_quantity = $this->getAvailableQuantity();
 
         return [
-        'quantity' => "integer|between:1,{$product->stock_qty}"
+        'quantity' => "integer|between:1,{$available_quantity}"
         ];
     }
 
@@ -46,5 +44,20 @@ class AddToCartRequest extends Request
         return [
         'between' => 'You cannot add that amount to the cart because there is not enough stock',
         ];
+    }
+
+    /**
+     * Get the max qty of a product that can be added to a cart,
+     * taking into account the amount number already in a cart.
+     * @return integer
+     */
+    protected function getAvailableQuantity()
+    {
+        $qty_in_stock = $this->products->fetch($this->product_id)->stock_qty;
+
+        if ($row_id = \Cart::search(['id' => $this->product_id])) {
+            return $qty_in_stock - \Cart::get($row_id[0])->qty;
+        }
+        return $qty_in_stock;
     }
 }
