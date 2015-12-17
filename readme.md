@@ -3,7 +3,7 @@
 
 # Creuset
 
-Creuset is a powerful cms and blogging platform built in Laravel. It is intended to use modern design patterns and have a structure that allows it to be flexible to the extent it could be easily extended or adapted; such as, for example, be turned into an ecommerce solution.
+Creuset is a powerful ecommerce platform built in Laravel. It is intended to use modern design patterns and have a structure that allows it to be flexible to the extent it could be easily extended or adapted.
 
 ## Features
 
@@ -11,7 +11,7 @@ Creuset is a powerful cms and blogging platform built in Laravel. It is intended
 - Extensible taxonomies; currently used for _categories_ and _tags_ but can be expanded to others.
 - Repository design pattern with decorators for caching, logging etc.
 - Uses elixir for asset compilation, browserify.
-- Full-featured admin panel with Vue.js components
+- Full-featured admin panel with Vue.js components.
 
 ## Usage
 
@@ -22,7 +22,7 @@ Creuset is a powerful cms and blogging platform built in Laravel. It is intended
 
 ## Contributing
 
-This project was started partly as a learning exercise, but the aim is to make something usable nonetheless. If you want to contribute feel free to submit a pull request or offer suggestions/improvements by submitting an issue.
+Development is by Git Flow. To add a feature contribute create a branch from the dev branch called `feature/<feature-name>` and pull request back to the dev branch. Small bugfixes and tweaks can be merged straight to master. 
 
 PSR-2 code style should be used throughout.
 
