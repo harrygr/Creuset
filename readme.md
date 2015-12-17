@@ -22,13 +22,15 @@ Creuset is a powerful ecommerce platform built in Laravel. It is intended to use
 
 ## Contributing
 
-Development is by Git Flow. To add a feature contribute create a branch from the dev branch called `feature/<feature-name>` and pull request back to the dev branch. Small bugfixes and tweaks can be merged straight to master. 
+Development is by Git Flow. To add a feature contribute create a branch from the dev branch called `feature/<feature-name>` and pull request back to the dev branch. Small bugfixes and tweaks can be merged straight to master.
 
-PSR-2 code style should be used throughout.
+All the tests should pass before trying to merge. This is checked using Travis. 
+
+PSR-2 code style should be used throughout. This is auto-checked with StyleCI
 
 ### Front End
 
-Creuset uses npm modules with browserify for front-end scripts.  Vue components are used and compiled with vueify. You should install the node dependencies with `npm install` before making changes.
+Creuset uses npm modules with browserify for front-end scripts. Vue components are used and compiled with vueify. You should install the node dependencies with `npm install` before making changes.
 
 Styles are compiled from SASS. Some bower dependencies are used (install them with `bower install`).
 
