@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
 class CreateProductsTable extends Migration
-{
+{   
     /**
      * Run the migrations.
      *
@@ -25,7 +25,7 @@ class CreateProductsTable extends Migration
             $table->string('sku')->unique()->nullable();
 
             $table->integer('user_id')->unsigned();
-            $table->integer('post_id')->unsigned()->nullable();
+            $table->integer('product_id')->unsigned()->nullable();
             $table->integer('media_id')->unsigned()->nullable();
 
             $table->timestamp('published_at')->nullable();

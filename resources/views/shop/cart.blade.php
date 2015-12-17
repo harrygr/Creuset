@@ -2,7 +2,11 @@
 
 @section('content')
 
-@if (\Cart::count())
+<ol class="breadcrumb">
+  <li><a href="/shop">Shop</a></li>
+  <li class="active">Cart</li>
+</ol>
+
 <table class="table">
 <tr>
   <th></th>
@@ -33,9 +37,7 @@
   <th>&pound;{{ Cart::total() }}</th>
 </tr>
 </table>
-@else
 
-<p>There is nothing in your cart. <a href="{{ route('products.index') }}">Return to the shop</a></p>
-@endif
+<a href="/checkout" class="btn btn-success">Proceed to Checkout</a>
 
 @stop

@@ -27,9 +27,13 @@ Route::get('logout', ['uses' => 'Auth\AuthController@getLogout', 'as' => 'auth.l
 get('shop/{product_category?}', ['uses' => 'ShopController@index', 'as' => 'products.index']);
 get('shop/{product_category}/{product_slug}', ['uses' => 'ShopController@show', 'as' => 'products.show']);
 
-get('cart', ['uses' => 'CartController@index', 'as' => 'cart.index']);
-post('cart', ['uses' => 'CartController@store']);
+get('cart', ['uses' => 'CartController@index', 'as' => 'cart']);
+post('cart', ['uses' => 'CartController@store', 'as' => 'cart.store']);
 delete('cart/{rowid}', ['uses' => 'CartController@remove', 'as' => 'cart.remove']);
+
+get('checkout', ['uses' => 'CheckoutController@show', 'as' => 'checkout.show']);
+
+post('orders', ['uses' => 'OrdersController@store', 'as' => 'orders.store']);
 
 /*
  * Admin Area

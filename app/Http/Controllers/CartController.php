@@ -13,7 +13,10 @@ class CartController extends Controller
 {
     public function index()
     {
-      return view('cart.index');
+      if (!Cart::count()) {
+        return view('shop.cart_empty');
+      }
+      return view('shop.cart');
     }
 
     /**
@@ -24,15 +27,16 @@ class CartController extends Controller
     public function store(AddToCartRequest $request)
     {
         $product = Product::findOrFail($request->product_id);
+        $qty = (int) $request->quantity;
 
         Cart::associate('Product', 'Creuset')->add([
                   'id'    => $product->id,
-                  'qty'   => $request->quantity,
+                  'qty'   => $qty,
                   'name'  => $product->name,
                   'price' => $product->getPrice(),
                   ]);
         return redirect()->back()->with([
-          'alert'       => "$product->name added to cart",
+          'alert'       => sprintf("%d %s added to cart", $qty, str_plural($product->name, $qty)),
           'alert-class' => "success",
           ]);
     }
@@ -46,9 +50,11 @@ class CartController extends Controller
     public function remove(Request $request, $rowid)
     {
         $product = \Cart::get($rowid)->product;
+        
         Cart::remove($rowid);
-        return redirect()->back()->with([
-          'alert'       => "$product->name removed from cart",
+
+        return redirect()->route('cart')->with([
+          'alert'       => "{$product->name} removed from cart",
           'alert-class' => "success",
           ]);
     }

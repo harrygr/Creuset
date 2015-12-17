@@ -15,9 +15,10 @@
 <div class="row">
 
     @foreach ($product_group as $product)
-    <div class="product col-md-3">
+    <div class="product col-md-3 col-xs-6">
         <a href="{{ $product->url }}">
-        {{ $product->present()->thumbnail() }}
+        <img src="{{ $product->present()->thumbnail_url(300) }}" alt="" class="img-responsive">
+        
         </a>
         <a href="{{ $product->url }}">
         <h3>{{ $product->name }}</h3>

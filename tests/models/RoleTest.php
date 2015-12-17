@@ -1,14 +1,11 @@
 <?php
 
+namespace Creuset;
 
-use Creuset\Role;
-use Creuset\User;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use TestCase;
 
 class RolesTest extends TestCase
 {
-    use DatabaseTransactions;
-
     /** @test **/
     public function it_enrolls_a_user()
     {

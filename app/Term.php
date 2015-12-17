@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Term extends Model
 {
     /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    public $table = 'terms';
+    
+    /**
      * The taxonomies in use.
      *
      * @var array
@@ -16,13 +23,6 @@ class Term extends Model
         'tag'                 => 'Tags',
         'product_category'    => 'Product Categories',
     ];
-
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'terms';
 
     /**
      * The attributes that are mass assignable.

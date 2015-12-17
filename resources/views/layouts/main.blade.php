@@ -24,8 +24,13 @@
     <div class="container">
     <header class="clearfix">
         <h1>Creuset</h1>
-        <div class="pull-right">
+        <div class="row">
+        <div class="col-md-6">
+            @include('partials.auth')
+        </div>    
+        <div class="col-md-6 text-right">
             @include('partials.cart')
+        </div>
         </div>
     </header>
     @include('partials.alert')

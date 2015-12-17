@@ -76,3 +76,22 @@ $factory->define('Creuset\Termable', function ($faker) {
         'termable_type'    => 'Creuset\Post',
     ];
 });
+
+$factory->define('Creuset\OrderItem', function ($faker) {
+    $product = factory(Creuset\Product::class)->create();
+    return [
+        'order_id'          => factory('Creuset\Order')->create()->id,
+        'description'       => $product->name,
+        'price_paid'        => $product->getPrice(),
+        'quantity'          => 1,
+        'orderable_type'    => Creuset\Product::class,
+        'orderable_id'      => $product->id,
+    ];
+});
+
+$factory->define('Creuset\Order', function ($faker) {
+
+    return [
+        'user_id' => factory('Creuset\User')->create()->id,
+    ];
+});

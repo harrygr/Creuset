@@ -17,6 +17,13 @@ class Product extends Model implements HasMediaConversions, Termable
 {
     use PresentableTrait, HasMediaTrait, SoftDeletes, Postable;
 
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    public $table = 'products';
+
     public function registerMediaConversions()
     {
         $this->addMediaConversion('thumb')
@@ -30,13 +37,6 @@ class Product extends Model implements HasMediaConversions, Termable
      * @var array
      */
     protected $dates = ['created_at', 'updated_at', 'published_at', 'deleted_at'];
-
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'products';
 
     /**
      * The attributes that are mass assignable.
