@@ -9,7 +9,7 @@ class Order extends Model
 {
     public $table = 'orders';
 
-    public $fillable = ['total_paid', 'status', 'user_id'];
+    public $fillable = ['total_paid', 'status', 'user_id', 'billing_address_id', 'shipping_address_id'];
 
 
     public static function createFromCart(User $user)
@@ -18,6 +18,8 @@ class Order extends Model
             'user_id' => $user->id,
             'total_paid' => Cart::total(),
             'status' => 'paid',
+            'billing_address_id' => 1,
+            'shipping_address_id' => 1,
             ]);
 
             $order_items = Cart::content()->map(function($row) use ($order){

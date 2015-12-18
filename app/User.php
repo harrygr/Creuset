@@ -42,7 +42,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var array
      */
-    protected $fillable = ['username', 'name', 'email', 'password', 'role_id'];
+    protected $fillable = ['username', 'name', 'email', 'password', 'role_id', 'auto_created'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -50,4 +50,22 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    /**
+     * A user has several orders
+     * @return [type] [description]
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
+     * A user has several addresses
+     * @return [type] [description]
+     */
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
 }

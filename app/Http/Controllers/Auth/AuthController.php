@@ -28,33 +28,6 @@ class AuthController extends Controller
     }
 
     /**
-     * Handle a login request to the application.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function postLogin(Request $request)
-    // {
-    // 	$this->validate($request, [
-    // 		'username' => 'required', 'password' => 'required',
-    // 	]);
-
-    // 	// Attempt logging in with username first, or email if that fails
-    // 	if ( \Auth::attempt(['username' => $request->username, 'password' => $request->password], $request->has('remember')) or
-    // 		 \Auth::attempt(['email' => $request->username, 'password' => $request->password], $request->has('remember')))
-    // 	{
-    // 		return redirect()->intended(route('admin.posts.index'));
-    // 	}
-
-    // 	return \Redirect::route('auth.login')
-    // 				->withInput($request->only('email'))
-    // 				->withErrors([
-    // 					'username' => 'These credentials do not match our records.',
-    // 				]);
-    // }
-
-    /**
      * Handle a registration request for the application.
      *
      * @param \Illuminate\Foundation\Http\FormRequest|Request $request

@@ -14,7 +14,6 @@ class AddToCartRequest extends Request
         $this->products = $products;
     }
 
-
     /**
      * Determine if the user is authorized to make this request.
      *

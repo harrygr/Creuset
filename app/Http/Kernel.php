@@ -27,9 +27,10 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth'       => 'Creuset\Http\Middleware\Authenticate',
-        'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
-        'guest'      => 'Creuset\Http\Middleware\RedirectIfAuthenticated',
-        'admin'      => 'Creuset\Http\Middleware\ForbidIfNotAdmin',
+        'auth'           => 'Creuset\Http\Middleware\Authenticate',
+        'auth.basic'     => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
+        'guest'          => 'Creuset\Http\Middleware\RedirectIfAuthenticated',
+        'admin'          => 'Creuset\Http\Middleware\ForbidIfNotAdmin',
+        'order.customer' => 'Creuset\Http\Middleware\DeriveUserForOrder',
     ];
 }

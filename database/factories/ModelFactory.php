@@ -92,6 +92,8 @@ $factory->define('Creuset\OrderItem', function ($faker) {
 $factory->define('Creuset\Order', function ($faker) {
 
     return [
-        'user_id' => factory('Creuset\User')->create()->id,
+        'user_id'               => factory('Creuset\User')->create()->id,
+        'billing_address_id'    => 1,
+        'shipping_address_id'   => 1,
     ];
 });

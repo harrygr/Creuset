@@ -17,6 +17,8 @@ class CreateOrdersTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('total_paid')->default(0);
             $table->string('status')->default('pending');
+            $table->integer('billing_address_id')->unsigned();
+            $table->integer('shipping_address_id')->unsigned();
             $table->timestamps();
         });
     }

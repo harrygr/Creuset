@@ -17,8 +17,8 @@ class OrdersController extends Controller
     public function __construct(DbUserRepository $users)
     {
         $this->users = $users;
+        $this->middleware('order.customer', ['only' => ['store']]);
     }
-
 
     /**
      * Create a new order
@@ -28,31 +28,19 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        // create or retrieve account
-            // First determine if the user is logged in
-            if (Auth::check()) {
-                $user = Auth::user();
-            } elseif ($user = User::where('email', $request->email)->first()) {
-                // Use middleware for this!!!
-                // dd($request->email
-                \Session::put('url.intended', 'checkout');
-                return redirect()->route('auth.login', ['email' => $request->email])->with([
-                    'alert' => 'This email has an account here. Please login. If you do not know your password please reset it.',
-                    'alert-class' => 'warning',
-                    ]);
-            } else {
-                // create a new user from full sign up details including password
-            }
-
         // take payment
         # assume payment worked
-        # 
-        // Queue the following:
+
         // create new order with the cart contents
-        $order = Order::createFromCart($user);
+        $order = Order::createFromCart($request->get('customer'));
+
 
         // reduce stock of products
+        // empty cart
         // email user
+        
+        return $order->load('order_items');
     }
-   
+
+    
 }
