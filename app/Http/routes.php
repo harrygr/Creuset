@@ -35,6 +35,22 @@ get('checkout', ['uses' => 'CheckoutController@show', 'as' => 'checkout.show']);
 
 post('orders', ['uses' => 'OrdersController@store', 'as' => 'orders.store']);
 
+get('order-completed', ['uses' => 'OrdersController@completed', 'as' => 'orders.completed']);
+
+Route::group(['prefix' => 'account'], function() {
+
+    get('/', ['uses' => 'AccountsController@show', 'as' => 'accounts.show']);
+
+    get('orders/{order}', ['uses' => 'OrdersController@show', 'as' => 'orders.show']);
+
+    get('addresses/new', ['uses' => 'AddressesController@create', 'as' => 'addresses.create']);
+    post('addresses', ['uses' => 'AddressesController@store', 'as' => 'addresses.store']);
+    get('addresses', ['uses' => 'AddressesController@index', 'as' => 'addresses.index']);
+    get('addresses/{address}/edit', ['uses' => 'AddressesController@edit', 'as' => 'addresses.edit']);
+    put('addresses/{address}', ['uses' => 'AddressesController@update', 'as' => 'addresses.update']);
+    delete('addresses/{address}', ['uses' => 'AddressesController@destroy', 'as' => 'addresses.delete']);
+});
+
 /*
  * Admin Area
  */

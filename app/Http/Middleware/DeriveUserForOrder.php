@@ -16,7 +16,7 @@ class DeriveUserForOrder
      * @var Guard
      */
     protected $auth;
-    
+
     private $users;
 
     /**
@@ -67,8 +67,15 @@ class DeriveUserForOrder
         }
 
         // They haven't made an account yet
-        $fields = $request->has('create_account') ? ['email', 'name', 'password', 'password_confirmation'] : ['email', 'name'];
+        $fields = $request->has('create_account') ? 
+        ['email', 'password', 'password_confirmation'] : 
+        ['email'];
+
+        $billing_address = $request->get('billing_address');
+
         $data = $request->only($fields);
+        $data['name'] = $billing_address['first_name'] . ' ' . $billing_address['last_name'];
+
         $validator = $this->validator($data, $request->has('create_account'));
 
         if ($validator->fails()) {
@@ -93,7 +100,6 @@ class DeriveUserForOrder
     public function validator(array $data, $password_required = true)
     {
         $rules = [
-        'name'     => 'required|max:255',
         'email'    => 'required|email|max:255|unique:users',
         ];
 

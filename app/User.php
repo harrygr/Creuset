@@ -57,7 +57,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function orders()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class)->orderBy('created_at', 'DESC');
     }
 
     /**
@@ -67,5 +67,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function addresses()
     {
         return $this->hasMany(Address::class);
+    }
+
+    public function owns(Model $model)
+    {
+        return $this->id == $model->user_id;
     }
 }

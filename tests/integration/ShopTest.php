@@ -13,7 +13,9 @@ class ShopTest extends TestCase
     /** @test **/
     public function it_can_add_a_product_to_the_cart()
     {
-        $product = factory(Product::class)->create();
+        $product = factory(Product::class)->create([
+                                                   'stock_qty' => 10
+                                                   ]);
 
         $this->visit('/shop')
              ->see($product->name)
