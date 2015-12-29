@@ -15,5 +15,8 @@ class EventServiceProvider extends ServiceProvider
         'auth.login' => [
             'Creuset\Handlers\Events\UserLoggedInHandler',
         ],
+        'Creuset\Events\OrderWasCompleted' => [
+            'Creuset\Listeners\ReduceProductStock',
+        ],
     ];
 }

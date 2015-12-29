@@ -4,6 +4,7 @@ namespace Creuset\Http\Controllers;
 
 use Auth;
 use Creuset\Address;
+use Creuset\Events\OrderWasCompleted;
 use Creuset\Http\Controllers\Controller;
 use Creuset\Http\Requests;
 use Creuset\Http\Requests\CreateOrderRequest;
@@ -49,8 +50,11 @@ class OrdersController extends Controller
         // create new order with the cart contents
         $order = Order::createFromCart($customer, $billing_address_id, $shipping_address_id);
 
+        event(new OrderWasCompleted($order));
+
         // reduce stock of products
         // empty cart
+        \Cart::destroy();
         // email user
         
         \Session::flash('order', $order);

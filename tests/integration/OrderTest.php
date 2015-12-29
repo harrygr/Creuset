@@ -18,6 +18,8 @@ class OrderTest extends TestCase
                                                            'user_id' => $user->id
                                                            ]);
 
+        $current_stock = $product->stock_qty;
+
         $this->visit('checkout')
         ->select($address->id, 'billing_address_id')
         ->select($address->id, 'shipping_address_id')
@@ -30,6 +32,10 @@ class OrderTest extends TestCase
 
         $this->assertEquals($address->id, $order->billing_address_id);
         $this->assertEquals($address->id, $order->shipping_address_id);
+
+        $this->assertEquals(0, \Cart::count());
+
+        $this->assertEquals($current_stock - 1, \Creuset\Product::find($product->id)->stock_qty);
     }
 
     /** @test **/
