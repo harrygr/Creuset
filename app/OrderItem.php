@@ -22,4 +22,9 @@ class OrderItem extends Model
     {
         return $this->morphTo();
     }
+
+    public function getTotalPaidAttribute()
+    {
+        return $this->quantity * $this->price_paid;
+    }
 }

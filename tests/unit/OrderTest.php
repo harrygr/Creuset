@@ -24,9 +24,11 @@ class OrderTest extends TestCase
 
         $product = $this->putProductInCart();
 
-        $order = Order::createFromCart($customer, $address);
+        $order = Order::createFromCart($customer, $address->id);
 
         $this->assertEquals($order->billing_address_id, $address->id);
         $this->assertEquals($order->shipping_address_id, $address->id);
+        
+        $this->seeInDataBase('orders', ['user_id' => $customer->id]);
     }
 }
