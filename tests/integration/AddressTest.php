@@ -44,12 +44,15 @@ class AddressTest extends TestCase
         $address = factory(Address::class)->create([
                                'user_id' => $user->id,
                                ]);
+
         $this->visit("account/addresses")
+             ->see($address->postcode)
              ->press('Delete')
              ->seePageIs("account/addresses")
              ->see("Address Deleted");
+             //->dontSee($address->postcode); 
 
-        $this->notSeeInDataBase('addresses', ['id' => $address->id]);
+             $this->assertEmpty(\Creuset\User::find($user->id)->addresses);
     }
 
     /** @test **/

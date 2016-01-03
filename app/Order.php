@@ -62,11 +62,11 @@ class Order extends Model
 
     public function billing_address()
     {
-        return $this->hasOne(Address::class, 'id', 'billing_address_id');
+        return $this->hasOne(Address::class, 'id', 'billing_address_id')->withTrashed();
     }
 
     public function shipping_address()
     {
-        return $this->hasOne(Address::class, 'id', 'shipping_address_id');
+        return $this->hasOne(Address::class, 'id', 'shipping_address_id')->withTrashed();
     }
 }

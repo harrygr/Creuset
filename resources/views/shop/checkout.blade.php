@@ -56,8 +56,9 @@
 </div>
 <p>Already registered? <a href="login">Login</a></p>
 @endif
+
 {{-- Saved Addresses --}}
-@if (Auth::check())
+@if (Auth::check() and Auth::user()->addresses->count())
 <div class="row">
     <div class="col-md-6">
     <h3>Billing Address</h3>

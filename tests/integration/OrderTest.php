@@ -7,7 +7,7 @@ use TestCase;
 
 class OrderTest extends TestCase
 {
-    use \UsesCart;
+    use \UsesCart, \CreatesOrders;
 
     /** @test **/
     public function it_creates_an_order_from_a_logged_in_user()
@@ -15,9 +15,8 @@ class OrderTest extends TestCase
         $user = $this->loginWithUser([], 'customer');
         $product = $this->putProductInCart();
         $address = factory(\Creuset\Address::class)->create([
-                                                           'user_id' => $user->id
-                                                           ]);
-
+                                                            'user_id' => $user->id
+                                                            ]);
         $current_stock = $product->stock_qty;
 
         $this->visit('checkout')
@@ -110,32 +109,21 @@ class OrderTest extends TestCase
     /** @test **/
     public function it_views_an_order_summary()
     {
-        $user = $this->loginWithUser();
-        $order = factory('Creuset\Order')->create([
-                                                  'user_id' => $user->id,
-                                                  ]);
-        $order_item = factory('Creuset\OrderItem')->create([
-                                                           'order_id' => $order->id,
-                                                           ]);
-        $order->total_paid = $order_item->price_paid;
-        $order->save();
-
+        $this->createOrder();
+        $order = $this->order;
         $this->visit("account/orders/{$order->id}")
-             ->see($order->total_paid);
+        ->see($order->total_paid);
     }
 
     /** @test **/
     public function it_does_not_allow_viewing_another_users_order_summary()
     {
-        $user = $this->loginWithUser();
-        $order = factory('Creuset\Order')->create();
-        $order_item = factory('Creuset\OrderItem')->create([
-                                                           'order_id' => $order->id,
-                                                           ]);
-        $order->total_paid = $order_item->price_paid;
-        $order->save();
+        $this->createOrder();
 
-        $this->call('GET', "account/orders/{$order->id}");
+        // Login with a different user
+        $this->loginWithUser();
+
+        $this->call('GET', "account/orders/{$this->order->id}");
         $this->assertResponseStatus(403);
     }
 
@@ -150,5 +138,6 @@ class OrderTest extends TestCase
         ->type('SW1A 2AA', "{$type}_address[postcode]")
         ->type('01234567891', "{$type}_address[phone]");
     }
+
 
 }

@@ -3,6 +3,7 @@
 namespace Creuset\Listeners;
 
 use Creuset\Events\OrderWasCompleted;
+use Creuset\Events\ProductStockChanged;
 use Creuset\Product;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -35,7 +36,9 @@ class ReduceProductStock implements ShouldQueue
     private function reduceStock(Product $product, $quantity)
     {
         $product->stock_qty -= $quantity;
-        // Fire an event here
+        
+        event(new ProductStockChanged($product));
+
         return $product->save();
     }
 }

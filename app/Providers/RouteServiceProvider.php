@@ -36,7 +36,11 @@ class RouteServiceProvider extends ServiceProvider
         $router->model('product', 'Creuset\Product');
         $router->model('media', 'Creuset\Media');
         $router->model('address', 'Creuset\Address');
-        $router->model('order', 'Creuset\Order');
+        //$router->model('order', 'Creuset\Order');
+
+        $router->bind('order', function($id) {
+            return \Creuset\Order::findOrFail($id)->load(['items', 'shipping_address', 'billing_address']);
+        });
 
         $router->bind('trashedPost', function ($id) {
             return Post::withTrashed()->find($id);

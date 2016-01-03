@@ -28,6 +28,7 @@ class CreateAddressesTable extends Migration
             $table->string('postcode');
             $table->string('country');
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

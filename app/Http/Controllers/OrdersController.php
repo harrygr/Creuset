@@ -36,7 +36,7 @@ class OrdersController extends Controller
         # assume payment worked
         $customer = $request->get('customer');
 
-        if (\Auth::guest()) {
+        if (\Auth::guest() or !$request->has('billing_address_id')) {
             $billing_address_id = $this->saveAddress($request->get('billing_address'), $customer)->id;
             $shipping_address_id = null;
             if (!$request->has('shipping_same_as_billing')) {
