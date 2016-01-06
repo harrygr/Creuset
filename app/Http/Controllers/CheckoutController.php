@@ -24,5 +24,13 @@ class CheckoutController extends Controller
         return view('shop.checkout');
     }
 
+    public function pay()
+    {
+        if (! \Session::has('order')) {
+            dd('no order in session');
+        }
+        $order = \Session::get('order');
+        return view('orders.pay')->with(compact('order'));
+    }
     
 }

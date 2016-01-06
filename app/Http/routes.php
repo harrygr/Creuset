@@ -32,8 +32,11 @@ post('cart', ['uses' => 'CartController@store', 'as' => 'cart.store']);
 delete('cart/{rowid}', ['uses' => 'CartController@remove', 'as' => 'cart.remove']);
 
 get('checkout', ['uses' => 'CheckoutController@show', 'as' => 'checkout.show']);
+get('checkout/pay', ['uses' => 'CheckoutController@pay', 'as' => 'checkout.pay']);
+
 
 post('orders', ['uses' => 'OrdersController@store', 'as' => 'orders.store']);
+put('checkout/pay', ['uses' => 'OrdersController@pay', 'as' => 'orders.pay']);
 
 get('order-completed', ['uses' => 'OrdersController@completed', 'as' => 'orders.completed']);
 

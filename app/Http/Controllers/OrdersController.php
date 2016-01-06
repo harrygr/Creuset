@@ -4,6 +4,7 @@ namespace Creuset\Http\Controllers;
 
 use Auth;
 use Creuset\Address;
+use Creuset\Billing\GatewayInterface;
 use Creuset\Events\OrderWasCompleted;
 use Creuset\Http\Controllers\Controller;
 use Creuset\Http\Requests;
@@ -32,13 +33,12 @@ class OrdersController extends Controller
      */
     public function store(CreateOrderRequest $request)
     {
-        // take payment
-        # assume payment worked
+
         $customer = $request->get('customer');
 
         if (\Auth::guest() or !$request->has('billing_address_id')) {
             $billing_address_id = $this->saveAddress($request->get('billing_address'), $customer)->id;
-            $shipping_address_id = null;
+            $shipping_address_id = $billing_address_id;
             if (!$request->has('shipping_same_as_billing')) {
                 $shipping_address_id = $this->saveAddress($request->get('shipping_address'), $customer)->id;
             }
@@ -48,18 +48,22 @@ class OrdersController extends Controller
         }
 
         // create new order with the cart contents
-        $order = Order::createFromCart($customer, $billing_address_id, $shipping_address_id);
+        $order = Order::createFromCart($customer, [
+                                       'billing_address_id' => $billing_address_id, 
+                                       'shipping_address_id' => $shipping_address_id,
+                                       ]);
 
         event(new OrderWasCompleted($order));
-
-        // reduce stock of products
-        // empty cart
-        \Cart::destroy();
-        // email user
         
-        \Session::flash('order', $order);
-        return redirect()->route('orders.completed');
+        \Session::put('order', $order);
+        return redirect()->route('checkout.pay');
 
+    }
+
+    public function pay(Request $request)
+    {
+        $this->validate($request, ['order_id' => 'required|numeric', 'stripe_token' => 'required']);
+        dd($request->all());
     }
 
     public function completed() {
