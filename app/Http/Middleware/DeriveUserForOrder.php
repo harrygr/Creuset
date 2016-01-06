@@ -3,13 +3,15 @@
 namespace Creuset\Http\Middleware;
 
 use Closure;
-use Validator;
 use Creuset\Repositories\User\DbUserRepository;
 use Creuset\User;
 use Illuminate\Auth\Guard;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class DeriveUserForOrder
 {
+    use ValidatesRequests;
+
     /**
      * The Guard implementation.
      *
@@ -35,16 +37,17 @@ class DeriveUserForOrder
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
         // The user is already logged in, use them in the request
-        if ($this->auth->check())
-        {
+        if ($this->auth->check()) {
             $request->merge(['customer' => $this->auth->user()]);
+
             return $next($request);
         }
 
@@ -53,60 +56,48 @@ class DeriveUserForOrder
             // They were auto-created so we can't ask them to login. Just use their account for the order
             if ($user->auto_created) {
                 $request->merge(['customer' => $user]);
+
                 return $next($request);
             }
 
             // Ask them to login for the order
             \Session::put('url.intended', 'checkout');
+
             return redirect()
             ->route('auth.login', ['email' => $request->email])
             ->with([
-                   'alert' => 'This email has an account here. Please login. If you do not know your password please reset it.',
+                   'alert'       => 'This email has an account here. Please login. If you do not know your password please reset it.',
                    'alert-class' => 'warning',
                    ]);
         }
 
         // They haven't made an account yet
-        $fields = $request->has('create_account') ? 
-        ['email', 'password', 'password_confirmation'] : 
+        $fields = $request->has('create_account') ?
+        ['email', 'password', 'password_confirmation'] :
         ['email'];
 
         $billing_address = $request->get('billing_address');
 
         $data = $request->only($fields);
-        $data['name'] = $billing_address['first_name'] . ' ' . $billing_address['last_name'];
+        $data['name'] = $billing_address['name'];
 
-        $validator = $this->validator($data, $request->has('create_account'));
-
-        if ($validator->fails()) {
-            return redirect()
-            ->back()
-            ->withErrors($validator)
-            ->withInput();
-        }
+        $this->validateInput($request);
 
         $user = $this->users->create(collect($data));
         $request->merge(['customer' => $user]);
+
         return $next($request);
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param array $data
-     *
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    public function validator(array $data, $password_required = true)
+    protected function validateInput($request)
     {
         $rules = [
         'email'    => 'required|email|max:255|unique:users',
         ];
 
-        if ($password_required) {
+        if ($request->has('create_account')) {
             $rules['password'] = 'required|confirmed|min:6';
         }
-
-        return Validator::make($data, $rules);
+        $this->validate($request, $rules);
     }
 }

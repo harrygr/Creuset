@@ -29,8 +29,8 @@
 </table>
 
 @include('partials.errors')
-
-<form action="orders" method="POST">
+<div id="checkout">
+<form action="orders" method="POST" id="checkout-form">
     {{ csrf_field() }}
 
 
@@ -100,8 +100,10 @@
     </div>
 @endif
 
-
-<input type="submit" class="btn btn-success" value="Place Order">
+<input type="submit" class="btn btn-success" value="Proceed to Payment">
 </form>
+</div>
+
+
 
 @stop

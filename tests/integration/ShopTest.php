@@ -2,8 +2,6 @@
 
 namespace Creuset;
 
-use Creuset\Product;
-
 use TestCase;
 
 class ShopTest extends TestCase
@@ -14,7 +12,7 @@ class ShopTest extends TestCase
     public function it_can_add_a_product_to_the_cart()
     {
         $product = factory(Product::class)->create([
-                                                   'stock_qty' => 10
+                                                   'stock_qty' => 10,
                                                    ]);
 
         $this->visit('/shop')
@@ -33,7 +31,7 @@ class ShopTest extends TestCase
     public function it_cannot_add_a_quantity_of_products_greater_than_whats_in_stock()
     {
         $product = factory(Product::class)->create([
-          'stock_qty' => 2
+          'stock_qty' => 2,
           ]);
 
         $this->visit(route('products.show', [$product->product_category->slug, $product->slug]))
@@ -41,26 +39,27 @@ class ShopTest extends TestCase
              ->press('Add To Cart')
              ->seePageIs(route('products.show', [$product->product_category->slug, $product->slug]))
              ->see('You cannot add that amount to the cart because there is not enough stock');
-             
-        $this->assertEquals(0, \Cart::total());        
+
+        $this->assertEquals(0, \Cart::total());
     }
 
     /** @--test-- **/
     // Currently failing, no idea why
+
     public function it_cannot_add_more_than_available_products_including_whats_in_cart()
     {
         $product = factory(Product::class)->create([
-          'stock_qty' => 2
+          'stock_qty' => 2,
           ]);
 
         $product_url = route('products.show', [$product->product_category->slug, $product->slug]);
 
-        // there is already 1 of the product in the cart, we shouldn't be able 
+        // there is already 1 of the product in the cart, we shouldn't be able
         // to add 2 more even though there is 2 in stock
         $this->visit($product_url)
              ->type(1, 'quantity')
              ->press('Add To Cart')
-             ->type(2, 'quantity')             
+             ->type(2, 'quantity')
              ->seePageIs($product_url)
              ->see('You cannot add that amount to the cart because there is not enough stock');
     }
@@ -71,7 +70,7 @@ class ShopTest extends TestCase
         $product = $this->putProductInCart();
 
         $this->visit(route('cart'))
-             ->press("X")
+             ->press('X')
              ->see("{$product->name} removed from cart");
     }
 
@@ -87,7 +86,7 @@ class ShopTest extends TestCase
           'slug'     => 'cats',
           ]);
 
-        $product_group_2->map(function($product) use ($product_category) {
+        $product_group_2->map(function ($product) use ($product_category) {
             $product->terms()->save($product_category);
         });
 
@@ -102,7 +101,7 @@ class ShopTest extends TestCase
         $products = collect([
             $this->putProductInCart(),
             $this->putProductInCart(),
-        ]);        
+        ]);
 
         $this->visit('cart')
              ->see($products->first()->name)

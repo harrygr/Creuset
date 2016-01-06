@@ -2,8 +2,6 @@
 
 namespace Creuset\Http\Controllers;
 
-use Creuset\Product;
-
 class CheckoutControllerTest extends \TestCase
 {
     use \UsesCart;
@@ -15,5 +13,4 @@ class CheckoutControllerTest extends \TestCase
         $this->visit('checkout')
              ->see($product->name);
     }
-
 }

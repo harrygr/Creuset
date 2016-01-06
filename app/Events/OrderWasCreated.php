@@ -2,12 +2,10 @@
 
 namespace Creuset\Events;
 
-use Creuset\Events\Event;
 use Creuset\Order;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
 
-class OrderWasCompleted extends Event
+class OrderWasCreated extends Event
 {
     use SerializesModels;
 

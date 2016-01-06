@@ -2,16 +2,12 @@
 
 namespace Creuset\Http\Controllers;
 
-use Auth;
 use Creuset\Address;
-use Creuset\Events\OrderWasCompleted;
-use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests;
+use Creuset\Events\OrderWasCreated;
 use Creuset\Http\Requests\CreateOrderRequest;
 use Creuset\Http\Requests\Order\ViewOrderRequest;
 use Creuset\Order;
 use Creuset\Repositories\User\DbUserRepository;
-use Creuset\User;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller
@@ -25,22 +21,21 @@ class OrdersController extends Controller
     }
 
     /**
-     * Create a new order
+     * Create a new order.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(CreateOrderRequest $request)
     {
-        // take payment
-        # assume payment worked
         $customer = $request->get('customer');
 
         if (\Auth::guest() or !$request->has('billing_address_id')) {
-            $billing_address_id = $this->saveAddress($request->get('billing_address'), $customer)->id;
-            $shipping_address_id = null;
+            $billing_address_id = $customer->addAddress(new Address($request->get('billing_address')))->id;
+            $shipping_address_id = $billing_address_id;
             if (!$request->has('shipping_same_as_billing')) {
-                $shipping_address_id = $this->saveAddress($request->get('shipping_address'), $customer)->id;
+                $shipping_address_id = $customer->addAddress(new Address($request->get('shipping_address')))->id;
             }
         } else {
             $billing_address_id = $request->get('billing_address_id');
@@ -48,33 +43,29 @@ class OrdersController extends Controller
         }
 
         // create new order with the cart contents
-        $order = Order::createFromCart($customer, $billing_address_id, $shipping_address_id);
+        $order = Order::createFromCart($customer, [
+                                       'billing_address_id'  => $billing_address_id,
+                                       'shipping_address_id' => $shipping_address_id,
+                                       ]);
 
-        event(new OrderWasCompleted($order));
+        event(new OrderWasCreated($order));
 
-        // reduce stock of products
-        // empty cart
-        \Cart::destroy();
-        // email user
-        
-        \Session::flash('order', $order);
-        return redirect()->route('orders.completed');
+        $request->session()->put('order', $order);
 
+        return redirect()->route('checkout.pay');
     }
 
-    public function completed() {
-        $order = \Session::get('order');
-        return view('shop.order_completed')->with(compact('order'));
+    public function completed(Request $request)
+    {
+        $order = Order::findOrFail($request->session()->get('order_id'));
+
+        return view('shop.order_completed')->with([
+            'order' => $order,
+            ]);
     }
 
     public function show(ViewOrderRequest $request, Order $order)
     {
         return view('orders.show', compact('order'));
     }
-
-    protected function saveAddress($data, User $customer)
-    {
-        return $customer->addresses()->save(new Address($data));
-    }
-    
 }

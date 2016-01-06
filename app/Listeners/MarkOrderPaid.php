@@ -3,8 +3,9 @@
 namespace Creuset\Listeners;
 
 use Creuset\Events\OrderWasPaid;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendAdminOrderEmail
+class MarkOrderPaid implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -25,6 +26,9 @@ class SendAdminOrderEmail
      */
     public function handle(OrderWasPaid $event)
     {
-        //
+        $event->order->update([
+            'payment_id' => $event->payment_id,
+            'status'     => 'paid',
+            ]);
     }
 }

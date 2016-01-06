@@ -4,7 +4,7 @@ namespace Creuset;
 
 use TestCase;
 
-class RolesTest extends TestCase
+class RoleTest extends TestCase
 {
     /** @test **/
     public function it_enrolls_a_user()

@@ -2,13 +2,10 @@
 
 namespace Integration;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use TestCase;
 
 class UsersTest extends TestCase
 {
-    use DatabaseTransactions;
-
     public function testItCanEditUserProfile()
     {
         $this->loginWithUser();

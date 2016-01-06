@@ -2,7 +2,8 @@
 
 use Creuset\Product;
 
-trait UsesCart {
+trait UsesCart
+{
     protected function putProductInCart($product = null)
     {
         $product = $product ? $product : factory(Product::class)->create();
@@ -13,6 +14,7 @@ trait UsesCart {
                   'name'  => $product->name,
                   'price' => $product->getPrice(),
         ]);
+
         return $product;
     }
 }

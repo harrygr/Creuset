@@ -7,11 +7,10 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 
 class CartControllerTest extends \TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
-        
+
         $this->withoutMiddleware();
     }
 
@@ -40,7 +39,6 @@ class CartControllerTest extends \TestCase
 
         $this->assertEquals($product->getPrice(), Cart::total());
         $this->assertEquals(1, Cart::count());
-
     }
 
     /** @test **/

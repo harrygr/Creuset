@@ -52,7 +52,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = ['password', 'remember_token'];
 
     /**
-     * A user has several orders
+     * A user has several orders.
+     *
      * @return [type] [description]
      */
     public function orders()
@@ -61,16 +62,36 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * A user has several addresses
-     * @return [type] [description]
+     * A user has several addresses.
+     *
+     * @return 
      */
     public function addresses()
     {
         return $this->hasMany(Address::class);
     }
 
+    /**
+     * Does the user own the model.
+     *
+     * @param Model $model The model to check
+     *
+     * @return bool
+     */
     public function owns(Model $model)
     {
         return $this->id == $model->user_id;
+    }
+
+    /**
+     * Attach an address to a user.
+     *
+     * @param Address $address
+     *
+     * @return Address
+     */
+    public function addAddress(Address $address)
+    {
+        return $this->addresses()->save($address);
     }
 }

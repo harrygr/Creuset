@@ -3,13 +3,10 @@
 namespace Unit;
 
 use Creuset\Repositories\Post\DbPostRepository;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use TestCase;
 
 class PostsTest extends TestCase
 {
-    use DatabaseTransactions;
-
     protected $posts;
 
     public function setUp()

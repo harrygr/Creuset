@@ -2,10 +2,9 @@
 
 namespace Creuset\Providers;
 
-use Creuset\Cart\Cart;
+use Creuset\Billing\GatewayInterface;
+use Creuset\Billing\StripeGateway;
 use Illuminate\Support\ServiceProvider;
-use League\CommonMark\CommonMarkConverter;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,5 +32,7 @@ class AppServiceProvider extends ServiceProvider
             'Illuminate\Contracts\Auth\Registrar',
             'Creuset\Services\Registrar'
         );
+
+        $this->app->singleton(GatewayInterface::class, StripeGateway::class);
     }
 }

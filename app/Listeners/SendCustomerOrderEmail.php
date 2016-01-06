@@ -2,9 +2,7 @@
 
 namespace Creuset\Listeners;
 
-use Creuset\Events\OrderWasCompleted;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Creuset\Events\OrderWasPaid;
 
 class SendCustomerOrderEmail
 {
@@ -21,10 +19,11 @@ class SendCustomerOrderEmail
     /**
      * Handle the event.
      *
-     * @param  OrderWasCompleted  $event
+     * @param OrderWasPaid $event
+     *
      * @return void
      */
-    public function handle(OrderWasCompleted $event)
+    public function handle(OrderWasPaid $event)
     {
         //
     }

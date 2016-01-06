@@ -79,6 +79,7 @@ $factory->define('Creuset\Termable', function ($faker) {
 
 $factory->define('Creuset\OrderItem', function ($faker) {
     $product = factory(Creuset\Product::class)->create();
+
     return [
     'order_id'          => factory('Creuset\Order')->create()->id,
     'description'       => $product->name,
@@ -102,12 +103,11 @@ $factory->define('Creuset\Address', function ($faker) {
 
     return [
     'user_id'       => factory('Creuset\User')->create()->id,
-    'first_name'    => $faker->firstName,
-    'last_name'     => $faker->lastName,
+    'name'          => $faker->name,
     'phone'         => $faker->phoneNumber,
-    'line_1'        => $faker->buildingNumber . ' ' . $faker->streetName,
+    'line_1'        => $faker->buildingNumber.' '.$faker->streetName,
     'city'          => $faker->city,
     'postcode'      => $faker->postcode,
-    'country'       => $faker->country
+    'country'       => $faker->country,
     ];
 });

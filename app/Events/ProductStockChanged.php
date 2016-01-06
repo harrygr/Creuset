@@ -2,9 +2,7 @@
 
 namespace Creuset\Events;
 
-use Creuset\Events\Event;
 use Creuset\Product;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
 
 class ProductStockChanged extends Event

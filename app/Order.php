@@ -9,35 +9,32 @@ class Order extends Model
 {
     public $table = 'orders';
 
-    public $fillable = ['total_paid', 'status', 'user_id', 'billing_address_id', 'shipping_address_id'];
+    public $fillable = ['amount', 'status', 'user_id', 'billing_address_id', 'shipping_address_id', 'payment_id'];
 
-
-    public static function createFromCart(User $user, $billing_address_id, $shipping_address_id = null)
+    public static function createFromCart(User $user, array $attributes)
     {
-        $shipping_address_id = $shipping_address_id ?: $billing_address_id;
-
         $order = self::create([
-            'user_id' => $user->id,
-            'total_paid' => Cart::total(),
-            'status' => 'paid',
-            'billing_address_id' => $billing_address_id,
-            'shipping_address_id' => $shipping_address_id,
+            'user_id'             => $user->id,
+            'amount'              => Cart::total(),
+            'status'              => 'pending',
+            'billing_address_id'  => $attributes['billing_address_id'],
+            'shipping_address_id' => $attributes['shipping_address_id'],
             ]);
 
-        $order_items = Cart::content()->map(function($row) use ($order){
+        $order_items = Cart::content()->map(function ($row) use ($order) {
             $item = new OrderItem([
-                'order_id' => $order->id,
-                'quantity' => $row->qty,
+                'order_id'    => $order->id,
+                'quantity'    => $row->qty,
                 'description' => $row->product->name,
-                'price_paid' => $row->product->getPrice(),
+                'price_paid'  => $row->product->getPrice(),
                 ]);
             $item->orderable()->associate($row->product);
             $item->save();
+
             return $item;
         });
 
         return $order;
-
     }
 
     public function user()
