@@ -33,14 +33,13 @@ class OrdersController extends Controller
      */
     public function store(CreateOrderRequest $request)
     {
-
         $customer = $request->get('customer');
 
         if (\Auth::guest() or !$request->has('billing_address_id')) {
-            $billing_address_id = $this->saveAddress($request->get('billing_address'), $customer)->id;
+            $billing_address_id = $customer->addAddress(new Address($request->get('billing_address')))->id;
             $shipping_address_id = $billing_address_id;
             if (!$request->has('shipping_same_as_billing')) {
-                $shipping_address_id = $this->saveAddress($request->get('shipping_address'), $customer)->id;
+                $shipping_address_id = $customer->addAddress(new Address($request->get('shipping_address')))->id;
             }
         } else {
             $billing_address_id = $request->get('billing_address_id');
@@ -55,20 +54,17 @@ class OrdersController extends Controller
 
         event(new OrderWasCompleted($order));
         
-        \Session::put('order', $order);
+        $request->session()->put('order', $order);
         return redirect()->route('checkout.pay');
 
     }
 
-    public function pay(Request $request)
+    public function completed(Request $request) 
     {
-        $this->validate($request, ['order_id' => 'required|numeric', 'stripe_token' => 'required']);
-        dd($request->all());
-    }
-
-    public function completed() {
-        $order = \Session::get('order');
-        return view('shop.order_completed')->with(compact('order'));
+        
+        return view('shop.order_completed')->with([
+            'order' => $request->session()->get('order'),
+            ]);
     }
 
     public function show(ViewOrderRequest $request, Order $order)
@@ -76,9 +72,4 @@ class OrdersController extends Controller
         return view('orders.show', compact('order'));
     }
 
-    protected function saveAddress($data, User $customer)
-    {
-        return $customer->addresses()->save(new Address($data));
-    }
-    
 }

@@ -28,4 +28,9 @@ class Address extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getFullNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
 }

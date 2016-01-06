@@ -62,15 +62,30 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     /**
      * A user has several addresses
-     * @return [type] [description]
+     * @return 
      */
     public function addresses()
     {
         return $this->hasMany(Address::class);
     }
 
+    /**
+     * Does the user own the model
+     * @param  Model  $model The model to check
+     * @return boolean
+     */
     public function owns(Model $model)
     {
         return $this->id == $model->user_id;
+    }
+
+    /**
+     * Attach an address to a user
+     * @param  Address $address
+     * @return Address
+     */
+    public function addAddress(Address $address)
+    {
+        return $this->addresses()->save($address);
     }
 }

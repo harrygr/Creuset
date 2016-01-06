@@ -36,7 +36,8 @@ get('checkout/pay', ['uses' => 'CheckoutController@pay', 'as' => 'checkout.pay']
 
 
 post('orders', ['uses' => 'OrdersController@store', 'as' => 'orders.store']);
-put('checkout/pay', ['uses' => 'OrdersController@pay', 'as' => 'orders.pay']);
+
+post('payments', ['uses' => 'PaymentsController@store', 'as' => 'payments.store']);
 
 get('order-completed', ['uses' => 'OrdersController@completed', 'as' => 'orders.completed']);
 

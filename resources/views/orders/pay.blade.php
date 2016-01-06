@@ -18,8 +18,8 @@
 
 <div class="well">
       {!! Form::model($order, [
-        'method'    => 'PUT', 
-        'route'     => ['orders.pay'], 
+        'method'    => 'POST', 
+        'route'     => ['payments.store'], 
         'id'        => 'checkout-form', 
         'v-el'      => 'checkoutForm',
         'v-on:submit.prevent'   => 'getStripeToken'

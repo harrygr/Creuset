@@ -10,7 +10,7 @@
 <ul>
 <li>Order ID: {{ $order->id }}</li>
     <li>Date: {{ $order->created_at }}</li>
-    <li>Total: {{ $order->total_paid }}</li>
+    <li>Total: {{ $order->amount }}</li>
 </ul>
 
 <h2>Order Summary</h2>
@@ -28,7 +28,7 @@
 
 <tr>
     <th class="text-right">Order Total</th>
-    <th>{{ $order->total_paid }}</th>
+    <th>{{ $order->amount }}</th>
 </tr>
 </table>
 

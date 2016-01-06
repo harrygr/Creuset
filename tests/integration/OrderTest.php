@@ -9,20 +9,6 @@ class OrderTest extends TestCase
 {
     use \UsesCart, \CreatesOrders;
 
-    protected function getToken()
-    {
-        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
-        $token = \Stripe\Token::create([
-          "card" => [
-            "number" => "4242424242424242",
-            "exp_month" => 1,
-            "exp_year" => date('Y') + 1,
-            "cvc" => "314"
-          ]
-        ]);
-        return $token->id;
-    }
-
     /** @test **/
     public function it_auto_creates_a_user_for_the_order_when_not_logged_in()
     {
@@ -35,7 +21,7 @@ class OrderTest extends TestCase
         ->press('Proceed to Payment')
         ->seePageIs('checkout/pay');
 
-        $this->seeInDatabase('orders', ['total_paid' => $product->getPrice(), 'status' => 'pending']);
+        $this->seeInDatabase('orders', ['amount' => $product->getPrice(), 'status' => 'pending']);
         $this->seeInDatabase('users', ['email' => 'booboo@tempuser.com', 'auto_created' => true]);
         $this->seeInDatabase('addresses', ['city' => 'London']);
     }
@@ -56,18 +42,15 @@ class OrderTest extends TestCase
         ->press('Proceed to Payment')
         ->seePageIs('checkout/pay');
 
-        $this->seeInDatabase('orders', ['total_paid' => $product->getPrice(), 'status' => 'pending']);
+        $this->seeInDatabase('orders', ['amount' => $product->getPrice(), 'status' => 'pending']);
 
-        $order = \Creuset\Order::where('user_id', $user->id)->where('total_paid', $product->getPrice())->first();
+        $order = \Creuset\Order::where('user_id', $user->id)->where('amount', $product->getPrice())->first();
 
         $this->assertEquals($address->id, $order->billing_address_id);
         $this->assertEquals($address->id, $order->shipping_address_id);
 
         $this->assertEquals($current_stock - 1, \Creuset\Product::find($product->id)->stock_qty);
     }
-
-
-
 
     /** @test **/
     public function it_creates_a_user_for_the_order_when_they_select_to_make_new_account()
@@ -84,7 +67,7 @@ class OrderTest extends TestCase
         ->press('Proceed to Payment')
         ->seePageIs('checkout/pay');
 
-        $this->seeInDatabase('orders', ['total_paid' => $product->getPrice(), 'status' => 'pending']);
+        $this->seeInDatabase('orders', ['amount' => $product->getPrice(), 'status' => 'pending']);
         $this->seeInDatabase('users', ['email' => 'booboo2@tempuser.com', 'auto_created' => false]);
         $this->seeInDatabase('addresses', ['city' => 'London']);
     }
@@ -118,7 +101,7 @@ class OrderTest extends TestCase
         ->check('create_account')
         ->press('Proceed to Payment')
         ->seePageIs('checkout');
-             //->see()
+
     }
 
     /** @test **/
@@ -127,7 +110,7 @@ class OrderTest extends TestCase
         $this->createOrder();
         $order = $this->order;
         $this->visit("account/orders/{$order->id}")
-        ->see($order->total_paid);
+        ->see($order->amount);
     }
 
     /** @test **/
