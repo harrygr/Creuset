@@ -77,7 +77,7 @@ class DeriveUserForOrder
         $billing_address = $request->get('billing_address');
 
         $data = $request->only($fields);
-        $data['name'] = $billing_address['first_name'] . ' ' . $billing_address['last_name'];
+        $data['name'] = $billing_address['name'];
 
 
         $this->validateInput($request);

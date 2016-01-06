@@ -25,21 +25,23 @@
         'v-on:submit.prevent'   => 'getStripeToken'
         ]) !!}
 
-      <div class="form-group" v-bind:class="{'has-success':card_is_valid, 'has-error':!card_is_valid}">
+      <div class="row">
+      <div class="form-group col-md-6 col-xs-12" v-bind:class="{'has-error':validation_failure.card}">
         <label for="cc-number" class="control-label">Card number<small class="text-muted">[<span class="cc-brand">@{{ card_type }}</span>]</small></label>
         <input id="cc-number" type="tel" class="form-control cc-number" autocomplete="cc-number" placeholder="•••• •••• •••• ••••" v-model="card.number" required>
       </div>
-
-      <div class="form-group">
+       <div class="form-group col-md-3 col-xs-6" v-bind:class="{'has-error':validation_failure.exp}">
         <label for="cc-exp" class="control-label">Card expiry</label>
         <input id="cc-exp" type="tel" class="form-control cc-exp" autocomplete="cc-exp" placeholder="•• / ••" v-model="card.exp" required>
       </div>
 
-      <div class="form-group">
+      <div class="form-group col-md-3 col-xs-6" v-bind:class="{'has-error':validation_failure.cvc}">
         <label for="cc-cvc" class="control-label">Card CVC</label>
         <input id="cc-cvc" type="tel" class="form-control cc-cvc" autocomplete="off" placeholder="•••" v-model="card.cvc" required>
       </div>
-      <p class="text-danger">@{{ error_message }}</p>
+      </div>
+
+      <p v-if="error_message" class="text-danger">@{{ error_message }}</p>
 
       <input type="hidden" name="order_id" value="{{ $order->id }}">
 
@@ -64,14 +66,19 @@
                 number: null,
                 cvc: null,
                 exp: null,
-                name: '{{ $order->billing_address->first_name }} {{ $order->billing_address->last_name }}',
+                name: '{{ $order->billing_address->name }}',
                 address_line1: '{{ $order->billing_address->line_1 }}',
                 address_line2: '{{ $order->billing_address->line_2 }}',
                 address_city: '{{ $order->billing_address->city ?: $order->billing_address->line_2 }}',
                 address_zip: '{{ $order->billing_address->postcode }}',
                 address_country: '{{ $order->billing_address->country }}'
             },
-            error_message: null
+            error_message: null,
+            validation_failure: {
+              card: false,
+              exp: false,
+              cvc: false,
+            }
         },
         ready: function() {
             $('input.cc-number').payment('formatCardNumber');
@@ -82,17 +89,13 @@
         },
         methods: {
             getStripeToken: function() {
-                //this.setCardExpiry();
-                var card = this.card;
-                Stripe.card.createToken(card, this.stripeResponseHandler);
-            },
-            setCardExpiry: function() {
-                this.card.exp_month = this.card_expiry ? this.card_expiry.month : null;
-                this.card.exp_year = this.card_expiry ? this.card_expiry.year : null;
+                // We extend the card object to clone it which prevent the stripe-modified version ending up in our vm
+                Stripe.card.createToken(Vue.util.extend({}, this.card), this.stripeResponseHandler);
             },
             stripeResponseHandler: function(status, response) {
                   if (response.error) {
                     this.error_message = response.error.message;
+                    this.checkValidation();
 
                   } else {
                     // response contains id and card, which contains additional card details
@@ -107,6 +110,11 @@
                     form.submit();
                   }
                 console.log(status, response);
+            },
+            checkValidation: function() {
+              this.validation_failure.card = !this.card_is_valid;
+              this.validation_failure.exp  = !this.expiry_is_valid;
+              this.validation_failure.cvc  = !this.cvc_is_valid;
             }
         },
         computed: {
@@ -117,7 +125,7 @@
                 return $.payment.validateCardNumber(this.card.number);
             },
             expiry_is_valid: function() {
-                return $.payment.validateCardExpiry(this.card.exp);
+                return $.payment.validateCardExpiry($.payment.cardExpiryVal(this.card.exp));
             },
             cvc_is_valid: function() {
                 return $.payment.validateCardCVC(this.card.cvc, this.card_type);

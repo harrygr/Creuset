@@ -25,8 +25,7 @@ class AddressTest extends TestCase
         $user = $this->loginWithUser();
 
         $this->visit(route('addresses.create'))
-             ->type('Joe', 'first_name')
-             ->type('Bloggs', 'last_name')
+             ->type('Mr Joe Bloggs', 'name')
              ->type('0123456789', 'phone')
              ->type('11 Acacia Avenue', 'line_1')
              ->type('London', 'city')

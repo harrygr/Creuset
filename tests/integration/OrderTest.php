@@ -128,8 +128,7 @@ class OrderTest extends TestCase
     protected function fillAddress($type = 'billing')
     {
         return $this
-        ->type('Joe', "{$type}_address[first_name]")
-        ->type('Bloggs', "{$type}_address[last_name]")
+        ->type('Joe', "{$type}_address[name]")
         ->type('10 Downing Street', "{$type}_address[line_1]")
         ->type('London', "{$type}_address[city]")
         ->type('England', "{$type}_address[country]")

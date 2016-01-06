@@ -2,7 +2,7 @@
 
 namespace Creuset\Listeners;
 
-use Creuset\Events\OrderWasCompleted;
+use Creuset\Events\OrderWasCreated;
 use Creuset\Events\ProductStockChanged;
 use Creuset\Product;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -26,7 +26,7 @@ class ReduceProductStock implements ShouldQueue
      * @param  OrderWasCompleted  $event
      * @return void
      */
-    public function handle(OrderWasCompleted $event)
+    public function handle(OrderWasCreated $event)
     {
         foreach ($event->order->items as $item) {
             $this->reduceStock($item->orderable, $item->quantity);

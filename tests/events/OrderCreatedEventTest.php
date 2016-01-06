@@ -2,15 +2,15 @@
 
 namespace Events;
 
-use Creuset\Events\OrderWasCompleted;
+use Creuset\Events\OrderWasCreated;
 use Creuset\Product;
 use Creuset\User;
 use TestCase;
 
-class OrderCompletedEventTest extends TestCase
+class OrderCreatedEventTest extends TestCase
 {
     /** @test **/
-    public function it_reduces_product_stock_when_order_completed()
+    public function it_reduces_product_stock_when_order_created()
     {
         $product_1 = factory('Creuset\Product')->create([
                                                         'stock_qty' => 4
@@ -37,7 +37,7 @@ class OrderCompletedEventTest extends TestCase
                                                         'order_id' => $order->id
                                                         ]);
 
-        event(new OrderWasCompleted($order));
+        event(new OrderWasCreated($order));
 
         $this->assertEquals(2, Product::find($product_1->id)->stock_qty);
         $this->assertEquals(5, Product::find($product_2->id)->stock_qty);

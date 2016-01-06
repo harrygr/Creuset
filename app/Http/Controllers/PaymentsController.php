@@ -18,25 +18,29 @@ class PaymentsController extends Controller
     public function store(Request $request, GatewayInterface $gateway)
     {
         $this->validate($request, ['order_id' => 'required|numeric', 'stripe_token' => 'required']);
-     
-        $request->session()->forget('order');
-        
         $order = Order::find($request->order_id);
 
-        $charge = $gateway->charge([
-            'amount' => $order->amount * 100,
-            'card'   => $request->stripe_token,
-            'description' => sprintf("Order #%s", $order->id),
-            ]);
+        try {
+            $charge = $gateway->charge([
+                'amount' => $order->amount * 100,
+                'card'   => $request->stripe_token,
+                'description' => sprintf("Order #%s", $order->id),
+                ]);
 
-        $order->update([
-            'payment_id' => $charge->id,
-            'status'     => 'paid'
-            ]);
-        
+        } catch (\Creuset\Billing\CardException $e) {
+            return redirect()->back()->with([
+                'alert' => $e->getMessage(),
+                'alert-class' => 'danger',
+                ]);
+        }
+
+        $request->session()->forget('order');
+
+        event(new \Creuset\Events\OrderWasPaid($order, $charge->id));
+
         \Cart::destroy();
 
-        $request->session()->flash('order', $order);
+        $request->session()->flash('order_id', $order->id);
         return redirect()->route('orders.completed');
     }
 }

@@ -15,10 +15,13 @@ class EventServiceProvider extends ServiceProvider
         'auth.login' => [
             'Creuset\Handlers\Events\UserLoggedInHandler',
         ],
-        'Creuset\Events\OrderWasCompleted' => [
+        'Creuset\Events\OrderWasCreated' => [
+            'Creuset\Listeners\ReduceProductStock',
+        ],
+        'Creuset\Events\OrderWasPaid' => [
+            'Creuset\Listeners\MarkOrderPaid',
             'Creuset\Listeners\SendCustomerOrderEmail',
             'Creuset\Listeners\SendAdminOrderEmail',
-            'Creuset\Listeners\ReduceProductStock',
         ],
         'Creuset\Events\ProductStockChanged' => [
             'Creuset\Listeners\EmailStockNotification',

@@ -22,9 +22,9 @@ class StripeGateway implements GatewayInterface {
                                   'card' => $data['card'],
                                   ]);
         } catch(\Stripe\Error\Card $e) {
-            dd('Card Error: ' . $e->getMessage());
+            throw new CardException($e->getMessage());
         } catch(\Stripe\Error\Base $e) {
-            dd('Some other Stripe Error: ' . $e->getMessage());
+            throw new \Exception($e->getMessage());
         }
     }
 }

@@ -102,8 +102,7 @@ $factory->define('Creuset\Address', function ($faker) {
 
     return [
     'user_id'       => factory('Creuset\User')->create()->id,
-    'first_name'    => $faker->firstName,
-    'last_name'     => $faker->lastName,
+    'name'          => $faker->name,
     'phone'         => $faker->phoneNumber,
     'line_1'        => $faker->buildingNumber . ' ' . $faker->streetName,
     'city'          => $faker->city,

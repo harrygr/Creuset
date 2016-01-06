@@ -5,14 +5,12 @@ namespace Creuset\Http\Controllers;
 use Auth;
 use Creuset\Address;
 use Creuset\Billing\GatewayInterface;
-use Creuset\Events\OrderWasCompleted;
+use Creuset\Events\OrderWasCreated;
 use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests;
 use Creuset\Http\Requests\CreateOrderRequest;
 use Creuset\Http\Requests\Order\ViewOrderRequest;
 use Creuset\Order;
 use Creuset\Repositories\User\DbUserRepository;
-use Creuset\User;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller
@@ -52,7 +50,7 @@ class OrdersController extends Controller
                                        'shipping_address_id' => $shipping_address_id,
                                        ]);
 
-        event(new OrderWasCompleted($order));
+        event(new OrderWasCreated($order));
         
         $request->session()->put('order', $order);
         return redirect()->route('checkout.pay');
@@ -61,9 +59,10 @@ class OrdersController extends Controller
 
     public function completed(Request $request) 
     {
-        
+        $order = Order::findOrFail($request->session()->get('order_id'));
+
         return view('shop.order_completed')->with([
-            'order' => $request->session()->get('order'),
+            'order' => $order,
             ]);
     }
 

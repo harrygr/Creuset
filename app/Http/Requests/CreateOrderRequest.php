@@ -27,7 +27,7 @@ class CreateOrderRequest extends Request
     {
         $rules = new Collection;
 
-        if (!$this->user()) {
+        if (!$this->user() or !$this->user()->addresses()->count()) {
 
             $rules = $rules->merge($this->addressRules('billing'));
             if(!$this->has('shipping_same_as_billing')) {

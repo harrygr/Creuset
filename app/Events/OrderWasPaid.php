@@ -7,20 +7,22 @@ use Creuset\Order;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
 
-class OrderWasCompleted extends Event
+class OrderWasPaid extends Event
 {
-    use SerializesModels;
-
     public $order;
+    public $payment_id;
+
+    use SerializesModels;
 
     /**
      * Create a new event instance.
-     *
-     * @return void
+     * @param Order  $order      The order that was paid for
+     * @param string $payment_id The corresponding payment ID
      */
-    public function __construct(Order $order)
+    public function __construct(Order $order, $payment_id)
     {
         $this->order = $order;
+        $this->payment_id = $payment_id;
     }
 
     /**
