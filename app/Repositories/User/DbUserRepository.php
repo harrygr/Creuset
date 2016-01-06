@@ -13,7 +13,7 @@ class DbUserRepository
             'name'         => $data['name'],
             'email'        => $data['email'],
             'username'     => $data->get('username', $data['email']),
-            'password'     => bcrypt($data->get('password', mt_rand())),
+            'password'     => bcrypt($data->get('password', bin2hex(openssl_random_pseudo_bytes(6)))),
             'auto_created' => !$data->has('password'),
         ]);
     }
