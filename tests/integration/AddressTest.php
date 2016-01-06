@@ -44,12 +44,12 @@ class AddressTest extends TestCase
                                'user_id' => $user->id,
                                ]);
 
-        $this->visit("account/addresses")
+        $this->visit('account/addresses')
              ->see($address->postcode)
              ->press('Delete')
-             ->seePageIs("account/addresses")
-             ->see("Address Deleted");
-             //->dontSee($address->postcode); 
+             ->seePageIs('account/addresses')
+             ->see('Address Deleted');
+             //->dontSee($address->postcode);
 
              $this->assertEmpty(\Creuset\User::find($user->id)->addresses);
     }

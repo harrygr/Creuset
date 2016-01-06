@@ -6,49 +6,52 @@ use Illuminate\View\Expression;
 
 class ProductPresenter extends ModelPresenter
 {
-  protected $modelRoute = 'products';
+    protected $modelRoute = 'products';
 
-  public function categoryList($delimiter = ', ', $links = true)
-  {
-    $categoryNames = $links ? $this->model->product_categories->map(function ($category) {
+    public function categoryList($delimiter = ', ', $links = true)
+    {
+        $categoryNames = $links ? $this->model->product_categories->map(function ($category) {
       return sprintf('<a href="%s" title="edit %s category">%s</a>', route('admin.categories.edit', $category), $category->term, $category->term);
     }) : $this->model->product_categories->pluck('term');
 
-    return new Expression($categoryNames->implode($delimiter));
-  }
-
-  public function price()
-  {
-    if (!$this->model->sale_price) {
-      return new Expression("&pound;{$this->model->price}");
+        return new Expression($categoryNames->implode($delimiter));
     }
 
-    return new Expression(sprintf(
-      '<del>&pound;%s</del><br> &pound;%s', 
-      $this->model->price, 
+    public function price()
+    {
+        if (!$this->model->sale_price) {
+            return new Expression("&pound;{$this->model->price}");
+        }
+
+        return new Expression(sprintf(
+      '<del>&pound;%s</del><br> &pound;%s',
+      $this->model->price,
       $this->model->sale_price
       ));
-  }
+    }
 
-  public function thumbnail($w = 300, $h = null)
-  {
-    return new Expression(sprintf(
+    public function thumbnail($w = 300, $h = null)
+    {
+        return new Expression(sprintf(
       '<img src="%s" alt="%s" width="%s" height="$s" class="img-responsive">',
       $this->thumbnail_url($w, $h),
       $this->model->name,
       $w,
       $h
       ));
-  }
+    }
 
-  public function thumbnail_url($w = 300, $h = null)
-  {
-    if(!$h) $h = $w;
-    return $this->model->image ? $this->model->image->thumbnail_url : "http://placehold.it/$w/$h";
-  }
+    public function thumbnail_url($w = 300, $h = null)
+    {
+        if (!$h) {
+            $h = $w;
+        }
 
-  public function stock()
-  {
-    return $this->model->stock_qty > 0 ? sprintf('%s in stock', $this->model->stock_qty) : 'Out of stock';
-  }
+        return $this->model->image ? $this->model->image->thumbnail_url : "http://placehold.it/$w/$h";
+    }
+
+    public function stock()
+    {
+        return $this->model->stock_qty > 0 ? sprintf('%s in stock', $this->model->stock_qty) : 'Out of stock';
+    }
 }

@@ -26,7 +26,7 @@ class OrderTest extends TestCase
     {
         $customer = factory(User::class)->create();
         $address = factory(Address::class)->create([
-         'user_id' => $customer->id
+         'user_id' => $customer->id,
          ]);
 
         $product = $this->putProductInCart();
@@ -35,7 +35,7 @@ class OrderTest extends TestCase
 
         $this->assertEquals($order->billing_address_id, $address->id);
         $this->assertEquals($order->shipping_address_id, $address->id);
-        
+
         $this->seeInDataBase('orders', ['user_id' => $customer->id]);
     }
 }

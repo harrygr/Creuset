@@ -4,7 +4,6 @@ namespace Creuset\Http\Controllers\Api;
 
 class MediaControllerTest extends \TestCase
 {
-
     /** @test **/
     public function it_gets_the_images()
     {

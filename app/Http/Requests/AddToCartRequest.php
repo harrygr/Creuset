@@ -2,7 +2,6 @@
 
 namespace Creuset\Http\Requests;
 
-use Creuset\Http\Requests\Request;
 use Creuset\Repositories\Product\ProductRepository;
 
 class AddToCartRequest extends Request
@@ -34,7 +33,7 @@ class AddToCartRequest extends Request
         $available_quantity = $this->getAvailableQuantity();
 
         return [
-        'quantity' => "integer|between:1,{$available_quantity}"
+        'quantity' => "integer|between:1,{$available_quantity}",
         ];
     }
 
@@ -48,7 +47,8 @@ class AddToCartRequest extends Request
     /**
      * Get the max qty of a product that can be added to a cart,
      * taking into account the amount number already in a cart.
-     * @return integer
+     *
+     * @return int
      */
     protected function getAvailableQuantity()
     {
@@ -57,6 +57,7 @@ class AddToCartRequest extends Request
         if ($row_id = \Cart::search(['id' => $this->product_id])) {
             return $qty_in_stock - \Cart::get($row_id[0])->qty;
         }
+
         return $qty_in_stock;
     }
 }

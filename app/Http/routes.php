@@ -34,14 +34,13 @@ delete('cart/{rowid}', ['uses' => 'CartController@remove', 'as' => 'cart.remove'
 get('checkout', ['uses' => 'CheckoutController@show', 'as' => 'checkout.show']);
 get('checkout/pay', ['uses' => 'CheckoutController@pay', 'as' => 'checkout.pay']);
 
-
 post('orders', ['uses' => 'OrdersController@store', 'as' => 'orders.store']);
 
 post('payments', ['uses' => 'PaymentsController@store', 'as' => 'payments.store']);
 
 get('order-completed', ['uses' => 'OrdersController@completed', 'as' => 'orders.completed']);
 
-Route::group(['prefix' => 'account'], function() {
+Route::group(['prefix' => 'account'], function () {
 
     get('/', ['uses' => 'AccountsController@show', 'as' => 'accounts.show']);
 
@@ -133,7 +132,7 @@ Route::group(['prefix' => 'api'], function () {
     get('media/{media}', ['uses' => 'Api\MediaController@show', 'as' => 'api.media.show'])->where('id', '[0-9]+');
     get('media/{collection?}', ['uses' => 'Api\MediaController@index', 'as' => 'api.media.index']);
 
-    Route::group(['prefix' => 'cart'], function() {
+    Route::group(['prefix' => 'cart'], function () {
         post('/', ['uses' => 'Api\CartController@store']);
     });
 

@@ -3,8 +3,6 @@
 namespace Creuset\Listeners;
 
 use Creuset\Events\ProductStockChanged;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Mail;
 
 class EmailStockNotification
@@ -22,7 +20,8 @@ class EmailStockNotification
     /**
      * Handle the event.
      *
-     * @param  ProductStockChanged  $event
+     * @param ProductStockChanged $event
+     *
      * @return void
      */
     public function handle(ProductStockChanged $event)

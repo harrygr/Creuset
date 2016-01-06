@@ -52,17 +52,17 @@ class PaymentTest extends TestCase
         $this->assertContains('declined', \Session::get('alert'));
 
         $this->dontSeeInDatabase('orders', ['id' => $this->order->id, 'status' => 'paid']);
-
     }
 
     /**
-    * Get a stripe token for creating a charge
-    * @param  boolean $card_failure Whether the token should result in a payment error (e.g. card denied)
-    * @return string
-    */
+     * Get a stripe token for creating a charge.
+     *
+     * @param bool $card_failure Whether the token should result in a payment error (e.g. card denied)
+     *
+     * @return string
+     */
     protected function getToken($card_failure = false)
     {
-
         $address = factory('Creuset\Address')->create();
 
         \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
@@ -70,19 +70,20 @@ class PaymentTest extends TestCase
         $card_number = $card_failure ? '4000000000000002' : '4242424242424242';
 
         $token = \Stripe\Token::create([
-            "card" => [
-            "number"          => $card_number,
-            "exp_month"       => 1,
-            "exp_year"        => date('Y') + 1,
-            "cvc"             => "314",
+            'card' => [
+            'number'          => $card_number,
+            'exp_month'       => 1,
+            'exp_year'        => date('Y') + 1,
+            'cvc'             => '314',
             'name'            => $address->full_name,
             'address_line1'   => $address->line_1,
             'address_line2'   => $address->line_2,
             'address_city'    => $address->city,
             'address_zip'     => $address->postcode,
             'address_country' => $address->country,
-            ]
+            ],
             ]);
+
         return $token->id;
     }
 }

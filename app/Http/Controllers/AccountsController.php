@@ -2,8 +2,6 @@
 
 namespace Creuset\Http\Controllers;
 
-use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 

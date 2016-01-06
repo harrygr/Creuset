@@ -18,10 +18,10 @@ class DbUserRepositoryTest extends TestCase
     public function it_creates_a_user()
     {
         $data = collect([
-            'email' => 'foo@example.com',
-            'name' => 'Joe Bloggs',
+            'email'    => 'foo@example.com',
+            'name'     => 'Joe Bloggs',
             'username' => 'joe_bloggs',
-            'password' => 'secret'
+            'password' => 'secret',
                         ]);
         $user = $this->users->create($data);
 
@@ -35,7 +35,7 @@ class DbUserRepositoryTest extends TestCase
     {
         $data = collect([
             'email' => 'foo2@example.com',
-            'name' => 'John Snow',
+            'name'  => 'John Snow',
                         ]);
         $user = $this->users->create($data);
 
