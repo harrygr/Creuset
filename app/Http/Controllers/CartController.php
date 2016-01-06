@@ -3,7 +3,6 @@
 namespace Creuset\Http\Controllers;
 
 use Cart;
-
 use Creuset\Http\Requests\AddToCartRequest;
 use Creuset\Product;
 use Illuminate\Http\Request;

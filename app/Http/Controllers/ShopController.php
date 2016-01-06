@@ -2,7 +2,6 @@
 
 namespace Creuset\Http\Controllers;
 
-
 use Creuset\Product;
 use Creuset\Repositories\Product\ProductRepository;
 use Creuset\Term;
