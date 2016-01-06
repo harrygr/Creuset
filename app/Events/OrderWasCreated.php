@@ -2,9 +2,7 @@
 
 namespace Creuset\Events;
 
-use Creuset\Events\Event;
 use Creuset\Order;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
 
 class OrderWasCreated extends Event

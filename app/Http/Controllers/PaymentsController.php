@@ -3,16 +3,17 @@
 namespace Creuset\Http\Controllers;
 
 use Creuset\Billing\GatewayInterface;
-use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests;
+
 use Creuset\Order;
 use Illuminate\Http\Request;
 
 class PaymentsController extends Controller
 {
     /**
-     * Create a new payment for an order
-     * @param  Request $request
+     * Create a new payment for an order.
+     *
+     * @param Request $request
+     *
      * @return Illuminate\Http\Response
      */
     public function store(Request $request, GatewayInterface $gateway)
@@ -22,14 +23,13 @@ class PaymentsController extends Controller
 
         try {
             $charge = $gateway->charge([
-                'amount' => $order->amount * 100,
-                'card'   => $request->stripe_token,
-                'description' => sprintf("Order #%s", $order->id),
+                'amount'      => $order->amount * 100,
+                'card'        => $request->stripe_token,
+                'description' => sprintf('Order #%s', $order->id),
                 ]);
-
         } catch (\Creuset\Billing\CardException $e) {
             return redirect()->back()->with([
-                'alert' => $e->getMessage(),
+                'alert'       => $e->getMessage(),
                 'alert-class' => 'danger',
                 ]);
         }
@@ -41,6 +41,7 @@ class PaymentsController extends Controller
         \Cart::destroy();
 
         $request->session()->flash('order_id', $order->id);
+
         return redirect()->route('orders.completed');
     }
 }

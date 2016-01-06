@@ -54,12 +54,12 @@ class TermsController extends Controller
 
     public function edit($term)
     {
-        # code...
+        // code...
     }
 
     public function update($term)
     {
-        # code...
+        // code...
     }
 
     public function destroy(Term $term)

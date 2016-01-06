@@ -25,6 +25,6 @@ class EventServiceProvider extends ServiceProvider
         ],
         'Creuset\Events\ProductStockChanged' => [
             'Creuset\Listeners\EmailStockNotification',
-        ]
+        ],
     ];
 }

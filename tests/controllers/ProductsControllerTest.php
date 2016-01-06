@@ -23,5 +23,4 @@ class ProductsControllerTest extends \TestCase
              ->see($product->name)
              ->see($product->description);
     }
-
 }

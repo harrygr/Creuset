@@ -2,8 +2,7 @@
 
 namespace Creuset\Http\Controllers;
 
-use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests;
+
 use Creuset\Product;
 use Creuset\Repositories\Product\ProductRepository;
 use Creuset\Term;
@@ -30,6 +29,7 @@ class ShopController extends Controller
         } else {
             $products = $this->products->inCategory($product_category);
         }
+
         return view('shop.index')->with(compact('product_category', 'products'));
     }
 
@@ -46,7 +46,8 @@ class ShopController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -57,7 +58,8 @@ class ShopController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Term $product_category, Product $product)
@@ -68,7 +70,8 @@ class ShopController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -79,8 +82,9 @@ class ShopController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -91,7 +95,8 @@ class ShopController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

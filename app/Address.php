@@ -14,7 +14,7 @@ class Address extends Model
     protected $fillable = ['name', 'phone', 'line_1', 'line_2', 'city', 'country', 'postcode'];
 
     protected $dates = ['deleted_at'];
-    
+
     public static $rules = [
         'name'      => 'required',
         'line_1'    => 'required',

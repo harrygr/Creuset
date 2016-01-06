@@ -32,7 +32,7 @@ class OrderTest extends TestCase
         $user = $this->loginWithUser([], 'customer');
         $product = $this->putProductInCart();
         $address = factory(\Creuset\Address::class)->create([
-                                                            'user_id' => $user->id
+                                                            'user_id' => $user->id,
                                                             ]);
         $current_stock = $product->stock_qty;
 
@@ -101,7 +101,6 @@ class OrderTest extends TestCase
         ->check('create_account')
         ->press('Proceed to Payment')
         ->seePageIs('checkout');
-
     }
 
     /** @test **/
@@ -135,6 +134,4 @@ class OrderTest extends TestCase
         ->type('SW1A 2AA', "{$type}_address[postcode]")
         ->type('01234567891', "{$type}_address[phone]");
     }
-
-
 }

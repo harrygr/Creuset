@@ -12,7 +12,7 @@ class Term extends Model
      * @var string
      */
     public $table = 'terms';
-    
+
     /**
      * The taxonomies in use.
      *

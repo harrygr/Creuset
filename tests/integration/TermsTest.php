@@ -6,7 +6,6 @@ use TestCase;
 
 class TermsTest extends TestCase
 {
-
     public function testICanSeeAListOfCategories()
     {
         $this->loginWithUser();

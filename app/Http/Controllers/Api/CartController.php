@@ -3,7 +3,6 @@
 namespace Creuset\Http\Controllers\Api;
 
 use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests;
 use Creuset\Product;
 use Illuminate\Http\Request;
 

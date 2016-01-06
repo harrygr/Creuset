@@ -38,7 +38,7 @@ class RouteServiceProvider extends ServiceProvider
         $router->model('address', 'Creuset\Address');
         //$router->model('order', 'Creuset\Order');
 
-        $router->bind('order', function($id) {
+        $router->bind('order', function ($id) {
             return \Creuset\Order::findOrFail($id)->load(['items', 'shipping_address', 'billing_address']);
         });
 
@@ -50,11 +50,11 @@ class RouteServiceProvider extends ServiceProvider
             return \Creuset\User::where('username', $username)->firstOrFail();
         });
 
-        $router->bind('product_slug', function($slug) {
+        $router->bind('product_slug', function ($slug) {
             return Product::where('slug', $slug)->firstOrFail();
         });
 
-        $router->bind('product_category', function($slug) {
+        $router->bind('product_category', function ($slug) {
             return Term::where('slug', $slug)
             ->where('taxonomy', 'product_category')
             ->first();

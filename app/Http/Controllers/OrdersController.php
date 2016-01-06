@@ -2,11 +2,8 @@
 
 namespace Creuset\Http\Controllers;
 
-use Auth;
 use Creuset\Address;
-use Creuset\Billing\GatewayInterface;
 use Creuset\Events\OrderWasCreated;
-use Creuset\Http\Controllers\Controller;
 use Creuset\Http\Requests\CreateOrderRequest;
 use Creuset\Http\Requests\Order\ViewOrderRequest;
 use Creuset\Order;
@@ -24,9 +21,10 @@ class OrdersController extends Controller
     }
 
     /**
-     * Create a new order
+     * Create a new order.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(CreateOrderRequest $request)
@@ -46,18 +44,18 @@ class OrdersController extends Controller
 
         // create new order with the cart contents
         $order = Order::createFromCart($customer, [
-                                       'billing_address_id' => $billing_address_id, 
+                                       'billing_address_id'  => $billing_address_id,
                                        'shipping_address_id' => $shipping_address_id,
                                        ]);
 
         event(new OrderWasCreated($order));
-        
-        $request->session()->put('order', $order);
-        return redirect()->route('checkout.pay');
 
+        $request->session()->put('order', $order);
+
+        return redirect()->route('checkout.pay');
     }
 
-    public function completed(Request $request) 
+    public function completed(Request $request)
     {
         $order = Order::findOrFail($request->session()->get('order_id'));
 
@@ -70,5 +68,4 @@ class OrdersController extends Controller
     {
         return view('orders.show', compact('order'));
     }
-
 }

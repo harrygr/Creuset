@@ -2,9 +2,7 @@
 
 namespace Creuset\Events;
 
-use Creuset\Events\Event;
 use Creuset\Order;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
 
 class OrderWasPaid extends Event
@@ -16,6 +14,7 @@ class OrderWasPaid extends Event
 
     /**
      * Create a new event instance.
+     *
      * @param Order  $order      The order that was paid for
      * @param string $payment_id The corresponding payment ID
      */

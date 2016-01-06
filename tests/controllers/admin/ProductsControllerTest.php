@@ -5,11 +5,9 @@ namespace Creuset\Http\Controllers\Admin;
 use Carbon\Carbon;
 use Creuset\Product;
 use Faker\Factory;
-use TestCase;
 
 class ProductsControllerTest extends \TestCase
 {
-
     /** @test **/
     public function it_can_view_a_list_of_products()
     {

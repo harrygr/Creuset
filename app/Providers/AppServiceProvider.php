@@ -4,10 +4,7 @@ namespace Creuset\Providers;
 
 use Creuset\Billing\GatewayInterface;
 use Creuset\Billing\StripeGateway;
-use Creuset\Cart\Cart;
 use Illuminate\Support\ServiceProvider;
-use League\CommonMark\CommonMarkConverter;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 class AppServiceProvider extends ServiceProvider
 {
