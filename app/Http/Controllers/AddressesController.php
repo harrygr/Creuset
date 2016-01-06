@@ -3,7 +3,6 @@
 namespace Creuset\Http\Controllers;
 
 use Creuset\Address;
-
 use Creuset\Http\Requests\Address\CreateAddressRequest;
 use Creuset\Http\Requests\Address\EditAddressRequest;
 use Creuset\Http\Requests\Address\UpdateAddressRequest;

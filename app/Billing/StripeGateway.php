@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Creuset\Billing;
 
 use Stripe\Charge;

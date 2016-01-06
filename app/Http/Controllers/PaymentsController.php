@@ -3,7 +3,6 @@
 namespace Creuset\Http\Controllers;
 
 use Creuset\Billing\GatewayInterface;
-
 use Creuset\Order;
 use Illuminate\Http\Request;
 
