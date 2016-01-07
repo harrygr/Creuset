@@ -27,7 +27,7 @@ class PaymentTest extends TestCase
 
         $this->assertRedirectedTo('order-completed');
 
-        $this->seeInDatabase('orders', ['id' => $this->order->id, 'status' => 'paid']);
+        $this->seeInDatabase('orders', ['id' => $this->order->id, 'status' => \Creuset\Order::PAID]);
         $this->assertEquals(0, \Cart::total());
     }
 
@@ -51,7 +51,7 @@ class PaymentTest extends TestCase
         $this->assertRedirectedTo('checkout/pay');
         $this->assertContains('declined', \Session::get('alert'));
 
-        $this->dontSeeInDatabase('orders', ['id' => $this->order->id, 'status' => 'paid']);
+        $this->dontSeeInDatabase('orders', ['id' => $this->order->id, 'status' => \Creuset\Order::PAID]);
     }
 
     /**

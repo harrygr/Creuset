@@ -11,14 +11,14 @@
             <td>
                 <a href="{{ $item->orderable->url }}">{{ $item->orderable->name }}</a> x{{ $item->quantity}}
             </td>
-            <td>{{ $item->price_paid }}</td>
+            <td>{{ Present::money($item->price_paid) }}</td>
         </tr>
         @endforeach
     </tbody>
     <tfoot>
         <tr>
             <th class="text-right">Total</th>
-            <th>{{ $order->amount }}</th>
+            <th>{{ Present::money($order->amount) }}</th>
         </tr>
     </tfoot>
 </table>

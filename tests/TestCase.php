@@ -46,7 +46,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 
         $user->assignRole($this->getRole($role)->name);
 
-        \Auth::loginUsingId($user->id);
+        $this->be($user);
 
         return $user;
     }

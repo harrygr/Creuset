@@ -16,7 +16,7 @@ class CreateOrdersTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('amount')->default(0);
-            $table->string('status')->default('pending');
+            $table->string('status')->default(\Creuset\Order::PENDING);
             $table->integer('billing_address_id')->unsigned();
             $table->integer('shipping_address_id')->unsigned();
             $table->string('payment_id')->nullable();

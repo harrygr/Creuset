@@ -28,7 +28,7 @@ class MarkOrderPaid implements ShouldQueue
     {
         $event->order->update([
             'payment_id' => $event->payment_id,
-            'status'     => 'paid',
+            'status'     => \Creuset\Order::PAID,
             ]);
     }
 }

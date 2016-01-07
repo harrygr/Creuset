@@ -19,16 +19,21 @@ class CheckoutController extends Controller
         if (!Cart::count()) {
             return view('shop.cart_empty');
         }
-
+        $request->session()->flash('url.intended', 'checkout');
         return view('shop.checkout');
     }
 
-    public function pay()
+    /**
+     * Show the page for paying for an order
+     * @param  Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function pay(Request $request)
     {
-        if (!\Session::has('order')) {
+        if (!$request->session()->has('order')) {
             dd('no order in session');
         }
-        $order = \Session::get('order');
+        $order = $request->session()->get('order');
 
         return view('orders.pay')->with(compact('order'));
     }

@@ -24,16 +24,18 @@ class UsersTableSeeder extends Seeder
         $admin->assignRole('admin');
 
         // Make some auto-generated users for extra usage
-        $users = array_map(function ($i) {
+        $users = array_map(function ($i) use ($roles) {
                 $user = factory('Creuset\User')->create();
 
-                return $user->enroll();
+                $role = array_rand($roles);
+                return $user->assignRole($role->name);
             }, range(1, 4));
     }
 
     private function seedRoles()
     {
         $roles = [
+            'customer',
             'subscriber',
             'contributor',
             'admin',

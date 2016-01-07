@@ -22,28 +22,8 @@ class AuthTest extends TestCase
         ->type($credentials['email'], 'email')
         ->type('password', 'password')
         ->press('Login')
-        ->seePageIs('/admin/posts');
+        ->seePageIs('/');
     }
-
-    // /** @test **/
-    // function it_allows_a_username_instead_of_email_to_login()
-    // {
-    //     // Assuming we have a user with these credentials
-    //     $credentials = [
-    //     'username'  => 'joebloggs',
-    //     ];
-
-    //     $user = factory('Creuset\User')->create($credentials);
-
-    //     // We should be able to log in
-    //     // (The factory-defined password is 'password')
-
-    //     $this->visit('/login')
-    //     ->type($credentials['username'], 'email')
-    //     ->type('password', 'password')
-    //     ->press('Login')
-    //     ->seePageIs('/admin/posts');
-    // }
 
     /** @test **/
     public function it_cannot_login_with_invalid_credentials()

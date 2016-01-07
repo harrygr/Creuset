@@ -28,6 +28,20 @@ class AuthController extends Controller
     }
 
     /**
+     * Show the application login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getLogin(Request $request)
+    {
+        if ($request->session()->has('url.intended')) {
+            $request->session()->flash('url.intended', $request->session()->get('url.intended'));
+        }
+
+        return view('auth.login');
+    }
+
+    /**
      * Handle a registration request for the application.
      *
      * @param \Illuminate\Foundation\Http\FormRequest|Request $request
@@ -99,6 +113,6 @@ class AuthController extends Controller
      */
     public function redirectPath()
     {
-        return route('admin.posts.index');
+        return '/';
     }
 }

@@ -209,6 +209,7 @@ return [
         'Gate'          => Illuminate\Support\Facades\Gate::class,
         'Cart'          => 'Gloudemans\Shoppingcart\Facades\Cart',
         'Markdown'      => 'GrahamCampbell\Markdown\Facades\Markdown',
+        'Present'       => 'Creuset\Presenters\Presenter',
 
     ],
 

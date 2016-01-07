@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+    /**
+     * Show a list of the cart contents
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         if (!Cart::count()) {
@@ -23,7 +27,7 @@ class CartController extends Controller
      *
      * @param Request $request
      *
-     * @return Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     public function store(AddToCartRequest $request)
     {
@@ -49,11 +53,11 @@ class CartController extends Controller
      * @param Request $request
      * @param string  $rowid   The row id to remove
      *
-     * @return Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     public function remove(Request $request, $rowid)
     {
-        $product = \Cart::get($rowid)->product;
+        $product = Cart::get($rowid)->product;
 
         Cart::remove($rowid);
 

@@ -19,12 +19,12 @@
 <tr>
     <td>{{ $item->product->present()->thumbnail(45) }}</td>
     <td>{{ $item->name }} x{{ $item->qty }}</td>
-    <td>&pound;{{ $item->product->getPrice() * $item->qty }}</td>
+    <td>{{ Present::money($item->product->getPrice() * $item->qty) }}</td>
 </tr>
 @endforeach
 <tr>
   <th colspan="2"></th>
-  <th>&pound;{{ Cart::total() }}</th>
+  <th>{{ Present::money(Cart::total()) }}</th>
 </tr>
 </table>
 
@@ -34,27 +34,31 @@
     {{ csrf_field() }}
 
 
-    @if (Auth::guest())
-  <div class="form-group">
-      <label for="email">Email</label>
+@if (Auth::guest())
+    <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
+      <label class="control-label" for="email">Email</label>
       <input type="email" name="email" value="{{ old('email') }}" class="form-control">
-  </div>
+    </div>
 
-  <div class="checkbox">
-    <label>
-    <input type="checkbox" name="create_account"> Create an account?
-    </label>
-</div>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" name="create_account" {{ old('create_account') ? 'checked' : '' }} v-model="create_new_account"> Create an account?
+      </label>
+    </div>
 
-<div class="form-group">
-  <label for="password">Password</label>
-  <input type="password" name="password" class="form-control">
-</div>
-<div class="form-group">
-  <label for="password_confirmation">Password Confirmation</label>
-  <input type="password" name="password_confirmation" class="form-control">
-</div>
-<p>Already registered? <a href="login">Login</a></p>
+    <div v-show="create_new_account">
+      <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
+        <label class="control-label" for="password">Password</label>
+        <input type="password" name="password" class="form-control">
+      </div>
+
+      <div class="form-group {{ $errors->has('password_confirmation') ? 'has-error' : '' }}">
+        <label class="control-label" for="password_confirmation">Password Confirmation</label>
+        <input type="password" name="password_confirmation" class="form-control">
+      </div>
+    </div>
+
+    <p>Already registered? <a href="login">Login</a></p>
 @endif
 
 {{-- Saved Addresses --}}
@@ -84,6 +88,10 @@
     </div>
 </div>
 
+<p>
+  <a href="{{ route('addresses.create') }}" class="btn btn-default">Add new address</a>
+</p>
+
 @else
     <div class="row">
         <div class="col-md-6">
@@ -93,17 +101,33 @@
         <div class="col-md-6">
             <h3>Shipping Address</h3>
             <div class="checkbox" style="position: absolute; top: 16px; right: 16px;">
-    <label><input type="checkbox" name="shipping_same_as_billing" checked> Same as Billing</label>
+    <label><input type="checkbox" name="different_shipping_address" {{ old('different_shipping_address') ? 'checked' : '' }} v-model="different_shipping_address"> Different Shipping Address</label>
             </div>
+            <div v-show="different_shipping_address">
             @include('partials.address_form', ['type' => 'shipping'])
+            </div>
         </div>
     </div>
 @endif
 
-<input type="submit" class="btn btn-success" value="Proceed to Payment">
+<p>
+  <input type="submit" class="btn btn-success" value="Proceed to Payment">
+</p>
 </form>
 </div>
 
+@stop
 
+@section('scripts')
+<script>
+  var vm = new Vue({
+    el: '#checkout-form',
 
+    data: {
+      different_shipping_address: null,
+      create_new_account: null,
+    }
+  })
+
+</script>
 @stop

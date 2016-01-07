@@ -22,4 +22,18 @@ class Role extends Model
     {
         return $this->hasMany('Creuset\User', 'users');
     }
+
+    /**
+     * Derive the display name if it's not set
+     * @param  string $display_name
+     * @return string               
+     */
+    public function getDisplayNameAttribute($display_name)
+    {
+        if (!$display_name)
+        {
+            return ucwords(\Present::unslug($this->name));
+        }
+        return $display_name;
+    }
 }

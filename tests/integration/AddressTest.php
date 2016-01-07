@@ -44,6 +44,8 @@ class AddressTest extends TestCase
                                'user_id' => $user->id,
                                ]);
 
+        $this->assertCount(1, $user->fresh()->addresses);
+
         $this->visit('account/addresses')
              ->see($address->postcode)
              ->press('Delete')
@@ -51,7 +53,7 @@ class AddressTest extends TestCase
              ->see('Address Deleted');
              //->dontSee($address->postcode);
 
-             $this->assertEmpty(\Creuset\User::find($user->id)->addresses);
+        $this->assertCount(0, $user->fresh()->addresses);
     }
 
     /** @test **/

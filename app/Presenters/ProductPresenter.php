@@ -3,6 +3,7 @@
 namespace Creuset\Presenters;
 
 use Illuminate\View\Expression;
+use Present;
 
 class ProductPresenter extends ModelPresenter
 {
@@ -20,13 +21,13 @@ class ProductPresenter extends ModelPresenter
     public function price()
     {
         if (!$this->model->sale_price) {
-            return new Expression("&pound;{$this->model->price}");
+            return new Expression(Present::money($this->model->price));
         }
 
         return new Expression(sprintf(
-      '<del>&pound;%s</del><br> &pound;%s',
-      $this->model->price,
-      $this->model->sale_price
+      '<del>%s</del><br> %s',
+      Present::money($this->model->price),
+      Present::money($this->model->sale_price)
       ));
     }
 

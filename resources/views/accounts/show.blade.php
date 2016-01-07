@@ -26,7 +26,7 @@
                 <td><a href="{{ route('orders.show', $order) }}">{{ $order->id }}</a></td>
                 <td>{{ $order->created_at }}</td>
                 <td>{{ $order->status }}</td>
-                <td>{{ $order->total_paid }} for {{ $order->items->count() }} {{ str_plural('item', $order->items->count()) }}</td>
+                <td>{{ Present::money($order->amount) }} for {{ $order->items->count() }} {{ str_plural('item', $order->items->count()) }}</td>
             </tr>
         @endforeach
     </tbody>

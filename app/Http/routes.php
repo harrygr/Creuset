@@ -25,7 +25,7 @@ Route::get('logout', ['uses' => 'Auth\AuthController@getLogout', 'as' => 'auth.l
  */
 
 get('shop/{product_category?}', ['uses' => 'ShopController@index', 'as' => 'products.index']);
-get('shop/{product_category}/{product_slug}', ['uses' => 'ShopController@show', 'as' => 'products.show']);
+get('shop/{product_category}/{product_slug}', ['uses' => 'ProductsController@show', 'as' => 'products.show']);
 
 get('cart', ['uses' => 'CartController@index', 'as' => 'cart']);
 post('cart', ['uses' => 'CartController@store', 'as' => 'cart.store']);

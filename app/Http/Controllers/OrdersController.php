@@ -34,7 +34,7 @@ class OrdersController extends Controller
         if (\Auth::guest() or !$request->has('billing_address_id')) {
             $billing_address_id = $customer->addAddress(new Address($request->get('billing_address')))->id;
             $shipping_address_id = $billing_address_id;
-            if (!$request->has('shipping_same_as_billing')) {
+            if ($request->has('different_shipping_address')) {
                 $shipping_address_id = $customer->addAddress(new Address($request->get('shipping_address')))->id;
             }
         } else {
@@ -57,6 +57,10 @@ class OrdersController extends Controller
 
     public function completed(Request $request)
     {
+        if (!$request->session()->has('order_id'))
+        {
+            abort(419);
+        }
         $order = Order::findOrFail($request->session()->get('order_id'));
 
         return view('shop.order_completed')->with([

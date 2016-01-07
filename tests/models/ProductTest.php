@@ -48,4 +48,18 @@ class ProductTest extends TestCase
 
         $this->assertContains('<h1>Hello World!</h1>', $product->getDescriptionHtml());
     }
+
+    /** @test **/
+    public function it_gets_whether_the_product_is_in_stock()
+    {
+        $product = factory(Product::class)->make([
+          'stock_qty' => 4,
+          ]);
+
+        $this->assertTrue($product->inStock());
+
+        $product->stock_qty = 0;
+
+        $this->assertFalse($product->inStock());
+    }
 }

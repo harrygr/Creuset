@@ -19,7 +19,7 @@ $factory->define('Creuset\Post', function ($faker) {
 
 $factory->define('Creuset\Product', function ($faker) {
     $name = $faker->sentence(3);
-    $price = $faker->numberBetween(3, 300);
+    $price = $faker->numberBetween(30, 30000) / 100;
 
     return [
     'name'          => $name,

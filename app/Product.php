@@ -151,4 +151,13 @@ class Product extends Model implements HasMediaConversions, Termable
     {
         return $this->sale_price > 0 ? $this->sale_price : $this->price;
     }
+
+    /**
+     * Get whether a product is in stock
+     * @return boolean
+     */
+    public function inStock()
+    {
+        return $this->stock_qty > 0;
+    }
 }

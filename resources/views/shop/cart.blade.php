@@ -29,12 +29,12 @@
     <td><a href="{{ $item->product->url }}">{{ $item->name }}</a></td>
     <td>{{ $item->product->present()->price() }}</td>
     <td>{{ $item->qty }}</td>
-    <td>&pound;{{ $item->product->getPrice() * $item->qty }}</td>
+    <td>{{ Present::money($item->product->getPrice() * $item->qty) }}</td>
     </tr>
 @endforeach
 <tr>
   <th colspan="5"></th>
-  <th>&pound;{{ Cart::total() }}</th>
+  <th>{{ Present::money(Cart::total()) }}</th>
 </tr>
 </table>
 

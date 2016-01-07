@@ -17,6 +17,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     use Authenticatable, Authorizable, CanResetPassword, PresentableTrait, RoleableTrait;
 
     /**
+     * The roles that should always be available
+     * @var Array
+     */
+    public static $base_roles = [
+        'customer'      => 'Customer',
+        'subscriber'    => 'Subscriber',
+        'manager'       => 'Manager',
+        'admin'         => 'Admin',
+    ];
+
+    /**
      * The presenter instance to use.
      *
      * @var string

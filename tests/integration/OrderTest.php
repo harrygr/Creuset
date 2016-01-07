@@ -10,6 +10,40 @@ class OrderTest extends TestCase
     use \UsesCart, \CreatesOrders;
 
     /** @test **/
+    public function it_redirects_to_login_if_email_is_recognised()
+    {
+        $user = factory(User::class)->create([
+            'password' => bcrypt('secret'),
+            ]);
+        $product = $this->putProductInCart();
+
+        $this->visit('checkout')
+             ->type($user->email, 'email')
+             ->press('Proceed to Payment')
+             ->seePageIs(sprintf('login?email=%s', urlencode($user->email)))
+             ->type('secret', 'password')
+             ->press('Login')
+             ->seePageIs('checkout');
+    }
+
+    /** @test **/
+    public function it_redirects_back_to_checkout_if_user_logs_in_at_checkout()
+    {
+        $user = factory(User::class)->create([
+            'password' => bcrypt('secret'),
+            ]);
+        $product = $this->putProductInCart();
+
+        $this->visit('checkout')
+             ->click('Login')
+             ->seePageIs('login')
+             ->type($user->email, 'email')
+             ->type('secret', 'password')
+             ->press('Login')
+             ->seePageIs('checkout');
+    }
+
+    /** @test **/
     public function it_auto_creates_a_user_for_the_order_when_not_logged_in()
     {
         $product = $this->putProductInCart();
@@ -17,7 +51,6 @@ class OrderTest extends TestCase
         $this->visit('checkout')
         ->type('booboo@tempuser.com', 'email')
         ->fillAddress()
-        ->check('shipping_same_as_billing')
         ->press('Proceed to Payment')
         ->seePageIs('checkout/pay');
 
@@ -60,14 +93,13 @@ class OrderTest extends TestCase
         $this->visit('checkout')
         ->type('booboo2@tempuser.com', 'email')
         ->fillAddress()
-        ->check('shipping_same_as_billing')
         ->check('create_account')
         ->type('smoomoo', 'password')
         ->type('smoomoo', 'password_confirmation')
         ->press('Proceed to Payment')
         ->seePageIs('checkout/pay');
 
-        $this->seeInDatabase('orders', ['amount' => $product->getPrice(), 'status' => 'pending']);
+        $this->seeInDatabase('orders', ['amount' => $product->getPrice(), 'status' => \Creuset\Order::PENDING]);
         $this->seeInDatabase('users', ['email' => 'booboo2@tempuser.com', 'auto_created' => false]);
         $this->seeInDatabase('addresses', ['city' => 'London']);
     }
@@ -97,7 +129,6 @@ class OrderTest extends TestCase
         $this->visit('checkout')
         ->type('tempuser.com', 'email')
         ->fillAddress()
-        ->check('shipping_same_as_billing')
         ->check('create_account')
         ->press('Proceed to Payment')
         ->seePageIs('checkout');

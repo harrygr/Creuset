@@ -28,7 +28,7 @@ class CreateOrderRequest extends Request
 
         if (!$this->user() or !$this->user()->addresses()->count()) {
             $rules = $rules->merge($this->addressRules('billing'));
-            if (!$this->has('shipping_same_as_billing')) {
+            if ($this->has('different_shipping_address')) {
                 $rules = $rules->merge($this->addressRules('shipping'));
             }
 
@@ -39,6 +39,20 @@ class CreateOrderRequest extends Request
                              'billing_address_id'  => 'required|numeric',
                              'shipping_address_id' => 'required|numeric',
                              ])->toArray();
+    }
+
+    public function messages()
+    {
+        $messages = collect([
+            'billing_address_id.required' => 'Please pick a billing address.',
+            'shipping_address_id.required' => 'Please pick a shipping address.'
+            ]);
+
+        foreach (Address::$rules as $field => $rule) {
+            $messages->put("billing_address.$field.required", sprintf('The billing address %s is required.', str_replace('_', ' ', $field)));
+            $messages->put("shipping_address.$field.required", sprintf('The shipping address %s is required.', str_replace('_', ' ', $field)));
+        }
+        return $messages->toArray();
     }
 
     /**

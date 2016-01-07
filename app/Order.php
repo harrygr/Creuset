@@ -7,16 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+
+    const PENDING   = 'pending';
+    const PAID      = 'processing';
+    const COMPLETED = 'completed';
+    const REFUNDED  = 'refunded';
+    const CANCELLED = 'cancelled';
+
     public $table = 'orders';
 
     public $fillable = ['amount', 'status', 'user_id', 'billing_address_id', 'shipping_address_id', 'payment_id'];
 
+    /**
+     * Create a new order from the contents of the cart
+     * @param  User   $user       The customer for the order
+     * @param  array  $attributes Order attributes
+     * @return \Creuset\Order             
+     */
     public static function createFromCart(User $user, array $attributes)
     {
         $order = self::create([
             'user_id'             => $user->id,
             'amount'              => Cart::total(),
-            'status'              => 'pending',
+            'status'              => self::PENDING,
             'billing_address_id'  => $attributes['billing_address_id'],
             'shipping_address_id' => $attributes['shipping_address_id'],
             ]);

@@ -21,6 +21,8 @@ class DeriveUserForOrder
 
     private $users;
 
+    private $request;
+
     /**
      * Create a new filter instance.
      *
@@ -51,6 +53,9 @@ class DeriveUserForOrder
             return $next($request);
         }
 
+        $this->request = $request;
+        $this->validateInput();
+
         // The email address has an account
         if ($user = User::where('email', $request->email)->first()) {
             // They were auto-created so we can't ask them to login. Just use their account for the order
@@ -61,7 +66,7 @@ class DeriveUserForOrder
             }
 
             // Ask them to login for the order
-            \Session::put('url.intended', 'checkout');
+            $request->session()->flash('url.intended', 'checkout');
 
             return redirect()
             ->route('auth.login', ['email' => $request->email])
@@ -72,32 +77,43 @@ class DeriveUserForOrder
         }
 
         // They haven't made an account yet
-        $fields = $request->has('create_account') ?
-        ['email', 'password', 'password_confirmation'] :
-        ['email'];
-
-        $billing_address = $request->get('billing_address');
-
-        $data = $request->only($fields);
-        $data['name'] = $billing_address['name'];
-
-        $this->validateInput($request);
-
-        $user = $this->users->create(collect($data));
-        $request->merge(['customer' => $user]);
+        $request->merge(['customer' => $this->createCustomer()]);
 
         return $next($request);
     }
 
-    protected function validateInput($request)
+    protected function createCustomer()
+    {
+        $fields = $this->request->has('create_account') ?
+        ['email', 'password', 'password_confirmation'] :
+        ['email'];
+
+        $billing_address = $this->request->get('billing_address');
+
+        $data = collect($this->request->only($fields));
+        $data['name'] = $billing_address['name'];
+
+        $user = \Creuset\User::create([
+            'name'         => $data['name'],
+            'email'        => $data['email'],
+            'username'     => str_slug($data['name']),
+            'password'     => bcrypt($data->get('password', bin2hex(openssl_random_pseudo_bytes(6)))),
+            'auto_created' => !$data->has('password'),
+        ]);
+
+        $user->assignRole('customer');
+        return $user;
+    }
+
+    protected function validateInput()
     {
         $rules = [
-        'email'    => 'required|email|max:255|unique:users',
+        'email'    => 'required|email|max:255',
         ];
 
-        if ($request->has('create_account')) {
+        if ($this->request->has('create_account')) {
             $rules['password'] = 'required|confirmed|min:6';
         }
-        $this->validate($request, $rules);
+        $this->validate($this->request, $rules);
     }
 }
