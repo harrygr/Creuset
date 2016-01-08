@@ -2,18 +2,22 @@
 
 namespace Creuset\Providers;
 
+use Creuset\Jobs\MarkUserActive;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {
+    use DispatchesJobs;
+
     /**
      * The event handler mappings for the application.
      *
      * @var array
      */
     protected $listen = [
-        'auth.login' => [
-            'Creuset\Handlers\Events\UserLoggedInHandler',
+        'Illuminate\Auth\Events\Login' => [
+            'Creuset\Listeners\UserLoggedInHandler',
         ],
         'Creuset\Events\OrderWasCreated' => [
             'Creuset\Listeners\ReduceProductStock',

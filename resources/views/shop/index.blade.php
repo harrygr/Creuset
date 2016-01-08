@@ -3,7 +3,7 @@
 @section('content')
 
 <ol class="breadcrumb">
-  @if ($product_category->id)
+  @if ($product_category->id or 'uncategorised' == $product_category->slug)
   <li><a href="/shop">Shop</a></li>
   <li class="active">{{ $product_category->term }}</li>
   @else

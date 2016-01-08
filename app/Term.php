@@ -40,4 +40,12 @@ class Term extends Model
     {
         return $this->morphedByMany('Creuset\Product', 'termable');
     }
+
+    public function getTermAttribute($term)
+    {
+        if (!$term) {
+            return ucwords(\Present::unslug($this->slug));
+        }
+        return $term;
+    }
 }

@@ -5,7 +5,7 @@ namespace Creuset\Http\Middleware;
 use Closure;
 use Creuset\Repositories\User\DbUserRepository;
 use Creuset\User;
-use Illuminate\Auth\Guard;
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class DeriveUserForOrder

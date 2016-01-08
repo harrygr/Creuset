@@ -55,9 +55,10 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $router->bind('product_category', function ($slug) {
-            return Term::where('slug', $slug)
-            ->where('taxonomy', 'product_category')
-            ->first();
+            return Term::firstOrNew([
+                'taxonomy' => 'product_category',
+                'slug' => $slug
+                ]);
         });
     }
 

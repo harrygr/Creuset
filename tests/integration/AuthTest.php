@@ -2,27 +2,31 @@
 
 namespace Integration;
 
+use Creuset\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use TestCase;
 
 class AuthTest extends TestCase
 {
-    use DatabaseTransactions;
-
     /** @test **/
-    public function it_can_login_with_valid_credentials()
+    public function it_marks_a_user_as_not_auto_created_if_they_log_in_succesfully()
     {
-        $credentials = [
-        'email' => 'jb@email.com',
-        ];
-
-        $user = factory('Creuset\User')->create($credentials);
+        $email = 'jb@email.com';
+        $user = factory(User::class)->create([
+            'auto_created' => true,
+            'password' => bcrypt('password'),
+            'email' => $email,
+            ]);
 
         $this->visit('/login')
-        ->type($credentials['email'], 'email')
+        ->type($email, 'email')
         ->type('password', 'password')
         ->press('Login')
         ->seePageIs('/');
+
+        $this->assertTrue(\Auth::check());
+
+        $this->seeInDataBase('users', ['email' => $email, 'auto_created' => false]);
     }
 
     /** @test **/
@@ -34,6 +38,8 @@ class AuthTest extends TestCase
         ->press('Login')
         ->seePageIs('/login')
         ->see('These credentials do not match our records');
+
+        $this->assertTrue(\Auth::guest());
     }
 
     /** @test **/

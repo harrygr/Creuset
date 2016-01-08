@@ -4,7 +4,7 @@ namespace Creuset\Http\Controllers\Auth;
 
 use Creuset\Http\Controllers\Controller;
 use Creuset\User;
-use Illuminate\Auth\Guard;
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
