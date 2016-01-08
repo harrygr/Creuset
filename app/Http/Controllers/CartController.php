@@ -6,6 +6,7 @@ use Cart;
 use Creuset\Http\Requests\AddToCartRequest;
 use Creuset\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\HtmlString;
 
 class CartController extends Controller
 {
@@ -41,8 +42,10 @@ class CartController extends Controller
                   'price' => $product->getPrice(),
                   ]);
 
+        $cart_link = '<strong><a href="/cart">View Cart</a></strong>';
+
         return redirect()->back()->with([
-          'alert'       => sprintf('%d %s added to cart', $qty, str_plural($product->name, $qty)),
+          'alert'       => new HtmlString(sprintf('%d %s added to cart. %s', $qty, str_plural($product->name, $qty), $cart_link)),
           'alert-class' => 'success',
           ]);
     }

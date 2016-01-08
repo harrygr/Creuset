@@ -161,7 +161,7 @@ class OrderTest extends TestCase
         ->type('Joe', "{$type}_address[name]")
         ->type('10 Downing Street', "{$type}_address[line_1]")
         ->type('London', "{$type}_address[city]")
-        ->type('England', "{$type}_address[country]")
+        ->select('United Kingdom', "{$type}_address[country]")
         ->type('SW1A 2AA', "{$type}_address[postcode]")
         ->type('01234567891', "{$type}_address[phone]");
     }

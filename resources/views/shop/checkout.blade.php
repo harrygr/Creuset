@@ -1,3 +1,5 @@
+@inject('countries', 'Creuset\Countries\CountryRepository')
+
 @extends('layouts.main')
 
 @section('content')

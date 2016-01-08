@@ -2,7 +2,7 @@
 
 namespace Creuset\Presenters;
 
-use Illuminate\View\Expression;
+use Illuminate\Support\HtmlString;
 use Present;
 
 class ProductPresenter extends ModelPresenter
@@ -15,16 +15,16 @@ class ProductPresenter extends ModelPresenter
       return sprintf('<a href="%s" title="edit %s category">%s</a>', route('admin.categories.edit', $category), $category->term, $category->term);
     }) : $this->model->product_categories->pluck('term');
 
-        return new Expression($categoryNames->implode($delimiter));
+        return new HtmlString($categoryNames->implode($delimiter));
     }
 
     public function price()
     {
         if (!$this->model->sale_price) {
-            return new Expression(Present::money($this->model->price));
+            return new HtmlString(Present::money($this->model->price));
         }
 
-        return new Expression(sprintf(
+        return new HtmlString(sprintf(
       '<del>%s</del><br> %s',
       Present::money($this->model->price),
       Present::money($this->model->sale_price)
@@ -33,7 +33,7 @@ class ProductPresenter extends ModelPresenter
 
     public function thumbnail($w = 300, $h = null)
     {
-        return new Expression(sprintf(
+        return new HtmlString(sprintf(
       '<img src="%s" alt="%s" width="%s" height="$s" class="img-responsive">',
       $this->thumbnail_url($w, $h),
       $this->model->name,

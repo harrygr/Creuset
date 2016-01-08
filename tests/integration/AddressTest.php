@@ -30,7 +30,7 @@ class AddressTest extends TestCase
              ->type('11 Acacia Avenue', 'line_1')
              ->type('London', 'city')
              ->type('SW1 4NQ', 'postcode')
-             ->type('United Kingdon', 'country')
+             ->select('United Kingdom', 'country')
              ->press('Save Address')
              ->seePageIs('/account/addresses')
              ->see('saved')->see('11 Acacia Avenue');

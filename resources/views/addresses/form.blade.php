@@ -1,3 +1,5 @@
+@inject('countries', 'Creuset\Countries\CountryRepository')
+
 <div class="form-group">
     <label for="name">Name</label>
         {!! Form::text('name', null, ['class' => 'form-control']) !!}
@@ -25,7 +27,7 @@
 
 <div class="form-group">
     <label for="country">Country</label>
-    {!! Form::text('country', null, ['class' => 'form-control']) !!}
+    {!! Form::select('country', $countries->lists(), null, ['class' => 'form-control']) !!}
 </div>
 
 <div class="form-group">

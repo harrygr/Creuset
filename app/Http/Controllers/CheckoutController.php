@@ -31,7 +31,7 @@ class CheckoutController extends Controller
     public function pay(Request $request)
     {
         if (!$request->session()->has('order')) {
-            dd('no order in session');
+            abort(419);
         }
         $order = $request->session()->get('order');
 

@@ -148,9 +148,10 @@ return [
         'Creuset\Providers\DatabaseServiceProvider',
         'Creuset\Providers\ComposerServiceProvider',
         'Creuset\Providers\AuthServiceProvider',
+        'Creuset\Providers\CountriesServiceProvider',
 
         /*
-         * 3rd Party Service Providoes
+         * 3rd Party Service Providers
          */
         'Gvb\Whoops\ServiceProvider',
         'Collective\Html\HtmlServiceProvider',

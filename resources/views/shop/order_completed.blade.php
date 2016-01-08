@@ -8,7 +8,7 @@
 <ul>
 <li>Order ID: {{ $order->id }}</li>
     <li>Date: {{ $order->created_at }}</li>
-    <li>Total: {{ $order->amount }}</li>
+    <li>Total: {{ Present::money($order->amount) }}</li>
 </ul>
 
 <h2>Order Summary</h2>

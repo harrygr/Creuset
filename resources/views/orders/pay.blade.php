@@ -46,7 +46,7 @@
       <input type="hidden" name="order_id" value="{{ $order->id }}">
 
       <input type="submit" class="btn btn-success" value="Confirm Payment">
-      <pre>@{{ $data | json }}</pre>
+
       {!! Form::close() !!}
 </div>
 
@@ -88,7 +88,11 @@
         methods: {
             getStripeToken: function() {
                 // We extend the card object to clone it which prevent the stripe-modified version ending up in our vm
-                Stripe.card.createToken(Vue.util.extend({}, this.card), this.stripeResponseHandler);
+                try {
+                  Stripe.card.createToken(Vue.util.extend({}, this.card), this.stripeResponseHandler);
+                } catch (e) {
+                  this.handleStripeError(e);
+                }
             },
             stripeResponseHandler: function(status, response) {
                   if (response.error) {
@@ -113,6 +117,15 @@
               this.validation_failure.card = !this.card_is_valid;
               this.validation_failure.exp  = !this.expiry_is_valid;
               this.validation_failure.cvc  = !this.cvc_is_valid;
+            },
+            handleStripeError: function(e) {
+              console.log(e);
+              if (e.message.indexOf("expiration date") > -1) {
+                this.error_message = "Your expiry date looks wrong. Please provide it in MM/YY format.";
+                this.validation_failure.exp = true;
+                return;
+              }
+              this.error_message = "Something was wrong with your input";
             }
         },
         computed: {
@@ -123,7 +136,12 @@
                 return $.payment.validateCardNumber(this.card.number);
             },
             expiry_is_valid: function() {
-                return $.payment.validateCardExpiry($.payment.cardExpiryVal(this.card.exp));
+                var exp;
+
+                if (exp = $.payment.cardExpiryVal(this.card.exp)){
+                  return $.payment.validateCardExpiry(exp);
+                }
+                return false;
             },
             cvc_is_valid: function() {
                 return $.payment.validateCardCVC(this.card.cvc, this.card_type);

@@ -39,7 +39,7 @@
 
 <div class="form-group {{ $errors->has("{$type}_address.country") ? 'has-error' : '' }}">
     <label class="control-label" for="{{ $type }}_address[country]">Country</label>
-            {!! Form::text("{$type}_address[country]", null, [
+            {!! Form::select("{$type}_address[country]", $countries->lists(), null, [
         'class' => 'form-control',
         ]) !!}
 </div>
