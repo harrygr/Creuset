@@ -10,7 +10,7 @@ abstract class DbRepository
      * @param int   $id
      * @param array $with
      *
-     * @return \Illuminate\Support\Collection|mixed|null|static
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function fetch($id, $with = [])
     {

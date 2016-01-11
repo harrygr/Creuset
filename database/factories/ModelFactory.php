@@ -108,6 +108,6 @@ $factory->define('Creuset\Address', function ($faker) {
     'line_1'        => $faker->buildingNumber.' '.$faker->streetName,
     'city'          => $faker->city,
     'postcode'      => $faker->postcode,
-    'country'       => $faker->country,
+    'country'       => $faker->countryCode,
     ];
 });
