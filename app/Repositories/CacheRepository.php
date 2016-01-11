@@ -40,7 +40,7 @@ abstract class CacheRepository
      *
      * @return mixed
      */
-    public function getPaginated($with)
+    public function getPaginated($with = [])
     {
         $page = \Request::get('page', 0);
         $tags = array_merge([$this->tag], $with);
@@ -62,7 +62,7 @@ abstract class CacheRepository
         $tags = array_merge([$this->tag], $with);
 
         return \Cache::tags($tags)->remember("{$this->tag}.all", config('cache.time'), function () use ($with) {
-           return $this->model->with($with)->latest()->get();
+           return $this->repository->all($with);
         });        
     }
 
@@ -74,6 +74,22 @@ abstract class CacheRepository
     {
         return \Cache::tags([$this->tag])->remember("{$this->tag}.count", config('cache.time'), function () {
             return $this->repository->count();
+        });
+    }
+
+    /**
+     * Get an instance of a model by its slug
+     * 
+     * @param string $slug
+     *
+     * @return mixed
+     */
+    public function getBySlug($slug, $with = [])
+    {
+        $tags = array_merge([$this->tag], $with);
+
+        return \Cache::tags($tags)->remember("{$this->tag}.slug.{$slug}", config('cache.time'), function () use ($slug, $with) {
+            return $this->repository->getBySlug($slug, $with);
         });
     }
 }

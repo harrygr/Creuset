@@ -16,6 +16,9 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
+        'Creuset\Events\ModelWasChanged' => [
+            'Creuset\Listeners\FlushModelCache',
+        ],
         'Illuminate\Auth\Events\Login' => [
             'Creuset\Listeners\UserLoggedInHandler',
         ],

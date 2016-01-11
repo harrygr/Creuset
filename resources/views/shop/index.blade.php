@@ -29,4 +29,7 @@
     
 </div>
 @endforeach
+
+{!! $products->render() !!}
+
 @stop
