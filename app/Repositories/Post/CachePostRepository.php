@@ -20,16 +20,6 @@ class CachePostRepository extends CacheRepository implements PostRepository
     }
 
     /**
-     * @param string $slug
-     *
-     * @return mixed
-     */
-    public function getBySlug($slug)
-    {
-        return $this->repository->getBySlug($slug);
-    }
-
-    /**
      * @param array $attributes
      *
      * @return mixed
@@ -83,7 +73,7 @@ class CachePostRepository extends CacheRepository implements PostRepository
 
     public function trashedCount()
     {
-        return \Cache::tags('posts', 'posts.index')->remember('posts.count.trashed', env('CACHE_TIME'), function () {
+        return \Cache::tags('posts')->remember('posts.count.trashed', config('cache.time'), function () {
             return $this->repository->trashedCount();
         });
     }

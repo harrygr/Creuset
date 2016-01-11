@@ -147,6 +147,7 @@ return [
         'Creuset\Providers\ComposerServiceProvider',
         'Creuset\Providers\AuthServiceProvider',
         'Creuset\Providers\CountriesServiceProvider',
+        'Creuset\Providers\CacheServiceProvider',
 
         /*
          * 3rd Party Service Providers

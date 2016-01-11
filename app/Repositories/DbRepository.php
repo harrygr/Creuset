@@ -22,13 +22,28 @@ abstract class DbRepository
      *
      * @return mixed
      */
-    public function all($with = [])
+    public function getPaginated($with = [])
     {
-        return $this->model->with($with)->latest()->get();
+        return $this->queryAll($with)->paginate(config('shop.products_per_page'));
     }
 
-    public function getBySlug($slug)
+    /**
+     * @param array $with
+     *
+     * @return mixed
+     */
+    public function all($with = [])
     {
-        return $this->model->where('slug', $slug)->first();
+        return $this->queryAll($with)->get();
+    }
+
+    protected function queryAll($with = [])
+    {
+        return $this->model->with($with)->latest();
+    }
+
+    public function getBySlug($slug, $with = [])
+    {
+        return $this->model->where('slug', $slug)->with($with)->first();
     }
 }

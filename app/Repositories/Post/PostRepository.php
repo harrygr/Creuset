@@ -19,7 +19,7 @@ interface PostRepository
      *
      * @return mixed
      */
-    public function getPaginated($with);
+    public function getPaginated($with = []);
 
     /**
      * @param string $slug
