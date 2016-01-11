@@ -13,7 +13,6 @@ class AuthTest extends TestCase
     {
         $email = 'jb@email.com';
         $user = factory(User::class)->create([
-            'auto_created' => true,
             'password' => bcrypt('password'),
             'email' => $email,
             ]);
@@ -26,7 +25,7 @@ class AuthTest extends TestCase
 
         $this->assertTrue(\Auth::check());
 
-        $this->seeInDataBase('users', ['email' => $email, 'auto_created' => false]);
+        $this->assertFalse(User::where('email', $email)->first()->autoCreated());
     }
 
     /** @test **/

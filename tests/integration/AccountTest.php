@@ -21,6 +21,8 @@ class AccountTest extends TestCase
    {
        $this->createOrder();
 
+       $this->be($this->customer);
+
        $this->visit('/account/addresses')
              ->press('Delete')
              ->see('Address deleted');

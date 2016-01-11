@@ -55,7 +55,7 @@ class OrderTest extends TestCase
         ->seePageIs('checkout/pay');
 
         $this->seeInDatabase('orders', ['amount' => $product->getPrice(), 'status' => 'pending']);
-        $this->seeInDatabase('users', ['email' => 'booboo@tempuser.com', 'auto_created' => true]);
+        $this->assertTrue(User::where('email', 'booboo@tempuser.com')->first()->autoCreated());
         $this->seeInDatabase('addresses', ['city' => 'London']);
     }
 
@@ -91,7 +91,7 @@ class OrderTest extends TestCase
         $product = $this->putProductInCart();
 
         $this->visit('checkout')
-        ->type('booboo2@tempuser.com', 'email')
+        ->type('booboo@tempuser.com', 'email')
         ->fillAddress()
         ->check('create_account')
         ->type('smoomoo', 'password')
@@ -100,7 +100,7 @@ class OrderTest extends TestCase
         ->seePageIs('checkout/pay');
 
         $this->seeInDatabase('orders', ['amount' => $product->getPrice(), 'status' => \Creuset\Order::PENDING]);
-        $this->seeInDatabase('users', ['email' => 'booboo2@tempuser.com', 'auto_created' => false]);
+        $this->assertFalse(User::where('email', 'booboo@tempuser.com')->first()->autoCreated());
         $this->seeInDatabase('addresses', ['city' => 'London']);
     }
 
@@ -112,8 +112,10 @@ class OrderTest extends TestCase
 
         $this->visit('checkout')
         ->type($user->email, 'email')
-        ->press('Proceed to Payment')
-        ->seePageIs(route('auth.login', ['email' => $user->email]))
+        ->fillAddress()
+        ->press('Proceed to Payment');
+
+        $this->seePageIs(route('auth.login', ['email' => $user->email]))
         ->see('This email has an account here')
         ->type($user->email, 'email')
         ->type('password', 'password')
@@ -138,6 +140,8 @@ class OrderTest extends TestCase
     public function it_views_an_order_summary()
     {
         $this->createOrder();
+
+        $this->be($this->customer);
         $order = $this->order;
         $this->visit("account/orders/{$order->id}")
         ->see($order->amount);

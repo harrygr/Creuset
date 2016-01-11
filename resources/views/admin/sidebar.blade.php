@@ -27,6 +27,13 @@
     </li>
 
     <li>
+        <a href="{{ route('admin.orders.index') }}"><i class="fa fa-fw fa-truck"></i> Orders</a>
+        <ul>
+            <li><a href="{{ route('admin.orders.index') }}">All Orders</a></li>
+        </ul>
+    </li>
+
+    <li>
         <a href="{{ route('admin.media.index') }}"><i class="fa fa-fw fa-image"></i> Media</a>
         <ul>
             <li><a href="{{ route('admin.media.index') }}">All Images</a></li>

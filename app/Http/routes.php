@@ -58,7 +58,12 @@ Route::group(['prefix' => 'account'], function () {
  * Admin Area
  */
 Route::group(['prefix' => 'admin'], function () {
+
     Route::get('/', ['uses' => 'Admin\AdminController@dashboard', 'as' => 'admin.dashboard']);
+
+    // Orders
+
+    Route::get('orders', ['uses' => 'Admin\OrdersController@index', 'as' => 'admin.orders.index']);
 
     // Posts
     Route::get('posts', ['uses' => 'Admin\PostsController@index', 'as' => 'admin.posts.index']);

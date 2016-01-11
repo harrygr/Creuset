@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b04be22f87afac5194b326cb26998402",
-    "content-hash": "bb637a0b084abff76cfb1ce353c5501e",
+    "hash": "7ac1a516d170206d096331ee1eac7177",
+    "content-hash": "a3f2a6dd42ec33b54841e93fcb71c4e5",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -291,64 +291,6 @@
             "time": "2015-11-06 14:35:42"
         },
         {
-            "name": "filp/whoops",
-            "version": "1.1.10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/filp/whoops.git",
-                "reference": "72538eeb70bbfb11964412a3d098d109efd012f7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/filp/whoops/zipball/72538eeb70bbfb11964412a3d098d109efd012f7",
-                "reference": "72538eeb70bbfb11964412a3d098d109efd012f7",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "0.9.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Whoops": "src/"
-                },
-                "classmap": [
-                    "src/deprecated"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Filipe Dobreira",
-                    "homepage": "https://github.com/filp",
-                    "role": "Developer"
-                }
-            ],
-            "description": "php error handling for cool kids",
-            "homepage": "https://github.com/filp/whoops",
-            "keywords": [
-                "error",
-                "exception",
-                "handling",
-                "library",
-                "silex-provider",
-                "whoops",
-                "zf2"
-            ],
-            "time": "2015-06-29 05:42:04"
-        },
-        {
             "name": "gloudemans/shoppingcart",
             "version": "1.3",
             "source": {
@@ -453,50 +395,6 @@
                 "markdown"
             ],
             "time": "2015-11-14 11:57:14"
-        },
-        {
-            "name": "guidovanbiemen/laravel-whoops",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/guidovanbiemen/laravel-whoops.git",
-                "reference": "e9fc491247e83a9452c3cf611449513bd7e8297c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/guidovanbiemen/laravel-whoops/zipball/e9fc491247e83a9452c3cf611449513bd7e8297c",
-                "reference": "e9fc491247e83a9452c3cf611449513bd7e8297c",
-                "shasum": ""
-            },
-            "require": {
-                "filp/whoops": "1.1.*",
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Gvb\\Whoops\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Guido van Biemen",
-                    "email": "guidovanbiemen@gmail.com"
-                }
-            ],
-            "description": "Laravel 5 Whoops integration package",
-            "keywords": [
-                "debug",
-                "error",
-                "exception",
-                "laravel",
-                "whoops"
-            ],
-            "time": "2015-07-23 19:03:27"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -1902,16 +1800,16 @@
         },
         {
             "name": "spatie/laravel-medialibrary",
-            "version": "3.11.3",
+            "version": "3.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-medialibrary.git",
-                "reference": "dfae8e69d01ed890dbb85811e3ca5d674eb0d966"
+                "reference": "6fe8d2285e67d01b5da548c11a91497f696dcc23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/dfae8e69d01ed890dbb85811e3ca5d674eb0d966",
-                "reference": "dfae8e69d01ed890dbb85811e3ca5d674eb0d966",
+                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/6fe8d2285e67d01b5da548c11a91497f696dcc23",
+                "reference": "6fe8d2285e67d01b5da548c11a91497f696dcc23",
                 "shasum": ""
             },
             "require": {
@@ -1919,7 +1817,7 @@
                 "illuminate/console": "^5.1",
                 "illuminate/database": "^5.1",
                 "illuminate/support": "^5.1",
-                "php": ">=5.5.0",
+                "php": "^5.5|^7.0",
                 "spatie/laravel-glide": "^2.2.4",
                 "spatie/pdf-to-image": "^1.0",
                 "spatie/string": "^2.0"
@@ -1958,7 +1856,7 @@
                 "media",
                 "spatie"
             ],
-            "time": "2015-12-21 18:55:51"
+            "time": "2016-01-08 18:54:39"
         },
         {
             "name": "spatie/pdf-to-image",
@@ -4284,7 +4182,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "guidovanbiemen/laravel-whoops": 20,
         "league/flysystem-aws-s3-v3": 20,
         "fzaninotto/faker": 20,
         "mockery/mockery": 20

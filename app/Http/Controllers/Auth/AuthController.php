@@ -93,6 +93,7 @@ class AuthController extends Controller
             'email'    => $data['email'],
             'username' => $data['username'],
             'password' => bcrypt($data['password']),
+            'last_seen_at' => new \DateTime,
         ]);
     }
 

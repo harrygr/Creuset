@@ -27,7 +27,7 @@ class UsersTableSeeder extends Seeder
         $users = array_map(function ($i) use ($roles) {
                 $user = factory('Creuset\User')->create();
 
-                $role = array_rand($roles);
+                $role = $roles[array_rand($roles)];
                 return $user->assignRole($role->name);
             }, range(1, 4));
     }
@@ -42,10 +42,10 @@ class UsersTableSeeder extends Seeder
         ];
 
         return array_map(function ($role) {
-            return Role::create([
+            return factory(Role::class)->create([
             'name'         => $role,
             'display_name' => ucwords($role),
-            ])->toArray();
+            ]);
         }, $roles);
     }
 }

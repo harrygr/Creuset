@@ -59,7 +59,7 @@ class DeriveUserForOrder
         // The email address has an account
         if ($user = User::where('email', $request->email)->first()) {
             // They were auto-created so we can't ask them to login. Just use their account for the order
-            if ($user->auto_created) {
+            if ($user->autoCreated()) {
                 $request->merge(['customer' => $user]);
 
                 return $next($request);
@@ -98,7 +98,7 @@ class DeriveUserForOrder
             'email'        => $data['email'],
             'username'     => str_slug($data['name']),
             'password'     => bcrypt($data->get('password', bin2hex(openssl_random_pseudo_bytes(6)))),
-            'auto_created' => !$data->has('password'),
+            'last_seen_at' => $data->has('password') ? new \DateTime : null,
         ]);
 
         $user->assignRole('customer');

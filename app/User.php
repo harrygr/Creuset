@@ -53,7 +53,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var array
      */
-    protected $fillable = ['username', 'name', 'email', 'password', 'role_id', 'auto_created'];
+    protected $fillable = ['username', 'name', 'email', 'password', 'role_id', 'last_seen_at'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -75,7 +75,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     /**
      * A user has several addresses.
      *
-     * @return 
+     * @return
      */
     public function addresses()
     {
@@ -104,5 +104,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function addAddress(Address $address)
     {
         return $this->addresses()->save($address);
+    }
+
+    /**
+     * Has the user been auto-created? I.e. they've never logged in.
+     * @return bool
+     */
+    public function autoCreated()
+    {
+        return is_null($this->last_seen_at);
     }
 }

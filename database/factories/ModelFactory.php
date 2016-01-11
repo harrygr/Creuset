@@ -42,6 +42,7 @@ $factory->define('Creuset\User', function ($faker) {
     'username'         => str_slug($name),
     'email'            => $faker->unique()->email,
     'password'         => bcrypt('password'),
+    'last_seen_at'     => new \DateTime,
     ];
 });
 

@@ -17,7 +17,7 @@ class StripeGateway implements GatewayInterface
         try {
             return Charge::create([
                                   'amount'      => $data['amount'],
-                                  'currency'    => 'GBP',
+                                  'currency'    => config('shop.currency', 'GBP'),
                                   'description' => $data['description'],
                                   'card'        => $data['card'],
                                   ]);

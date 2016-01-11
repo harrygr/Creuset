@@ -8,7 +8,7 @@ trait CreatesOrders
 
     protected function createOrder()
     {
-        $this->customer = $this->loginWithUser();
+        $this->customer = factory(\Creuset\User::class)->create();
         $this->address = factory(\Creuset\Address::class)->create(['user_id' => $this->customer->id]);
         $this->order = factory('Creuset\Order')->create([
                                                         'user_id'             => $this->customer->id,
@@ -19,5 +19,6 @@ trait CreatesOrders
 
         $this->order->amount = $order_item->price_paid;
         $this->order->save();
+        return $this->order;
     }
 }

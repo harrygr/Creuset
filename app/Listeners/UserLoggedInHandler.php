@@ -7,7 +7,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class UserLoggedInHandler implements ShouldQueue
-{   
+{
     /**
      * Create the event listener.
      *
@@ -28,7 +28,6 @@ class UserLoggedInHandler implements ShouldQueue
     {
         $event->user->update([
             'last_seen_at' => new \DateTime(),
-            'auto_created' => false,
         ]);
     }
 }
