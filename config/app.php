@@ -2,6 +2,8 @@
 
 return [
 
+    'env' => env('APP_ENV', 'production'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
@@ -113,12 +115,10 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
-        'Illuminate\Foundation\Providers\ArtisanServiceProvider',
         'Illuminate\Auth\AuthServiceProvider',
         'Illuminate\Bus\BusServiceProvider',
         'Illuminate\Cache\CacheServiceProvider',
         'Illuminate\Foundation\Providers\ConsoleSupportServiceProvider',
-        'Illuminate\Routing\ControllerServiceProvider',
         'Illuminate\Cookie\CookieServiceProvider',
         'Illuminate\Database\DatabaseServiceProvider',
         'Illuminate\Encryption\EncryptionServiceProvider',
@@ -140,21 +140,22 @@ return [
          * Application Service Providers...
          */
         'Creuset\Providers\AppServiceProvider',
-        'Creuset\Providers\BusServiceProvider',
-        'Creuset\Providers\ConfigServiceProvider',
         'Creuset\Providers\EventServiceProvider',
         'Creuset\Providers\RouteServiceProvider',
         'Creuset\Providers\RouteServiceProvider',
         'Creuset\Providers\DatabaseServiceProvider',
         'Creuset\Providers\ComposerServiceProvider',
         'Creuset\Providers\AuthServiceProvider',
+        'Creuset\Providers\CountriesServiceProvider',
+        'Creuset\Providers\CacheServiceProvider',
 
         /*
-         * 3rd Party Service Providoes
+         * 3rd Party Service Providers
          */
-        'Gvb\Whoops\ServiceProvider',
         'Collective\Html\HtmlServiceProvider',
         Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
+        Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
+        GrahamCampbell\Markdown\MarkdownServiceProvider::class,
 
     ],
 
@@ -202,9 +203,12 @@ return [
         'Validator'     => 'Illuminate\Support\Facades\Validator',
         'View'          => 'Illuminate\Support\Facades\View',
         'Form'          => 'Collective\Html\FormFacade',
-          'HTML'        => 'Collective\Html\HtmlFacade',
+        'HTML'          => 'Collective\Html\HtmlFacade',
         'Str'           => 'Illuminate\Support\Str',
         'Gate'          => Illuminate\Support\Facades\Gate::class,
+        'Cart'          => 'Gloudemans\Shoppingcart\Facades\Cart',
+        'Markdown'      => 'GrahamCampbell\Markdown\Facades\Markdown',
+        'Present'       => 'Creuset\Presenters\Presenter',
 
     ],
 

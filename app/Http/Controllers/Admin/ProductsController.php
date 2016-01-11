@@ -50,6 +50,7 @@ class ProductsController extends Controller
     public function update(Product $product, UpdateProductRequest $request)
     {
         $product->update($request->all());
+
         if ($request->has('terms')) {
             $product->terms()->sync($request->terms);
         }

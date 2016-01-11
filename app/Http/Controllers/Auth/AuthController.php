@@ -4,7 +4,7 @@ namespace Creuset\Http\Controllers\Auth;
 
 use Creuset\Http\Controllers\Controller;
 use Creuset\User;
-use Illuminate\Auth\Guard;
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
@@ -28,31 +28,18 @@ class AuthController extends Controller
     }
 
     /**
-     * Handle a login request to the application.
-     *
-     * @param \Illuminate\Http\Request $request
+     * Show the application login form.
      *
      * @return \Illuminate\Http\Response
      */
-    // public function postLogin(Request $request)
-    // {
-    // 	$this->validate($request, [
-    // 		'username' => 'required', 'password' => 'required',
-    // 	]);
+    public function getLogin(Request $request)
+    {
+        if ($request->session()->has('url.intended')) {
+            $request->session()->flash('url.intended', $request->session()->get('url.intended'));
+        }
 
-    // 	// Attempt logging in with username first, or email if that fails
-    // 	if ( \Auth::attempt(['username' => $request->username, 'password' => $request->password], $request->has('remember')) or
-    // 		 \Auth::attempt(['email' => $request->username, 'password' => $request->password], $request->has('remember')))
-    // 	{
-    // 		return redirect()->intended(route('admin.posts.index'));
-    // 	}
-
-    // 	return \Redirect::route('auth.login')
-    // 				->withInput($request->only('email'))
-    // 				->withErrors([
-    // 					'username' => 'These credentials do not match our records.',
-    // 				]);
-    // }
+        return view('auth.login');
+    }
 
     /**
      * Handle a registration request for the application.
@@ -126,6 +113,6 @@ class AuthController extends Controller
      */
     public function redirectPath()
     {
-        return route('admin.posts.index');
+        return '/';
     }
 }

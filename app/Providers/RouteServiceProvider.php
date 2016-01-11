@@ -3,6 +3,8 @@
 namespace Creuset\Providers;
 
 use Creuset\Post;
+use Creuset\Product;
+use Creuset\Term;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
 
@@ -33,6 +35,12 @@ class RouteServiceProvider extends ServiceProvider
         $router->model('post', 'Creuset\Post');
         $router->model('product', 'Creuset\Product');
         $router->model('media', 'Creuset\Media');
+        $router->model('address', 'Creuset\Address');
+        //$router->model('order', 'Creuset\Order');
+
+        $router->bind('order', function ($id) {
+            return \Creuset\Order::findOrFail($id)->load(['items', 'shipping_address', 'billing_address']);
+        });
 
         $router->bind('trashedPost', function ($id) {
             return Post::withTrashed()->find($id);
@@ -40,6 +48,17 @@ class RouteServiceProvider extends ServiceProvider
 
         $router->bind('username', function ($username) {
             return \Creuset\User::where('username', $username)->firstOrFail();
+        });
+
+        $router->bind('product_slug', function ($slug) {
+            return Product::where('slug', $slug)->firstOrFail();
+        });
+
+        $router->bind('product_category', function ($slug) {
+            return Term::firstOrNew([
+                'taxonomy' => 'product_category',
+                'slug' => $slug
+                ]);
         });
     }
 

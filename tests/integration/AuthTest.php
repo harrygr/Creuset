@@ -2,48 +2,32 @@
 
 namespace Integration;
 
+use Creuset\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use TestCase;
 
 class AuthTest extends TestCase
 {
-    use DatabaseTransactions;
-
     /** @test **/
-    public function it_can_login_with_valid_credentials()
+    public function it_marks_a_user_as_not_auto_created_if_they_log_in_succesfully()
     {
-        $credentials = [
-        'email' => 'jb@email.com',
-        ];
-
-        $user = factory('Creuset\User')->create($credentials);
+        $email = 'jb@email.com';
+        $user = factory(User::class)->create([
+            'auto_created' => true,
+            'password' => bcrypt('password'),
+            'email' => $email,
+            ]);
 
         $this->visit('/login')
-        ->type($credentials['email'], 'email')
+        ->type($email, 'email')
         ->type('password', 'password')
         ->press('Login')
-        ->seePageIs('/admin/posts');
+        ->seePageIs('/');
+
+        $this->assertTrue(\Auth::check());
+
+        $this->seeInDataBase('users', ['email' => $email, 'auto_created' => false]);
     }
-
-    // /** @test **/
-    // function it_allows_a_username_instead_of_email_to_login()
-    // {
-    //     // Assuming we have a user with these credentials
-    //     $credentials = [
-    //     'username'  => 'joebloggs',
-    //     ];
-
-    //     $user = factory('Creuset\User')->create($credentials);
-
-    //     // We should be able to log in
-    //     // (The factory-defined password is 'password')
-
-    //     $this->visit('/login')
-    //     ->type($credentials['username'], 'email')
-    //     ->type('password', 'password')
-    //     ->press('Login')
-    //     ->seePageIs('/admin/posts');
-    // }
 
     /** @test **/
     public function it_cannot_login_with_invalid_credentials()
@@ -54,6 +38,8 @@ class AuthTest extends TestCase
         ->press('Login')
         ->seePageIs('/login')
         ->see('These credentials do not match our records');
+
+        $this->assertTrue(\Auth::guest());
     }
 
     /** @test **/

@@ -2,7 +2,7 @@
 
 namespace Creuset\Http\Requests;
 
-# use Creuset\Http\Requests\Request;
+// use Creuset\Http\Requests\Request;
 
 class UpdatePostRequest extends PostRequest
 {

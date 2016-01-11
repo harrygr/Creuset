@@ -2,7 +2,7 @@
 
 namespace Creuset\Presenters;
 
-use Illuminate\View\Expression;
+use Illuminate\Support\HtmlString;
 
 abstract class ModelPresenter extends Presenter
 {
@@ -16,6 +16,6 @@ abstract class ModelPresenter extends Presenter
             sprintf('<a href="%s" data-method="delete" data-confirm="Are you sure?" class="text-danger" rel="nofollow">Trash</a>', route("admin.{$this->modelRoute}.delete", [$this->model->id]));
         }
 
-        return new Expression($html);
+        return new HtmlString($html);
     }
 }

@@ -19,4 +19,14 @@ abstract class Presenter
 
         return $this->model->{$property};
     }
+
+    public static function money($value)
+    {
+        return money_format(config('shop.currency_symbol') . '%i', $value);
+    }
+
+    public static function unslug($string)
+    {
+        return str_replace('_', ' ', str_replace('-', ' ', $string));
+    }
 }

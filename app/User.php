@@ -17,6 +17,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     use Authenticatable, Authorizable, CanResetPassword, PresentableTrait, RoleableTrait;
 
     /**
+     * The roles that should always be available
+     * @var Array
+     */
+    public static $base_roles = [
+        'customer'      => 'Customer',
+        'subscriber'    => 'Subscriber',
+        'manager'       => 'Manager',
+        'admin'         => 'Admin',
+    ];
+
+    /**
      * The presenter instance to use.
      *
      * @var string
@@ -42,7 +53,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var array
      */
-    protected $fillable = ['username', 'name', 'email', 'password', 'role_id'];
+    protected $fillable = ['username', 'name', 'email', 'password', 'role_id', 'auto_created'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -50,4 +61,48 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    /**
+     * A user has several orders.
+     *
+     * @return [type] [description]
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class)->orderBy('created_at', 'DESC');
+    }
+
+    /**
+     * A user has several addresses.
+     *
+     * @return 
+     */
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
+
+    /**
+     * Does the user own the model.
+     *
+     * @param Model $model The model to check
+     *
+     * @return bool
+     */
+    public function owns(Model $model)
+    {
+        return $this->id == $model->user_id;
+    }
+
+    /**
+     * Attach an address to a user.
+     *
+     * @param Address $address
+     *
+     * @return Address
+     */
+    public function addAddress(Address $address)
+    {
+        return $this->addresses()->save($address);
+    }
 }

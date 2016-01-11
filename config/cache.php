@@ -76,4 +76,11 @@ return [
 
     'prefix' => 'creuset',
 
+    /*
+    |
+    | The default time to hold something in the cache for
+    |
+     */
+    'time' => env('CACHE_TIME', 10),
+
 ];
