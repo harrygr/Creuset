@@ -9,12 +9,12 @@ class CachePostRepository extends CacheRepository implements PostRepository
 {
     /**
      * @param PostRepository $repository
-     * @param Post $model
+     * @param Post           $model
      */
     public function __construct(PostRepository $repository, Post $model = null)
     {
         $this->repository = $repository;
-        $this->model = $model ?: new Post;
+        $this->model = $model ?: new Post();
 
         $this->tag = $this->model->getTable();
     }

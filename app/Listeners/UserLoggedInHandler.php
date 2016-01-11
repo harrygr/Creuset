@@ -3,7 +3,6 @@
 namespace Creuset\Listeners;
 
 use Illuminate\Auth\Events\Login;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class UserLoggedInHandler implements ShouldQueue
@@ -21,7 +20,8 @@ class UserLoggedInHandler implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  Login  $event
+     * @param Login $event
+     *
      * @return void
      */
     public function handle(Login $event)

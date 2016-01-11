@@ -57,8 +57,7 @@ class OrdersController extends Controller
 
     public function completed(Request $request)
     {
-        if (!$request->session()->has('order_id'))
-        {
+        if (!$request->session()->has('order_id')) {
             abort(419);
         }
         $order = Order::findOrFail($request->session()->get('order_id'));

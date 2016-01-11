@@ -22,7 +22,8 @@ class ComposerServiceProvider extends ServiceProvider
     }
 
     /**
-     * Share a list of roles with the views that require it
+     * Share a list of roles with the views that require it.
+     *
      * @return void
      */
     private function shareRoles()
@@ -37,7 +38,8 @@ class ComposerServiceProvider extends ServiceProvider
     }
 
     /**
-     * Share view-specific nav links
+     * Share view-specific nav links.
+     *
      * @return void
      */
     private function shareNavLinks()
@@ -49,7 +51,8 @@ class ComposerServiceProvider extends ServiceProvider
     }
 
     /**
-     * Share Post data with views
+     * Share Post data with views.
+     *
      * @return void
      */
     private function sharePostData()
@@ -59,7 +62,7 @@ class ComposerServiceProvider extends ServiceProvider
 
     private function shareCountries()
     {
-        view()->composer(['shop.checkout', 'addresses.form'], function($view) {
+        view()->composer(['shop.checkout', 'addresses.form'], function ($view) {
             $countries_repository = $this->app->make(CountryRepository::class);
 
             $view->with('countries', $countries_repository->lists());

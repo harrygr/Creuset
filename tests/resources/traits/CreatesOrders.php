@@ -19,6 +19,7 @@ trait CreatesOrders
 
         $this->order->amount = $order_item->price_paid;
         $this->order->save();
+
         return $this->order;
     }
 }

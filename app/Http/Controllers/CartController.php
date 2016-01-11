@@ -11,7 +11,8 @@ use Illuminate\Support\HtmlString;
 class CartController extends Controller
 {
     /**
-     * Show a list of the cart contents
+     * Show a list of the cart contents.
+     *
      * @return \Illuminate\Http\Response
      */
     public function index()

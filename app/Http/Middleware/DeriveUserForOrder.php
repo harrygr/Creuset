@@ -98,10 +98,11 @@ class DeriveUserForOrder
             'email'        => $data['email'],
             'username'     => str_slug($data['name']),
             'password'     => bcrypt($data->get('password', bin2hex(openssl_random_pseudo_bytes(6)))),
-            'last_seen_at' => $data->has('password') ? new \DateTime : null,
+            'last_seen_at' => $data->has('password') ? new \DateTime() : null,
         ]);
 
         $user->assignRole('customer');
+
         return $user;
     }
 

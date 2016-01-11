@@ -28,6 +28,7 @@ class UsersTableSeeder extends Seeder
                 $user = factory('Creuset\User')->create();
 
                 $role = $roles[array_rand($roles)];
+
                 return $user->assignRole($role->name);
             }, range(1, 4));
     }

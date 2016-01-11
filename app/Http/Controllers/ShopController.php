@@ -2,10 +2,8 @@
 
 namespace Creuset\Http\Controllers;
 
-use Creuset\Product;
 use Creuset\Repositories\Product\ProductRepository;
 use Creuset\Term;
-use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
@@ -28,6 +26,7 @@ class ShopController extends Controller
         } else {
             $products = $this->products->inCategory($product_category);
         }
+
         return view('shop.index')->with(compact('product_category', 'products'));
     }
 }

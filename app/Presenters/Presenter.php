@@ -22,7 +22,7 @@ abstract class Presenter
 
     public static function money($value)
     {
-        return money_format(config('shop.currency_symbol') . '%i', $value);
+        return money_format(config('shop.currency_symbol').'%i', $value);
     }
 
     public static function unslug($string)

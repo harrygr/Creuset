@@ -34,9 +34,11 @@ class Address extends Model
     }
 
     /**
-     * Get the full country name
-     * @param  string $code The address's country code
-     * @return string       The full country name
+     * Get the full country name.
+     *
+     * @param string $code The address's country code
+     *
+     * @return string The full country name
      */
     public function getCountryNameAttribute()
     {
@@ -46,7 +48,8 @@ class Address extends Model
     }
 
     /**
-     * Get the raw country code
+     * Get the raw country code.
+     *
      * @return string
      */
     public function getCountryCodeAttribute()

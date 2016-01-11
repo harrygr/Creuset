@@ -41,7 +41,7 @@ class DatabaseServiceProvider extends ServiceProvider
             return $this->app->make(DbTermRepository::class);
         });
 
-        $this->app->singleton(ProductRepository::class, function() {
+        $this->app->singleton(ProductRepository::class, function () {
             return new CacheProductRepository(
                 $this->app->make(DbProductRepository::class)
             );

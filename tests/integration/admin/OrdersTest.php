@@ -17,6 +17,5 @@ class OrdersTest extends TestCase
 
         $this->visit('admin/orders')
              ->see("#{$order->id}");
-
     }
 }

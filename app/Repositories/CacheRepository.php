@@ -4,7 +4,6 @@ namespace Creuset\Repositories;
 
 abstract class CacheRepository
 {
-
     protected $repository;
 
     /**
@@ -13,13 +12,14 @@ abstract class CacheRepository
     protected $model;
 
     /**
-     * The default tag for caching
+     * The default tag for caching.
+     *
      * @var string
      */
     protected $tag;
 
     /**
-     * Find an instance of the model by its ID
+     * Find an instance of the model by its ID.
      * 
      * @param int   $id
      * @param array $with
@@ -51,7 +51,7 @@ abstract class CacheRepository
     }
 
     /**
-     * Get all instances of the model
+     * Get all instances of the model.
      * 
      * @param array $with
      *
@@ -63,12 +63,13 @@ abstract class CacheRepository
 
         return \Cache::tags($tags)->remember("{$this->tag}.all", config('cache.time'), function () use ($with) {
            return $this->repository->all($with);
-        });        
+        });
     }
 
     /**
-     * Get a count of all models in the database
-     * @return integer
+     * Get a count of all models in the database.
+     *
+     * @return int
      */
     public function count()
     {
@@ -78,7 +79,7 @@ abstract class CacheRepository
     }
 
     /**
-     * Get an instance of a model by its slug
+     * Get an instance of a model by its slug.
      * 
      * @param string $slug
      *

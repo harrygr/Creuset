@@ -2,7 +2,6 @@
 
 namespace Creuset\Providers;
 
-use Creuset\Jobs\MarkUserActive;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 

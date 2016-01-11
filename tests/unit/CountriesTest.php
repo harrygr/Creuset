@@ -11,7 +11,7 @@ class CountriesTest extends TestCase
     /** @test **/
     public function it_gets_a_list_of_countries_from_a_file()
     {
-        $country_repository = new FileCountryRepository;
+        $country_repository = new FileCountryRepository();
 
         $countries = $country_repository->lists();
         $this->assertContains('United Kingdom', $countries);
@@ -36,7 +36,7 @@ class CountriesTest extends TestCase
     /** @test **/
     public function it_orders_with_popular_countries_first()
     {
-        $country_repository = new FileCountryRepository;
+        $country_repository = new FileCountryRepository();
         $country_repository->first_countries = ['GB', 'US'];
 
         $countries = $country_repository->lists();
@@ -46,7 +46,7 @@ class CountriesTest extends TestCase
     /** @test **/
     public function it_takes_exception_to_non_existant_country_code()
     {
-        $country_repository = new FileCountryRepository;
+        $country_repository = new FileCountryRepository();
         $country_repository->first_countries = ['GB', 'US', 'XX'];
 
         $this->setExpectedException('\InvalidArgumentException');

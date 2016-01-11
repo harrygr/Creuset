@@ -20,12 +20,15 @@ class CheckoutController extends Controller
             return view('shop.cart_empty');
         }
         $request->session()->flash('url.intended', 'checkout');
+
         return view('shop.checkout');
     }
 
     /**
-     * Show the page for paying for an order
-     * @param  Request $request
+     * Show the page for paying for an order.
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function pay(Request $request)

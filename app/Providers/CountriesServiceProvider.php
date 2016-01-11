@@ -26,7 +26,7 @@ class CountriesServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(CountryRepository::class, function() {
+        $this->app->singleton(CountryRepository::class, function () {
             return new CacheCountryRepository($this->app->make(FileCountryRepository::class));
         });
     }

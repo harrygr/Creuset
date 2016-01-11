@@ -153,8 +153,9 @@ class Product extends Model implements HasMediaConversions, Termable
     }
 
     /**
-     * Get whether a product is in stock
-     * @return boolean
+     * Get whether a product is in stock.
+     *
+     * @return bool
      */
     public function inStock()
     {
