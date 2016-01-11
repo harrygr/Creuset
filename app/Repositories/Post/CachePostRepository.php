@@ -3,49 +3,20 @@
 namespace Creuset\Repositories\Post;
 
 use Creuset\Post;
+use Creuset\Repositories\CacheRepository;
 
-class CachePostRepository implements PostRepository
+class CachePostRepository extends CacheRepository implements PostRepository
 {
     /**
-     * @var PostRepository
-     */
-    private $repository;
-
-    /**
      * @param PostRepository $repository
+     * @param Post $model
      */
-    public function __construct(PostRepository $repository)
+    public function __construct(PostRepository $repository, Post $model = null)
     {
         $this->repository = $repository;
-    }
+        $this->model = $model ?: new Post;
 
-    /**
-     * @param int   $id
-     * @param array $with
-     *
-     * @return mixed
-     */
-    public function fetch($id, $with = [])
-    {
-        $withs = implode('-', $with);
-
-        return \Cache::remember("post.{$id}.{$withs}", env('CACHE_TIME'), function () use ($id) {
-           return $this->repository->fetch($id);
-        });
-    }
-
-    /**
-     * @param array $with
-     *
-     * @return mixed
-     */
-    public function getPaginated($with)
-    {
-        $page = \Request::get('page', 0);
-
-        return \Cache::tags('posts', 'posts.index')->remember("posts.paginated.page.{$page}", env('CACHE_TIME'), function () use ($with) {
-            return $this->repository->getPaginated($with);
-        });
+        $this->tag = $this->model->getTable();
     }
 
     /**
@@ -108,13 +79,6 @@ class CachePostRepository implements PostRepository
         \Cache::flush('posts.index');
 
         return $this->repository->restore($post);
-    }
-
-    public function count()
-    {
-        return \Cache::tags('posts', 'posts.index')->remember('posts.count', env('CACHE_TIME'), function () {
-            return $this->repository->count();
-        });
     }
 
     public function trashedCount()

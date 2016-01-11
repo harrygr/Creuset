@@ -11,9 +11,9 @@ class CountriesTest extends TestCase
     /** @test **/
     public function it_gets_a_list_of_countries_from_a_file()
     {
-        $cache_country_repository = new FileCountryRepository;
+        $country_repository = new FileCountryRepository;
 
-        $countries = $cache_country_repository->lists();
+        $countries = $country_repository->lists();
         $this->assertContains('United Kingdom', $countries);
     }
 
@@ -31,6 +31,34 @@ class CountriesTest extends TestCase
         $countries = $country_repository->lists();
 
         $this->assertContains('United Kingdom', $countries);
+    }
+
+    /** @test **/
+    public function it_orders_with_popular_countries_first()
+    {
+        $country_repository = new FileCountryRepository;
+        $country_repository->first_countries = ['GB', 'US'];
+
+        $countries = $country_repository->lists();
+        $this->assertEquals('United Kingdom', $countries->first());
+    }
+
+    /** @test **/
+    public function it_takes_exception_to_non_existant_country_code()
+    {
+        $country_repository = new FileCountryRepository;
+        $country_repository->first_countries = ['GB', 'US', 'XX'];
+
+        $this->setExpectedException('\InvalidArgumentException');
+        $countries = $country_repository->lists();
+    }
+
+    /** @test **/
+    public function it_gets_a_country_name_from_a_code()
+    {
+        $country_repository = \App::make(CountryRepository::class);
+
+        $this->assertEquals('United Kingdom', $country_repository->getByCode('GB'));
     }
 
     /** @test **/
