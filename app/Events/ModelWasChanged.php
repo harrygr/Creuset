@@ -2,7 +2,6 @@
 
 namespace Creuset\Events;
 
-
 use Illuminate\Queue\SerializesModels;
 
 class ModelWasChanged extends Event
