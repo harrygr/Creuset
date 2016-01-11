@@ -1,6 +1,7 @@
-<p class="col-xs-6 text-right" style="width: 105px">
+<p>
+<strong>Cart</strong> 
 <a href="/cart">
-&pound;{{ Cart::total() }} ({{ Cart::count() }})
+{{ Present::money(Cart::total()) }} ({{ Cart::count() }} {{ str_plural('Item', Cart::count()) }})
 </a>
 </p>
 

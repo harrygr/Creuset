@@ -3,53 +3,71 @@
 namespace Creuset\Http\Controllers;
 
 use Cart;
-use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests;
 use Creuset\Http\Requests\AddToCartRequest;
 use Creuset\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\HtmlString;
 
 class CartController extends Controller
 {
+    /**
+     * Show a list of the cart contents.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-      return view('cart.index');
+        if (!Cart::count()) {
+            return view('shop.cart_empty');
+        }
+
+        return view('shop.cart');
     }
 
     /**
-     * Put an item in the cart
-     * @param  Request $request 
-     * @return Illuminate\Http\Response
+     * Put an item in the cart.
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\Response
      */
     public function store(AddToCartRequest $request)
     {
         $product = Product::findOrFail($request->product_id);
+        $qty = (int) $request->quantity;
 
         Cart::associate('Product', 'Creuset')->add([
                   'id'    => $product->id,
-                  'qty'   => $request->quantity,
+                  'qty'   => $qty,
                   'name'  => $product->name,
                   'price' => $product->getPrice(),
                   ]);
+
+        $cart_link = '<strong><a href="/cart">View Cart</a></strong>';
+
         return redirect()->back()->with([
-          'alert'       => "$product->name added to cart",
-          'alert-class' => "success",
+          'alert'       => new HtmlString(sprintf('%d %s added to cart. %s', $qty, str_plural($product->name, $qty), $cart_link)),
+          'alert-class' => 'success',
           ]);
     }
 
     /**
-     * Remove an item from the cart
-     * @param  Request $request 
-     * @param  string  $rowid   The row id to remove
-     * @return Illuminate\Http\Response
+     * Remove an item from the cart.
+     *
+     * @param Request $request
+     * @param string  $rowid   The row id to remove
+     *
+     * @return \Illuminate\Http\Response
      */
     public function remove(Request $request, $rowid)
     {
-        $product = \Cart::get($rowid)->product;
+        $product = Cart::get($rowid)->product;
+
         Cart::remove($rowid);
-        return redirect()->back()->with([
-          'alert'       => "$product->name removed from cart",
-          'alert-class' => "success",
+
+        return redirect()->route('cart')->with([
+          'alert'       => "{$product->name} removed from cart",
+          'alert-class' => 'success',
           ]);
     }
 }

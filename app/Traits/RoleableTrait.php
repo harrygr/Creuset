@@ -2,7 +2,6 @@
 
 namespace Creuset\Traits;
 
-use Creuset\Exceptions\NonExistantRoleException;
 use Creuset\Role;
 
 trait RoleableTrait
@@ -46,10 +45,14 @@ trait RoleableTrait
      */
     public function assignRole($role_name)
     {
-        $role = Role::where('name', $role_name)->first();
+        if ($this->isBaseRole($role_name)) {
+            $role = Role::firstOrCreate(['name' => $role_name]);
+        } else {
+            $role = Role::where('name', $role_name)->first();
+        }
 
         if (!$role) {
-            throw new NonExistantRoleException("The role to assign '$role_name' does not exist");
+            throw new \InvalidArgumentException("The role to assign '$role_name' does not exist");
         }
 
         if (!$this->hasRole($role_name)) {
@@ -58,5 +61,10 @@ trait RoleableTrait
         }
 
         return $this;
+    }
+
+    protected function isBaseRole($role_name)
+    {
+        return in_array($role_name, array_keys(self::$base_roles));
     }
 }

@@ -3,7 +3,7 @@
 @section('content')
 
 <ol class="breadcrumb">
-  @if ($product_category->id)
+  @if ($product_category->id or 'uncategorised' == $product_category->slug)
   <li><a href="/shop">Shop</a></li>
   <li class="active">{{ $product_category->term }}</li>
   @else
@@ -15,9 +15,10 @@
 <div class="row">
 
     @foreach ($product_group as $product)
-    <div class="product col-md-3">
+    <div class="product col-md-3 col-xs-6">
         <a href="{{ $product->url }}">
-        {{ $product->present()->thumbnail() }}
+        <img src="{{ $product->present()->thumbnail_url(300) }}" alt="" class="img-responsive">
+        
         </a>
         <a href="{{ $product->url }}">
         <h3>{{ $product->name }}</h3>
@@ -28,4 +29,7 @@
     
 </div>
 @endforeach
+
+{!! $products->render() !!}
+
 @stop

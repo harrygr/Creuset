@@ -4,18 +4,23 @@ namespace Creuset;
 
 use Carbon\Carbon;
 use Creuset\Contracts\Termable;
-use Creuset\Media;
 use Creuset\Presenters\PresentableTrait;
 use Creuset\Traits\Postable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use League\CommonMark\CommonMarkConverter;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 
 class Product extends Model implements HasMediaConversions, Termable
 {
     use PresentableTrait, HasMediaTrait, SoftDeletes, Postable;
+
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    public $table = 'products';
 
     public function registerMediaConversions()
     {
@@ -30,13 +35,6 @@ class Product extends Model implements HasMediaConversions, Termable
      * @var array
      */
     protected $dates = ['created_at', 'updated_at', 'published_at', 'deleted_at'];
-
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'products';
 
     /**
      * The attributes that are mass assignable.
@@ -132,12 +130,12 @@ class Product extends Model implements HasMediaConversions, Termable
     }
 
     public function getProductCategoryAttribute()
-    {   
+    {
         if ($this->product_categories->count() == 0) {
             return new Term([
               'taxonomy' => 'product_category',
-              'slug'  => 'uncategorised',
-              'term'  => 'Uncategorised',
+              'slug'     => 'uncategorised',
+              'term'     => 'Uncategorised',
               ]);
         }
 
@@ -145,11 +143,22 @@ class Product extends Model implements HasMediaConversions, Termable
     }
 
     /**
-     * Get the price of the product
-     * @return float 
+     * Get the price of the product.
+     *
+     * @return float
      */
     public function getPrice()
     {
         return $this->sale_price > 0 ? $this->sale_price : $this->price;
+    }
+
+    /**
+     * Get whether a product is in stock.
+     *
+     * @return bool
+     */
+    public function inStock()
+    {
+        return $this->stock_qty > 0;
     }
 }

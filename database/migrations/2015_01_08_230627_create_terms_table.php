@@ -16,7 +16,7 @@ class CreateTermsTable extends Migration
             $table->increments('id');
             $table->string('taxonomy')->default('category');
             $table->string('term');
-            $table->string('slug');
+            $table->string('slug')->index();
             $table->timestamps();
 
             $table->unique(['taxonomy', 'term']);
@@ -25,8 +25,7 @@ class CreateTermsTable extends Migration
 
         Schema::create('termables', function (Blueprint $table) {
             $table->integer('term_id')->unsigned();
-            $table->integer('termable_id')->unsigned();
-            $table->string('termable_type');
+            $table->morphs('termable');
 
             $table->foreign('term_id')->references('id')->on('terms')->onDelete('cascade');
         });

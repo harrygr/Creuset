@@ -24,12 +24,24 @@
     <div class="container">
     <header class="clearfix">
         <h1>Creuset</h1>
-        <div class="pull-right">
-            @include('partials.cart')
+        <div class="row">
+            <div class="col-md-6">
+                @include('partials._auth')
+            </div>    
+            <div class="col-md-6 text-right">
+                @include('partials.cart')
+            </div>
         </div>
+        @include('partials._navbar')
     </header>
     @include('partials.alert')
     @yield('content')
     </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.13/vue.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.payment/1.3.2/jquery.payment.min.js"></script>
+
+@yield('scripts')
 </body>
 </html>

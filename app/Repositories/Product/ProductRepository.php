@@ -17,6 +17,13 @@ interface ProductRepository
     public function all($with = []);
 
     /**
+     * @param array $with
+     *
+     * @return mixed
+     */
+    public function getPaginated($with = []);
+
+    /**
      * @param array $attributes
      *
      * @return mixed

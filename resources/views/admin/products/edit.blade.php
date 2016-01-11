@@ -9,6 +9,9 @@ Edit Product
 @include('partials.nav')
 
 <h1>Edit Product</h1>
+<p>
+    <a href="{{ $product->url }}" class="btn btn-default">View Product</a>
+</p>
 
 @include('partials.errors')
 

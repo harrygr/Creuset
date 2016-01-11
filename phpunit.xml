@@ -26,9 +26,11 @@
         <env name="APP_ENV" value="testing"/>
         <env name="APP_URL" value="http://creuset.app"/>
         <env name="CACHE_DRIVER" value="array"/>
+        <env name="CACHE_TIME" value="1"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="DB_DRIVER" value="testing" />
         <env name="DEFAULT_FILESYSTEM" value="local" />
         <env name="MEDIA_FILESYSTEM" value="testmedia" />
+        <env name="MAIL_DRIVER" value="log" />
     </php>
 </phpunit>

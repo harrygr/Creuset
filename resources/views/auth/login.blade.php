@@ -4,7 +4,7 @@
 
 <div class="panel-heading">Login</div>
 <div class="panel-body">
-
+	@include('partials.alert')
 	@include('partials.errors')
 
 	<form class="form-horizontal" role="form" method="POST" action="{{ route('auth.login') }}">
@@ -13,7 +13,7 @@
 		<div class="form-group">
 			<label class="col-md-4 control-label">E-Mail Address</label>
 			<div class="col-md-6">
-				<input type="text" class="form-control" name="email" value="{{ old('email') }}">
+				<input type="text" class="form-control" name="email" value="{{ old('email', Request::get('email')) }}">
 			</div>
 		</div>
 
