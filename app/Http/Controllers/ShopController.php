@@ -24,11 +24,10 @@ class ShopController extends Controller
     public function index(Term $product_category = null)
     {
         if (!$product_category->slug) {
-            $products = $this->products->all();
+            $products = $this->products->getPaginated();
         } else {
             $products = $this->products->inCategory($product_category);
         }
-
         return view('shop.index')->with(compact('product_category', 'products'));
     }
 }

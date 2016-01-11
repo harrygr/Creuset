@@ -20,7 +20,7 @@ class Address extends Model
         'line_1'    => 'required',
         'city'      => 'required',
         'postcode'  => 'required',
-        'country'   => 'required',
+        'country'   => 'required|alpha|size:2',
     ];
 
     public function user()
@@ -31,5 +31,26 @@ class Address extends Model
     public function getFullNameAttribute()
     {
         return $this->name;
+    }
+
+    /**
+     * Get the full country name
+     * @param  string $code The address's country code
+     * @return string       The full country name
+     */
+    public function getCountryNameAttribute()
+    {
+        $countries = \App::make(\Creuset\Countries\CountryRepository::class);
+
+        return $countries->getByCode($this->country);
+    }
+
+    /**
+     * Get the raw country code
+     * @return string
+     */
+    public function getCountryCodeAttribute()
+    {
+        return $this['attributes']['country'];
     }
 }
