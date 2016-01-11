@@ -2,7 +2,6 @@
 
 namespace Creuset\Traits;
 
-use Creuset\Exceptions\NonExistantRoleException;
 use Creuset\Role;
 
 trait RoleableTrait

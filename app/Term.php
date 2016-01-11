@@ -46,6 +46,7 @@ class Term extends Model
         if (!$term) {
             return ucwords(\Present::unslug($this->slug));
         }
+
         return $term;
     }
 }

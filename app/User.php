@@ -17,8 +17,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     use Authenticatable, Authorizable, CanResetPassword, PresentableTrait, RoleableTrait;
 
     /**
-     * The roles that should always be available
-     * @var Array
+     * The roles that should always be available.
+     *
+     * @var array
      */
     public static $base_roles = [
         'customer'      => 'Customer',
@@ -108,6 +109,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     /**
      * Has the user been auto-created? I.e. they've never logged in.
+     *
      * @return bool
      */
     public function autoCreated()

@@ -3,7 +3,6 @@
 namespace Integration;
 
 use Creuset\User;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use TestCase;
 
 class AuthTest extends TestCase
@@ -14,7 +13,7 @@ class AuthTest extends TestCase
         $email = 'jb@email.com';
         $user = factory(User::class)->create([
             'password' => bcrypt('password'),
-            'email' => $email,
+            'email'    => $email,
             ]);
 
         $this->visit('/login')

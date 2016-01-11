@@ -15,15 +15,15 @@ class CacheServiceProvider extends ServiceProvider
     public function boot()
     {
         foreach ($this->cachable_models as $cachable_model) {
-            $cachable_model::saved(function($model) {
+            $cachable_model::saved(function ($model) {
                 $this->fireEvent($model);
             });
 
-            $cachable_model::deleted(function($model) {
+            $cachable_model::deleted(function ($model) {
                 $this->fireEvent($model);
             });
 
-            $cachable_model::restored(function($model) {
+            $cachable_model::restored(function ($model) {
                 $this->fireEvent($model);
             });
         }
@@ -33,7 +33,6 @@ class CacheServiceProvider extends ServiceProvider
     {
         event(new ModelWasChanged($model->getTable()));
     }
-
 
     /**
      * Register the application services.

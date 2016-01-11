@@ -16,7 +16,8 @@ class AddressesController extends Controller
     private $user;
 
     /**
-     * Create a new addresses controller instance
+     * Create a new addresses controller instance.
+     *
      * @param Guard $auth
      */
     public function __construct(Guard $auth)
@@ -27,8 +28,10 @@ class AddressesController extends Controller
     }
 
     /**
-     * Show the page for creating a new address
-     * @param  Address $address
+     * Show the page for creating a new address.
+     *
+     * @param Address $address
+     *
      * @return \Illuminate\Http\Response
      */
     public function create(Address $address)
@@ -37,7 +40,8 @@ class AddressesController extends Controller
     }
 
     /**
-     * Show a list of the logged in user's addresses
+     * Show a list of the logged in user's addresses.
+     *
      * @return \Illuminate\Http\Response
      */
     public function index()
@@ -48,8 +52,10 @@ class AddressesController extends Controller
     }
 
     /**
-     * Save a newly created address in storage
-     * @param  CreateAddressRequest $request
+     * Save a newly created address in storage.
+     *
+     * @param CreateAddressRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(CreateAddressRequest $request)
@@ -61,9 +67,11 @@ class AddressesController extends Controller
     }
 
     /**
-     * Show the page for editing an address
-     * @param  Address            $address
-     * @param  EditAddressRequest $request
+     * Show the page for editing an address.
+     *
+     * @param Address            $address
+     * @param EditAddressRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Address $address, EditAddressRequest $request)
@@ -72,9 +80,11 @@ class AddressesController extends Controller
     }
 
     /**
-     * Update an address in storage
-     * @param  Address              $address
-     * @param  UpdateAddressRequest $request
+     * Update an address in storage.
+     *
+     * @param Address              $address
+     * @param UpdateAddressRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Address $address, UpdateAddressRequest $request)
@@ -86,9 +96,11 @@ class AddressesController extends Controller
     }
 
     /**
-     * Delete an address from storage
-     * @param  Address            $address
-     * @param  EditAddressRequest $request
+     * Delete an address from storage.
+     *
+     * @param Address            $address
+     * @param EditAddressRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Address $address, EditAddressRequest $request)

@@ -48,7 +48,7 @@ class RoleTest extends TestCase
         $user = factory(User::class)->create();
 
         $this->setExpectedException(\InvalidArgumentException::class);
-        $user->assignRole('some_unknown_role');        
+        $user->assignRole('some_unknown_role');
     }
 
     /** @test **/

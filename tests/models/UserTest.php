@@ -12,7 +12,7 @@ class UserTest extends TestCase
         $user = factory(User::class)->create();
         $user->last_seen_at = null;
         $user->save();
-        
+
         $this->assertTrue($user->autoCreated());
 
         \Auth::attempt(['email' => $user->email, 'password' => 'password']);

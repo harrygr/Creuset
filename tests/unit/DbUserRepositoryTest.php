@@ -29,5 +29,4 @@ class DbUserRepositoryTest extends TestCase
         $this->assertInstanceOf('Creuset\User', $user);
         $this->seeInDatabase('users', ['username' => 'joe_bloggs']);
     }
-
 }

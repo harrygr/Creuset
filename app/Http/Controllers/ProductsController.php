@@ -2,16 +2,13 @@
 
 namespace Creuset\Http\Controllers;
 
-use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests;
 use Creuset\Product;
 use Creuset\Term;
-use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
     /**
-     * Display a single product page
+     * Display a single product page.
      *
      * @param int $id
      *

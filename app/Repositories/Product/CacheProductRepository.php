@@ -10,12 +10,12 @@ class CacheProductRepository extends CacheRepository implements ProductRepositor
 {
     /**
      * @param ProductRepository $repository
-     * @param Product $model
+     * @param Product           $model
      */
     public function __construct(ProductRepository $repository, Product $model = null)
     {
         $this->repository = $repository;
-        $this->model = $model ?: new Product;
+        $this->model = $model ?: new Product();
 
         $this->tag = $this->model->getTable();
     }
@@ -36,6 +36,6 @@ class CacheProductRepository extends CacheRepository implements ProductRepositor
 
         return \Cache::tags($tags)->remember("{$this->tag}.inCategory.{$product_category->slug}", config('cache.time'), function () use ($product_category) {
             return $this->repository->inCategory($product_category);
-        });        
+        });
     }
 }

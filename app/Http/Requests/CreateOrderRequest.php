@@ -44,14 +44,15 @@ class CreateOrderRequest extends Request
     public function messages()
     {
         $messages = collect([
-            'billing_address_id.required' => 'Please pick a billing address.',
-            'shipping_address_id.required' => 'Please pick a shipping address.'
+            'billing_address_id.required'  => 'Please pick a billing address.',
+            'shipping_address_id.required' => 'Please pick a shipping address.',
             ]);
 
         foreach (Address::$rules as $field => $rule) {
             $messages->put("billing_address.$field.required", sprintf('The billing address %s is required.', str_replace('_', ' ', $field)));
             $messages->put("shipping_address.$field.required", sprintf('The shipping address %s is required.', str_replace('_', ' ', $field)));
         }
+
         return $messages->toArray();
     }
 

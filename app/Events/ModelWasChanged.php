@@ -2,8 +2,6 @@
 
 namespace Creuset\Events;
 
-use Creuset\Events\Event;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Queue\SerializesModels;
 
 class ModelWasChanged extends Event

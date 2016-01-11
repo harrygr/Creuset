@@ -16,7 +16,8 @@ class RestCountriesCountryRepository implements CountryRepository
     }
 
     /**
-     * Get a list of all the countries
+     * Get a list of all the countries.
+     *
      * @return \Illuminate\Support\Collection
      */
     public function lists($value = 'name', $key = 'alpha2Code')
@@ -25,18 +26,22 @@ class RestCountriesCountryRepository implements CountryRepository
     }
 
     /**
-     * Get a country name by its Alpha2 code
-     * @param  string $code The alpha2 code
-     * @return string       The country name
+     * Get a country name by its Alpha2 code.
+     *
+     * @param string $code The alpha2 code
+     *
+     * @return string The country name
      */
     public function getByCode($code)
     {
         $countries = $this->lists();
+
         return $countries->get($code);
     }
 
     /**
-     * Get a collection of all the countries
+     * Get a collection of all the countries.
+     *
      * @return \Illuminate\Support\Collection
      */
     public function all()
@@ -46,8 +51,8 @@ class RestCountriesCountryRepository implements CountryRepository
 
     private function getResponse($endpoint)
     {
-        $response = $this->http_client->request('GET', $this->base_url . $endpoint);
+        $response = $this->http_client->request('GET', $this->base_url.$endpoint);
+
         return new Collection(json_decode($response->getBody(), true));
     }
-
 }

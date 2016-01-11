@@ -89,11 +89,11 @@ class AuthController extends Controller
     public function create(array $data)
     {
         return User::create([
-            'name'     => $data['name'],
-            'email'    => $data['email'],
-            'username' => $data['username'],
-            'password' => bcrypt($data['password']),
-            'last_seen_at' => new \DateTime,
+            'name'         => $data['name'],
+            'email'        => $data['email'],
+            'username'     => $data['username'],
+            'password'     => bcrypt($data['password']),
+            'last_seen_at' => new \DateTime(),
         ]);
     }
 
