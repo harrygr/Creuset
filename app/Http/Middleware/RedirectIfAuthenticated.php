@@ -38,7 +38,7 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next)
     {
         if ($this->auth->check()) {
-            return new RedirectResponse(url('/admin'));
+            return new RedirectResponse(url('/account'));
         }
 
         return $next($request);

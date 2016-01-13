@@ -8,6 +8,7 @@ use Creuset\Repositories\Term\TermRepository;
 
 class TermsController extends Controller
 {
+
     /**
      * @var TermRepository
      */
@@ -16,7 +17,7 @@ class TermsController extends Controller
     public function __construct(TermRepository $terms)
     {
         $this->terms = $terms;
-        $this->middleware('auth', ['only' => ['store', 'storeCategory']]);
+        $this->middleware('admin', ['only' => ['store', 'storeCategory']]);
     }
 
     public function terms($taxonomy)

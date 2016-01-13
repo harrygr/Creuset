@@ -25,8 +25,8 @@ class Product extends Model implements HasMediaConversions, Termable
     public function registerMediaConversions()
     {
         $this->addMediaConversion('thumb')
-        ->setManipulations(['w' => 300, 'h' => 300, 'fit' => 'crop'])
-        ->performOnCollections('images');
+             ->setManipulations(['w' => 300, 'h' => 300, 'fit' => 'crop'])
+             ->performOnCollections('images');
     }
 
     /**
@@ -89,6 +89,11 @@ class Product extends Model implements HasMediaConversions, Termable
         }
     }
 
+    public function getThumbnailAttribute()
+    {
+        return $this->image ? $this->image->thumbnail_url : '';
+    }
+
     public function setPriceAttribute($price)
     {
         $this->attributes['price'] = intval(100 * $price);
@@ -132,14 +137,45 @@ class Product extends Model implements HasMediaConversions, Termable
     public function getProductCategoryAttribute()
     {
         if ($this->product_categories->count() == 0) {
-            return new Term([
+           $this->makeUncategorised();
+           return $this->fresh()->product_categories->first();
+        }
+
+        return $this->product_categories->first();
+    }
+
+    /**
+     * Ensure an uncategorised term exists and assign it to the product,
+     * removing it from all other categories
+     * 
+     * @return Product
+     */
+    public function makeUncategorised()
+    {   
+        $term = Term::firstOrCreate([
               'taxonomy' => 'product_category',
               'slug'     => 'uncategorised',
               'term'     => 'Uncategorised',
               ]);
+        
+        return $this->syncTerms([$term->id]);
+    }
+
+    /**
+     * Sync terms to a product
+     * 
+     * @param  \Illuminate\Database\Eloquent\Collection|array  $terms
+     * 
+     * @return Product
+     */
+    public function syncTerms($terms = [])
+    {
+        if (!count($terms)) {
+            return $this->makeUncategorised();
         }
 
-        return $this->product_categories->first();
+        $this->terms()->sync($terms);
+        return $this;
     }
 
     /**

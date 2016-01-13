@@ -8,7 +8,7 @@ class UsersTest extends TestCase
 {
     public function testItCanEditUserProfile()
     {
-        $this->loginWithUser();
+        $currentUser = $this->logInAsAdmin();
 
         $newUserProfile = $this->newUserProfile();
 
@@ -26,7 +26,7 @@ class UsersTest extends TestCase
 
     public function testItDoesntAllowSavingUniqueFields()
     {
-        $currentUser = $this->loginWithUser();
+        $currentUser = $this->logInAsAdmin();
 
         // Make a new user in the database
         $newUserProfile = $this->newUserProfile();

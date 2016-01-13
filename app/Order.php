@@ -4,9 +4,14 @@ namespace Creuset;
 
 use Cart;
 use Illuminate\Database\Eloquent\Model;
+use Creuset\Presenters\PresentableTrait;
 
 class Order extends Model
 {
+    use PresentableTrait;
+
+    protected $presenter = 'Creuset\Presenters\OrderPresenter';
+
     const PENDING = 'pending';
     const PAID = 'processing';
     const COMPLETED = 'completed';

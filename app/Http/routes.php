@@ -1,69 +1,75 @@
 <?php
+Route::group(['middleware' => ['web']], function () {
 
-Route::get('/', 'HomeController@index');
+    Route::get('/', 'HomeController@index');
 
-Route::controllers([
-    //'auth' => 'Auth\AuthController',
-    'password' => 'Auth\PasswordController',
-]);
+    Route::controllers([
+        //'auth' => 'Auth\AuthController',
+        'password' => 'Auth\PasswordController',
+    ]);
 
-/*
- * Registration
- */
-Route::get('register', ['uses' => 'Auth\AuthController@getRegister', 'as' => 'auth.register']);
-Route::post('register', ['uses' => 'Auth\AuthController@postRegister', 'as' => 'auth.register']);
+    /*
+     * Registration
+     */
+    Route::get('register', ['uses' => 'Auth\AuthController@getRegister', 'as' => 'auth.register']);
+    Route::post('register', ['uses' => 'Auth\AuthController@postRegister', 'as' => 'auth.register']);
 
-/*
- * Authentication
- */
-Route::get('login', ['uses' => 'Auth\AuthController@getLogin', 'as' => 'auth.login']);
-Route::post('login', ['uses' => 'Auth\AuthController@postLogin', 'as' => 'auth.login']);
-Route::get('logout', ['uses' => 'Auth\AuthController@getLogout', 'as' => 'auth.logout']);
+    /*
+     * Authentication
+     */
+    Route::get('login', ['uses' => 'Auth\AuthController@getLogin', 'as' => 'auth.login']);
+    Route::post('login', ['uses' => 'Auth\AuthController@postLogin', 'as' => 'auth.login']);
+    Route::get('logout', ['uses' => 'Auth\AuthController@getLogout', 'as' => 'auth.logout']);
 
-/*
- * Shop
- */
+    /*
+     * Shop
+     */
 
-Route::get('shop/{product_category?}', ['uses' => 'ShopController@index', 'as' => 'products.index']);
-Route::get('shop/{product_category}/{product_slug}', ['uses' => 'ProductsController@show', 'as' => 'products.show']);
+    Route::get('shop/{product_category?}', ['uses' => 'ShopController@index', 'as' => 'products.index']);
+    Route::get('shop/{product_category}/{product_slug}', ['uses' => 'ProductsController@show', 'as' => 'products.show']);
 
-Route::get('cart', ['uses' => 'CartController@index', 'as' => 'cart']);
-Route::post('cart', ['uses' => 'CartController@store', 'as' => 'cart.store']);
-Route::delete('cart/{rowid}', ['uses' => 'CartController@remove', 'as' => 'cart.remove']);
+    Route::get('cart', ['uses' => 'CartController@index', 'as' => 'cart']);
+    Route::post('cart', ['uses' => 'CartController@store', 'as' => 'cart.store']);
+    Route::delete('cart/{rowid}', ['uses' => 'CartController@remove', 'as' => 'cart.remove']);
 
-Route::get('checkout', ['uses' => 'CheckoutController@show', 'as' => 'checkout.show']);
-Route::get('checkout/pay', ['uses' => 'CheckoutController@pay', 'as' => 'checkout.pay']);
+    Route::get('checkout', ['uses' => 'CheckoutController@show', 'as' => 'checkout.show']);
+    Route::get('checkout/pay', ['uses' => 'CheckoutController@pay', 'as' => 'checkout.pay']);
 
-Route::post('orders', ['uses' => 'OrdersController@store', 'as' => 'orders.store']);
+    Route::post('orders', ['uses' => 'OrdersController@store', 'as' => 'orders.store']);
 
-Route::post('payments', ['uses' => 'PaymentsController@store', 'as' => 'payments.store']);
+    Route::post('payments', ['uses' => 'PaymentsController@store', 'as' => 'payments.store']);
 
-Route::get('order-completed', ['uses' => 'OrdersController@completed', 'as' => 'orders.completed']);
+    Route::get('order-completed', ['uses' => 'OrdersController@completed', 'as' => 'orders.completed']);
 
-Route::group(['prefix' => 'account'], function () {
+    Route::group(['prefix' => 'account'], function () {
 
-    Route::get('/', ['uses' => 'AccountsController@show', 'as' => 'accounts.show']);
+        Route::get('/', ['uses' => 'AccountsController@show', 'as' => 'accounts.show']);
 
-    Route::get('orders/{order}', ['uses' => 'OrdersController@show', 'as' => 'orders.show']);
+        Route::get('orders/{order}', ['uses' => 'OrdersController@show', 'as' => 'orders.show']);
 
-    Route::get('addresses/new', ['uses' => 'AddressesController@create', 'as' => 'addresses.create']);
-    Route::post('addresses', ['uses' => 'AddressesController@store', 'as' => 'addresses.store']);
-    Route::get('addresses', ['uses' => 'AddressesController@index', 'as' => 'addresses.index']);
-    Route::get('addresses/{address}/edit', ['uses' => 'AddressesController@edit', 'as' => 'addresses.edit']);
-    Route::put('addresses/{address}', ['uses' => 'AddressesController@update', 'as' => 'addresses.update']);
-    Route::delete('addresses/{address}', ['uses' => 'AddressesController@destroy', 'as' => 'addresses.delete']);
-});
+        Route::get('addresses/new', ['uses' => 'AddressesController@create', 'as' => 'addresses.create']);
+        Route::post('addresses', ['uses' => 'AddressesController@store', 'as' => 'addresses.store']);
+        Route::get('addresses', ['uses' => 'AddressesController@index', 'as' => 'addresses.index']);
+        Route::get('addresses/{address}/edit', ['uses' => 'AddressesController@edit', 'as' => 'addresses.edit']);
+        Route::put('addresses/{address}', ['uses' => 'AddressesController@update', 'as' => 'addresses.update']);
+        Route::delete('addresses/{address}', ['uses' => 'AddressesController@destroy', 'as' => 'addresses.delete']);
+    });
+
+}); // /web middleware group
 
 /*
  * Admin Area
  */
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['web', 'admin']], function () {
 
     Route::get('/', ['uses' => 'Admin\AdminController@dashboard', 'as' => 'admin.dashboard']);
 
     // Orders
+    Route::get('orders/{order}', ['uses' => 'Admin\OrdersController@show', 'as' => 'admin.orders.show'])->where('order', '[0-9]+');;
+    Route::get('orders/{order_status?}', ['uses' => 'Admin\OrdersController@index', 'as' => 'admin.orders.index']);
+    Route::patch('orders/{order}', ['uses' => 'Admin\OrdersController@update', 'as' => 'admin.orders.update']);
 
-    Route::get('orders', ['uses' => 'Admin\OrdersController@index', 'as' => 'admin.orders.index']);
+
 
     // Posts
     Route::get('posts', ['uses' => 'Admin\PostsController@index', 'as' => 'admin.posts.index']);
@@ -90,8 +96,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('products', ['uses' => 'Admin\ProductsController@store', 'as' => 'admin.products.store']);
     Route::patch('products/{product}', ['uses' => 'Admin\ProductsController@update', 'as' => 'admin.products.update']);
     Route::get('products', ['uses' => 'Admin\ProductsController@index', 'as' => 'admin.products.index']);
-    Route::delete('products/{trashedProduct}', ['uses' => 'Admin\ProductsController@destroy', 'as' => 'admin.products.delete']);
     Route::post('products/{product}/image', ['uses' => 'Api\MediaController@store', 'as' => 'admin.products.attach_image']);
+    Route::delete('products/{product}', ['uses' => 'Admin\ProductsController@destroy', 'as' => 'admin.products.delete']);
 
     // Terms
     Route::get('terms/{taxonomy}', ['uses' => 'Admin\TermsController@index', 'as' => 'admin.terms.index']);
@@ -121,7 +127,7 @@ Route::group(['prefix' => 'admin'], function () {
 /*
  * Api
  */
-Route::group(['prefix' => 'api'], function () {
+Route::group(['prefix' => 'api', 'middleware' => 'api'], function () {
     Route::get('terms/{taxonomy}', ['uses' => 'Api\TermsController@terms', 'as' => 'api.terms']);
     Route::post('terms', ['uses' => 'Api\TermsController@store', 'as' => 'api.terms.store']);
 
@@ -137,8 +143,12 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('media/{media}', ['uses' => 'Api\MediaController@show', 'as' => 'api.media.show'])->where('id', '[0-9]+');
     Route::get('media/{collection?}', ['uses' => 'Api\MediaController@index', 'as' => 'api.media.index']);
 
-    Route::group(['prefix' => 'cart'], function () {
-        Route::post('/', ['uses' => 'Api\CartController@store']);
+    // Route::group(['prefix' => 'cart'], function () {
+    //     Route::post('/', ['uses' => 'Api\CartController@store']);
+    // });
+
+    Route::group(['prefix' => 'orders'], function () {
+        Route::patch('{order}', ['uses' => 'Api\OrdersController@update', 'as' => 'api.orders.update']);
     });
 
 });

@@ -93,11 +93,6 @@ class DbPostRepository extends DbRepository implements PostRepository
         return $post->restore();
     }
 
-    public function count()
-    {
-        return $this->model->count();
-    }
-
     public function trashedCount()
     {
         return $this->model->onlyTrashed()->count();

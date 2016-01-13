@@ -30,6 +30,6 @@ class PostPresenter extends ModelPresenter
 
         $labelClass = array_get($this->statusClasses, $status, 'default');
 
-        return new HtmlString(sprintf("<label class='label label-%s pull-right'>%s</label>", $labelClass, ucfirst($status)));
+        return new HtmlString(sprintf("<span class='label label-%s pull-right'>%s</span>", $labelClass, ucfirst($status)));
     }
 }

@@ -13,7 +13,7 @@ abstract class Presenter
 
     public function __get($property)
     {
-        if (!method_exists($this, $property)) {
+        if (method_exists($this, $property)) {
             return $this->{$property}();
         }
 
@@ -28,5 +28,10 @@ abstract class Presenter
     public static function unslug($string)
     {
         return str_replace('_', ' ', str_replace('-', ' ', $string));
+    }
+
+    public static function labelText($string)
+    {
+        return ucwords(static::unslug($string));
     }
 }

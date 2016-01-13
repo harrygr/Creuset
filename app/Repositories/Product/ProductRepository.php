@@ -31,4 +31,11 @@ interface ProductRepository
     public function create($attributes);
 
     public function inCategory(Term $product_category);
+
+    /**
+     * Get a count of all models in the database.
+     *
+     * @return int
+     */
+    public function count();
 }

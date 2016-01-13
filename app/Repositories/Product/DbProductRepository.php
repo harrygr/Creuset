@@ -33,10 +33,6 @@ class DbProductRepository extends DbRepository implements ProductRepository
 
     public function inCategory(Term $product_category)
     {
-        if ($product_category->slug == 'uncategorised') {
-            return $this->model->has('product_categories', '=', 0)->paginate(config('shop.products_per_page'));
-        }
-
         return $product_category->products()->paginate(config('shop.products_per_page'));
     }
 }

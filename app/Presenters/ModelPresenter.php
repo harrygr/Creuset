@@ -6,6 +6,10 @@ use Illuminate\Support\HtmlString;
 
 abstract class ModelPresenter extends Presenter
 {
+    /**
+     * Get a set of edit and delete links for a model
+     * @return HtmlString
+     */
     public function indexLinks()
     {
         if ($this->model->trashed()) {

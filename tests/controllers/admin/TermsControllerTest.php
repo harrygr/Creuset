@@ -18,4 +18,34 @@ class TermsControllerTest extends \TestCase
              ->see($category->term)
              ->dontSee($tag->term);
     }
+
+    public function testICanSeeAListOfCategories()
+    {
+        $this->logInAsAdmin();
+
+        $category = factory('Creuset\Term')->create([
+          'taxonomy' => 'category',
+          'term'     => 'homeparty',
+          ]);
+
+        $this->visit('/admin/categories')
+        ->see('homeparty');
+    }
+
+    public function testICanDeleteATerm()
+    {
+        $this->logInAsAdmin();
+
+        $category = factory('Creuset\Term')->create([
+          'taxonomy' => 'category',
+          'term'     => 'nasty cat',
+          ]);
+
+        $this->seeInDatabase('terms', ['term' => 'nasty cat', 'taxonomy' => 'category']);
+
+        $response = $this->action('DELETE', 'Admin\TermsController@destroy', ['term' => $category]);
+
+        $this->assertRedirectedTo('/admin/categories');
+        $this->notSeeInDatabase('terms', ['term' => 'nasty cat', 'taxonomy' => 'category']);
+    }
 }

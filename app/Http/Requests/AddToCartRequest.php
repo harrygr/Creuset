@@ -8,6 +8,10 @@ class AddToCartRequest extends Request
 {
     private $products;
 
+    private $qty_in_cart = 0;
+    private $qty_in_stock = 0;
+    private $available_quantity;
+
     public function __construct(ProductRepository $products)
     {
         $this->products = $products;
@@ -30,17 +34,21 @@ class AddToCartRequest extends Request
      */
     public function rules()
     {
-        $available_quantity = $this->getAvailableQuantity();
+        $this->available_quantity = $this->getAvailableQuantity();
 
         return [
-        'quantity' => "integer|between:1,{$available_quantity}",
+        'quantity' => "integer|between:1,{$this->available_quantity}",
         ];
     }
 
     public function messages()
     {
+        $message = $this->qty_in_cart ? 
+            sprintf('There are %s in stock and you already have %s in your cart.', $this->qty_in_stock, $this->qty_in_cart)
+            : sprintf('There are only %s in stock.', $this->qty_in_stock);
+            
         return [
-        'between' => 'You cannot add that amount to the cart because there is not enough stock',
+        'between' => 'You cannot add that amount to the cart. '.$message,
         ];
     }
 
@@ -52,12 +60,15 @@ class AddToCartRequest extends Request
      */
     protected function getAvailableQuantity()
     {
-        $qty_in_stock = $this->products->fetch($this->product_id)->stock_qty;
+        $this->qty_in_stock = $this->products->fetch($this->product_id)->stock_qty;
 
-        if ($row_id = \Cart::search(['id' => $this->product_id])) {
-            return $qty_in_stock - \Cart::get($row_id[0])->qty;
+        if ($row_id = \Cart::search(['id' => (int) $this->product_id])) {
+
+            $this->qty_in_cart = \Cart::get($row_id[0])->qty;
+
+            return $this->qty_in_stock - $this->qty_in_cart;
         }
 
-        return $qty_in_stock;
+        return $this->qty_in_stock;
     }
 }

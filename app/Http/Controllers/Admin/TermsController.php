@@ -12,7 +12,6 @@ class TermsController extends Controller
 
     public function __construct(TermRepository $terms)
     {
-        $this->middleware('auth');
         $this->terms = $terms;
     }
 

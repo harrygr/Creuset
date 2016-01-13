@@ -2,6 +2,7 @@
 
 namespace Creuset;
 
+use Creuset\Term;
 use TestCase;
 
 class ProductTest extends TestCase
@@ -9,13 +10,13 @@ class ProductTest extends TestCase
     /** @test **/
     public function it_gets_the_usable_price_of_a_product()
     {
-        $product = factory(Product::class)->create([
+        $product = factory(Product::class)->make([
                                                    'price'      => 20,
                                                    'sale_price' => 0,
                                                    ]);
         $this->assertEquals(20, $product->getPrice());
 
-        $product = factory(Product::class)->create([
+        $product = factory(Product::class)->make([
                                                    'price'      => 20,
                                                    'sale_price' => 15,
                                                    ]);
@@ -33,7 +34,7 @@ class ProductTest extends TestCase
           'taxonomy' => 'product_category',
           ]);
 
-        $product->terms()->save($product_category);
+        $product->terms()->sync([$product_category->id]);
         $product = Product::find($product->id);
 
         $this->assertEquals($product_category->term, $product->product_category->term);
@@ -42,7 +43,7 @@ class ProductTest extends TestCase
     /** @test **/
     public function it_gets_the_description_as_html()
     {
-        $product = factory(Product::class)->create([
+        $product = factory(Product::class)->make([
           'description' => '# Hello World!',
           ]);
 
@@ -61,5 +62,37 @@ class ProductTest extends TestCase
         $product->stock_qty = 0;
 
         $this->assertFalse($product->inStock());
+    }
+
+    /** @test **/
+    public function it_attaches_categories_to_product()
+    {
+        $product_categories = factory(Term::class, 3)->create([
+          'taxonomy' => 'product_category',
+         ]);
+
+        $product = factory(Product::class)->create();
+
+        // We haven't yet given the product a category; it should be uncategorised.
+        $this->assertEquals('Uncategorised', $product->product_category->term);
+
+        $product = $product->syncTerms($product_categories);
+
+        $this->assertCount(3, $product->fresh()->product_categories);
+    }
+
+    /** @test **/
+    public function it_uncategorises_a_product()
+    {
+        $product = factory(Product::class)->create();
+
+        $product_categories = factory(Term::class, 3)->create([
+          'taxonomy' => 'product_category',
+        ]);
+
+        $product = $product->syncTerms($product_categories);
+
+        $product = $product->syncTerms([]);
+        $this->assertEquals('Uncategorised', $product->product_category->term);
     }
 }

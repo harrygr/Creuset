@@ -9,6 +9,8 @@ class MediaControllerTest extends \TestCase
     /** @test **/
     public function it_shows_the_media_index_page()
     {
+        $this->logInAsAdmin();
+
         // new up some images
         $images = $this->createImage(3);
 
@@ -21,7 +23,8 @@ class MediaControllerTest extends \TestCase
     /** @test **/
     public function it_allows_deleting_a_media_item()
     {
-        $this->withoutMiddleware();
+        $this->logInAsAdmin();
+
         $image = $this->createImage();
 
         // simulate clicking 'delete' for a given media item

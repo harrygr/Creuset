@@ -46,4 +46,14 @@ abstract class DbRepository
     {
         return $this->model->where('slug', $slug)->with($with)->first();
     }
+
+    /**
+     * Get a count of all models in the database.
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return $this->model->count();
+    }
 }

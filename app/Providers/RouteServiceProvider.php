@@ -33,13 +33,17 @@ class RouteServiceProvider extends ServiceProvider
         $router->model('term', 'Creuset\Term');
         $router->model('user', 'Creuset\User');
         $router->model('post', 'Creuset\Post');
-        $router->model('product', 'Creuset\Product');
         $router->model('media', 'Creuset\Media');
         $router->model('address', 'Creuset\Address');
-        //$router->model('order', 'Creuset\Order');
+
+        $router->bind('product', function ($id) {
+            $products = $this->app->make(\Creuset\Repositories\Product\ProductRepository::class);
+
+            return $products->fetch($id, ['product_categories', 'image']);
+        });
 
         $router->bind('order', function ($id) {
-            return \Creuset\Order::findOrFail($id)->load(['items', 'shipping_address', 'billing_address']);
+            return \Creuset\Order::with(['items', 'shipping_address', 'billing_address'])->findOrFail($id);
         });
 
         $router->bind('trashedPost', function ($id) {
@@ -55,10 +59,10 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $router->bind('product_category', function ($slug) {
-            return Term::firstOrNew([
+            return Term::where([
                 'taxonomy' => 'product_category',
                 'slug'     => $slug,
-                ]);
+                ])->firstOrFail();
         });
     }
 

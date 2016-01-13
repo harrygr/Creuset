@@ -9,7 +9,7 @@
 
 <h1>Order #{{$order->id }}</h1>
 
-<p>Order {{$order->id }} was placed on {{ $order->created_at->toDayDateTimeString() }} and is {{ $order->status }}.</p>
+<p>Order {{$order->id }} was placed on {{ $order->created_at->toDayDateTimeString() }} and is <strong>{{ $order->present()->status(true) }}</strong>.</p>
 <h2>Order Details</h2>
 
 @include('orders._summary')

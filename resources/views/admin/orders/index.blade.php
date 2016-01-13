@@ -22,20 +22,26 @@ Orders
 					<th>Ship To</th>
 					<th>Date</th>
                     <th>Total</th>
+                    <th></th>
 				</tr>
 			</thead>
 			<tbody>
 			@foreach ($orders as $order)
 				<tr>
-                    <td>{{ $order->status }}</td>
+                    <td>{{ $order->present()->status }}</td>
 					<td>
-						<strong>#{{ $order->id }}</strong> from {{ $order->user->username }}<br>
+						<a href="{{ route('admin.orders.show', $order) }}">#{{ $order->id }}</a> from {{ $order->user->username }}<br>
                         {{ $order->user->email }}
 					</td>
 					<td>{{ $order->items()->count() }} items</td>
 					<td>@include('partials.address', ['address' => $order->shipping_address])</td>
 					<td>{{ $order->created_at }}</td>
                     <td>{{ Present::money($order->amount) }}</td>
+                    <td>
+                    @if ($order->status == Creuset\Order::PAID)
+                    	@include('admin.orders.partials._complete_button', ['order' => $order])
+                    @endif
+                    </td>
 				</tr>
 			@endforeach
 			</tbody>

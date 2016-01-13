@@ -4,6 +4,7 @@ namespace Creuset\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\Exception\HttpResponseException;
 
 class ForbidIfNotAdmin
 {
@@ -36,8 +37,16 @@ class ForbidIfNotAdmin
      */
     public function handle($request, Closure $next)
     {
-        if (!$this->auth->user()->hasRole('admin')) {
-            $this->failedAuthorization();
+        if ($this->auth->guest()) {
+
+            if ($request->ajax()) {
+                return response('Unauthorized.', 401);
+            }
+            return redirect()->guest('login');
+        }
+
+        if (! $this->auth->user()->hasRole('admin') ) {
+            return response('Unauthorized.', 401);
         }
 
         return $next($request);
@@ -48,8 +57,8 @@ class ForbidIfNotAdmin
      *
      * @return mixed
      */
-    protected function failedAuthorization()
+    protected function failedAuthorization($request)
     {
-        throw new HttpResponseException($this->forbiddenResponse());
+        throw new HttpResponseException();
     }
 }

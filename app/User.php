@@ -96,6 +96,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
+     * Whether a user has any orders
+     * @return boolean
+     */
+    public function hasOrders()
+    {
+        return $this->orders->count();
+    }
+
+    /**
      * Attach an address to a user.
      *
      * @param Address $address

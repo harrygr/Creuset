@@ -38,7 +38,7 @@ class ShopTest extends TestCase
              ->type(3, 'quantity')
              ->press('Add To Cart')
              ->seePageIs(route('products.show', [$product->product_category->slug, $product->slug]))
-             ->see('You cannot add that amount to the cart because there is not enough stock');
+             ->see('You cannot add that amount to the cart');
 
         $this->assertEquals(0, \Cart::total());
     }
@@ -61,7 +61,7 @@ class ShopTest extends TestCase
              ->press('Add To Cart')
              ->type(2, 'quantity')
              ->seePageIs($product_url)
-             ->see('You cannot add that amount to the cart because there is not enough stock');
+             ->see('You cannot add that amount to the cart');
     }
 
     /** @test **/

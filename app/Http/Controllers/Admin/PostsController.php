@@ -29,7 +29,6 @@ class PostsController extends Controller
 
     public function __construct(PostRepository $posts, TermRepository $terms)
     {
-        $this->middleware('auth');
         $this->posts = $posts;
         $this->terms = $terms;
     }

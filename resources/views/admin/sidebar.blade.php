@@ -1,6 +1,6 @@
 <ul class="sidebar-nav">
     <li class="sidebar-brand">
-        <a href="#">
+        <a href="/">
             Creuset
         </a>
     </li>

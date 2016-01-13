@@ -9,6 +9,14 @@ class ProductPresenter extends ModelPresenter
 {
     protected $modelRoute = 'products';
 
+    /**
+     * Get a delimited string of a product's categories
+     * 
+     * @param  string  $delimiter
+     * @param  boolean $links       Should the categories link
+     * 
+     * @return HtmlString
+     */
     public function categoryList($delimiter = ', ', $links = true)
     {
         $categoryNames = $links ? $this->model->product_categories->map(function ($category) {
@@ -18,6 +26,11 @@ class ProductPresenter extends ModelPresenter
         return new HtmlString($categoryNames->implode($delimiter));
     }
 
+    /**
+     * Get a string representing the product's price, taking into account any sale price
+     * 
+     * @return HtmlString
+     */
     public function price()
     {
         if (!$this->model->sale_price) {
@@ -31,10 +44,20 @@ class ProductPresenter extends ModelPresenter
       ));
     }
 
+    /**
+     * Get an html img tag for the product's thumbnail
+     * 
+     * @param  integer  $w The desired width of the thumbnail
+     * @param  integer  $h The desired height of the thumbnail
+     * 
+     * @return HtmlString
+     */
     public function thumbnail($w = 300, $h = null)
     {
+      $h = $h ?: $w;
+
         return new HtmlString(sprintf(
-      '<img src="%s" alt="%s" width="%s" height="$s" class="img-responsive">',
+      '<img src="%s" alt="%s" width="%s" height="%s" class="img-responsive">',
       $this->thumbnail_url($w, $h),
       $this->model->name,
       $w,
@@ -42,15 +65,26 @@ class ProductPresenter extends ModelPresenter
       ));
     }
 
+    /**
+     * Get the URL of the product's thumbnail, or a placeholder if one doesn't exist
+     * 
+     * @param  integer  $w The desired width of the thumbnail
+     * @param  integer  $h The desired height of the thumbnail
+     * 
+     * @return string
+     */
     public function thumbnail_url($w = 300, $h = null)
     {
-        if (!$h) {
-            $h = $w;
-        }
+        $h = $h ?: $w;
 
         return $this->model->image ? $this->model->image->thumbnail_url : "http://placehold.it/$w/$h";
     }
 
+    /**
+     * Get a string representing the stock of the product
+     * 
+     * @return string
+     */
     public function stock()
     {
         return $this->model->stock_qty > 0 ? sprintf('%s in stock', $this->model->stock_qty) : 'Out of stock';

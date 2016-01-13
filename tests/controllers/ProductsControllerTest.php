@@ -19,7 +19,7 @@ class ProductsControllerTest extends \TestCase
     {
         $product = factory(Product::class)->create();
 
-        $this->visit("shop/uncategorised/{$product->slug}")
+        $this->visit("shop/{$product->product_category->slug}/{$product->slug}")
              ->see($product->name)
              ->see($product->description);
     }

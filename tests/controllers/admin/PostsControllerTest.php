@@ -9,11 +9,16 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class PostsControllerTest extends \TestCase
 {
+    private $user;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->user = $this->logInAsAdmin();
+    }
+
     public function testICanCreateAPost()
     {
-        // Given I have and account and am logged in
-        $user = $this->loginWithUser();
-
         // I go to the create posts page
         $postTitle = 'Awesome Post Title';
         $postContent = 'Here is some post content';
@@ -25,7 +30,7 @@ class PostsControllerTest extends \TestCase
             'slug'         => str_slug($postTitle),
             'content'      => $postContent,
             'published_at' => Carbon::now(),
-            'user_id'      => $user->id,
+            'user_id'      => $this->user->id,
             '_token'       => csrf_token(),
             ]);
         // And see that I created a post successfully
@@ -33,14 +38,12 @@ class PostsControllerTest extends \TestCase
             'title'   => $postTitle,
             'content' => $postContent,
             'type'    => 'post',
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             ]);
     }
 
     public function testICanEditAPost()
     {
-        // Given I have and account and am logged in
-        $user = $this->loginWithUser();
 
         // And a post exists in the database
         $post = factory('Creuset\Post')->create();
@@ -69,9 +72,6 @@ class PostsControllerTest extends \TestCase
     /** @test **/
     public function it_trashes_a_post()
     {
-        $this->withoutMiddleware();
-
-        $user = $this->loginWithUser();
         $post = factory('Creuset\Post')->create();
 
         $this->visit('/admin/posts')
@@ -85,10 +85,6 @@ class PostsControllerTest extends \TestCase
     /** @test **/
     public function it_permanently_deletes_a_post()
     {
-        $this->withoutMiddleware();
-
-        $user = $this->loginWithUser();
-
         $post = factory('Creuset\Post')->create([
             'deleted_at' => Carbon::now()->subDay(),
         ]);
@@ -111,9 +107,6 @@ class PostsControllerTest extends \TestCase
     /** @test **/
     public function it_restores_a_post()
     {
-        $this->withoutMiddleware();
-
-        $user = $this->loginWithUser();
         $post = factory('Creuset\Post')->create();
 
         // move to trash
@@ -128,9 +121,6 @@ class PostsControllerTest extends \TestCase
     /** @test **/
     public function it_can_upload_an_image_to_a_post()
     {
-        $this->withoutMiddleware(); // needed to skip csrf checks etc
-        $user = $this->loginWithUser();
-
         // Make a post
         $post = factory('Creuset\Post')->create();
 

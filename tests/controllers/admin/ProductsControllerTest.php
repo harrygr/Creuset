@@ -8,11 +8,17 @@ use Faker\Factory;
 
 class ProductsControllerTest extends \TestCase
 {
+    private $user;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->user = $this->logInAsAdmin();
+    }
+
     /** @test **/
     public function it_can_view_a_list_of_products()
     {
-        $user = $this->loginWithUser();
-
         $product = factory(Product::class)->create();
 
         $this->visit('admin/products')
@@ -22,7 +28,6 @@ class ProductsControllerTest extends \TestCase
     /** @test **/
     public function it_can_create_a_product()
     {
-        $user = $this->loginWithUser();
         $this->visit('admin/products/create')->see('Create Product');
 
         $terms = factory('Creuset\Term', 2)->create(['taxonomy' => 'product_category']);
@@ -36,7 +41,7 @@ class ProductsControllerTest extends \TestCase
             'stock_qty'    => 5,
             'sku'          => 'LP345',
             'published_at' => Carbon::now()->format('Y-m-d h:i:s'),
-            'user_id'      => $user->id,
+            'user_id'      => $this->user->id,
             'terms'        => $terms->pluck('id')->toArray(),
             '_token'       => csrf_token(),
             ]);
@@ -60,19 +65,17 @@ class ProductsControllerTest extends \TestCase
     /** @test **/
     public function it_can_update_a_product()
     {
-        $user = $this->loginWithUser();
         $product = factory(Product::class)->create();
         $terms = factory('Creuset\Term', 2)->create(['taxonomy' => 'product_category']);
 
         $this->visit("admin/products/{$product->id}/edit")
              ->see('Edit Product');
 
-        //dd($terms->pluck('id'));
         $this->patch("admin/products/{$product->id}", [
             'name'   => 'lorem ipsum',
             'terms'  => $terms->pluck('id')->toArray(),
-            '_token' => csrf_token(), ]
-        );
+            '_token' => csrf_token(), 
+            ]);
 
         $this->seeInDatabase('products', ['id' => $product->id, 'name' => 'lorem ipsum']);
         $this->seeInDatabase('termables', ['termable_id' => $product->id, 'term_id' => $terms[0]->id]);
@@ -83,5 +86,18 @@ class ProductsControllerTest extends \TestCase
 
         $this->assertRedirectedToRoute('admin.products.edit', $product);
         $this->visit('admin/products')->see('lorem ipsum');
+    }
+
+    /** @test **/
+    public function it_can_delete_a_product()
+    {
+        $product = factory(Product::class)->create();
+
+        $this->delete(route('admin.products.delete', $product), ['_token' => csrf_token()]);
+
+        $this->assertRedirectedToRoute('admin.products.index');
+
+        // assert that the product has been soft deleted
+        $this->assertTrue(Product::withTrashed()->find($product->id)->trashed());
     }
 }
