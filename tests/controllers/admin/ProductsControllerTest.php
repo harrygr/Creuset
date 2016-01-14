@@ -74,7 +74,7 @@ class ProductsControllerTest extends \TestCase
         $this->patch("admin/products/{$product->id}", [
             'name'   => 'lorem ipsum',
             'terms'  => $terms->pluck('id')->toArray(),
-            '_token' => csrf_token(), 
+            '_token' => csrf_token(),
             ]);
 
         $this->seeInDatabase('products', ['id' => $product->id, 'name' => 'lorem ipsum']);

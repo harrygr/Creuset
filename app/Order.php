@@ -3,8 +3,8 @@
 namespace Creuset;
 
 use Cart;
-use Illuminate\Database\Eloquent\Model;
 use Creuset\Presenters\PresentableTrait;
+use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {

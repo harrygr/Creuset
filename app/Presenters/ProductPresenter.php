@@ -10,10 +10,10 @@ class ProductPresenter extends ModelPresenter
     protected $modelRoute = 'products';
 
     /**
-     * Get a delimited string of a product's categories
+     * Get a delimited string of a product's categories.
      * 
-     * @param  string  $delimiter
-     * @param  boolean $links       Should the categories link
+     * @param string $delimiter
+     * @param bool   $links     Should the categories link
      * 
      * @return HtmlString
      */
@@ -27,7 +27,7 @@ class ProductPresenter extends ModelPresenter
     }
 
     /**
-     * Get a string representing the product's price, taking into account any sale price
+     * Get a string representing the product's price, taking into account any sale price.
      * 
      * @return HtmlString
      */
@@ -45,16 +45,16 @@ class ProductPresenter extends ModelPresenter
     }
 
     /**
-     * Get an html img tag for the product's thumbnail
+     * Get an html img tag for the product's thumbnail.
      * 
-     * @param  integer  $w The desired width of the thumbnail
-     * @param  integer  $h The desired height of the thumbnail
+     * @param int $w The desired width of the thumbnail
+     * @param int $h The desired height of the thumbnail
      * 
      * @return HtmlString
      */
     public function thumbnail($w = 300, $h = null)
     {
-      $h = $h ?: $w;
+        $h = $h ?: $w;
 
         return new HtmlString(sprintf(
       '<img src="%s" alt="%s" width="%s" height="%s" class="img-responsive">',
@@ -66,10 +66,10 @@ class ProductPresenter extends ModelPresenter
     }
 
     /**
-     * Get the URL of the product's thumbnail, or a placeholder if one doesn't exist
+     * Get the URL of the product's thumbnail, or a placeholder if one doesn't exist.
      * 
-     * @param  integer  $w The desired width of the thumbnail
-     * @param  integer  $h The desired height of the thumbnail
+     * @param int $w The desired width of the thumbnail
+     * @param int $h The desired height of the thumbnail
      * 
      * @return string
      */
@@ -81,7 +81,7 @@ class ProductPresenter extends ModelPresenter
     }
 
     /**
-     * Get a string representing the stock of the product
+     * Get a string representing the stock of the product.
      * 
      * @return string
      */

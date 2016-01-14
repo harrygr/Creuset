@@ -137,8 +137,9 @@ class Product extends Model implements HasMediaConversions, Termable
     public function getProductCategoryAttribute()
     {
         if ($this->product_categories->count() == 0) {
-           $this->makeUncategorised();
-           return $this->fresh()->product_categories->first();
+            $this->makeUncategorised();
+
+            return $this->fresh()->product_categories->first();
         }
 
         return $this->product_categories->first();
@@ -146,25 +147,25 @@ class Product extends Model implements HasMediaConversions, Termable
 
     /**
      * Ensure an uncategorised term exists and assign it to the product,
-     * removing it from all other categories
+     * removing it from all other categories.
      * 
      * @return Product
      */
     public function makeUncategorised()
-    {   
+    {
         $term = Term::firstOrCreate([
               'taxonomy' => 'product_category',
               'slug'     => 'uncategorised',
               'term'     => 'Uncategorised',
               ]);
-        
+
         return $this->syncTerms([$term->id]);
     }
 
     /**
-     * Sync terms to a product
+     * Sync terms to a product.
      * 
-     * @param  \Illuminate\Database\Eloquent\Collection|array  $terms
+     * @param \Illuminate\Database\Eloquent\Collection|array $terms
      * 
      * @return Product
      */
@@ -175,6 +176,7 @@ class Product extends Model implements HasMediaConversions, Termable
         }
 
         $this->terms()->sync($terms);
+
         return $this;
     }
 

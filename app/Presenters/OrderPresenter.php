@@ -6,7 +6,6 @@ use Illuminate\Support\HtmlString;
 
 class OrderPresenter extends ModelPresenter
 {
-
     private $statusClasses = [
     \Creuset\Order::PENDING     => 'warning',
     \Creuset\Order::PAID        => 'primary',
@@ -16,8 +15,10 @@ class OrderPresenter extends ModelPresenter
     ];
 
     /**
-     * Present the order status as a coloured label or text 
-     * @param  boolean $text Whether to display as a test instead of a label
+     * Present the order status as a coloured label or text.
+     *
+     * @param bool $text Whether to display as a test instead of a label
+     *
      * @return \Illuminate\Support\HtmlString;
      */
     public function status($text = false)

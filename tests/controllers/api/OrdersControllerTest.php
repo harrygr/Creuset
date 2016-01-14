@@ -8,7 +8,7 @@ class OrdersControllerTest extends \TestCase
 {
     /** @test **/
     public function it_updates_an_order()
-    {        
+    {
         $order = factory(Order::class)->create(['status' => Order::PAID]);
 
         $this->logInAsAdmin();

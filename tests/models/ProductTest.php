@@ -2,7 +2,6 @@
 
 namespace Creuset;
 
-use Creuset\Term;
 use TestCase;
 
 class ProductTest extends TestCase

@@ -28,10 +28,10 @@ class OrdersControllerTest extends \TestCase
     {
         $order = $this->createOrder(['status' => Order::PAID]);
 
-        $this->visit("admin/orders")
+        $this->visit('admin/orders')
              ->see(ucwords(Order::PAID))
              ->press('complete-order')
-             ->seePageIs("admin/orders")
+             ->seePageIs('admin/orders')
              ->see(ucwords(Order::COMPLETED));
     }
 
@@ -41,9 +41,8 @@ class OrdersControllerTest extends \TestCase
         $order_1 = $this->createOrder(['status' => Order::PAID]);
         $order_2 = $this->createOrder(['status' => Order::COMPLETED]);
 
-        $this->visit("admin/orders/" . Order::PAID)
+        $this->visit('admin/orders/'.Order::PAID)
              ->see("#{$order_1->id}")
              ->dontSee("#{$order_2->id}");
-
     }
 }

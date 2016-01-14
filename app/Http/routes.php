@@ -1,4 +1,5 @@
 <?php
+
 Route::group(['middleware' => ['web']], function () {
 
     Route::get('/', 'HomeController@index');
@@ -41,7 +42,6 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('order-completed', ['uses' => 'OrdersController@completed', 'as' => 'orders.completed']);
 
-
     /*
      * Account
      */
@@ -50,7 +50,6 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('/', ['uses' => 'AccountsController@show', 'as' => 'accounts.show']);
         Route::get('edit', ['uses' => 'AccountsController@edit', 'as' => 'accounts.edit']);
         Route::patch('{user}', ['uses' => 'AccountsController@update', 'as' => 'accounts.update']);
-
 
         Route::get('orders/{order}', ['uses' => 'OrdersController@show', 'as' => 'orders.show']);
 
@@ -72,11 +71,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'admin']], function (
     Route::get('/', ['uses' => 'Admin\AdminController@dashboard', 'as' => 'admin.dashboard']);
 
     // Orders
-    Route::get('orders/{order}', ['uses' => 'Admin\OrdersController@show', 'as' => 'admin.orders.show'])->where('order', '[0-9]+');;
+    Route::get('orders/{order}', ['uses' => 'Admin\OrdersController@show', 'as' => 'admin.orders.show'])->where('order', '[0-9]+');
     Route::get('orders/{order_status?}', ['uses' => 'Admin\OrdersController@index', 'as' => 'admin.orders.index']);
     Route::patch('orders/{order}', ['uses' => 'Admin\OrdersController@update', 'as' => 'admin.orders.update']);
-
-
 
     // Posts
     Route::get('posts', ['uses' => 'Admin\PostsController@index', 'as' => 'admin.posts.index']);

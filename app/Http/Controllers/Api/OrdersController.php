@@ -3,8 +3,8 @@
 namespace Creuset\Http\Controllers\Api;
 
 use Creuset\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Creuset\Order;
+use Illuminate\Http\Request;
 
 class OrdersController extends Controller
 {
@@ -16,7 +16,7 @@ class OrdersController extends Controller
     public function update(Order $order, Request $request)
     {
         $order->update($request->all());
+
         return $order;
     }
-
 }

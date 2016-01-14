@@ -19,8 +19,10 @@ class AccountsController extends Controller
     }
 
     /**
-     * Show the page for managing the user account
-     * @param  Request $request
+     * Show the page for managing the user account.
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request)
@@ -29,7 +31,8 @@ class AccountsController extends Controller
     }
 
     /**
-     * Show the page for editing an account
+     * Show the page for editing an account.
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit()

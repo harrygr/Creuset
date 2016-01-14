@@ -8,10 +8,11 @@ use Illuminate\Http\Request;
 
 class OrdersController extends Controller
 {
-    
     /**
-     * Show a list of orders
-     * @param  string $status The order status to filter by
+     * Show a list of orders.
+     *
+     * @param string $status The order status to filter by
+     *
      * @return \Illuminate\Http\Response
      */
     public function index($status = null)
@@ -28,8 +29,10 @@ class OrdersController extends Controller
     }
 
     /**
-     * Show a single order's details
-     * @param  Order  $order
+     * Show a single order's details.
+     *
+     * @param Order $order
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Order $order)
@@ -38,13 +41,16 @@ class OrdersController extends Controller
     }
 
     /**
-     * Update an order in storage
-     * @param  Order  $order
-     * @return \Illuminate\Http\Response        
+     * Update an order in storage.
+     *
+     * @param Order $order
+     *
+     * @return \Illuminate\Http\Response
      */
     public function update(Order $order, Request $request)
     {
         $order->update($request->all());
+
         return redirect()->route('admin.orders.index')
                          ->withAlert('Order Updated')
                          ->with('alert-class', 'success');
