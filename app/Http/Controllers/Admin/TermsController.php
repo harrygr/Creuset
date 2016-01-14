@@ -12,7 +12,6 @@ class TermsController extends Controller
 
     public function __construct(TermRepository $terms)
     {
-        $this->middleware('auth');
         $this->terms = $terms;
     }
 
@@ -54,12 +53,12 @@ class TermsController extends Controller
 
     public function edit($term)
     {
-        # code...
+        // code...
     }
 
     public function update($term)
     {
-        # code...
+        // code...
     }
 
     public function destroy(Term $term)

@@ -30,9 +30,9 @@ Products
 			@foreach ($products as $product)
 				<tr>
 					<td>
-						@if ($product->image)
-							<img src="{{ $product->image->thumbnail_url }}" alt="{{ $product->image->title }}" width="40" height="40" class="pull-left" />
-						@endif
+						<a href="{{ route("admin.products.edit", $product) }}">
+						{{ $product->present()->thumbnail(40) }}
+						</a>
 					</td>
 					<td>
 						<strong>{{ $product->name }}</strong>

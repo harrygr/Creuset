@@ -2,7 +2,7 @@
 
 namespace Creuset\Presenters;
 
-use Illuminate\View\Expression;
+use Illuminate\Support\HtmlString;
 
 class PostPresenter extends ModelPresenter
 {
@@ -14,7 +14,7 @@ class PostPresenter extends ModelPresenter
             return sprintf('<a href="%s" title="edit %s category">%s</a>', route('admin.categories.edit', $category), $category->term, $category->term);
         }) : $this->model->categories->pluck('term');
 
-        return new Expression($categoryNames->implode($delimiter));
+        return new HtmlString($categoryNames->implode($delimiter));
     }
 
     private $statusClasses = [
@@ -30,6 +30,6 @@ class PostPresenter extends ModelPresenter
 
         $labelClass = array_get($this->statusClasses, $status, 'default');
 
-        return new Expression(sprintf("<label class='label label-%s pull-right'>%s</label>", $labelClass, ucfirst($status)));
+        return new HtmlString(sprintf("<span class='label label-%s pull-right'>%s</span>", $labelClass, ucfirst($status)));
     }
 }

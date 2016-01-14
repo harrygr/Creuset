@@ -11,6 +11,8 @@ class TermsTableSeeder extends Seeder
 
     public function run()
     {
+        $this->createUncategorisedCategories();
+
         $taxonomies = ['category', 'tag', 'product_category'];
         $usedWords = [];
         $this->faker = Faker::create();
@@ -32,5 +34,20 @@ class TermsTableSeeder extends Seeder
     private function getUniqueWord()
     {
         return str_replace('.', '', $this->faker->unique()->sentence(2));
+    }
+
+    private function createUncategorisedCategories()
+    {
+        Term::create([
+            'taxonomy' => 'product_category',
+            'term'     => 'Uncategorised',
+            'slug'     => 'uncategorised',
+            ]);
+
+        Term::create([
+            'taxonomy' => 'category',
+            'term'     => 'Uncategorised',
+            'slug'     => 'uncategorised',
+            ]);
     }
 }

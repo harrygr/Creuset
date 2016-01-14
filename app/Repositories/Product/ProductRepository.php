@@ -2,6 +2,8 @@
 
 namespace Creuset\Repositories\Product;
 
+use Creuset\Term;
+
 interface ProductRepository
 {
     /**
@@ -15,9 +17,25 @@ interface ProductRepository
     public function all($with = []);
 
     /**
+     * @param array $with
+     *
+     * @return mixed
+     */
+    public function getPaginated($with = []);
+
+    /**
      * @param array $attributes
      *
      * @return mixed
      */
     public function create($attributes);
+
+    public function inCategory(Term $product_category);
+
+    /**
+     * Get a count of all models in the database.
+     *
+     * @return int
+     */
+    public function count();
 }

@@ -8,11 +8,8 @@ use Illuminate\Http\Request;
 
 class PostsController extends Controller
 {
-    private $imageRepo;
-
     public function __construct()
     {
-        $this->middleware('auth.basic', ['except' => ['show', 'images']]);
     }
 
     public function show(Request $request, $id = null)

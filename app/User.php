@@ -17,6 +17,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     use Authenticatable, Authorizable, CanResetPassword, PresentableTrait, RoleableTrait;
 
     /**
+     * The roles that should always be available.
+     *
+     * @var array
+     */
+    public static $base_roles = [
+        'customer'      => 'Customer',
+        'subscriber'    => 'Subscriber',
+        'manager'       => 'Manager',
+        'admin'         => 'Admin',
+    ];
+
+    /**
      * The presenter instance to use.
      *
      * @var string
@@ -42,7 +54,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var array
      */
-    protected $fillable = ['username', 'name', 'email', 'password', 'role_id'];
+    protected $fillable = ['username', 'name', 'email', 'password', 'role_id', 'last_seen_at'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -50,4 +62,68 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    /**
+     * A user has several orders.
+     *
+     * @return [type] [description]
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class)->orderBy('created_at', 'DESC');
+    }
+
+    /**
+     * A user has several addresses.
+     *
+     * @return
+     */
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
+
+    /**
+     * Does the user own the model.
+     *
+     * @param Model $model The model to check
+     *
+     * @return bool
+     */
+    public function owns(Model $model)
+    {
+        return $this->id == $model->user_id;
+    }
+
+    /**
+     * Whether a user has any orders.
+     *
+     * @return bool
+     */
+    public function hasOrders()
+    {
+        return $this->orders->count();
+    }
+
+    /**
+     * Attach an address to a user.
+     *
+     * @param Address $address
+     *
+     * @return Address
+     */
+    public function addAddress(Address $address)
+    {
+        return $this->addresses()->save($address);
+    }
+
+    /**
+     * Has the user been auto-created? I.e. they've never logged in.
+     *
+     * @return bool
+     */
+    public function autoCreated()
+    {
+        return is_null($this->last_seen_at);
+    }
 }

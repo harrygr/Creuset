@@ -9,6 +9,11 @@ use Spatie\MediaLibrary\HasMedia\Interfaces\HasMedia;
 
 class MediaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin', ['only' => ['store', 'update', 'destroy']]);
+    }
+
     public function index($collection = null)
     {
         if ($collection) {

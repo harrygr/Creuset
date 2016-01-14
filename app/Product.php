@@ -15,6 +15,13 @@ class Product extends Model implements HasMediaConversions, Termable
 {
     use PresentableTrait, HasMediaTrait, SoftDeletes, Postable;
 
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    public $table = 'products';
+
     public function registerMediaConversions()
     {
         $this->addMediaConversion('thumb')
@@ -30,30 +37,23 @@ class Product extends Model implements HasMediaConversions, Termable
     protected $dates = ['created_at', 'updated_at', 'published_at', 'deleted_at'];
 
     /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'products';
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-     'name',
-     'slug',
-     'description',
-     'user_id',
-     'media_id',
-     'status',
-     'price',
-     'sale_price',
-     'sku',
-     'stock_qty',
-     'published_at',
-     ];
+    'name',
+    'slug',
+    'description',
+    'user_id',
+    'media_id',
+    'status',
+    'price',
+    'sale_price',
+    'sku',
+    'stock_qty',
+    'published_at',
+    ];
 
     protected $presenter = 'Creuset\Presenters\ProductPresenter';
 
@@ -65,7 +65,12 @@ class Product extends Model implements HasMediaConversions, Termable
     public function product_categories()
     {
         return $this->morphToMany('\Creuset\Term', 'termable')
-                    ->where('taxonomy', 'product_category');
+        ->where('taxonomy', 'product_category');
+    }
+
+    public function image()
+    {
+        return $this->belongsTo(Media::class, 'media_id');
     }
 
     /**
@@ -82,6 +87,11 @@ class Product extends Model implements HasMediaConversions, Termable
         if (is_string($date)) {
             $this->attributes['published_at'] = new Carbon($date);
         }
+    }
+
+    public function getThumbnailAttribute()
+    {
+        return $this->image ? $this->image->thumbnail_url : '';
     }
 
     public function setPriceAttribute($price)
@@ -104,6 +114,16 @@ class Product extends Model implements HasMediaConversions, Termable
         return $price / 100;
     }
 
+    public function getDescriptionHtml()
+    {
+        return \Markdown::convertToHtml($this->description);
+    }
+
+    public function getUrlAttribute()
+    {
+        return route('products.show', [$this->product_category->slug, $this->slug]);
+    }
+
     /**
      * The field to use to display the parent name.
      *
@@ -112,5 +132,71 @@ class Product extends Model implements HasMediaConversions, Termable
     public function getName()
     {
         return $this->name;
+    }
+
+    public function getProductCategoryAttribute()
+    {
+        if ($this->product_categories->count() == 0) {
+            $this->makeUncategorised();
+
+            return $this->fresh()->product_categories->first();
+        }
+
+        return $this->product_categories->first();
+    }
+
+    /**
+     * Ensure an uncategorised term exists and assign it to the product,
+     * removing it from all other categories.
+     * 
+     * @return Product
+     */
+    public function makeUncategorised()
+    {
+        $term = Term::firstOrCreate([
+              'taxonomy' => 'product_category',
+              'slug'     => 'uncategorised',
+              'term'     => 'Uncategorised',
+              ]);
+
+        return $this->syncTerms([$term->id]);
+    }
+
+    /**
+     * Sync terms to a product.
+     * 
+     * @param \Illuminate\Database\Eloquent\Collection|array $terms
+     * 
+     * @return Product
+     */
+    public function syncTerms($terms = [])
+    {
+        if (!count($terms)) {
+            return $this->makeUncategorised();
+        }
+
+        $this->terms()->sync($terms);
+
+        return $this;
+    }
+
+    /**
+     * Get the price of the product.
+     *
+     * @return float
+     */
+    public function getPrice()
+    {
+        return $this->sale_price > 0 ? $this->sale_price : $this->price;
+    }
+
+    /**
+     * Get whether a product is in stock.
+     *
+     * @return bool
+     */
+    public function inStock()
+    {
+        return $this->stock_qty > 0;
     }
 }

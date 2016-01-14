@@ -13,12 +13,6 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         'Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode',
-        'Illuminate\Cookie\Middleware\EncryptCookies',
-        'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
-        'Illuminate\Session\Middleware\StartSession',
-        'Illuminate\View\Middleware\ShareErrorsFromSession',
-        // 'Illuminate\Foundation\Http\Middleware\VerifyCsrfToken',
-        'Creuset\Http\Middleware\VerifyCsrfToken',
     ];
 
     /**
@@ -27,9 +21,32 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth'       => 'Creuset\Http\Middleware\Authenticate',
-        'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
-        'guest'      => 'Creuset\Http\Middleware\RedirectIfAuthenticated',
-        'admin'      => 'Creuset\Http\Middleware\ForbidIfNotAdmin',
+        'auth'           => 'Creuset\Http\Middleware\Authenticate',
+        'auth.basic'     => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
+        'guest'          => 'Creuset\Http\Middleware\RedirectIfAuthenticated',
+        'admin'          => 'Creuset\Http\Middleware\ForbidIfNotAdmin',
+        'order.customer' => 'Creuset\Http\Middleware\DeriveUserForOrder',
+        'throttle'       => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+    ];
+
+    /**
+     * The application's route middleware groups.
+     *
+     * @var array
+     */
+    protected $middlewareGroups = [
+        'web' => [
+            \Illuminate\Cookie\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \Creuset\Http\Middleware\VerifyCsrfToken::class,
+        ],
+        'api' => [
+            \Illuminate\Cookie\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            'throttle:60,1',
+        ],
     ];
 }

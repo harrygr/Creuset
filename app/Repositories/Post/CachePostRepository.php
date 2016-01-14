@@ -3,59 +3,20 @@
 namespace Creuset\Repositories\Post;
 
 use Creuset\Post;
+use Creuset\Repositories\CacheRepository;
 
-class CachePostRepository implements PostRepository
+class CachePostRepository extends CacheRepository implements PostRepository
 {
     /**
-     * @var PostRepository
-     */
-    private $repository;
-
-    /**
      * @param PostRepository $repository
+     * @param Post           $model
      */
-    public function __construct(PostRepository $repository)
+    public function __construct(PostRepository $repository, Post $model = null)
     {
         $this->repository = $repository;
-    }
+        $this->model = $model ?: new Post();
 
-    /**
-     * @param int   $id
-     * @param array $with
-     *
-     * @return mixed
-     */
-    public function fetch($id, $with = [])
-    {
-        $withs = implode('-', $with);
-
-        return \Cache::remember("post.{$id}.{$withs}", env('CACHE_TIME'), function () use ($id) {
-           return $this->repository->fetch($id);
-        });
-    }
-
-    /**
-     * @param array $with
-     *
-     * @return mixed
-     */
-    public function getPaginated($with)
-    {
-        $page = \Request::get('page', 0);
-
-        return \Cache::tags('posts', 'posts.index')->remember("posts.paginated.page.{$page}", env('CACHE_TIME'), function () use ($with) {
-            return $this->repository->getPaginated($with);
-        });
-    }
-
-    /**
-     * @param string $slug
-     *
-     * @return mixed
-     */
-    public function getBySlug($slug)
-    {
-        return $this->repository->getBySlug($slug);
+        $this->tag = $this->model->getTable();
     }
 
     /**
@@ -110,16 +71,9 @@ class CachePostRepository implements PostRepository
         return $this->repository->restore($post);
     }
 
-    public function count()
-    {
-        return \Cache::tags('posts', 'posts.index')->remember('posts.count', env('CACHE_TIME'), function () {
-            return $this->repository->count();
-        });
-    }
-
     public function trashedCount()
     {
-        return \Cache::tags('posts', 'posts.index')->remember('posts.count.trashed', env('CACHE_TIME'), function () {
+        return \Cache::tags('posts')->remember('posts.count.trashed', config('cache.time'), function () {
             return $this->repository->trashedCount();
         });
     }

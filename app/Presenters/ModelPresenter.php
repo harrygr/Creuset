@@ -2,10 +2,15 @@
 
 namespace Creuset\Presenters;
 
-use Illuminate\View\Expression;
+use Illuminate\Support\HtmlString;
 
 abstract class ModelPresenter extends Presenter
 {
+    /**
+     * Get a set of edit and delete links for a model.
+     *
+     * @return HtmlString
+     */
     public function indexLinks()
     {
         if ($this->model->trashed()) {
@@ -16,6 +21,6 @@ abstract class ModelPresenter extends Presenter
             sprintf('<a href="%s" data-method="delete" data-confirm="Are you sure?" class="text-danger" rel="nofollow">Trash</a>', route("admin.{$this->modelRoute}.delete", [$this->model->id]));
         }
 
-        return new Expression($html);
+        return new HtmlString($html);
     }
 }

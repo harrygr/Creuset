@@ -2,11 +2,12 @@
 
 use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseMigrations, DatabaseTransactions;
 
     protected $baseUrl;
 
@@ -23,15 +24,14 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 
         $this->baseUrl = \Config::get('app.url', 'http://homestead.app');
 
-        // $this->setUpDatabase();
+        $this->setUpDatabase();
 
         return $app;
     }
 
     protected function setUpDatabase()
     {
-        Artisan::call('migrate:reset');
-        Artisan::call('migrate');
+        Artisan::call('migrate:refresh');
     }
 
     protected function logInAsAdmin(array $overrides = [])
@@ -45,7 +45,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 
         $user->assignRole($this->getRole($role)->name);
 
-        \Auth::loginUsingId($user->id);
+        $this->be($user);
 
         return $user;
     }

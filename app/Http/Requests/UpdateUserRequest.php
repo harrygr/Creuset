@@ -11,7 +11,7 @@ class UpdateUserRequest extends UserRequest
      */
     public function authorize()
     {
-        $currentUser = auth()->user();
+        $currentUser = $this->user();
 
         return $this->route('user')->id == $currentUser->id or $currentUser->hasRole('admin');
     }

@@ -4,8 +4,9 @@ namespace Creuset\Repositories\Product;
 
 use Creuset\Product;
 use Creuset\Repositories\DbRepository;
+use Creuset\Term;
 
-class DbProductRepository  extends DbRepository implements ProductRepository
+class DbProductRepository extends DbRepository implements ProductRepository
 {
     /**
      * @param Product $product
@@ -28,5 +29,10 @@ class DbProductRepository  extends DbRepository implements ProductRepository
         }
 
         return $product;
+    }
+
+    public function inCategory(Term $product_category)
+    {
+        return $product_category->products()->paginate(config('shop.products_per_page'));
     }
 }

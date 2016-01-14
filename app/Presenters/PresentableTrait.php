@@ -18,7 +18,7 @@ trait PresentableTrait
             throw new PresenterException("The presenter class {$this->presenter} does not exist");
         }
 
-        # Singleton presenter instance
+        // Singleton presenter instance
         if (!isset($this->presenterInstance)) {
             $this->presenterInstance = new $this->presenter($this);
         }

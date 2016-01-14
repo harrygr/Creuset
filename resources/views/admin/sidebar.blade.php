@@ -1,6 +1,6 @@
 <ul class="sidebar-nav">
     <li class="sidebar-brand">
-        <a href="#">
+        <a href="/">
             Creuset
         </a>
     </li>
@@ -23,6 +23,13 @@
         <ul>
             <li><a href="{{ route('admin.products.index') }}">All Products</a></li>
             <li><a href="{{ route('admin.products.create') }}">New Product</a></li>
+        </ul>
+    </li>
+
+    <li>
+        <a href="{{ route('admin.orders.index') }}"><i class="fa fa-fw fa-truck"></i> Orders</a>
+        <ul>
+            <li><a href="{{ route('admin.orders.index') }}">All Orders</a></li>
         </ul>
     </li>
 
