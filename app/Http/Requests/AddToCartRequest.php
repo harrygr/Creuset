@@ -42,16 +42,16 @@ class AddToCartRequest extends Request
     }
 
     /**
-     * Get the messages for any validation errors
+     * Get the messages for any validation errors.
      * 
      * @return array
      */
     public function messages()
     {
-        $message = $this->qty_in_cart ? 
+        $message = $this->qty_in_cart ?
             sprintf('There are %s in stock and you already have %s in your cart.', $this->qty_in_stock, $this->qty_in_cart)
             : sprintf('There are only %s in stock.', $this->qty_in_stock);
-            
+
         return [
         'between' => 'You cannot add that amount to the cart. '.$message,
         ];
@@ -68,7 +68,6 @@ class AddToCartRequest extends Request
         $this->qty_in_stock = $this->products->fetch($this->product_id)->stock_qty;
 
         if ($row_id = \Cart::search(['id' => (int) $this->product_id])) {
-
             $this->qty_in_cart = \Cart::get($row_id[0])->qty;
 
             return $this->qty_in_stock - $this->qty_in_cart;

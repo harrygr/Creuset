@@ -72,14 +72,13 @@ class ComposerServiceProvider extends ServiceProvider
     }
 
     /**
-     * Share configuration pertinant to displaying a list of products
+     * Share configuration pertinant to displaying a list of products.
      *
      * @return void
      */
     private function shareProductIndexSettings()
     {
-        view()->composer('shop.index', function($view)
-        {
+        view()->composer('shop.index', function ($view) {
             $view->with('products_per_row', config('shop.products_per_row'));
         });
     }

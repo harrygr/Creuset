@@ -8,7 +8,6 @@ trait CreatesOrders
 
     protected function createOrder($overrides = [])
     {
-        
         $this->customer = factory(\Creuset\User::class)->create();
         $this->address = factory(\Creuset\Address::class)->create(['user_id' => $this->customer->id]);
 
@@ -17,7 +16,7 @@ trait CreatesOrders
             'billing_address_id'  => $this->address->id,
             'shipping_address_id' => $this->address->id,
             ], $overrides);
-        
+
         $this->order = factory('Creuset\Order')->create($order_attributes);
         $order_item = factory('Creuset\OrderItem')->create(['order_id' => $this->order->id]);
 

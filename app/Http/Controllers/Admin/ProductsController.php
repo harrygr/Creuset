@@ -16,7 +16,8 @@ class ProductsController extends Controller
     private $products;
 
     /**
-     * Create a new ProductsController instance
+     * Create a new ProductsController instance.
+     *
      * @param ProductRepository $products
      */
     public function __construct(ProductRepository $products)
@@ -25,7 +26,8 @@ class ProductsController extends Controller
     }
 
     /**
-     * Show a list of all the products
+     * Show a list of all the products.
+     *
      * @return \Illuminate\Http\Response
      */
     public function index()
@@ -34,14 +36,16 @@ class ProductsController extends Controller
         $productCount = Product::count();
 
         return view('admin.products.index', [
-            'products' => $this->products->getPaginated(['image', 'product_categories']),
+            'products'     => $this->products->getPaginated(['image', 'product_categories']),
             'productCount' => $this->products->count(),
         ]);
     }
 
     /**
-     * Show the page for creating a new product
-     * @param  Product $product
+     * Show the page for creating a new product.
+     *
+     * @param Product $product
+     *
      * @return \Illuminate\Http\Response
      */
     public function create(Product $product)
@@ -50,12 +54,14 @@ class ProductsController extends Controller
     }
 
     /**
-     * Create a product in storage
-     * @param  CreateProductRequest $request
+     * Create a product in storage.
+     *
+     * @param CreateProductRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(CreateProductRequest $request)
-    {      
+    {
         $product = Product::create($request->all());
 
         $product->syncTerms($request->get('terms', []));
@@ -66,8 +72,10 @@ class ProductsController extends Controller
     }
 
     /**
-     * Show the page for editing a product
-     * @param  Product $product
+     * Show the page for editing a product.
+     *
+     * @param Product $product
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Product $product)
@@ -78,9 +86,11 @@ class ProductsController extends Controller
     }
 
     /**
-     * Update a product in storage
-     * @param  Product              $product 
-     * @param  UpdateProductRequest $request 
+     * Update a product in storage.
+     *
+     * @param Product              $product
+     * @param UpdateProductRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Product $product, UpdateProductRequest $request)
@@ -95,8 +105,10 @@ class ProductsController extends Controller
     }
 
     /**
-     * Show the page for attaching images to a product
-     * @param  Product $product 
+     * Show the page for attaching images to a product.
+     *
+     * @param Product $product
+     *
      * @return \Illuminate\Http\Response
      */
     public function images(Product $product)
@@ -105,8 +117,10 @@ class ProductsController extends Controller
     }
 
     /**
-     * Delete a Product
-     * @param  Product $product
+     * Delete a Product.
+     *
+     * @param Product $product
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Product $product)

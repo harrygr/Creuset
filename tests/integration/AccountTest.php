@@ -45,7 +45,7 @@ class AccountTest extends TestCase
         ->see('Profile updated');
 
         $this->seeInDatabase('users', ['id' => $user->id, 'email' => 'joe@example.com']);
-    } 
+    }
 
     /** @test **/
     public function it_cannot_update_another_user()
@@ -59,5 +59,4 @@ class AccountTest extends TestCase
 
         $this->notSeeInDatabase('users', ['id' => $other_user->id, 'email' => 'bad@email.com']);
     }
-
 }

@@ -10,7 +10,6 @@ class PostsController extends Controller
 {
     public function __construct()
     {
-       
     }
 
     public function show(Request $request, $id = null)

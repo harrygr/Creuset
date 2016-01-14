@@ -8,7 +8,6 @@ use Creuset\Repositories\Term\TermRepository;
 
 class TermsController extends Controller
 {
-
     /**
      * @var TermRepository
      */

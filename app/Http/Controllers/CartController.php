@@ -43,11 +43,10 @@ class CartController extends Controller
                   'price' => $product->getPrice(),
                   ]);
 
-
         return redirect()->back()->with([
-          'alert'       => new HtmlString(sprintf('%d %s added to cart. %s or %s.', 
-            $qty, 
-            str_plural($product->name, $qty), 
+          'alert'       => new HtmlString(sprintf('%d %s added to cart. %s or %s.',
+            $qty,
+            str_plural($product->name, $qty),
             '<strong><a href="/checkout">Checkout</a></strong>',
             '<strong><a href="/shop">continue shopping</a></strong>'
             )),

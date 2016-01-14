@@ -10,7 +10,7 @@ class VerifyCsrfToken extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfT
     protected $except = [
         'api/images',
         'api/posts',
-        'api/*'
+        'api/*',
     ];
 
     // public function handle($request, Closure $next)
