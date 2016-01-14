@@ -41,6 +41,11 @@ class AddToCartRequest extends Request
         ];
     }
 
+    /**
+     * Get the messages for any validation errors
+     * 
+     * @return array
+     */
     public function messages()
     {
         $message = $this->qty_in_cart ? 

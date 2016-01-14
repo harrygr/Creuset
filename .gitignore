@@ -12,3 +12,4 @@ npm-debug.log
 npm-debug.log.*
 /public/uploads
 tags
+.tags_swap

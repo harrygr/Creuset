@@ -19,6 +19,8 @@ class ComposerServiceProvider extends ServiceProvider
         $this->shareNavLinks();
 
         $this->sharePostData();
+
+        $this->shareProductIndexSettings();
     }
 
     /**
@@ -66,6 +68,19 @@ class ComposerServiceProvider extends ServiceProvider
             $countries_repository = $this->app->make(CountryRepository::class);
 
             $view->with('countries', $countries_repository->lists());
+        });
+    }
+
+    /**
+     * Share configuration pertinant to displaying a list of products
+     *
+     * @return void
+     */
+    private function shareProductIndexSettings()
+    {
+        view()->composer('shop.index', function($view)
+        {
+            $view->with('products_per_row', config('shop.products_per_row'));
         });
     }
 

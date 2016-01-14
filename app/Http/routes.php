@@ -41,9 +41,16 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('order-completed', ['uses' => 'OrdersController@completed', 'as' => 'orders.completed']);
 
+
+    /*
+     * Account
+     */
     Route::group(['prefix' => 'account'], function () {
 
         Route::get('/', ['uses' => 'AccountsController@show', 'as' => 'accounts.show']);
+        Route::get('edit', ['uses' => 'AccountsController@edit', 'as' => 'accounts.edit']);
+        Route::patch('{user}', ['uses' => 'AccountsController@update', 'as' => 'accounts.update']);
+
 
         Route::get('orders/{order}', ['uses' => 'OrdersController@show', 'as' => 'orders.show']);
 

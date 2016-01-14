@@ -42,7 +42,7 @@ abstract class CacheRepository
      */
     public function getPaginated($with = [])
     {
-        $page = \Request::get('page', 0);
+        $page = \Request::get('page', 1);
         $tags = array_merge([$this->tag], $with);
 
         return \Cache::tags($tags)->remember("{$this->tag}.paginated.page.{$page}", config('cache.time'), function () use ($with) {
