@@ -24,7 +24,7 @@ class Order extends Model
 
     /**
      * Sync the order with the current contents of the cart in
-     * the session deleting any existing items beforehand
+     * the session deleting any existing items beforehand.
      * 
      * @return Order
      */
@@ -50,7 +50,7 @@ class Order extends Model
     }
 
     /**
-     * An order belongs to a User
+     * An order belongs to a User.
      * 
      * @return Illuminate\Database\Eloquent\Relations\Relation
      */
@@ -60,7 +60,7 @@ class Order extends Model
     }
 
     /**
-     * An order belongs to a customer
+     * An order belongs to a customer.
      * 
      * @return Illuminate\Database\Eloquent\Relations\Relation
      */
@@ -70,7 +70,7 @@ class Order extends Model
     }
 
     /**
-     * An order has many items
+     * An order has many items.
      * 
      * @return Illuminate\Database\Eloquent\Relations\Relation
      */
@@ -80,7 +80,7 @@ class Order extends Model
     }
 
     /**
-     * An order has many items
+     * An order has many items.
      * 
      * @return Illuminate\Database\Eloquent\Relations\Relation
      */
@@ -90,7 +90,7 @@ class Order extends Model
     }
 
     /**
-     * An order has one billing address
+     * An order has one billing address.
      * 
      * @return Illuminate\Database\Eloquent\Relations\Relation
      */
@@ -100,7 +100,7 @@ class Order extends Model
     }
 
     /**
-     * An order has one shipping address
+     * An order has one shipping address.
      * 
      * @return Illuminate\Database\Eloquent\Relations\Relation
      */
@@ -110,7 +110,7 @@ class Order extends Model
     }
 
     /**
-     * Is the shipping address the same as the billing
+     * Is the shipping address the same as the billing.
      * 
      * @return bool
      */
@@ -120,32 +120,32 @@ class Order extends Model
     }
 
     /**
-     * Get the email of the user who owns the order
+     * Get the email of the user who owns the order.
      * 
      * @return string
      */
     public function getEmailAttribute()
     {
-        if ($this->user)
-        {
+        if ($this->user) {
             return $this->user->email;
         }
-        return null;
+
+        return;
     }
 
     /**
-     * Get the address of the order
+     * Get the address of the order.
      * 
-     * @param  string $type Type of address to get; billing or shipping
+     * @param string $type Type of address to get; billing or shipping
      * 
      * @return Address
      */
     public function getAddress($type = 'billing')
     {
-        if ($address = $this->{$type.'_address'})
-        {
+        if ($address = $this->{$type.'_address'}) {
             return $address;
         }
-        return new Address;
+
+        return new Address();
     }
 }
