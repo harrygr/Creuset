@@ -30,31 +30,77 @@ class OrdersController extends Controller
     public function store(CreateOrderRequest $request)
     {
         $customer = $request->get('customer');
+        $order = $request->session()->get('order');
 
-        if (\Auth::guest() or !$request->has('billing_address_id')) {
-            $billing_address_id = $customer->addAddress(new Address($request->get('billing_address')))->id;
-            $shipping_address_id = $billing_address_id;
-            if ($request->has('different_shipping_address')) {
-                $shipping_address_id = $customer->addAddress(new Address($request->get('shipping_address')))->id;
-            }
-        } else {
-            $billing_address_id = $request->get('billing_address_id');
-            $shipping_address_id = $request->get('shipping_address_id');
-        }
+        $addresses = $this->processAddresses($request);
 
-        // create new order with the cart contents
-        $order = Order::createFromCart($customer, [
-                                       'billing_address_id'  => $billing_address_id,
-                                       'shipping_address_id' => $shipping_address_id,
-                                       ]);
+        // update the order with the correct info
+        $order->billing_address_id = $addresses['billing_address_id'];
+        $order->shipping_address_id = $addresses['shipping_address_id'];
+        $order->user_id = $customer->id;
+        $order->save();
 
         event(new OrderWasCreated($order));
 
-        $request->session()->put('order', $order);
+        // replace the order in the session with the updated version
+        $request->session()->put('order', $order->fresh());
 
         return redirect()->route('checkout.pay');
     }
 
+    /**
+     * Get the order billing and shipping address depending on what was passed in the request.
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    private function processAddresses(Request $request)
+    {
+        if (\Auth::check() and $request->has('billing_address_id')) {
+            return [
+               'billing_address_id'     => $request->get('billing_address_id'),
+               'shipping_address_id'    => $request->get('shipping_address_id', $request->get('billing_address_id')),
+            ];
+        }
+
+        $customer = $request->get('customer');
+        $order = $request->session()->get('order');
+
+        $billing_address = $order->getAddress('billing');
+        $billing_address->fill($request->get('billing_address'));
+        $billing_address->user_id = $customer->id;
+        $billing_address->save();
+
+        $addresses = [
+               'billing_address_id'     => $billing_address->id,
+               'shipping_address_id'    => $billing_address->id,
+        ];
+
+        if ($request->has('different_shipping_address')) {
+
+            // If the order previously had shipping same as billing but now a
+            // different address is being used, we'll create a new one or
+            // we'll end up updating the billing address too
+            $shipping_address = $order->shippingSameAsBilling() ? new Address() : $order->getAddress('shipping');
+
+            $shipping_address->fill($request->get('shipping_address'));
+            $shipping_address->user_id = $customer->id;
+            $shipping_address->save();
+
+            $addresses['shipping_address_id'] = $shipping_address->id;
+        }
+
+        return $addresses;
+    }
+
+    /**
+     * Show the page for a completed order.
+     * 
+     * @param Request $request
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function completed(Request $request)
     {
         if (!$request->session()->has('order_id')) {

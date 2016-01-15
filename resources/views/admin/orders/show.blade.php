@@ -25,6 +25,10 @@ Order #{{ $order->id }} Details
 					</td>
 				</tr>
 				<tr>
+					<th>Payment ID</th>
+					<td>{{ $order->payment_id }}</td>
+				</tr>
+				<tr>
 					<th>Customer</th>
 					<td><a href="{{ route('admin.users.edit', $order->customer->username) }}">{{ $order->customer->name }}</a> ({{ $order->customer->email }})</td>
 				</tr>

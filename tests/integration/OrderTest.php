@@ -82,7 +82,7 @@ class OrderTest extends TestCase
         $this->assertEquals($address->id, $order->billing_address_id);
         $this->assertEquals($address->id, $order->shipping_address_id);
 
-        $this->assertEquals($current_stock - 1, \Creuset\Product::find($product->id)->stock_qty);
+        //$this->assertEquals($current_stock - 1, $product->fresh()->stock_qty);
     }
 
     /** @test **/
