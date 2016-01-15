@@ -22,7 +22,7 @@ class EventServiceProvider extends ServiceProvider
             'Creuset\Listeners\UserLoggedInHandler',
         ],
         'Creuset\Events\OrderWasCreated' => [
-            
+
         ],
         'Creuset\Events\OrderWasPaid' => [
             'Creuset\Listeners\ReduceProductStock',

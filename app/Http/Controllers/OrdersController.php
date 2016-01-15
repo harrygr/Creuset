@@ -49,14 +49,15 @@ class OrdersController extends Controller
     }
 
     /**
-     * Get the order billing and shipping address depending on what was passed in the request
-     * @param  Request $request
-     * @return Array
+     * Get the order billing and shipping address depending on what was passed in the request.
+     *
+     * @param Request $request
+     *
+     * @return array
      */
     private function processAddresses(Request $request)
     {
-        if (\Auth::check() and $request->has('billing_address_id'))
-        {
+        if (\Auth::check() and $request->has('billing_address_id')) {
             return [
                'billing_address_id'     => $request->get('billing_address_id'),
                'shipping_address_id'    => $request->get('shipping_address_id', $request->get('billing_address_id')),
@@ -78,10 +79,10 @@ class OrdersController extends Controller
 
         if ($request->has('different_shipping_address')) {
 
-            // If the order previously had shipping same as billing but now a 
-            // different address is being used, we'll create a new one or 
+            // If the order previously had shipping same as billing but now a
+            // different address is being used, we'll create a new one or
             // we'll end up updating the billing address too
-            $shipping_address = $order->shippingSameAsBilling() ? new Address : $order->getAddress('shipping');
+            $shipping_address = $order->shippingSameAsBilling() ? new Address() : $order->getAddress('shipping');
 
             $shipping_address->fill($request->get('shipping_address'));
             $shipping_address->user_id = $customer->id;
@@ -94,9 +95,9 @@ class OrdersController extends Controller
     }
 
     /**
-     * Show the page for a completed order
+     * Show the page for a completed order.
      * 
-     * @param  Request $request 
+     * @param Request $request
      * 
      * @return \Illuminate\Http\Response
      */

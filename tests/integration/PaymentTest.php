@@ -28,7 +28,6 @@ class PaymentTest extends TestCase
 
         $this->assertRedirectedTo('order-completed');
 
-
         $this->seeInDatabase('orders', ['id' => $this->order->id, 'status' => \Creuset\Order::PAID]);
         $this->assertEquals(0, \Cart::total());
     }

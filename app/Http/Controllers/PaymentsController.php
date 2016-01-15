@@ -46,10 +46,10 @@ class PaymentsController extends Controller
 
     private function paymentErrorMessage($message)
     {
-        if (strpos($message, 'zip code'))
-        {
-            return new \Illuminate\Support\HtmlString('The postcode you supplied failed validation, please check your billing address on the <a href="/checkout" class="alert-link" title="return to the checkout page">checkout page</a>.');             
+        if (strpos($message, 'zip code')) {
+            return new \Illuminate\Support\HtmlString('The postcode you supplied failed validation, please check your billing address on the <a href="/checkout" class="alert-link" title="return to the checkout page">checkout page</a>.');
         }
+
         return $message;
     }
 }

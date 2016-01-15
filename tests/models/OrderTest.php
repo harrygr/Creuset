@@ -21,7 +21,6 @@ class OrderTest extends TestCase
         $this->assertInstanceOf(User::class, $order->customer);
     }
 
-
     /** @test **/
     public function it_deletes_old_items_before_adding_new_ones_from_the_cart()
     {
@@ -40,14 +39,14 @@ class OrderTest extends TestCase
         $this->assertEquals($product->getPrice(), $order->fresh()->amount);
         $this->seeInDatabase('order_items', ['orderable_id' => $product->id, 'order_id' => $order->id]);
 
-        // And I shouldn't have the old item in the order anymore 
+        // And I shouldn't have the old item in the order anymore
         $this->notSeeInDatabase('order_items', ['description' => $order_item->description]);
     }
 
     /** @test **/
     public function it_determines_if_the_billing_and_shipping_address_are_the_same()
     {
-        $order = new Order;
+        $order = new Order();
 
         // The billing and shipping addresses are unset so it should return false
         $this->assertFalse($order->shippingSameAsBilling());

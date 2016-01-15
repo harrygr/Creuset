@@ -34,10 +34,10 @@ class ReduceProductStock implements ShouldQueue
     }
 
     /**
-     * Reduce the stock on a product
+     * Reduce the stock on a product.
      * 
-     * @param  Product $product  
-     * @param  int  $quantity
+     * @param Product $product
+     * @param int     $quantity
      * 
      * @return bool
      */
