@@ -6,12 +6,13 @@ use TestCase;
 
 class PaymentTest extends TestCase
 {
-    use \CreatesOrders;
+    use \CreatesOrders, \UsesCart;
 
     /** @test **/
     public function it_completes_an_order_upon_payment()
     {
         $this->createOrder();
+        $this->putProductInCart();
 
         \Session::put('order', $this->order);
 
@@ -27,6 +28,7 @@ class PaymentTest extends TestCase
 
         $this->assertRedirectedTo('order-completed');
 
+
         $this->seeInDatabase('orders', ['id' => $this->order->id, 'status' => \Creuset\Order::PAID]);
         $this->assertEquals(0, \Cart::total());
     }
@@ -35,6 +37,7 @@ class PaymentTest extends TestCase
     public function it_returns_to_the_pay_page_if_there_is_a_payment_error()
     {
         $this->createOrder();
+        $this->putProductInCart();
 
         \Session::put('order', $this->order);
 

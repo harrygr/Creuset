@@ -28,7 +28,7 @@ class PaymentsController extends Controller
                 ]);
         } catch (\Creuset\Billing\CardException $e) {
             return redirect()->back()->with([
-                'alert'       => $e->getMessage(),
+                'alert'       => $this->paymentErrorMessage($e->getMessage()),
                 'alert-class' => 'danger',
                 ]);
         }
@@ -42,5 +42,14 @@ class PaymentsController extends Controller
         $request->session()->flash('order_id', $order->id);
 
         return redirect()->route('orders.completed');
+    }
+
+    private function paymentErrorMessage($message)
+    {
+        if (strpos($message, 'zip code'))
+        {
+            return new \Illuminate\Support\HtmlString('The postcode you supplied failed validation, please check your billing address on the <a href="/checkout" class="alert-link" title="return to the checkout page">checkout page</a>.');             
+        }
+        return $message;
     }
 }
