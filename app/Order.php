@@ -59,9 +59,9 @@ class Order extends Model
 
         $shipping_method = ShippingMethod::find($id);
         $shipping_item = new OrderItem([
-                'quantity'    => 1,
-                'description' => $shipping_method->description,
-                'price_paid'  => $shipping_method->getPrice(),
+            'quantity'    => 1,
+            'description' => $shipping_method->description,
+            'price_paid'  => $shipping_method->getPrice(),
             ]);
         $shipping_item->orderable()->associate($shipping_method);
         $this->order_items()->save($shipping_item);
@@ -85,8 +85,12 @@ class Order extends Model
      */
     public function refreshAmount()
     {
-       $this->update(['amount' => $this->order_items->sum('price_paid')]);
-       return $this;
+        $amount = $this->order_items->reduce(function($carry, $item) {
+            return ($item->price_paid * $item->quantity) + $carry;
+        });
+
+        $this->update(['amount' => $amount]);
+        return $this;
     }
 
     /**

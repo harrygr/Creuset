@@ -47,8 +47,8 @@ class OrderTest extends TestCase
         OrderItem::create([
             'order_id'          => $order->id,
             'description'       => 'A product',
-            'price_paid'        => 89.50,
-            'quantity'          => 1,
+            'price_paid'        => 89.20,
+            'quantity'          => 2,
             'orderable_type'    => Product::class,
             'orderable_id'      => 1,
             ]);
@@ -63,7 +63,7 @@ class OrderTest extends TestCase
             ]);
 
         $order->refreshAmount();
-        $this->assertEquals(94.5, $order->amount);
+        $this->assertEquals(183.4, $order->amount);
 
     }
 
