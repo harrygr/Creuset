@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('order.session', ['only' => ['shipping','pay']]);
+    }
+
     /**
      * Show the checkout page.
      *
@@ -16,10 +22,6 @@ class CheckoutController extends Controller
      */
     public function show(Request $request)
     {
-        if (!Cart::count()) {
-            return view('shop.cart_empty');
-        }
-
         // In case we need to refirest to a login page
         // we'll flash the checkout as the intended url
         $request->session()->flash('url.intended', 'checkout');
@@ -34,6 +36,33 @@ class CheckoutController extends Controller
     }
 
     /**
+     * Show the page for choosing a shipping method for an order
+     * 
+     * @param  Request $request
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function shipping(Request $request)
+    {
+        $order = $request->session()->get('order')->fresh();
+
+        $shipping_methods = \Creuset\ShippingMethod::all();
+
+        // If there's only one shipping method available, just skip the shipping page and set it directly
+        if (count($shipping_methods) == 1) {
+            $order = $order->setShipping($shipping_methods->first()->id)->fresh();
+
+            $request->session()->put('order', $order);
+            return redirect()->route('checkout.pay');
+        }
+
+        return view('shop.shipping', [
+            'order' => $order,
+            'shipping_methods' => $shipping_methods,
+            ]);
+    }
+
+    /**
      * Show the page for paying for an order.
      *
      * @param Request $request
@@ -42,11 +71,15 @@ class CheckoutController extends Controller
      */
     public function pay(Request $request)
     {
-        if (!$request->session()->has('order') or \Cart::count() === 0) {
-            return view('shop.cart_empty');
+        $order = $request->session()->get('order');
+        if (!$order->hasShipping()) {
+            return redirect()->route('checkout.shipping')->with([
+                'alert' => 'Please select a shipping method',
+                'alert-class' => 'warning'
+                ]);
         }
-        $order = $request->session()->get('order')->syncWithCart()->fresh();
 
-        return view('orders.pay', compact('order'));
+
+        return view('orders.pay', ['order' => $order]);
     }
 }

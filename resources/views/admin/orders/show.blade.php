@@ -63,15 +63,25 @@ Order #{{ $order->id }} Details
 			</tr>
 		</thead>
 		<tbody>
-			@foreach ($order->items as $item)
+			@foreach ($order->product_items as $item)
 				<tr>
 					<td style="width:36px">{{ $item->orderable->present()->thumbnail(20) }}</td>
 					<td><a href="{{ route('admin.products.edit', $item->orderable) }}">{{ $item->description }}</a></td>
 					<td>{{ Present::money($item->price_paid) }}</td>
 					<td>{{ $item->quantity }}</td>
-				<td>{{ Present::money($item->total_paid) }}</td>
+					<td>{{ Present::money($item->total_paid) }}</td>
 				</tr>
 			@endforeach
+			<tr>
+				<td colspan="5"></td>
+			</tr>
+			<tr>
+				<td><i class="fa fa-truck"></i></td>
+				<td>{{ $order->shipping_item->description}}</td>
+				<td></td>
+				<td></td>
+				<td>{{ Present::money($order->shipping_item->price_paid) }}</td>
+			</tr>
 		</tbody>
 		<tfoot>
 			<tr>

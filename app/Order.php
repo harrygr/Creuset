@@ -34,19 +34,82 @@ class Order extends Model
 
         $order_items = Cart::content()->map(function ($row) {
             $item = new OrderItem([
-                'order_id'    => $this->id,
+
                 'quantity'    => $row->qty,
                 'description' => $row->product->name,
                 'price_paid'  => $row->product->getPrice(),
                 ]);
             $item->orderable()->associate($row->product);
-            $item->save();
-
             return $item;
         });
-        $this->update(['amount' => Cart::total()]);
+        $this->order_items()->saveMany($order_items);
+        $this->refreshAmount();
 
         return $this;
+    }
+
+    /**
+     * Add a shipping method to the order
+     * @param  integer $id
+     * @return Order
+     */
+    public function setShipping($id)
+    {
+        $this->shipping_items()->delete();
+
+        $shipping_method = ShippingMethod::find($id);
+        $shipping_item = new OrderItem([
+                'quantity'    => 1,
+                'description' => $shipping_method->description,
+                'price_paid'  => $shipping_method->getPrice(),
+            ]);
+        $shipping_item->orderable()->associate($shipping_method);
+        $this->order_items()->save($shipping_item);
+        $this->refreshAmount();
+
+        return $this;
+    }
+
+    /**
+     * Has the order had a shipping method set
+     * @return boolean
+     */
+    public function hasShipping()
+    {
+        return $this->shipping_items->count() > 0;
+    }
+
+    /**
+     * Refresh the total for an order by tallying up all the order items
+     * @return float
+     */
+    public function refreshAmount()
+    {
+       $this->update(['amount' => $this->order_items->sum('price_paid')]);
+       return $this;
+    }
+
+    /**
+     * Get the Order Item that holds the shipping method for an order
+     * @return OrderItem
+     */
+    public function getShippingItemAttribute()
+    {
+        return $this->shipping_items()->first() ?: new OrderItem;
+    }
+
+    /**
+     * Get the underlying shipping method for an order
+     * @return ShippingMethod
+     */
+    public function getShippingMethodAttribute()
+    {
+        $item = $this->shipping_item;
+        if ($item->exists)
+        {
+            return $item->orderable;
+        }
+        return new ShippingMethod;
     }
 
     /**
@@ -77,6 +140,26 @@ class Order extends Model
     public function order_items()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    /**
+     * An order has many shipping items.
+     * 
+     * @return Illuminate\Database\Eloquent\Relations\Relation
+     */
+    public function shipping_items()
+    {
+        return $this->order_items()->where('orderable_type', ShippingMethod::class);
+    }
+
+    /**
+     * An order has many shipping items.
+     * 
+     * @return Illuminate\Database\Eloquent\Relations\Relation
+     */
+    public function product_items()
+    {
+        return $this->order_items()->where('orderable_type', Product::class);
     }
 
     /**

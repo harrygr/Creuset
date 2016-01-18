@@ -29,14 +29,16 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('shop/{product_category?}', ['uses' => 'ShopController@index', 'as' => 'products.index']);
     Route::get('shop/{product_category}/{product_slug}', ['uses' => 'ProductsController@show', 'as' => 'products.show']);
 
-    Route::get('cart', ['uses' => 'CartController@index', 'as' => 'cart']);
+    Route::get('cart', ['uses' => 'CartController@index', 'as' => 'cart', 'middleware' => 'cart.empty']);
     Route::post('cart', ['uses' => 'CartController@store', 'as' => 'cart.store']);
     Route::delete('cart/{rowid}', ['uses' => 'CartController@remove', 'as' => 'cart.remove']);
 
-    Route::get('checkout', ['uses' => 'CheckoutController@show', 'as' => 'checkout.show']);
+    Route::get('checkout', ['uses' => 'CheckoutController@show', 'as' => 'checkout.show', 'middleware' => 'cart.empty']);
+    Route::get('checkout/shipping', ['uses' => 'CheckoutController@shipping', 'as' => 'checkout.shipping']);
     Route::get('checkout/pay', ['uses' => 'CheckoutController@pay', 'as' => 'checkout.pay']);
 
     Route::post('orders', ['uses' => 'OrdersController@store', 'as' => 'orders.store']);
+    Route::post('orders/shipping', ['uses' => 'OrdersController@shipping', 'as' => 'orders.shipping']);
 
     Route::post('payments', ['uses' => 'PaymentsController@store', 'as' => 'payments.store']);
 

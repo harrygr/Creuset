@@ -12,7 +12,6 @@ class PaymentTest extends TestCase
     public function it_completes_an_order_upon_payment()
     {
         $this->createOrder();
-        $this->putProductInCart();
 
         \Session::put('order', $this->order);
 
@@ -36,7 +35,8 @@ class PaymentTest extends TestCase
     public function it_returns_to_the_pay_page_if_there_is_a_payment_error()
     {
         $this->createOrder();
-        $this->putProductInCart();
+
+        $this->order->setShipping(factory(\Creuset\ShippingMethod::class)->create()->id);
 
         \Session::put('order', $this->order);
 
