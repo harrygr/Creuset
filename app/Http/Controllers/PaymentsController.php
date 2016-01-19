@@ -36,7 +36,6 @@ class PaymentsController extends Controller
         }
 
         $request->session()->forget('order');
-
         event(new \Creuset\Events\OrderWasPaid($order, $charge->id));
 
         \Cart::destroy();

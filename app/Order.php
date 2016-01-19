@@ -20,12 +20,12 @@ class Order extends Model
 
     public $table = 'orders';
 
-    public $fillable = ['amount', 'status', 'user_id', 'billing_address_id', 'shipping_address_id'];
+    public $fillable = ['amount', 'status', 'user_id', 'payment_id', 'billing_address_id', 'shipping_address_id'];
 
     /**
      * Sync the order with the current contents of the cart in
      * the session deleting any existing items beforehand.
-     * 
+     *
      * @return Order
      */
     public function syncWithCart()
@@ -118,7 +118,7 @@ class Order extends Model
 
     /**
      * An order belongs to a User.
-     * 
+     *
      * @return Illuminate\Database\Eloquent\Relations\Relation
      */
     public function user()
@@ -128,7 +128,7 @@ class Order extends Model
 
     /**
      * An order belongs to a customer.
-     * 
+     *
      * @return Illuminate\Database\Eloquent\Relations\Relation
      */
     public function customer()
@@ -138,7 +138,7 @@ class Order extends Model
 
     /**
      * An order has many items.
-     * 
+     *
      * @return Illuminate\Database\Eloquent\Relations\Relation
      */
     public function order_items()
@@ -148,7 +148,7 @@ class Order extends Model
 
     /**
      * An order has many shipping items.
-     * 
+     *
      * @return Illuminate\Database\Eloquent\Relations\Relation
      */
     public function shipping_items()
@@ -158,7 +158,7 @@ class Order extends Model
 
     /**
      * An order has many shipping items.
-     * 
+     *
      * @return Illuminate\Database\Eloquent\Relations\Relation
      */
     public function product_items()
@@ -168,7 +168,7 @@ class Order extends Model
 
     /**
      * An order has many items.
-     * 
+     *
      * @return Illuminate\Database\Eloquent\Relations\Relation
      */
     public function items()
@@ -178,7 +178,7 @@ class Order extends Model
 
     /**
      * An order has one billing address.
-     * 
+     *
      * @return Illuminate\Database\Eloquent\Relations\Relation
      */
     public function billing_address()
@@ -188,7 +188,7 @@ class Order extends Model
 
     /**
      * An order has one shipping address.
-     * 
+     *
      * @return Illuminate\Database\Eloquent\Relations\Relation
      */
     public function shipping_address()
@@ -198,7 +198,7 @@ class Order extends Model
 
     /**
      * Is the shipping address the same as the billing.
-     * 
+     *
      * @return bool
      */
     public function shippingSameAsBilling()
@@ -208,7 +208,7 @@ class Order extends Model
 
     /**
      * Get the email of the user who owns the order.
-     * 
+     *
      * @return string
      */
     public function getEmailAttribute()
@@ -222,9 +222,9 @@ class Order extends Model
 
     /**
      * Get the address of the order.
-     * 
+     *
      * @param string $type Type of address to get; billing or shipping
-     * 
+     *
      * @return Address
      */
     public function getAddress($type = 'billing')

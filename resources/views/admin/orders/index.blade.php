@@ -12,6 +12,7 @@ Orders
 
 	<div class="panel panel-default">
 		<div class="panel-body">
+	@if ($orders->count())
 
 		<table class="table table-striped">
 			<thead>
@@ -33,8 +34,11 @@ Orders
 						<a href="{{ route('admin.orders.show', $order) }}">#{{ $order->id }}</a> from {{ $order->user->username }}<br>
                         {{ $order->user->email }}
 					</td>
-					<td>{{ $order->items()->count() }} items</td>
-					<td>@include('partials.address', ['address' => $order->shipping_address])</td>
+					<td>{{ $order->product_items->count() }} items</td>
+					<td>
+						@include('partials.address', ['address' => $order->shipping_address])
+						<span class="text-muted">Via {{ $order->shipping_item->description }}</span>
+					</td>
 					<td>{{ $order->created_at }}</td>
                     <td>{{ Present::money($order->amount) }}</td>
                     <td>
@@ -49,8 +53,13 @@ Orders
 
 		<!-- Pagination -->
 		{!! $orders->render() !!}
-		</div>
-	</div>
+	@else
+	<p>
+		No orders yet...
+	</p>
+	@endif
+</div>
+</div>
 
 
 @stop
