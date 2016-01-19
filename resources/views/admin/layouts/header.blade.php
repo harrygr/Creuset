@@ -122,7 +122,7 @@
                 <ul class="dropdown-menu">
                   <!-- The user image in the menu -->
                   <li class="user-header">
-                    <img src="{{Auth::user()->present()->avatar() }}" class="img-circle" alt="User Image">
+                    <img src="{{Auth::user()->present()->avatar(160) }}" class="img-circle" alt="User Image">
                     <p>
                     {{ Auth::user()->name }}
                     </p>

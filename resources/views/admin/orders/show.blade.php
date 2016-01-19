@@ -59,6 +59,7 @@ Order #{{ $order->id }} Details
 			<tr>
 				<th></th>
 				<th>Item</th>
+				<th>SKU</th>
 				<th>Cost</th>
 				<th>Qty</th>
 				<th>Total</th>
@@ -69,6 +70,7 @@ Order #{{ $order->id }} Details
 				<tr>
 					<td style="width:36px">{{ $item->orderable->present()->thumbnail(20) }}</td>
 					<td><a href="{{ route('admin.products.edit', $item->orderable) }}">{{ $item->description }}</a></td>
+					<td>{{ $item->orderable->sku }}</td>
 					<td>{{ Present::money($item->price_paid) }}</td>
 					<td>{{ $item->quantity }}</td>
 					<td>{{ Present::money($item->total_paid) }}</td>

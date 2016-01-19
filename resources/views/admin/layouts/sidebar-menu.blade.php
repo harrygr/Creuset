@@ -23,7 +23,11 @@
     </li>
 
     <li class="treeview">
-        <a href="{{ route('admin.orders.index') }}"><i class="fa fa-fw fa-truck"></i> <span>Orders <span class="label label-primary pull-right">4</span></span></a>
+        <a href="{{ route('admin.orders.index') }}"><i class="fa fa-fw fa-truck"></i> <span>Orders 
+        @if ($order_count > 0)
+        <span class="label label-primary pull-right">{{ $order_count }}</span>
+        @endif
+        </span></a>
         <ul class="treeview-menu">
             <li><a href="{{ route('admin.orders.index') }}"><i class="fa fa-circle-o"></i> All Orders</a></li>
         </ul>

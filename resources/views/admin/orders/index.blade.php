@@ -4,11 +4,17 @@
 Orders
 @stop
 
+@section('admin.page-header')
+{{ $title or 'Orders' }}
+@stop
+
 @section('admin.content')
 
-<a href="{{route('admin.posts.create')}}" class="btn btn-success pull-right">New Order</a>
+<p>
+    <a href="{{route('admin.posts.create')}}" class="btn btn-success pull-right">New Order</a>
+</p>
 
-	<h1>{{ $title or 'Orders' }}</h1>
+<p><a href="{{ route('admin.orders.index') }}">All</a> ()</p>
 
 	<div class="panel panel-default">
 		<div class="panel-body">
@@ -35,7 +41,7 @@ Orders
                         {{ $order->user->email }}
 					</td>
 					<td>{{ $order->product_items->count() }} items</td>
-					<td>
+					<td class="small">
 						@include('partials.address', ['address' => $order->shipping_address])
 						<span class="text-muted">Via {{ $order->shipping_item->description }}</span>
 					</td>
