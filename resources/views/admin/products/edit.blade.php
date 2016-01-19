@@ -4,14 +4,15 @@
 Edit Product
 @stop
 
+@section('admin.page-header')
+Edit Product
+@stop
+
 @section('admin.content')
 
 @include('partials.nav')
 
-<h1>Edit Product</h1>
-<p>
-    <a href="{{ $product->url }}" class="btn btn-default">View Product</a>
-</p>
+<p class="top-buffer"><a href="{{ $product->url }}" class="btn btn-default">View Product</a></p>
 
 @include('partials.errors')
 

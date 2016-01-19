@@ -4,13 +4,18 @@
 Products
 @stop
 
+@section('admin.page-header')
+{{ $title or 'Products' }}
+@stop
+
+
 @section('admin.content')
 
-<a href="{{route('admin.products.create')}}" class="btn btn-success pull-right">New Product</a>
+<p>
+	<a href="{{route('admin.products.create')}}" class="btn btn-success pull-right">New Product</a>
+</p>
 
-	<h1>{{ $title or 'Products' }}</h1>
-
-	<a href="{{ route('admin.products.index') }}">All</a> ({{ $productCount }}) | <a href="{{ route('admin.posts.trash') }}">Trash</a> ({{-- $trashedCount --}})
+<p><a href="{{ route('admin.products.index') }}">All</a> ({{ $productCount }}) | <a href="{{ route('admin.posts.trash') }}">Trash</a> ({{-- $trashedCount --}})</p>
 
 	<div class="panel panel-default">
 		<div class="panel-body">

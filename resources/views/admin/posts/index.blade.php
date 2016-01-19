@@ -4,11 +4,13 @@
 Posts
 @stop
 
+@section('admin.page-header')
+{{ $title or 'Posts' }}
+@stop
+
 @section('admin.content')
 
-<a href="{{route('admin.posts.create')}}" class="btn btn-success pull-right">New Post</a>
-
-	<h1>{{ $title or 'Posts' }}</h1>
+<p><a href="{{route('admin.posts.create')}}" class="btn btn-success pull-right">New Post</a></p>
 
 	<p><a href="{{ route('admin.posts.index') }}">All</a> ({{ $postCount }}) | <a href="{{ route('admin.posts.trash') }}">Trash</a> ({{ $trashedCount }})</p>
 

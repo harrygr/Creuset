@@ -4,9 +4,11 @@
 Order #{{ $order->id }} Details
 @stop
 
-@section('admin.content')
+@section('admin.page-header')
+Order #{{ $order->id }} Details
+@stop
 
-<h1>Order #{{ $order->id }} Details</h1>
+@section('admin.content')
 
 <div class="panel panel-default">
 	<div class="panel-heading">General Details</div>

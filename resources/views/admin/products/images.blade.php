@@ -4,11 +4,13 @@
 Product Images
 @stop
 
+@section('admin.page-header')
+Product Images
+@stop
+
 @section('admin.content')
 
 @include('partials.nav')
-
-<h1>Product Images</h1>
 
 <cr-imageable-gallery imageable-url="{{ route('api.products.images', $product->id) }}" v-ref:gallery></cr-imageable-gallery> 
 

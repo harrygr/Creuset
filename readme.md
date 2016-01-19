@@ -11,7 +11,7 @@ Creuset is a powerful ecommerce platform built in Laravel. It is intended to use
 - Extensible taxonomies; currently used for _categories_ and _tags_ but can be expanded to others.
 - Repository design pattern with decorators for caching, logging etc.
 - Uses elixir for asset compilation, browserify.
-- Full-featured admin panel with Vue.js components.
+- Full-featured admin panel with Vue.js components, using [AdminLTE theme][1].
 
 ## Usage
 
@@ -36,4 +36,6 @@ Styles are compiled from SASS. Some bower dependencies are used (install them wi
 
 The whole lot can then be recompiled by running `gulp`.
 
+
+[1]: https://almsaeedstudio.com/
 
