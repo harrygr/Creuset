@@ -2,6 +2,9 @@
 
 namespace Creuset\Providers;
 
+use Creuset\Repositories\Order\CacheOrderRepository;
+use Creuset\Repositories\Order\DbOrderRepository;
+use Creuset\Repositories\Order\OrderRepository;
 use Creuset\Repositories\Post\CachePostRepository;
 use Creuset\Repositories\Post\DbPostRepository;
 use Creuset\Repositories\Post\PostRepository;
@@ -44,6 +47,12 @@ class DatabaseServiceProvider extends ServiceProvider
         $this->app->singleton(ProductRepository::class, function () {
             return new CacheProductRepository(
                 $this->app->make(DbProductRepository::class)
+            );
+        });
+
+        $this->app->singleton(OrderRepository::class, function () {
+            return new CacheOrderRepository(
+                $this->app->make(DbOrderRepository::class)
             );
         });
     }

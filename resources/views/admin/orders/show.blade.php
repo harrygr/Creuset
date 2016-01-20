@@ -4,12 +4,14 @@
 Order #{{ $order->id }} Details
 @stop
 
+@section('heading')
+Order #{{ $order->id }} Details
+@stop
+
 @section('admin.content')
 
-<h1>Order #{{ $order->id }} Details</h1>
-
-<div class="panel panel-default">
-	<div class="panel-heading">General Details</div>
+<div class="box box-primary">
+	<div class="box-header">General Details</div>
 
 		<table class="table">
 			<tbody>
@@ -50,13 +52,14 @@ Order #{{ $order->id }} Details
 
 </div>
 
-<div class="panel panel-default">
-	<div class="panel-heading">Order Items</div>
+<div class="box box-primary">
+	<div class="box-header">Order Items</div>
 	<table class="table">
 		<thead>
 			<tr>
 				<th></th>
 				<th>Item</th>
+				<th>SKU</th>
 				<th>Cost</th>
 				<th>Qty</th>
 				<th>Total</th>
@@ -67,6 +70,7 @@ Order #{{ $order->id }} Details
 				<tr>
 					<td style="width:36px">{{ $item->orderable->present()->thumbnail(20) }}</td>
 					<td><a href="{{ route('admin.products.edit', $item->orderable) }}">{{ $item->description }}</a></td>
+					<td>{{ $item->orderable->sku }}</td>
 					<td>{{ Present::money($item->price_paid) }}</td>
 					<td>{{ $item->quantity }}</td>
 					<td>{{ Present::money($item->total_paid) }}</td>

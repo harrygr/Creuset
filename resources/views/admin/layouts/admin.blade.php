@@ -5,62 +5,61 @@
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <title>@yield('title') | Creuset</title>
 
     <!-- Bootstrap -->
     {{--<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">--}}
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
-    <link href="/css/admin.css" rel="stylesheet">
-
-    <!-- Fonts -->
-    <link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
+    <link href="{{ elixir('css/admin.all.css') }}" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+        <![endif]-->
+
+    </head>
+
+    <body class="hold-transition skin-blue sidebar-mini">
+
+            <div id="admin" class="wrapper">
+                @include('admin.layouts.header')
+
+                <!-- Sidebar -->
+                @include('admin.layouts.sidebar') 
+
+                <!-- Content Wrapper. Contains page content -->
+                <div class="content-wrapper">
+                    <!-- Content Header (Page header) -->
+                    <section class="content-header">
+                      <h1>@yield('heading')</h1>
+                        @yield('breadcrumbs')
+                </section>
 
 
-</head>
+                <!-- Main content -->
+                <section class="content">
 
-<body>
-    <div id="admin">
-    <div id="wrapper">
+                    @include('partials.alert')
+                    @yield("admin.content")
 
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            @include("admin.sidebar")
+                </section><!-- /.content -->
+            </div><!-- /.content-wrapper -->        
+
+
         </div>
-        <!-- /#sidebar-wrapper -->
+        <!-- /#admin -->
 
-        <!-- Page Content -->
-        @include('admin.layouts.nav')
-        <div id="page-content-wrapper">
-            <div class="container-fluid">
-                <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
-                @include('partials.alert')
-
-                @yield("admin.content")
-
-            </div>
-        </div>
-        <!-- /#page-content-wrapper -->
-
-    </div>
-    <!-- /#wrapper -->
-    </div>
 
     @include('admin.layouts.footer')
 
     {{-- Browserify --}}
-    {!! HTML::script('js/admin.js') !!}
+    {!! HTML::script(elixir('js/admin.js')) !!}
+    {!! HTML::script('js/admin-lte.js') !!}
 
     @yield('admin.scripts')
 </body>

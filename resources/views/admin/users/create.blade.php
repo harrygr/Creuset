@@ -4,8 +4,11 @@
 New User
 @stop
 
+@section('heading')
+New User
+@stop
+
 @section('admin.content')
-<h1>New User</h1>
 
 @include('partials.errors')
 

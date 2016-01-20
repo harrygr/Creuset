@@ -4,8 +4,11 @@
 User profile for {{ $user->name }}
 @stop
 
+@section('heading')
+Profile
+@stop
+
 @section('admin.content')
-<h1>Profile</h1>
 
 @include('partials.errors')
 

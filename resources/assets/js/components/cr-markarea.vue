@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="">
+		<div>
 			<label for="{{ name }}" class="sr-only">Content</label>
 			<textarea class="form-control" name="{{ name }}" placeholder="Content (Markdown/HTML)" v-model="value" cols="50" rows="10">
 			</textarea>

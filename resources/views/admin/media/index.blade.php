@@ -4,12 +4,14 @@
 Media
 @stop
 
+@section('heading')
+{{$title or 'Images'}}
+@stop
+
 @section('admin.content')
 
-    <h1>{{$title or 'Images'}}</h1>
-
-    <div class="panel panel-default">
-        <div class="panel-body">
+    <div class="box box-primary">
+        <div class="box-body">
 
         <table class="table table-striped">
             <thead>

@@ -4,8 +4,11 @@
 Edit Post
 @stop
 
+@section('heading')
+Edit Post
+@stop
+
 @section('admin.content')
-<h1>Edit Post</h1>
 
 @include('partials.errors')
 

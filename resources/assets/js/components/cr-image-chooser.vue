@@ -1,9 +1,9 @@
 <template>
-	<div class="panel panel-default" id="featuredImageChooser">
-		<div class="panel-heading">
+	<div class="box box-primary" id="featuredImageChooser">
+		<div class="box-header">
 			Featured Image
 		</div>
-		<div class="panel-body">
+		<div class="box-body">
 			<p v-if="!selectedImage" class="text-center">None Chosen</p>
 
 			<img
