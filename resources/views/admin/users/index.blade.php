@@ -4,11 +4,16 @@
 Users
 @stop
 
+@section('heading')
+Users
+@stop
+
 @section('admin.content')
 
-<a href="{{route('admin.users.create')}}" class="btn btn-success pull-right">New User</a>
-<h1>Users</h1>
-
+<p>
+	<a href="{{route('admin.users.create')}}" class="btn btn-success pull-right">New User</a>
+</p>
+<p class="clearfix"></p>
 @include('partials.errors')
 
 

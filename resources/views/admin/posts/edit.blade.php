@@ -4,7 +4,7 @@
 Edit Post
 @stop
 
-@section('admin.page-header')
+@section('heading')
 Edit Post
 @stop
 

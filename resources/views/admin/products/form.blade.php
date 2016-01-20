@@ -1,7 +1,7 @@
 
 <div class="form-group col-md-8">
-	<div class="panel panel-default" id="postContent">
-		<div class="panel-body">
+	<div class="box box-primary" id="postContent">
+		<div class="box-body">
 			<cr-title-slugger name="name" value="{{ old('name', $product->name) }}" slug="{{ old('slug', $product->slug) }}"></cr-title-slugger>
 
 			<cr-markarea value="{{ old('description', $product->description) }}" name="description" title="description"></cr-markarea>
@@ -11,8 +11,8 @@
 </div>
 
 <div class="col-md-4">
-	<div class="panel panel-default" id="postContent">
-		<div class="panel-body">
+	<div class="box box-primary" id="postContent">
+		<div class="box-body">
 			<div class="form-group">
 				{!! Form::label('published_at', 'Publish At') !!}
 				<div class="date">
@@ -23,12 +23,18 @@
 
 			<div class="form-group">
 				<label for="price">Price</label>
-				<input type="number" step="0.01" class="form-control" name="price" value="{{ old('price', $product->price) }}">
-			</div>	
+				<div class="input-group">
+					<span class="input-group-addon"><i class="fa fa-{{ strtolower(config('shop.currency')) }}"></i></span>
+					<input type="number" step="0.01" class="form-control" name="price" value="{{ old('price', $product->price) }}">
+				</div>	
+			</div>
 
 			<div class="form-group">
 				<label for="sale_price">Sale Price</label>
-				<input type="number" step="0.01" class="form-control" name="sale_price" value="{{ old('sale_price', $product->sale_price) }}">
+				<div class="input-group">
+					<span class="input-group-addon"><i class="fa fa-{{ strtolower(config('shop.currency')) }}"></i></span>
+					<input type="number" step="0.01" class="form-control" name="sale_price" value="{{ old('sale_price', $product->sale_price) }}">
+				</div>
 			</div>
 
 			<div class="form-group">
@@ -55,6 +61,6 @@
 	<cr-category-chooser taxonomy="product_category" heading="Product Categories" :checkedcategories="{{ isset($selected_product_categories) ? $selected_product_categories->toJson(JSON_NUMERIC_CHECK) : '[]' }}"></cr-category-chooser>
 
 	<cr-image-chooser image="{{ old('media_id', $product->media_id) }}"></cr-image-chooser>
-	</div>
+</div>
 
 

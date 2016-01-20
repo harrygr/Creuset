@@ -4,7 +4,7 @@
 Products
 @stop
 
-@section('admin.page-header')
+@section('heading')
 {{ $title or 'Products' }}
 @stop
 
@@ -17,8 +17,8 @@ Products
 
 <p><a href="{{ route('admin.products.index') }}">All</a> ({{ $productCount }}) | <a href="{{ route('admin.posts.trash') }}">Trash</a> ({{-- $trashedCount --}})</p>
 
-	<div class="panel panel-default">
-		<div class="panel-body">
+	<div class="box box-primary">
+		<div class="box-body">
 
 		<table class="table table-striped">
 			<thead>

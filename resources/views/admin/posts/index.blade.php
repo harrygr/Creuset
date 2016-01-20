@@ -4,7 +4,7 @@
 Posts
 @stop
 
-@section('admin.page-header')
+@section('heading')
 {{ $title or 'Posts' }}
 @stop
 
@@ -14,8 +14,8 @@ Posts
 
 	<p><a href="{{ route('admin.posts.index') }}">All</a> ({{ $postCount }}) | <a href="{{ route('admin.posts.trash') }}">Trash</a> ({{ $trashedCount }})</p>
 
-	<div class="panel panel-default">
-		<div class="panel-body">
+	<div class="box box-primary">
+		<div class="box-body">
 
 		<table class="table table-striped">
 			<thead>

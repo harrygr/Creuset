@@ -4,7 +4,7 @@
     Create Post
 @stop
 
-@section('admin.page-header')
+@section('heading')
 Create Post
 @stop
 

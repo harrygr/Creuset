@@ -4,7 +4,7 @@
 Create Product
 @stop
 
-@section('admin.page-header')
+@section('heading')
 Create Product
 @stop
 

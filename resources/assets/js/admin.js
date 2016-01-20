@@ -26,13 +26,11 @@ global.vm = new Vue({
 	el: '#admin',
 
 	components: {
-		//'cr-datepicker': require('./components/cr-datepicker.vue'),
 		'cr-markarea':  require('./components/cr-markarea.vue'),
 		'cr-title-slugger': require('./components/cr-title-slugger.vue'),
 		'cr-category-chooser': require('./components/cr-category-chooser.vue'),
 		'cr-imageable-gallery': require('./components/cr-imageable-gallery.vue'),
 		'cr-image-chooser': require('./components/cr-image-chooser.vue'),
-        //'cr-order-completer': require('./components/cr-order-completer.vue'),
 	}
 })
 

@@ -1,11 +1,11 @@
 <template>
-    <div class="panel panel-default" id="postCategories">
-        <div class="panel-heading">
+    <div class="box box-primary" id="postCategories">
+        <div class="box-header">
             {{ heading || 'Categories' }}
         </div>
 
 
-        <div class="panel-body">
+        <div class="box-body">
             <div id="category-checkboxes">
                 <div class="checkbox" v-for="category in categories">
                     <label>
@@ -13,8 +13,8 @@
                     </label>
                 </div>
             </div>
-            <div class="input-group">
-                <input type="text" class="form-control" v-model="newCategory" @keydown.enter="addCategory" placeholder="New {{ taxonomy | unsluggify }}">
+            <div class="input-group input-group-sm">
+                <input type="text" class="form-control" v-model="newCategory" @keydown.enter="addCategory" placeholder="New {{ taxonomy }}">
                 <span class="input-group-btn">
                     <button class="btn btn-default" @click="addCategory"><i class="fa fa-fw {{ addCatButtonClass }}"></i></button>
                 </span>

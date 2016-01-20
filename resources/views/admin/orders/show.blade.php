@@ -4,14 +4,14 @@
 Order #{{ $order->id }} Details
 @stop
 
-@section('admin.page-header')
+@section('heading')
 Order #{{ $order->id }} Details
 @stop
 
 @section('admin.content')
 
-<div class="panel panel-default">
-	<div class="panel-heading">General Details</div>
+<div class="box box-primary">
+	<div class="box-header">General Details</div>
 
 		<table class="table">
 			<tbody>
@@ -52,8 +52,8 @@ Order #{{ $order->id }} Details
 
 </div>
 
-<div class="panel panel-default">
-	<div class="panel-heading">Order Items</div>
+<div class="box box-primary">
+	<div class="box-header">Order Items</div>
 	<table class="table">
 		<thead>
 			<tr>

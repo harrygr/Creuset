@@ -4,7 +4,7 @@
 Edit Product
 @stop
 
-@section('admin.page-header')
+@section('heading')
 Edit Product
 @stop
 
