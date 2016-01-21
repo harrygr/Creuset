@@ -41,15 +41,9 @@ class Order extends Model
         $this->items()->delete();
 
         $order_items = Cart::content()->map(function ($row) {
-            $item = new OrderItem([
-
-                'quantity'    => $row->qty,
-                'description' => $row->product->name,
-                'price_paid'  => $row->product->getPrice(),
-                ]);
-            $item->orderable()->associate($row->product);
-            return $item;
+            return OrderItem::forProduct($row->product, $row->qty);
         });
+
         $this->order_items()->saveMany($order_items);
         $this->refreshAmount();
 
@@ -57,7 +51,32 @@ class Order extends Model
     }
 
     /**
+     * Add a product to an order, creating a new Order Item 
+     * or appending to an existing one
+     * 
+     * @param Product $product
+     * @param integer $quantity
+     */
+    public function addProduct(Product $product, $quantity = 1)
+    {
+        $item = $this->product_items()->where('orderable_id', $product->id)->first();
+
+        if ($item) {
+            $item->update(['quantity' => $item->quantity + $quantity]);
+            
+            return $this;
+        }
+
+        $item = OrderItem::forProduct($product, $quantity);
+
+        $this->order_items()->save($item);
+
+        return $this;
+    }
+
+    /**
      * Add a shipping method to the order
+     * 
      * @param  integer $id
      * @return Order
      */
@@ -80,6 +99,7 @@ class Order extends Model
 
     /**
      * Has the order had a shipping method set
+     * 
      * @return boolean
      */
     public function hasShipping()
@@ -89,6 +109,7 @@ class Order extends Model
 
     /**
      * Refresh the total for an order by tallying up all the order items
+     * 
      * @return float
      */
     public function refreshAmount()
@@ -103,6 +124,7 @@ class Order extends Model
 
     /**
      * Get the Order Item that holds the shipping method for an order
+     * 
      * @return OrderItem
      */
     public function getShippingItemAttribute()
@@ -112,6 +134,7 @@ class Order extends Model
 
     /**
      * Get the underlying shipping method for an order
+     * 
      * @return ShippingMethod
      */
     public function getShippingMethodAttribute()

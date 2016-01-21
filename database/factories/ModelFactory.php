@@ -93,10 +93,14 @@ $factory->define('Creuset\OrderItem', function ($faker) {
 
 $factory->define('Creuset\Order', function ($faker) {
 
+    $user_id = factory('Creuset\User')->create()->id;
+    $address_id = factory('Creuset\Address')->create(['user_id' => $user_id])->id;
+
     return [
-    'user_id'               => factory('Creuset\User')->create()->id,
-    'billing_address_id'    => 1,
-    'shipping_address_id'   => 1,
+    'user_id'               => $user_id,
+    'billing_address_id'    => $address_id,
+    'shipping_address_id'   => $faker->randomElement([$address_id, factory('Creuset\Address')->create(['user_id' => $user_id])->id]),
+    'status'                => $faker->randomElement(['pending', 'processing', 'processing', 'completed', 'completed', 'cancelled']),
     ];
 });
 
@@ -118,6 +122,6 @@ $factory->define('Creuset\ShippingMethod', function ($faker) {
 
     return [
         'description'   => $faker->sentence,
-        'base_rate'     => $faker->numberBetween(100,600),
+        'base_rate'     => $faker->numberBetween(100,600)/100,
     ];
 });

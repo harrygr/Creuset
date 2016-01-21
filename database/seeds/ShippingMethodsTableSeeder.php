@@ -9,12 +9,12 @@ class ShippingMethodsTableSeeder extends Seeder
     {
         Creuset\ShippingMethod::create([
             'description'   => 'UK Shipping',
-            'base_rate'     => 400,
+            'base_rate'     => 4.00,
         ]);
 
         Creuset\ShippingMethod::create([
             'description'   => '1st Class Shipping',
-            'base_rate'     => 650,
+            'base_rate'     => 6.50,
         ]);
     }
 }

@@ -13,6 +13,10 @@ class DatabaseSeeder extends Seeder
         'users',
         'roles',
         'media',
+        'shipping_methods',
+        'orders',
+        'order_items',
+        'addresses',
     ];
 
     /**
@@ -32,7 +36,9 @@ class DatabaseSeeder extends Seeder
         $this->call('ProductsTableSeeder');
         $this->call('TermsTableSeeder');
         $this->call('TermablesTableSeeder');
+        $this->call('AddressesTableSeeder');
         $this->call('ShippingMethodsTableSeeder');
+        $this->call('OrdersTableSeeder');
     }
 
     /**

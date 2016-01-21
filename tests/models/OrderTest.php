@@ -9,6 +9,31 @@ class OrderTest extends TestCase
     use \UsesCart;
 
     /** @test **/
+    public function it_adds_a_product_to_an_order()
+    {
+        $product = factory(Product::class)->create();
+        $order = factory(Order::class)->create();
+
+        $order->addProduct($product);
+
+        $this->assertEquals(1, $order->product_items->count());
+        $this->assertEquals($product->name, $order->product_items->first()->description);
+
+        // If we add the same product again we expect just the quantity to be increased
+        $order->addProduct($product, 2);
+        $order = $order->fresh();
+        $this->assertEquals(1, $order->product_items->count());
+        $this->assertEquals(3, $order->product_items->first()->quantity);
+
+        // And now we add a different product
+        $product_2 = factory(Product::class)->create(); 
+        $order->addProduct($product_2, 4);
+        $order = $order->fresh();
+        $this->assertEquals(2, $order->product_items->count());
+        $this->assertEquals(4, $order->product_items->last()->quantity);
+    }
+
+    /** @test **/
     public function it_updates_the_shipping_method_for_an_order()
     {
         $order_items = factory(OrderItem::class, 3)->create();
@@ -19,7 +44,7 @@ class OrderTest extends TestCase
 
         $this->assertFalse($order->hasShipping());
 
-        $shipping_method = factory(ShippingMethod::class)->create(['base_rate' => 500]);
+        $shipping_method = factory(ShippingMethod::class)->create(['base_rate' => 5]);
 
         $order->setShipping($shipping_method->id);
 
@@ -28,7 +53,7 @@ class OrderTest extends TestCase
 
         // Adding a new shipping method should replace the one currently there
         
-        $shipping_method_2 = factory('Creuset\ShippingMethod')->create(['base_rate' => 600]);
+        $shipping_method_2 = factory('Creuset\ShippingMethod')->create(['base_rate' => 6]);
 
         $order->setShipping($shipping_method_2->id);
 
@@ -81,7 +106,7 @@ class OrderTest extends TestCase
     }
 
     /** @test **/
-    public function it_deletes_old_items_before_adding_new_ones_from_the_cart()
+    public function it_syncs_an_order_with_the_cart()
     {
         // Given I have an order with an item in it already...
         $order = factory(Order::class)->create();

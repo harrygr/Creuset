@@ -32,7 +32,7 @@ Order #{{ $order->id }} Details
 				</tr>
 				<tr>
 					<th>Customer</th>
-					<td><a href="{{ route('admin.users.edit', $order->customer->username) }}">{{ $order->customer->name }}</a> ({{ $order->customer->email }})</td>
+					<td><a href="{{ route('admin.users.edit', $order->customer->username) }}">{{ $order->customer->name }}</a> ({{ $order->email }})</td>
 				</tr>
 				<tr>
 					<td>
