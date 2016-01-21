@@ -8,6 +8,13 @@ class ShippingMethod extends Model
 {
     protected $table = 'shipping_methods';
 
+    public static $rules = [
+    'description' => 'required',
+    'base_rate'   => 'required|numeric',
+    ];
+
+    public $fillable = ['description', 'base_rate'];
+
     /**
      * Get the cost of a shipping method
      * 
@@ -16,5 +23,10 @@ class ShippingMethod extends Model
     public function getPrice()
     {
         return $this->base_rate / 100;
+    }
+
+    public function setBaseRateAttribute($rate)
+    {
+        $this->attributes['base_rate'] = (int) ($rate * 100);
     }
 }

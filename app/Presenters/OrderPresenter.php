@@ -7,11 +7,11 @@ use Illuminate\Support\HtmlString;
 class OrderPresenter extends ModelPresenter
 {
     private $statusClasses = [
-    \Creuset\Order::PENDING     => 'warning',
-    \Creuset\Order::PAID        => 'primary',
-    \Creuset\Order::COMPLETED   => 'success',
-    \Creuset\Order::REFUNDED    => 'default',
-    \Creuset\Order::CANCELLED   => 'danger',
+    'pending'     => 'warning',
+    'processing'  => 'primary',
+    'completed'   => 'success',
+    'refunded'    => 'default',
+    'cancelled'   => 'danger',
     ];
 
     /**

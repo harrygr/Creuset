@@ -15,10 +15,11 @@
     </li>
 
     <li class="treeview">
-        <a href="{{ route('admin.products.index') }}"><i class="fa fa-fw fa-shopping-cart"></i> <span>Products</span></a>
+        <a href="{{ route('admin.products.index') }}"><i class="fa fa-fw fa-shopping-cart"></i> <span>Shop</span></a>
         <ul class="treeview-menu">
             <li><a href="{{ route('admin.products.index') }}"><i class="fa fa-circle-o"></i> All Products</a></li>
             <li><a href="{{ route('admin.products.create') }}"><i class="fa fa-circle-o"></i> New Product</a></li>
+            <li><a href="{{ route('admin.shipping_methods.index') }}"><i class="fa fa-circle-o"></i> Shipping Methods</a></li>
         </ul>
     </li>
 

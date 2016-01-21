@@ -18,6 +18,14 @@ class Order extends Model
     const REFUNDED = 'refunded';
     const CANCELLED = 'cancelled';
 
+    public static $statuses = [
+        'pending'       => 'Pending',
+        'processing'    => 'Processing',
+        'completed'     => 'Completed',
+        'refunded'      => 'Refunded',
+        'cancelled'     => 'Cancelled',
+    ];
+
     public $table = 'orders';
 
     public $fillable = ['amount', 'status', 'user_id', 'payment_id', 'billing_address_id', 'shipping_address_id'];

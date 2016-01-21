@@ -77,6 +77,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'admin']], function (
     Route::get('orders/{order_status?}', ['uses' => 'Admin\OrdersController@index', 'as' => 'admin.orders.index']);
     Route::patch('orders/{order}', ['uses' => 'Admin\OrdersController@update', 'as' => 'admin.orders.update']);
 
+    // Shipping Methods
+    Route::get('shipping-methods', ['uses' => 'Admin\ShippingMethodsController@index', 'as' => 'admin.shipping_methods.index']);
+    Route::post('shipping-methods', ['uses' => 'Admin\ShippingMethodsController@store', 'as' => 'admin.shipping_methods.store']);
+    Route::delete('shipping-methods/{shipping_method}', ['uses' => 'Admin\ShippingMethodsController@destroy', 'as' => 'admin.shipping_methods.delete']);
     // Posts
     Route::get('posts', ['uses' => 'Admin\PostsController@index', 'as' => 'admin.posts.index']);
     Route::get('posts/create', ['uses' => 'Admin\PostsController@create', 'as' => 'admin.posts.create']);
