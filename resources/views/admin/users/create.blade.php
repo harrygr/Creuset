@@ -11,8 +11,11 @@ New User
 @section('admin.content')
 
 @include('partials.errors')
-
-{!! Form::model($user, ['route' => ['admin.users.store'], 'method' => 'POST']) !!}
-	@include('admin.users.form', ['submit_text' => 'Create User'])
-{!! Form::close() !!}
+<div class="box box-primary ">
+<div class="box-body">
+        {!! Form::model($user, ['route' => ['admin.users.store'], 'method' => 'POST']) !!}
+        @include('admin.users.form', ['submit_text' => 'Create User'])
+        {!! Form::close() !!}
+    </div>
+</div>
 @stop

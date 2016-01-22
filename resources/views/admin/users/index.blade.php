@@ -17,10 +17,11 @@ Users
 @include('partials.errors')
 
 
-<div class="panel panel-default">
-	<div class="panel-body">
+<div class="box box-primary">
+	<div class="box-body">
 
-
+		{{ $users->render() }}
+		
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -53,6 +54,8 @@ Users
 				@endforeach
 			</tbody>
 		</table>
+
+		{{ $users->render() }}
 
 	</div>
 </div>

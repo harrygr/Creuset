@@ -81,6 +81,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'admin']], function (
     Route::get('shipping-methods', ['uses' => 'Admin\ShippingMethodsController@index', 'as' => 'admin.shipping_methods.index']);
     Route::post('shipping-methods', ['uses' => 'Admin\ShippingMethodsController@store', 'as' => 'admin.shipping_methods.store']);
     Route::delete('shipping-methods/{shipping_method}', ['uses' => 'Admin\ShippingMethodsController@destroy', 'as' => 'admin.shipping_methods.delete']);
+    
     // Posts
     Route::get('posts', ['uses' => 'Admin\PostsController@index', 'as' => 'admin.posts.index']);
     Route::get('posts/create', ['uses' => 'Admin\PostsController@create', 'as' => 'admin.posts.create']);
@@ -97,9 +98,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'admin']], function (
     // Deprecate this in favor of generic images route
     Route::post('posts/{post}/image', ['uses' => 'Api\MediaController@store', 'as' => 'admin.posts.attach_image']);
 
-    /*
-     * PRODUCTS
-     */
+    // Products
     Route::get('products/create', ['uses' => 'Admin\ProductsController@create', 'as' => 'admin.products.create']);
     Route::get('products/{product}/edit', ['uses' => 'Admin\ProductsController@edit', 'as' => 'admin.products.edit']);
     Route::get('products/{product}/images', ['uses' => 'Admin\ProductsController@images', 'as' => 'admin.products.images']);
@@ -129,8 +128,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'admin']], function (
         Route::get('/', ['uses' => 'Admin\UsersController@index', 'as' => 'admin.users.index']);
         Route::get('new', ['uses' => 'Admin\UsersController@create', 'as' => 'admin.users.create']);
         Route::post('/', ['uses' => 'Admin\UsersController@store', 'as' => 'admin.users.store']);
+        Route::get('{user}', ['uses' => 'Admin\UsersController@edit', 'as' => 'admin.users.edit'])->where('user', '[0-9]+');
         Route::get('{username}', ['uses' => 'Admin\UsersController@edit', 'as' => 'admin.users.edit']);
+
         Route::patch('{user}', ['as' => 'admin.users.update', 'uses' => 'Admin\UsersController@update']);
+
+        Route::get('{username}/orders', ['uses' => 'Admin\UsersController@orders', 'as' => 'admin.users.orders']);
     });
 });
 

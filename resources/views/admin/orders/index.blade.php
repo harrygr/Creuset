@@ -1,7 +1,7 @@
 @extends('admin.layouts.admin')
 
 @section('title')
-Orders
+{{ $title or 'Orders' }}
 @stop
 
 @section('heading')
@@ -10,9 +10,9 @@ Orders
 
 @section('admin.content')
 
-<p>
+{{-- <p>
     <a href="{{route('admin.posts.create')}}" class="btn btn-success pull-right">New Order</a>
-</p>
+</p> --}}
 
 <p class="clearfix">
 </p>
@@ -48,7 +48,7 @@ Orders
          <tr>
             <td>{{ $order->present()->status }}</td>
             <td>
-              <a href="{{ route('admin.orders.show', $order) }}">#{{ $order->id }}</a> from {{ $order->user->username }}<br>
+              <a href="{{ route('admin.orders.show', $order) }}">#{{ $order->id }}</a> from <a href="{{ route('admin.users.edit', $order->user) }}">{{ $order->user->name }}</a><br>
               {{ $order->email }}
           </td>
           <td>{{ $order->product_items->count() }} items</td>
