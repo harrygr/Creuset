@@ -28,10 +28,15 @@ class ShippingMethodsTest extends TestCase
         $this->visit('admin/shipping-methods')
              ->type('Express Shipping', 'description')
              ->type('5.40', 'base_rate')
+             ->select('GB', 'shipping_countries')
              ->press('submit')
              ->seePageIs('admin/shipping-methods')
              ->see('Shipping Method Saved')
              ->see(config('shop.currency_symbol') . '5.40');
+
+        $shipping_method = ShippingMethod::where('description', 'Express Shipping')->first();
+
+        $this->assertTrue($shipping_method->allowsCountry('GB'));
     }
 
     /** @test **/

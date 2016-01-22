@@ -11,7 +11,7 @@ class ShippingMethodsController extends Controller
 {
     public function index()
     {
-        $shipping_methods = ShippingMethod::all();
+        $shipping_methods = ShippingMethod::with('shipping_countries')->get();
         return view('admin.shipping_methods.index', compact('shipping_methods'));
     }
 
@@ -19,7 +19,8 @@ class ShippingMethodsController extends Controller
     {
         $this->validate($request, ShippingMethod::$rules);
 
-        ShippingMethod::create($request->all());
+        $shipping_method = ShippingMethod::create($request->all());
+        $shipping_method->allowCountries($request->get('shipping_countries'));
 
         return redirect()->route('admin.shipping_methods.index')->with([
             'alert'         => 'Shipping Method Saved',

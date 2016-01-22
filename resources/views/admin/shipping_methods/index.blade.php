@@ -21,6 +21,7 @@ Shipping Methods
 			<thead>
 				<th>Description</th>
 				<th>Base Rate</th>
+				<th>Countries Allowed</th>
 				<th></th>
 			</thead>
 			<tbody>
@@ -28,6 +29,7 @@ Shipping Methods
 				<tr>
 					<td>{{ $method->description }}</td>
 					<td>{{ Present::money($method->getPrice()) }}</td>
+					<td><span title="{{ $method->shipping_countries->implode('country_id', PHP_EOL) }}">{{ $method->shipping_countries->count() }}</span></td>
 					<td>@include('partials._delete_link', ['url' => route('admin.shipping_methods.delete', $method)])</td>
 				</tr>
 				@endforeach
@@ -59,6 +61,11 @@ Shipping Methods
 				</div>
 				{!! $errors->has('base_rate') ? '<span class="help-block">'.$errors->first('base_rate').'</span>' : '' !!}
 			</div>
+		</div>
+
+		<div class="form-group">
+			{!! Form::label('shipping_countries[]', 'Allowed Countries') !!}
+			{!! Form::select('shipping_countries[]', app(Creuset\Countries\CountryRepository::class)->lists(), null, ['multiple' => true, 'class' => 'form-control']) !!}
 		</div>
 		<div class="form-group">
 			<button type="submit" name="submit" class="btn btn-primary">Save Shipping Method</button>
