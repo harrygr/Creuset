@@ -3,7 +3,6 @@
 namespace Creuset\Http\Controllers\Admin;
 
 use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests;
 use Creuset\Repositories\ShippingMethod\ShippingMethodRepository;
 use Creuset\ShippingMethod;
 use Illuminate\Http\Request;
@@ -18,20 +17,21 @@ class ShippingMethodsController extends Controller
     }
 
     /**
-     * Show the index page for managing shipping methods
+     * Show the index page for managing shipping methods.
      *
      * @return Illuminate\Http\Response
      */
     public function index()
     {
         $shipping_methods = $this->shipping_methods->all(['shipping_countries']);
+
         return view('admin.shipping_methods.index', compact('shipping_methods'));
     }
 
     /**
-     * Create a new shipping method in storage
+     * Create a new shipping method in storage.
      * 
-     * @param  Request $request
+     * @param Request $request
      * 
      * @return Illuminate\Http\Response
      */
@@ -49,9 +49,9 @@ class ShippingMethodsController extends Controller
     }
 
     /**
-     * Show the page for editing a shipping method
+     * Show the page for editing a shipping method.
      * 
-     * @param  ShippingMethod $shipping_method
+     * @param ShippingMethod $shipping_method
      * 
      * @return Illuminate\Http\Response
      */
@@ -61,17 +61,16 @@ class ShippingMethodsController extends Controller
     }
 
     /**
-     * Update a shipping method in storage
+     * Update a shipping method in storage.
      * 
-     * @param  Request        $request         
-     * @param  ShippingMethod $shipping_method 
+     * @param Request        $request
+     * @param ShippingMethod $shipping_method
      * 
-     * @return Illuminate\Http\Response                     
+     * @return Illuminate\Http\Response
      */
     public function update(Request $request, ShippingMethod $shipping_method)
     {
         $this->validate($request, ShippingMethod::$rules);
-
 
         $shipping_method->update($request->all());
         $shipping_method->allowCountries($request->get('shipping_countries', []));
@@ -80,15 +79,14 @@ class ShippingMethodsController extends Controller
             'alert'         => 'Shipping Method Updated',
             'alert-class'   => 'success',
             ]);
-
     }
 
     /**
-     * Remove a shipping method from storage
+     * Remove a shipping method from storage.
      * 
-     * @param  ShippingMethod $shipping_method
+     * @param ShippingMethod $shipping_method
      * 
-     * @return Illuminate\Http\Response                      
+     * @return Illuminate\Http\Response
      */
     public function destroy(ShippingMethod $shipping_method)
     {

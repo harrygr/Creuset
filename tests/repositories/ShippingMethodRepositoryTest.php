@@ -7,7 +7,6 @@ use TestCase;
 
 class ShippingMethodRepositoryTest extends TestCase
 {
-
     private $shipping_methods;
 
     public function setUp()
@@ -28,10 +27,10 @@ class ShippingMethodRepositoryTest extends TestCase
     /** @test **/
     public function it_gets_shipping_methods_for_a_given_country()
     {
-       $shipping_methods = factory(ShippingMethod::class, 3)->create();
+        $shipping_methods = factory(ShippingMethod::class, 3)->create();
 
-       $shipping_methods[0]->allowCountries(['GB']);
+        $shipping_methods[0]->allowCountries(['GB']);
 
-       $this->assertCount(1, $this->shipping_methods->forCountry('GB'));
+        $this->assertCount(1, $this->shipping_methods->forCountry('GB'));
     }
 }

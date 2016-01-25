@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 
 namespace Creuset\Repositories\Order;
 
@@ -14,12 +15,10 @@ class DbOrderRepository extends DbRepository implements OrderRepository
 
     public function count($status = null)
     {
-        if (!$status)
-        {
+        if (!$status) {
             return $this->model->count();
         }
 
         return $this->model->where('status', $status)->count();
     }
-
 }

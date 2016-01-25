@@ -2,7 +2,6 @@
 
 namespace Integration;
 
-use Creuset\Order;
 use Creuset\ShippingMethod;
 use TestCase;
 
@@ -17,7 +16,6 @@ class ShippingMethodsTest extends TestCase
 
         $this->visit('admin/shipping-methods')
              ->see($shipping_method->description);
-
     }
 
     /** @test **/
@@ -32,7 +30,7 @@ class ShippingMethodsTest extends TestCase
              ->press('submit')
              ->seePageIs('admin/shipping-methods')
              ->see('Shipping Method Saved')
-             ->see(config('shop.currency_symbol') . '5.40');
+             ->see(config('shop.currency_symbol').'5.40');
 
         $shipping_method = ShippingMethod::where('description', 'Express Shipping')->first();
 
@@ -42,15 +40,15 @@ class ShippingMethodsTest extends TestCase
     /** @test **/
     public function it_can_delete_a_shipping_method()
     {
-       $this->logInAsAdmin();
+        $this->logInAsAdmin();
 
-       $shipping_method = factory(ShippingMethod::class)->create();
+        $shipping_method = factory(ShippingMethod::class)->create();
 
-       $this->call('DELETE', "admin/shipping-methods/{$shipping_method->id}");
+        $this->call('DELETE', "admin/shipping-methods/{$shipping_method->id}");
 
-       $this->assertRedirectedTo('admin/shipping-methods');
+        $this->assertRedirectedTo('admin/shipping-methods');
 
-       $this->notSeeInDatabase('shipping_methods', ['description' => $shipping_method->description]);
+        $this->notSeeInDatabase('shipping_methods', ['description' => $shipping_method->description]);
     }
 
     /** @test */
@@ -67,6 +65,6 @@ class ShippingMethodsTest extends TestCase
              ->press('submit')
              ->seePageIs('admin/shipping-methods')
              ->see('Shipping Method Updated')
-             ->see(config('shop.currency_symbol') . '8.40');
+             ->see(config('shop.currency_symbol').'8.40');
     }
 }

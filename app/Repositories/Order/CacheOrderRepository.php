@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 
 namespace Creuset\Repositories\Order;
 
@@ -7,7 +8,6 @@ use Creuset\Repositories\CacheRepository;
 
 class CacheOrderRepository extends CacheRepository implements OrderRepository
 {
-
     /**
      * @param ProductRepository $repository
      * @param Product           $model

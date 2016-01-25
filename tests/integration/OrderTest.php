@@ -81,7 +81,6 @@ class OrderTest extends TestCase
         $order = \Creuset\Order::where('user_id', $user->id)->first();
         $this->seeInDatabase('orders', ['amount' => $order_amount, 'status' => 'pending']);
 
-
         $this->assertEquals($address->id, $order->billing_address_id);
         $this->assertEquals($address->id, $order->shipping_address_id);
 
@@ -151,16 +150,15 @@ class OrderTest extends TestCase
         ->press('Continue')
         ->seePageIs('checkout/shipping');
 
-        // simulate a post request as if the user maliciously changed 
+        // simulate a post request as if the user maliciously changed
         // the form on the page to choose shipping method 3
         $this->call('POST', '/orders/shipping', [
-            '_token'    => csrf_token(),
+            '_token'             => csrf_token(),
             'shipping_method_id' => $shipping_method_3->id,
             ]);
 
         $this->assertRedirectedToRoute('checkout.shipping');
     }
-
 
     /** @test **/
     public function it_redirects_if_no_shipping_is_available()

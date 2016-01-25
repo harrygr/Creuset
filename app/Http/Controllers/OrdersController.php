@@ -8,7 +8,6 @@ use Creuset\Http\Requests\CreateOrderRequest;
 use Creuset\Http\Requests\Order\ViewOrderRequest;
 use Creuset\Http\Requests\SetShippingMethodRequest;
 use Creuset\Order;
-use Creuset\Repositories\User\DbUserRepository;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller
@@ -16,7 +15,7 @@ class OrdersController extends Controller
     public function __construct()
     {
         $this->middleware('order.customer', ['only' => ['store']]);
-        $this->middleware('order.session', ['only' => ['shipping','pay']]);
+        $this->middleware('order.session', ['only' => ['shipping', 'pay']]);
     }
 
     /**
@@ -50,9 +49,9 @@ class OrdersController extends Controller
     }
 
     /**
-     * Add a shipping to an order
+     * Add a shipping to an order.
      * 
-     * @param  Request $request
+     * @param Request $request
      * 
      * @return \Illuminate\Http\Response
      */
@@ -63,6 +62,7 @@ class OrdersController extends Controller
         $order = $order->setShipping($request->get('shipping_method_id'));
 
         $request->session()->put('order', $order->fresh());
+
         return redirect()->route('checkout.pay');
     }
 
@@ -135,6 +135,4 @@ class OrdersController extends Controller
 
         return $addresses;
     }
-
-
 }

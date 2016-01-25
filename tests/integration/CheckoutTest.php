@@ -2,7 +2,6 @@
 
 namespace Unit;
 
-use Creuset\Repositories\Post\DbPostRepository;
 use TestCase;
 
 class CheckoutTest extends TestCase
@@ -20,6 +19,6 @@ class CheckoutTest extends TestCase
              ->see('without an order');
 
         $this->visit('checkout/pay')
-             ->see('without an order');  
+             ->see('without an order');
     }
 }

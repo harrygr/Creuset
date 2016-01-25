@@ -5,7 +5,7 @@ namespace Creuset\Repositories\Order;
 use Creuset\Order;
 use TestCase;
 
-class DbUserRepositoryTest extends TestCase
+class DbOrderRepositoryTest extends TestCase
 {
     private $orders;
 

@@ -25,11 +25,11 @@ class CacheServiceProvider extends ServiceProvider
                 $this->fireEvent($model);
             });
 
-            // class::restored() only exists for soft-deleting models so we need to check first  
+            // class::restored() only exists for soft-deleting models so we need to check first
             if (method_exists($cachable_model, 'restored')) {
                 $cachable_model::restored(function ($model) {
                     $this->fireEvent($model);
-                });                
+                });
             }
         }
     }

@@ -77,9 +77,9 @@ class UsersController extends Controller
     }
 
     /**
-     * Show the orders for a user
+     * Show the orders for a user.
      * 
-     * @param  User   $user 
+     * @param User $user
      * 
      * @return \Illuminate\Http\Response
      */

@@ -2,8 +2,6 @@
 
 namespace Creuset\Repositories\Order;
 
-use Creuset\Order;
-
 interface OrderRepository
 {
     /**

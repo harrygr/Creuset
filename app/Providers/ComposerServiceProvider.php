@@ -88,7 +88,6 @@ class ComposerServiceProvider extends ServiceProvider
 
     private function shareOrderCountWithSidebar()
     {
-
         view()->composer('admin.layouts.sidebar-menu', function ($view) {
             $orders = $this->app->make(OrderRepository::class);
             $view->with('order_count', $orders->count(\Creuset\Order::PAID));

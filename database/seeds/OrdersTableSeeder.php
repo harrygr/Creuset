@@ -5,7 +5,6 @@ use Creuset\Order;
 use Creuset\Product;
 use Creuset\ShippingMethod;
 use Creuset\User;
-use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 
 class OrdersTableSeeder extends Seeder
@@ -16,12 +15,11 @@ class OrdersTableSeeder extends Seeder
         $products = Product::all();
         $users = User::with('addresses')->get();
 
-        $order_ids = array_map(function($index) use ($shipping_methods, $products, $users){
+        $order_ids = array_map(function ($index) use ($shipping_methods, $products, $users) {
 
             $user = $users->random();
 
-            if (!$user->addresses->count())
-            {
+            if (!$user->addresses->count()) {
                 $address = factory(Address::class)->create(['user_id' => $user->id]);
                 $user = $user->fresh();
             }
@@ -37,7 +35,6 @@ class OrdersTableSeeder extends Seeder
 
             return $order->id;
 
-        }, range(1,15));
-
+        }, range(1, 15));
     }
 }

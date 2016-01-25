@@ -2,9 +2,7 @@
 
 namespace Creuset\Http\Requests;
 
-use Creuset\Http\Requests\Request;
 use Creuset\Repositories\ShippingMethod\ShippingMethodRepository;
-use Creuset\ShippingMethod;
 
 class SetShippingMethodRequest extends Request
 {
@@ -25,7 +23,6 @@ class SetShippingMethodRequest extends Request
      */
     public function rules()
     {
-
         $shipping_methods = \App::make(ShippingMethodRepository::class);
 
         $available_methods = $shipping_methods->forCountry($this->session()->get('order')->shipping_address->country);
@@ -37,9 +34,9 @@ class SetShippingMethodRequest extends Request
 
     public function messages()
     {
-       return [
+        return [
         'shipping_method_id.in'    => 'The shipping method chosen must be available for your chosen shipping address.',
-        'shipping_method_id.*' => 'Please choose a valid shipping method.',
+        'shipping_method_id.*'     => 'Please choose a valid shipping method.',
        ];
     }
 }

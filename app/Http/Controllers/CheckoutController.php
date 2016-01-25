@@ -2,17 +2,14 @@
 
 namespace Creuset\Http\Controllers;
 
-use Cart;
-use Creuset\ShippingMethod;
-use Illuminate\Http\Request;
 use Creuset\Repositories\ShippingMethod\ShippingMethodRepository;
+use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
 {
-
     public function __construct()
     {
-        $this->middleware('order.session', ['only' => ['shipping','pay']]);
+        $this->middleware('order.session', ['only' => ['shipping', 'pay']]);
     }
 
     /**
@@ -38,9 +35,9 @@ class CheckoutController extends Controller
     }
 
     /**
-     * Show the page for choosing a shipping method for an order
+     * Show the page for choosing a shipping method for an order.
      * 
-     * @param  Request $request
+     * @param Request $request
      * 
      * @return \Illuminate\Http\Response
      */
@@ -52,7 +49,7 @@ class CheckoutController extends Controller
 
         if ($shipping_methods->isEmpty()) {
             return redirect()->route('checkout.show')->with([
-                'alert' => 'It looks as though we can\'t deliver to your chosen country. Please choose a different shipping address.',
+                'alert'       => 'It looks as though we can\'t deliver to your chosen country. Please choose a different shipping address.',
                 'alert-class' => 'warning',
                 ]);
         }
@@ -62,12 +59,12 @@ class CheckoutController extends Controller
             $order = $order->setShipping($shipping_methods->first()->id)->fresh();
 
             $request->session()->put('order', $order);
-            return redirect()->route('checkout.pay');
 
+            return redirect()->route('checkout.pay');
         }
 
         return view('shop.shipping', [
-            'order' => $order,
+            'order'            => $order,
             'shipping_methods' => $shipping_methods,
             ]);
     }
@@ -84,11 +81,10 @@ class CheckoutController extends Controller
         $order = $request->session()->get('order');
         if (!$order->hasShipping()) {
             return redirect()->route('checkout.shipping')->with([
-                'alert' => 'Please select a shipping method',
-                'alert-class' => 'warning'
+                'alert'       => 'Please select a shipping method',
+                'alert-class' => 'warning',
                 ]);
         }
-
 
         return view('orders.pay', ['order' => $order]);
     }

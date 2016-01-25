@@ -11,10 +11,10 @@ class OrderItem extends Model
     public $fillable = ['order_id', 'quantity', 'description', 'price_paid'];
 
     /**
-     * Make a new Order Item which is associated with a product
+     * Make a new Order Item which is associated with a product.
      * 
-     * @param  Product $product  The product that the item is associated with
-     * @param  integer $quantity The quantity of the product in the order item
+     * @param Product $product  The product that the item is associated with
+     * @param int     $quantity The quantity of the product in the order item
      * 
      * @return OrderItem
      */
@@ -26,11 +26,12 @@ class OrderItem extends Model
                 'price_paid'  => $product->getPrice(),
             ]);
         $item->orderable()->associate($product);
+
         return $item;
     }
 
     /**
-     * An OrderItem belongs to an order
+     * An OrderItem belongs to an order.
      * 
      * @return Illuminate\Database\Eloquent\Relations\Relation
      */
@@ -50,7 +51,7 @@ class OrderItem extends Model
     }
 
     /**
-     * Get the total value of the order item
+     * Get the total value of the order item.
      *
      * @return float
      */
