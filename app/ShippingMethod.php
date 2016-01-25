@@ -42,11 +42,20 @@ class ShippingMethod extends Model
         return $this->base_rate;
     }
 
+    /**
+     * Store the base rate as an integer
+     * @param float $rate
+     */
     public function setBaseRateAttribute($rate)
     {
         $this->attributes['base_rate'] = (int) ($rate * 100);
     }
 
+    /**
+     * Convert the integer base rate to a float
+     * @param  int $rate
+     * @return float
+     */
     public function getBaseRateAttribute($rate)
     {
         return ($rate / 100);
@@ -61,14 +70,15 @@ class ShippingMethod extends Model
      * Allow countries for a shipping method
      *
      * @param  array  $countries An array of allowed country codes
+     * 
      * @return ShippingMethod
      */
     public function allowCountries(array $countries)
     {
         $this->shipping_countries()->delete();
 
-        $shipping_countries = array_map(function($code) {
-            return new ShippingCountry(['country_id' => $code]);
+        $shipping_countries = array_map(function($country_id) {
+            return new ShippingCountry(['country_id' => $country_id]);
         }, $countries);
 
         $this->shipping_countries()->saveMany($shipping_countries);

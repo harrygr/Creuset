@@ -47,7 +47,7 @@ class OrderTest extends TestCase
     public function it_auto_creates_a_user_for_the_order_when_not_logged_in()
     {
         $product = $this->putProductInCart();
-        $shipping_method = factory('Creuset\ShippingMethod')->create();
+        $shipping_method = factory('Creuset\ShippingMethod')->create()->allowCountries(['GB']);
 
         $this->visit('checkout')
         ->type('booboo@tempuser.com', 'email')
@@ -65,8 +65,8 @@ class OrderTest extends TestCase
     {
         $user = $this->loginWithUser([], 'customer');
         $product = $this->putProductInCart();
-        $address = factory(\Creuset\Address::class)->create(['user_id' => $user->id]);
-        $shipping_method = factory('Creuset\ShippingMethod')->create();
+        $address = factory(\Creuset\Address::class)->create(['user_id' => $user->id, 'country' => 'GB']);
+        $shipping_method = factory('Creuset\ShippingMethod')->create()->allowCountries(['GB']);
 
         //$current_stock = $product->stock_qty;
 
@@ -79,7 +79,6 @@ class OrderTest extends TestCase
         $order_amount = $product->getPrice() + $shipping_method->getPrice();
 
         $order = \Creuset\Order::where('user_id', $user->id)->first();
-        //print_r(\Creuset\Order::with('order_items.orderable')->get()->toArray());
         $this->seeInDatabase('orders', ['amount' => $order_amount, 'status' => 'pending']);
 
 
@@ -94,9 +93,12 @@ class OrderTest extends TestCase
     {
         $user = $this->loginWithUser([], 'customer');
         $product = $this->putProductInCart();
-        $address = factory(\Creuset\Address::class)->create(['user_id' => $user->id]);
+        $address = factory(\Creuset\Address::class)->create(['user_id' => $user->id, 'country' => 'GB']);
         $shipping_method = factory('Creuset\ShippingMethod')->create(['base_rate' => 500]);
         $shipping_method_2 = factory('Creuset\ShippingMethod')->create(['base_rate' => 600]);
+
+        $shipping_method->allowCountries(['GB']);
+        $shipping_method_2->allowCountries(['GB']);
 
         $this->visit('checkout')
         ->select($address->id, 'billing_address_id')
@@ -110,10 +112,79 @@ class OrderTest extends TestCase
     }
 
     /** @test **/
+    public function it_auto_assigns_shipping_if_only_one_method_available()
+    {
+        $user = $this->loginWithUser([], 'customer');
+        $product = $this->putProductInCart();
+        $address = factory(\Creuset\Address::class)->create(['user_id' => $user->id, 'country' => 'GB']);
+        $shipping_method = factory('Creuset\ShippingMethod')->create(['base_rate' => 500]);
+        $shipping_method_2 = factory('Creuset\ShippingMethod')->create(['base_rate' => 600]);
+
+        $shipping_method->allowCountries(['GB']);
+        $shipping_method_2->allowCountries(['US']);
+
+        $this->visit('checkout')
+        ->select($address->id, 'billing_address_id')
+        ->select($address->id, 'shipping_address_id')
+        ->press('Continue')
+        ->seePageIs('checkout/pay')
+        ->see($shipping_method->description);
+    }
+
+    /** @test **/
+    public function it_does_not_allow_selecting_a_shipping_method_for_the_wrong_country()
+    {
+        $user = $this->loginWithUser([], 'customer');
+        $product = $this->putProductInCart();
+        $address = factory(\Creuset\Address::class)->create(['user_id' => $user->id, 'country' => 'GB']);
+
+        $shipping_method = factory('Creuset\ShippingMethod')->create(['base_rate' => 500]);
+        $shipping_method_2 = factory('Creuset\ShippingMethod')->create(['base_rate' => 600]);
+        $shipping_method_3 = factory('Creuset\ShippingMethod')->create(['base_rate' => 200]);
+
+        $shipping_method->allowCountries(['GB']);
+        $shipping_method_2->allowCountries(['GB']);
+
+        $this->visit('checkout')
+        ->select($address->id, 'billing_address_id')
+        ->select($address->id, 'shipping_address_id')
+        ->press('Continue')
+        ->seePageIs('checkout/shipping');
+
+        // simulate a post request as if the user maliciously changed 
+        // the form on the page to choose shipping method 3
+        $this->call('POST', '/orders/shipping', [
+            '_token'    => csrf_token(),
+            'shipping_method_id' => $shipping_method_3->id,
+            ]);
+
+        $this->assertRedirectedToRoute('checkout.shipping');
+    }
+
+
+    /** @test **/
+    public function it_redirects_if_no_shipping_is_available()
+    {
+        $user = $this->loginWithUser([], 'customer');
+        $product = $this->putProductInCart();
+        $address = factory(\Creuset\Address::class)->create(['user_id' => $user->id, 'country' => 'FR']);
+        $shipping_method = factory('Creuset\ShippingMethod')->create(['base_rate' => 500]);
+
+        $shipping_method->allowCountries(['GB']);
+
+        $this->visit('checkout')
+        ->select($address->id, 'billing_address_id')
+        ->select($address->id, 'shipping_address_id')
+        ->press('Continue')
+        ->seePageIs('checkout')
+        ->see('choose a different shipping address');
+    }
+
+    /** @test **/
     public function it_creates_a_user_for_the_order_when_they_select_to_make_new_account()
     {
         $product = $this->putProductInCart();
-        $shipping_method = factory('Creuset\ShippingMethod')->create(['base_rate' => 500]);
+        $shipping_method = factory('Creuset\ShippingMethod')->create(['base_rate' => 500])->allowCountries(['GB']);
 
         $this->visit('checkout')
         ->type('booboo@tempuser.com', 'email')

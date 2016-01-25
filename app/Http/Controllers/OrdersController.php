@@ -6,6 +6,7 @@ use Creuset\Address;
 use Creuset\Events\OrderWasCreated;
 use Creuset\Http\Requests\CreateOrderRequest;
 use Creuset\Http\Requests\Order\ViewOrderRequest;
+use Creuset\Http\Requests\SetShippingMethodRequest;
 use Creuset\Order;
 use Creuset\Repositories\User\DbUserRepository;
 use Illuminate\Http\Request;
@@ -50,13 +51,13 @@ class OrdersController extends Controller
 
     /**
      * Add a shipping to an order
+     * 
      * @param  Request $request
+     * 
      * @return \Illuminate\Http\Response
      */
-    public function shipping(Request $request)
+    public function shipping(SetShippingMethodRequest $request)
     {
-        $this->validate($request, ['shipping_method_id' => 'required|integer'], ['shipping_method_id.*' => 'Please choose a valid shipping method.']);
-
         $order = $request->session()->get('order');
 
         $order = $order->setShipping($request->get('shipping_method_id'));

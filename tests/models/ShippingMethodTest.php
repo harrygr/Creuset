@@ -15,7 +15,7 @@ class ShippingMethodTest extends TestCase
     }
 
     /** @test **/
-    public function it_shipping_method_has_available_countries()
+    public function it_assigns_available_countries_to_a_shipping_method()
     {
         $shipping_method = factory(ShippingMethod::class)->create(['base_rate' => 5.60]);
 

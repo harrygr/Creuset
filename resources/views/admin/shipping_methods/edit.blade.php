@@ -5,7 +5,7 @@ Edit Shipping Method
 @stop
 
 @section('heading')
-{{ $title or 'Edit Shipping Methods' }}
+{{ $title or 'Edit Shipping Method' }}
 @stop
 
 
@@ -19,7 +19,6 @@ Edit Shipping Method
 	<div class="box-body">
 
 		@include('admin.shipping_methods._form', ['route' => ['admin.shipping_methods.update', $shipping_method], 'method' => 'patch'])
-
 
 	</div>
 </div>

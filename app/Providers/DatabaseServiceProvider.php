@@ -11,6 +11,9 @@ use Creuset\Repositories\Post\PostRepository;
 use Creuset\Repositories\Product\CacheProductRepository;
 use Creuset\Repositories\Product\DbProductRepository;
 use Creuset\Repositories\Product\ProductRepository;
+use Creuset\Repositories\ShippingMethod\CacheShippingMethodRepository;
+use Creuset\Repositories\ShippingMethod\DbShippingMethodRepository;
+use Creuset\Repositories\ShippingMethod\ShippingMethodRepository;
 use Creuset\Repositories\Term\DbTermRepository;
 use Creuset\Repositories\Term\TermRepository;
 use Illuminate\Support\ServiceProvider;
@@ -53,6 +56,12 @@ class DatabaseServiceProvider extends ServiceProvider
         $this->app->singleton(OrderRepository::class, function () {
             return new CacheOrderRepository(
                 $this->app->make(DbOrderRepository::class)
+            );
+        });
+
+        $this->app->singleton(ShippingMethodRepository::class, function () {
+            return new CacheShippingMethodRepository(
+                $this->app->make(DbShippingMethodRepository::class)
             );
         });
     }

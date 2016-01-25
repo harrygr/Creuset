@@ -11,6 +11,7 @@ class CacheServiceProvider extends ServiceProvider
         \Creuset\Post::class,
         \Creuset\Product::class,
         \Creuset\Order::class,
+        \Creuset\ShippingMethod::class,
     ];
 
     public function boot()

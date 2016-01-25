@@ -3,7 +3,9 @@
 namespace Creuset\Http\Controllers;
 
 use Cart;
+use Creuset\ShippingMethod;
 use Illuminate\Http\Request;
+use Creuset\Repositories\ShippingMethod\ShippingMethodRepository;
 
 class CheckoutController extends Controller
 {
@@ -42,18 +44,26 @@ class CheckoutController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function shipping(Request $request)
+    public function shipping(Request $request, ShippingMethodRepository $shipping_methods)
     {
         $order = $request->session()->get('order')->fresh();
 
-        $shipping_methods = \Creuset\ShippingMethod::all();
+        $shipping_methods = $shipping_methods->forCountry($order->shipping_address->country);
+
+        if ($shipping_methods->isEmpty()) {
+            return redirect()->route('checkout.show')->with([
+                'alert' => 'It looks as though we can\'t deliver to your chosen country. Please choose a different shipping address.',
+                'alert-class' => 'warning',
+                ]);
+        }
 
         // If there's only one shipping method available, just skip the shipping page and set it directly
-        if (count($shipping_methods) == 1) {
+        if (count($shipping_methods) === 1) {
             $order = $order->setShipping($shipping_methods->first()->id)->fresh();
 
             $request->session()->put('order', $order);
             return redirect()->route('checkout.pay');
+
         }
 
         return view('shop.shipping', [

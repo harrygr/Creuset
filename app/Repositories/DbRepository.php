@@ -37,6 +37,14 @@ abstract class DbRepository
         return $this->queryAll($with)->get();
     }
 
+    /**
+     * Build a query for all instances of a model
+     *
+     * 
+     * @param  array  $with
+     *  
+     * @return \Illuminate\Database\Eloquent\Builder  
+     */
     protected function queryAll($with = [])
     {
         return $this->model->with($with)->latest();
