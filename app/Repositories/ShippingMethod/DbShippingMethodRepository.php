@@ -2,9 +2,8 @@
 
 namespace Creuset\Repositories\ShippingMethod;
 
-use Creuset\ShippingMethod;
 use Creuset\Repositories\DbRepository;
-use Creuset\Term;
+use Creuset\ShippingMethod;
 
 class DbShippingMethodRepository extends DbRepository implements ShippingMethodRepository
 {
@@ -17,9 +16,9 @@ class DbShippingMethodRepository extends DbRepository implements ShippingMethodR
     }
 
     /**
-     * Get all shipping methods for a given country code
+     * Get all shipping methods for a given country code.
      *  
-     * @param  string $country_id
+     * @param string $country_id
      * 
      * @return \Illuminate\Database\Eloquent\Collection
      */

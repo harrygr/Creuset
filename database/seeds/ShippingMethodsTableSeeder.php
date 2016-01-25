@@ -1,6 +1,5 @@
 <?php
 
-use Creuset\User;
 use Illuminate\Database\Seeder;
 
 class ShippingMethodsTableSeeder extends Seeder

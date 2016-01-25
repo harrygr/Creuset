@@ -117,11 +117,10 @@ $factory->define('Creuset\Address', function ($faker) {
     ];
 });
 
-
 $factory->define('Creuset\ShippingMethod', function ($faker) {
 
     return [
         'description'   => $faker->sentence,
-        'base_rate'     => $faker->numberBetween(100,600)/100,
+        'base_rate'     => $faker->numberBetween(100, 600) / 100,
     ];
 });

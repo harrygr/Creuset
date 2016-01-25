@@ -11,7 +11,7 @@ class ShippingCountry extends Model
     public $fillable = ['country_id'];
 
     /**
-     * Ensure the country ID is stored in lowercase
+     * Ensure the country ID is stored in lowercase.
      *
      * @param string $country_id
      */

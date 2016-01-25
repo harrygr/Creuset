@@ -26,7 +26,6 @@ class ShippingMethodTest extends TestCase
         $shipping_method->allowCountries(['de', 'ch']);
 
         $this->assertCount(2, $shipping_method->fresh()->shipping_countries);
-
     }
 
     /** @test **/
@@ -38,7 +37,6 @@ class ShippingMethodTest extends TestCase
 
         $this->assertTrue($shipping_method->allowsCountry('us'));
         $this->assertFalse($shipping_method->allowsCountry('jp'));
-
     }
 
     /** @test **/

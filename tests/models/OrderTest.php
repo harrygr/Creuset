@@ -26,7 +26,7 @@ class OrderTest extends TestCase
         $this->assertEquals(3, $order->product_items->first()->quantity);
 
         // And now we add a different product
-        $product_2 = factory(Product::class)->create(); 
+        $product_2 = factory(Product::class)->create();
         $order->addProduct($product_2, 4);
         $order = $order->fresh();
         $this->assertEquals(2, $order->product_items->count());
@@ -52,7 +52,7 @@ class OrderTest extends TestCase
         $this->assertEquals($order->shipping_method->id, $shipping_method->id);
 
         // Adding a new shipping method should replace the one currently there
-        
+
         $shipping_method_2 = factory('Creuset\ShippingMethod')->create(['base_rate' => 6]);
 
         $order->setShipping($shipping_method_2->id);
@@ -60,7 +60,6 @@ class OrderTest extends TestCase
         $this->seeInDatabase('order_items', ['orderable_type' => ShippingMethod::class, 'order_id' => $order->id, 'price_paid' => 6]);
         $this->notSeeInDatabase('order_items', ['orderable_type' => ShippingMethod::class, 'order_id' => $order->id, 'price_paid' => 5]);
         $this->assertEquals($order->shipping_method->id, $shipping_method_2->id);
-
     }
 
     /** @test **/
@@ -89,7 +88,6 @@ class OrderTest extends TestCase
 
         $order->refreshAmount();
         $this->assertEquals(183.4, $order->amount);
-
     }
 
     /** @test **/

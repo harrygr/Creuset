@@ -46,8 +46,10 @@ class PaymentsController extends Controller
     }
 
     /**
-     * Derive the payment error message
-     * @param  string $message
+     * Derive the payment error message.
+     *
+     * @param string $message
+     *
      * @return string|HtmlString
      */
     private function paymentErrorMessage($message)

@@ -64,7 +64,7 @@ class CartController extends Controller
 
         Cart::remove($rowid);
 
-        $route = Cart::count() > 0 ? 'cart' : 'products.index'; 
+        $route = Cart::count() > 0 ? 'cart' : 'products.index';
 
         return redirect()->route($route)->with([
           'alert'       => "{$product->name} removed from cart",
