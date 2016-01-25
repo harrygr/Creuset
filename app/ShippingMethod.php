@@ -17,15 +17,15 @@ class ShippingMethod extends Model
 
     /**
      * Limit shipping methods to a certain country
-     * 
+     *
      * @param  Illuminate\Database\Eloquent\Builder $query
-     * @param  string $country_id 
-     * 
+     * @param  string $country_id
+     *
      * @return Illuminate\Database\Eloquent\Builder
      */
     public function scopeForCountry($query, $country_id)
     {
-        $country_id = strtolower($country_id);
+        $country_id = strtoupper($country_id);
 
         $query->whereHas('shipping_countries', function($q) use ($country_id) {
             $q->where('country_id', $country_id);
@@ -34,17 +34,22 @@ class ShippingMethod extends Model
 
     /**
      * Get the cost of a shipping method
-     * 
+     *
      * @return float
      */
     public function getPrice()
     {
-        return $this->base_rate / 100;
+        return $this->base_rate;
     }
 
     public function setBaseRateAttribute($rate)
     {
         $this->attributes['base_rate'] = (int) ($rate * 100);
+    }
+
+    public function getBaseRateAttribute($rate)
+    {
+        return ($rate / 100);
     }
 
     public function shipping_countries()
@@ -54,7 +59,7 @@ class ShippingMethod extends Model
 
     /**
      * Allow countries for a shipping method
-     * 
+     *
      * @param  array  $countries An array of allowed country codes
      * @return ShippingMethod
      */
@@ -73,14 +78,14 @@ class ShippingMethod extends Model
 
     /**
      * Determines if a given country code is allowed for the shipping method
-     * 
+     *
      * @param  string $country_id The 2-letter country code
-     * 
+     *
      * @return boolean
      */
     public function allowsCountry($country_id)
     {
-        $country_id = strtolower($country_id);
+        $country_id = strtoupper($country_id);
         return $this->shipping_countries->contains('country_id', $country_id);
     }
 }

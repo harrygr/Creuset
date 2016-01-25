@@ -20,12 +20,32 @@ class ShippingMethodsController extends Controller
         $this->validate($request, ShippingMethod::$rules);
 
         $shipping_method = ShippingMethod::create($request->all());
-        $shipping_method->allowCountries($request->get('shipping_countries'));
+        $shipping_method->allowCountries($request->get('shipping_countries', []));
 
         return redirect()->route('admin.shipping_methods.index')->with([
             'alert'         => 'Shipping Method Saved',
             'alert-class'   => 'success',
             ]);
+    }
+
+    public function edit(ShippingMethod $shipping_method)
+    {
+        return view('admin.shipping_methods.edit', compact('shipping_method'));
+    }
+
+    public function update(Request $request, ShippingMethod $shipping_method)
+    {
+        $this->validate($request, ShippingMethod::$rules);
+
+
+        $shipping_method->update($request->all());
+        $shipping_method->allowCountries($request->get('shipping_countries', []));
+
+        return redirect()->route('admin.shipping_methods.index')->with([
+            'alert'         => 'Shipping Method Updated',
+            'alert-class'   => 'success',
+            ]);
+
     }
 
     public function destroy(ShippingMethod $shipping_method)

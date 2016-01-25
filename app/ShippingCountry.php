@@ -12,11 +12,16 @@ class ShippingCountry extends Model
 
     /**
      * Ensure the country ID is stored in lowercase
-     * 
+     *
      * @param string $country_id
      */
     public function setCountryIdAttribute($country_id)
     {
-        $this->attributes['country_id'] = strtolower($country_id);
+        $this->attributes['country_id'] = strtoupper($country_id);
+    }
+
+    public function getCountryIdAttribute($country_id)
+    {
+        return strtoupper($country_id);
     }
 }
