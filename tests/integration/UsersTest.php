@@ -47,6 +47,19 @@ class UsersTest extends TestCase
             ]);
     }
 
+    /** @test **/
+    public function it_shows_the_orders_for_a_user()
+    {
+        $order_item = factory(\Creuset\OrderItem::class)->create();
+
+        $user = $order_item->order->customer;
+
+        $this->logInAsAdmin();
+
+        $this->visit("admin/users/{$user->username}/orders")
+             ->see("#{$order_item->id}");
+    }
+
     private function updateProfile($overrides = [])
     {
         $newUserProfile = array_merge($this->newUserProfile(), $overrides);

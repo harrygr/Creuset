@@ -11,8 +11,7 @@ class PaymentTest extends TestCase
     /** @test **/
     public function it_completes_an_order_upon_payment()
     {
-        $this->createOrder();
-        $this->putProductInCart();
+        $this->createOrder(['status' => 'pending']);
 
         \Session::put('order', $this->order);
 
@@ -30,13 +29,15 @@ class PaymentTest extends TestCase
 
         $this->seeInDatabase('orders', ['id' => $this->order->id, 'status' => \Creuset\Order::PAID]);
         $this->assertEquals(0, \Cart::total());
+        $this->assertContains('ch_', $this->order->fresh()->payment_id);
     }
 
     /** @test **/
     public function it_returns_to_the_pay_page_if_there_is_a_payment_error()
     {
-        $this->createOrder();
-        $this->putProductInCart();
+        $this->createOrder(['status' => 'pending']);
+
+        $this->order->setShipping(factory(\Creuset\ShippingMethod::class)->create()->id);
 
         \Session::put('order', $this->order);
 

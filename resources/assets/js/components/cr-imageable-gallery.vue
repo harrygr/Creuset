@@ -1,11 +1,11 @@
 <template>
 	<!-- Post images -->  
-	<div class="panel panel-default" id="post-images">
-		<div class="panel-heading">
+	<div class="box box-primary" id="post-images">
+		<div class="box-header">
 			Attached Images
 		</div>
 
-		<div class="panel-heading" v-if="selectedImage > -1">
+		<div class="box-header" v-if="selectedImage > -1">
 
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" @click="selectedImage = -1">&times;</span></button>
 
@@ -46,7 +46,7 @@
 			</div>
 		</div>
 
-		<div class="panel-body">
+		<div class="box-body">
 
 			<span v-if="imagesLoading"><i class="fa fa-circle-o-notch fa-spin"></i> Loading images...</span>
 

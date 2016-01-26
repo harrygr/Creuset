@@ -11,7 +11,7 @@
 	</div>
 	<div class="form-group">
 	<label for="slug" class="sr-only">Slug</label>
-	<div class="input-group">
+	<div class="input-group input-group-sm">
   
 		<input type="text" name="slug" class="form-control" placeholder="slug" v-model="slug">
 

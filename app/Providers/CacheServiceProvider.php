@@ -10,6 +10,8 @@ class CacheServiceProvider extends ServiceProvider
     private $cachable_models = [
         \Creuset\Post::class,
         \Creuset\Product::class,
+        \Creuset\Order::class,
+        \Creuset\ShippingMethod::class,
     ];
 
     public function boot()
@@ -23,9 +25,12 @@ class CacheServiceProvider extends ServiceProvider
                 $this->fireEvent($model);
             });
 
-            $cachable_model::restored(function ($model) {
-                $this->fireEvent($model);
-            });
+            // class::restored() only exists for soft-deleting models so we need to check first
+            if (method_exists($cachable_model, 'restored')) {
+                $cachable_model::restored(function ($model) {
+                    $this->fireEvent($model);
+                });
+            }
         }
     }
 
