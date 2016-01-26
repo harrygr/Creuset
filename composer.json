@@ -18,7 +18,8 @@
 		"fzaninotto/faker": "^1.6@dev",
 		"mockery/mockery": "^1.0@dev",
 		"symfony/dom-crawler": "~3.0",
-		"symfony/css-selector": "~3.0"
+		"symfony/css-selector": "~3.0",
+		"filp/whoops": "^2.0"
 	},
 	"autoload": {
 		"classmap": [

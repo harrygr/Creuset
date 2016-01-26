@@ -72,10 +72,21 @@ Order #{{ $order->id }} Details
 				<td>{{ Present::money($item->total_paid) }}</td>
 				</tr>
 			@endforeach
+
+			<tr>
+				<td colspan="5"></td>
+			</tr>
+			<tr>
+				<td><i class="fa fa-truck"></i></td>
+				<td>{{ $order->shipping_item->description}}</td>
+				<td colspan="3"></td>
+				<td>{{ Present::money($order->shipping_item->price_paid) }}</td>
+			</tr>
+
 		</tbody>
 		<tfoot>
 			<tr>
-				<th colspan="3"></th>
+				<th colspan="4"></th>
 				<th>Grand Total:</th>
 				<th>{{ Present::money($order->amount) }}</th>
 			</tr>
