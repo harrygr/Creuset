@@ -30,7 +30,7 @@ class UsersTableSeeder extends Seeder
                 $role = $roles[array_rand($roles)];
 
                 return $user->assignRole($role->name);
-            }, range(1, 4));
+            }, range(1, 8));
     }
 
     private function seedRoles()

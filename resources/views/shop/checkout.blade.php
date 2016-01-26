@@ -116,7 +116,7 @@
     @endif
 
     <p>
-      <input type="submit" class="btn btn-success" value="Proceed to Payment">
+      <input type="submit" class="btn btn-success" value="Continue">
     </p>
   </form>
 </div>

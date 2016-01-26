@@ -4,8 +4,11 @@
 Create Product
 @stop
 
+@section('heading')
+Create Product
+@stop
+
 @section('admin.content')
-<h1>Create Product</h1>
 
 @include('partials.errors')
 

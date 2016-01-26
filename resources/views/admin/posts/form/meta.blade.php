@@ -1,6 +1,6 @@
-<div class="panel panel-default">
+<div class="box box-primary">
 
-    <div class="panel-body">
+    <div class="box-body">
         <div class="form-group">
             {!! Form::label('published_at', 'Publish At') !!}
             <div class="date">
@@ -18,7 +18,7 @@
             {!! Form::select('user_id', Creuset\User::lists('name', 'id'), null, ['class' => 'form-control']) !!}
         </div>
     </div>
-    <div class="panel-footer">
+    <div class="box-footer">
         @if (isset($post))
         {!! HTML::linkRoute('admin.posts.delete', 'Trash', [$post->id],[
             'class' => 'btn text-danger pull-left',

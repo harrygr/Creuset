@@ -1,5 +1,4 @@
-		<div class="panel panel-default">
-	<div class="panel-body">
+
 		{!! Form::hidden('id') !!}
 		<div class="row">
 			<div class="col-md-6">
@@ -44,8 +43,4 @@
 			</div>
 		</div>
 
-
-
 		<button class="btn btn-primary">{{ $submit_text or 'Submit' }}</button>
-			</div>
-</div>

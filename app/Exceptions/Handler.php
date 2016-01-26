@@ -47,10 +47,16 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        if ($this->isHttpException($e)) {
-            return $this->renderHttpException($e);
-        } else {
-            return parent::render($request, $e);
+        if (config('app.debug')) {
+            $handler = $request->ajax() ? '\Whoops\Handler\JsonResponseHandler' : '\Whoops\Handler\PrettyPageHandler';
+
+            $whoops = new \Whoops\Run();
+            $whoops->pushHandler(new $handler());
+
+            return $whoops->handleException($e);
         }
+
+        // Default to the framework error handler
+        return parent::render($request, $e);
     }
 }

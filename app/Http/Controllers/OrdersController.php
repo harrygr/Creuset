@@ -6,18 +6,16 @@ use Creuset\Address;
 use Creuset\Events\OrderWasCreated;
 use Creuset\Http\Requests\CreateOrderRequest;
 use Creuset\Http\Requests\Order\ViewOrderRequest;
+use Creuset\Http\Requests\SetShippingMethodRequest;
 use Creuset\Order;
-use Creuset\Repositories\User\DbUserRepository;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller
 {
-    private $users;
-
-    public function __construct(DbUserRepository $users)
+    public function __construct()
     {
-        $this->users = $users;
         $this->middleware('order.customer', ['only' => ['store']]);
+        $this->middleware('order.session', ['only' => ['shipping', 'pay']]);
     }
 
     /**
@@ -40,12 +38,56 @@ class OrdersController extends Controller
         $order->user_id = $customer->id;
         $order->save();
 
+        $order->syncWithCart();
+
         event(new OrderWasCreated($order));
 
         // replace the order in the session with the updated version
         $request->session()->put('order', $order->fresh());
 
+        return redirect()->route('checkout.shipping');
+    }
+
+    /**
+     * Add a shipping to an order.
+     * 
+     * @param Request $request
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function shipping(SetShippingMethodRequest $request)
+    {
+        $order = $request->session()->get('order');
+
+        $order = $order->setShipping($request->get('shipping_method_id'));
+
+        $request->session()->put('order', $order->fresh());
+
         return redirect()->route('checkout.pay');
+    }
+
+    /**
+     * Show the page for a completed order.
+     * 
+     * @param Request $request
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function completed(Request $request)
+    {
+        if (!$request->session()->has('order_id')) {
+            abort(419);
+        }
+        $order = Order::findOrFail($request->session()->get('order_id'));
+
+        return view('shop.order_completed')->with([
+            'order' => $order,
+            ]);
+    }
+
+    public function show(ViewOrderRequest $request, Order $order)
+    {
+        return view('orders.show', compact('order'));
     }
 
     /**
@@ -92,29 +134,5 @@ class OrdersController extends Controller
         }
 
         return $addresses;
-    }
-
-    /**
-     * Show the page for a completed order.
-     * 
-     * @param Request $request
-     * 
-     * @return \Illuminate\Http\Response
-     */
-    public function completed(Request $request)
-    {
-        if (!$request->session()->has('order_id')) {
-            abort(419);
-        }
-        $order = Order::findOrFail($request->session()->get('order_id'));
-
-        return view('shop.order_completed')->with([
-            'order' => $order,
-            ]);
-    }
-
-    public function show(ViewOrderRequest $request, Order $order)
-    {
-        return view('orders.show', compact('order'));
     }
 }

@@ -25,6 +25,8 @@ class PaymentsController extends Controller
                 'amount'      => $order->amount * 100,
                 'card'        => $request->stripe_token,
                 'description' => sprintf('Order #%s', $order->id),
+                ], [
+                    'email' => $order->email,
                 ]);
         } catch (\Creuset\Billing\CardException $e) {
             return redirect()->back()->with([
@@ -34,7 +36,6 @@ class PaymentsController extends Controller
         }
 
         $request->session()->forget('order');
-
         event(new \Creuset\Events\OrderWasPaid($order, $charge->id));
 
         \Cart::destroy();
@@ -44,6 +45,13 @@ class PaymentsController extends Controller
         return redirect()->route('orders.completed');
     }
 
+    /**
+     * Derive the payment error message.
+     *
+     * @param string $message
+     *
+     * @return string|HtmlString
+     */
     private function paymentErrorMessage($message)
     {
         if (strpos($message, 'zip code')) {

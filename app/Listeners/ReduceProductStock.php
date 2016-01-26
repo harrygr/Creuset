@@ -28,7 +28,7 @@ class ReduceProductStock implements ShouldQueue
      */
     public function handle(OrderWasPaid $event)
     {
-        foreach ($event->order->items as $item) {
+        foreach ($event->order->product_items as $item) {
             $this->reduceStock($item->orderable, $item->quantity);
         }
     }
