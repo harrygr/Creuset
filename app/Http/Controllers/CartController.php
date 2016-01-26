@@ -17,10 +17,6 @@ class CartController extends Controller
      */
     public function index()
     {
-        if (!Cart::count()) {
-            return view('shop.cart_empty');
-        }
-
         return view('shop.cart');
     }
 
@@ -68,7 +64,9 @@ class CartController extends Controller
 
         Cart::remove($rowid);
 
-        return redirect()->route('cart')->with([
+        $route = Cart::count() > 0 ? 'cart' : 'products.index';
+
+        return redirect()->route($route)->with([
           'alert'       => "{$product->name} removed from cart",
           'alert-class' => 'success',
           ]);

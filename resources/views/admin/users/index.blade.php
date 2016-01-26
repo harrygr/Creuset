@@ -4,18 +4,24 @@
 Users
 @stop
 
+@section('heading')
+Users
+@stop
+
 @section('admin.content')
 
-<a href="{{route('admin.users.create')}}" class="btn btn-success pull-right">New User</a>
-<h1>Users</h1>
-
+<p>
+	<a href="{{route('admin.users.create')}}" class="btn btn-success pull-right">New User</a>
+</p>
+<p class="clearfix"></p>
 @include('partials.errors')
 
 
-<div class="panel panel-default">
-	<div class="panel-body">
+<div class="box box-primary">
+	<div class="box-body">
 
-
+		{{ $users->render() }}
+		
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -48,6 +54,8 @@ Users
 				@endforeach
 			</tbody>
 		</table>
+
+		{{ $users->render() }}
 
 	</div>
 </div>

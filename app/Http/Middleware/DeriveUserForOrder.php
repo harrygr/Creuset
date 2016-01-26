@@ -96,7 +96,7 @@ class DeriveUserForOrder
         $user = \Creuset\User::create([
             'name'         => $data['name'],
             'email'        => $data['email'],
-            'username'     => str_slug($data['name']),
+            'username'     => $data['email'],
             'password'     => bcrypt($data->get('password', bin2hex(openssl_random_pseudo_bytes(6)))),
             'last_seen_at' => $data->has('password') ? new \DateTime() : null,
         ]);

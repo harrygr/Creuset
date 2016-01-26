@@ -11,5 +11,5 @@ interface GatewayInterface
      *
      * @return \Stripe\Charge
      */
-    public function charge(array $data);
+    public function charge(array $data, array $meta = []);
 }

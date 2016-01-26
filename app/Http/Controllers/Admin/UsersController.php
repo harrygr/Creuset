@@ -16,7 +16,7 @@ class UsersController extends Controller
 
     public function index()
     {
-        $users = User::with('role')->get();
+        $users = User::with('role')->paginate();
 
         return view('admin.users.index')->with(compact('users'));
     }
@@ -64,7 +64,7 @@ class UsersController extends Controller
      * @param User              $user
      * @param UpdateUserRequest $request
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function update(User $user, UpdateUserRequest $request)
     {
@@ -74,5 +74,20 @@ class UsersController extends Controller
             'alert'       => 'Profile updated',
             'alert-class' => 'success',
             ]);
+    }
+
+    /**
+     * Show the orders for a user.
+     * 
+     * @param User $user
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function orders(User $user)
+    {
+        $orders = $user->orders()->paginate();
+        $title = "Orders for {$user->name}";
+
+        return view('admin.orders.index', compact('orders', 'title'));
     }
 }

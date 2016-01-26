@@ -4,20 +4,24 @@
 Product Images
 @stop
 
+@section('heading')
+Product Images
+@stop
+
 @section('admin.content')
 
 @include('partials.nav')
 
-<h1>Product Images</h1>
-
+<div class="top-buffer">
 <cr-imageable-gallery imageable-url="{{ route('api.products.images', $product->id) }}" v-ref:gallery></cr-imageable-gallery> 
+</div>
 
 @include('partials.errors')
 
 <div class="post-form" id="postForm">
 
-    <div class="panel panel-default">
-      <div class="panel-body">
+    <div class="box box-primary">
+      <div class="box-body">
         {!! Form::open(['route' => ['admin.products.attach_image', $product], 'method' => 'POST', 'enctype' => 'multipart/form-data', 'class' => 'dropzone', 'id' => 'attachImagesForm']) !!}
         {{ csrf_field() }}
         {!! Form::close() !!}

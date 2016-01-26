@@ -6,10 +6,21 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($order->items as $item)
+        @foreach ($order->product_items as $item)
         <tr>
             <td>
                 <a href="{{ $item->orderable->url }}">{{ $item->orderable->name }}</a> x{{ $item->quantity}}
+            </td>
+            <td>{{ Present::money($item->total_paid) }}</td>
+        </tr>
+        @endforeach
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        @foreach ($order->shipping_items as $item)
+        <tr>
+            <td>
+                {{ $item->description }}
             </td>
             <td>{{ Present::money($item->total_paid) }}</td>
         </tr>

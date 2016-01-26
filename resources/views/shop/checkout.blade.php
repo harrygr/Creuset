@@ -13,17 +13,19 @@
 <h2>Order Summary</h2>
 
 <table class="table">
-    <th></th>
-    <th>Product</th>
-    <th>Total Price</th>
+  <th></th>
+  <th>Product</th>
+  <th>Total Price</th>
 </tr>
+
 @foreach (Cart::content() as $item)
 <tr>
-    <td>{{ $item->product->present()->thumbnail(45) }}</td>
-    <td>{{ $item->name }} x{{ $item->qty }}</td>
-    <td>{{ Present::money($item->product->getPrice() * $item->qty) }}</td>
+  <td>{{ $item->product->present()->thumbnail(45) }}</td>
+  <td>{{ $item->name }} x{{ $item->qty }}</td>
+  <td>{{ Present::money($item->product->getPrice() * $item->qty) }}</td>
 </tr>
 @endforeach
+
 <tr>
   <th colspan="2"></th>
   <th>{{ Present::money(Cart::total()) }}</th>
@@ -31,15 +33,16 @@
 </table>
 
 @include('partials.errors')
+
 <div id="checkout">
-<form action="orders" method="POST" id="checkout-form">
+  <form action="orders" method="POST" id="checkout-form">
     {{ csrf_field() }}
 
 
-@if (Auth::guest())
+    @if (Auth::guest())
     <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
       <label class="control-label" for="email">Email</label>
-      <input type="email" name="email" value="{{ old('email') }}" class="form-control">
+      <input type="email" name="email" value="{{ old('email', $order->email) }}" class="form-control">
     </div>
 
     <div class="checkbox">
@@ -61,61 +64,61 @@
     </div>
 
     <p>Already registered? <a href="login">Login</a></p>
-@endif
+    @endif
 
-{{-- Saved Addresses --}}
-@if (Auth::check() and Auth::user()->addresses->count())
-<div class="row">
-    <div class="col-md-6">
-    <h3>Billing Address</h3>
+    {{-- Saved Addresses --}}
+    @if (Auth::check() and Auth::user()->addresses->count())
+    <div class="row">
+      <div class="col-md-6">
+        <h3>Billing Address</h3>
         @foreach (Auth::user()->addresses as $address)
         <div class="radio">
-          <label>
-            <input type="radio" name="billing_address_id" id="billing_address_{{ $address->id }}" value="{{ $address->id }}">
+          <label>            
+            {!! Form::radio('billing_address_id', $address->id, $address->id == $order->billing_address_id, ['id' =>"billing_address_{$address->id}" ]) !!}
             @include('partials.address', compact('address'))
-        </label>
+          </label>
         </div>
         @endforeach
-    </div>
-        <div class="col-md-6">
+      </div>
+      <div class="col-md-6">
         <h3>Shipping Address</h3>
         @foreach (Auth::user()->addresses as $address)
         <div class="radio">
           <label>
-            <input type="radio" name="shipping_address_id" id="shipping_address_{{ $address->id }}" value="{{ $address->id }}">
+            {!! Form::radio('shipping_address_id', $address->id, $address->id == $order->shipping_address_id, ['id' =>"shipping_address_{$address->id}" ]) !!}
             @include('partials.address', compact('address'))
-        </label>
+          </label>
         </div>
         @endforeach
+      </div>
     </div>
-</div>
 
-<p>
-  <a href="{{ route('addresses.create') }}" class="btn btn-default">Add new address</a>
-</p>
+    <p>
+      <a href="{{ route('addresses.create') }}" class="btn btn-default">Add new address</a>
+    </p>
 
-@else
+    @else
     <div class="row">
-        <div class="col-md-6">
-            <h3>Billing Address</h3>
-            @include('partials.address_form', ['type' => 'billing'])
+      <div class="col-md-6">
+        <h3>Billing Address</h3>
+        @include('partials.address_form', ['type' => 'billing'])
+      </div>
+      <div class="col-md-6">
+        <h3>Shipping Address</h3>
+        <div class="checkbox" style="position: absolute; top: 16px; right: 16px;">
+          <label><input type="checkbox" name="different_shipping_address" {{ old('different_shipping_address') ? 'checked' : '' }} v-model="different_shipping_address"> Different Shipping Address</label>
         </div>
-        <div class="col-md-6">
-            <h3>Shipping Address</h3>
-            <div class="checkbox" style="position: absolute; top: 16px; right: 16px;">
-    <label><input type="checkbox" name="different_shipping_address" {{ old('different_shipping_address') ? 'checked' : '' }} v-model="different_shipping_address"> Different Shipping Address</label>
-            </div>
-            <div v-show="different_shipping_address">
-            @include('partials.address_form', ['type' => 'shipping'])
-            </div>
+        <div v-show="different_shipping_address">
+          @include('partials.address_form', ['type' => 'shipping'])
         </div>
+      </div>
     </div>
-@endif
+    @endif
 
-<p>
-  <input type="submit" class="btn btn-success" value="Proceed to Payment">
-</p>
-</form>
+    <p>
+      <input type="submit" class="btn btn-success" value="Continue">
+    </p>
+  </form>
 </div>
 
 @stop

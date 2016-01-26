@@ -27,6 +27,8 @@ class Kernel extends HttpKernel
         'admin'          => 'Creuset\Http\Middleware\ForbidIfNotAdmin',
         'order.customer' => 'Creuset\Http\Middleware\DeriveUserForOrder',
         'throttle'       => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'order.session'  => \Creuset\Http\Middleware\OrderMustBeInSession::class,
+        'cart.empty'     => \Creuset\Http\Middleware\RedirectIfCartIsEmpty::class,
     ];
 
     /**
