@@ -4,12 +4,14 @@
 Order #{{ $order->id }} Details
 @stop
 
+@section('heading')
+Order #{{ $order->id }} Details
+@stop
+
 @section('admin.content')
 
-<h1>Order #{{ $order->id }} Details</h1>
-
-<div class="panel panel-default">
-	<div class="panel-heading">General Details</div>
+<div class="box box-primary">
+	<div class="box-header">General Details</div>
 
 		<table class="table">
 			<tbody>
@@ -30,7 +32,7 @@ Order #{{ $order->id }} Details
 				</tr>
 				<tr>
 					<th>Customer</th>
-					<td><a href="{{ route('admin.users.edit', $order->customer->username) }}">{{ $order->customer->name }}</a> ({{ $order->customer->email }})</td>
+					<td><a href="{{ route('admin.users.edit', $order->customer->username) }}">{{ $order->customer->name }}</a> ({{ $order->email }})</td>
 				</tr>
 				<tr>
 					<td>
@@ -50,35 +52,39 @@ Order #{{ $order->id }} Details
 
 </div>
 
-<div class="panel panel-default">
-	<div class="panel-heading">Order Items</div>
+<div class="box box-primary">
+	<div class="box-header">Order Items</div>
 	<table class="table">
 		<thead>
 			<tr>
 				<th></th>
 				<th>Item</th>
+				<th>SKU</th>
 				<th>Cost</th>
 				<th>Qty</th>
 				<th>Total</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach ($order->items as $item)
+			@foreach ($order->product_items as $item)
 				<tr>
 					<td style="width:36px">{{ $item->orderable->present()->thumbnail(20) }}</td>
 					<td><a href="{{ route('admin.products.edit', $item->orderable) }}">{{ $item->description }}</a></td>
+					<td>{{ $item->orderable->sku }}</td>
 					<td>{{ Present::money($item->price_paid) }}</td>
 					<td>{{ $item->quantity }}</td>
-				<td>{{ Present::money($item->total_paid) }}</td>
+					<td>{{ Present::money($item->total_paid) }}</td>
 				</tr>
 			@endforeach
 
 			<tr>
 				<td colspan="5"></td>
 			</tr>
+			
 			<tr>
 				<td><i class="fa fa-truck"></i></td>
 				<td>{{ $order->shipping_item->description}}</td>
+
 				<td colspan="3"></td>
 				<td>{{ Present::money($order->shipping_item->price_paid) }}</td>
 			</tr>
