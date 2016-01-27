@@ -84,7 +84,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * Hash the password when setting it on a user
+     * Hash the password when setting it on a user.
      * 
      * @param string $password
      */

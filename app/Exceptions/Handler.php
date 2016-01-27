@@ -40,14 +40,15 @@ class Handler extends ExceptionHandler
     /**
      * Create a Symfony response for the given exception.
      *
-     * @param  \Exception  $e
+     * @param \Exception $e
+     *
      * @return mixed
      */
     protected function convertExceptionToResponse(Exception $e)
     {
         if (config('app.debug')) {
-            $whoops = new \Whoops\Run;
-            $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+            $whoops = new \Whoops\Run();
+            $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
 
             return response()->make(
                 $whoops->handleException($e),
