@@ -19,15 +19,15 @@ $factory->define('Creuset\Post', function ($faker) {
 
 $factory->define('Creuset\Product', function ($faker) {
     $name = $faker->sentence(3);
-    $price = $faker->numberBetween(30, 30000) / 100;
+    $price = $faker->numberBetween(30, 30000);
 
     return [
     'name'          => $name,
     'slug'          => str_slug($name),
     'sku'           => strtoupper($faker->unique()->bothify('???###')),
     'description'   => $faker->paragraph(3),
-    'price'         => $price,
-    'sale_price'    => $faker->randomElement([null, $faker->numberBetween(2, $price)]),
+    'price'         => $price / 100,
+    'sale_price'    => $faker->randomElement([null, $faker->numberBetween(2, $price - 1) / 100]),
     'stock_qty'     => $faker->numberBetween(0, 15),
     'user_id'       => factory(Creuset\User::class)->create()->id,
     ];
@@ -41,7 +41,7 @@ $factory->define('Creuset\User', function ($faker) {
     'name'             => $name,
     'username'         => str_slug($name),
     'email'            => $faker->unique()->email,
-    'password'         => bcrypt('password'),
+    'password'         => 'password',
     'last_seen_at'     => new \DateTime(),
     ];
 });
