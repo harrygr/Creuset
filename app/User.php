@@ -84,6 +84,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
+     * Hash the password when setting it on a user
+     * 
+     * @param string $password
+     */
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = bcrypt($password);
+    }
+
+    /**
      * Does the user own the model.
      *
      * @param Model $model The model to check

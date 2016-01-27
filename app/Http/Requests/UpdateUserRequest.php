@@ -42,7 +42,7 @@ class UpdateUserRequest extends UserRequest
         $attributes = $this->all();
         $attributes = $this->filterEditRoles($attributes);
 
-        if (!strlen($this->password)) {
+        if (!strlen($this->get('password'))) {
             unset($attributes['password']);
         }
 

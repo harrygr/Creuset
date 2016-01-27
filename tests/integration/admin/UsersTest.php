@@ -6,11 +6,38 @@ use TestCase;
 
 class UsersTest extends TestCase
 {
-    public function testItCanEditUserProfile()
+    /** @test **/
+    public function it_can_create_a_new_user()
+    {
+        $this->logInAsAdmin();
+
+        $this->visit('/admin/users/new')
+             ->type('Joe Bloggs', 'name')
+             ->type('joebloggs', 'username')
+             ->type('joe@bloggs.com', 'email')
+             ->type('secret123', 'password')
+             ->type('secret123', 'password_confirmation')
+             ->press('Create User');
+
+        $this->seeInDatabase('users', [
+            'username'    => 'joebloggs',
+            'email'       => 'joe@bloggs.com',
+            ]);
+
+        // Ensure the password has been saved and hashed correctly
+        $this->assertTrue(\Auth::validate([
+            'email' => 'joe@bloggs.com', 
+            'password' => 'secret123'
+            ]));
+
+    }
+
+    /** @test **/
+    public function it_can_edit_its_own_user_profile()
     {
         $currentUser = $this->logInAsAdmin();
 
-        $newUserProfile = $this->newUserProfile();
+        $newUserProfile = factory('Creuset\User')->make()->toArray();
 
         $this->updateProfile($newUserProfile);
 
@@ -22,9 +49,16 @@ class UsersTest extends TestCase
             'username'    => $newUserProfile['username'],
             'email'       => $newUserProfile['email'],
             ]);
+
+        // Ensure the password has been saved and hashed correctly
+        $this->assertTrue(\Auth::validate([
+            'email' => $newUserProfile['email'], 
+            'password' => 'secret123'
+            ]));
     }
 
-    public function testItDoesntAllowSavingUniqueFields()
+    /** @test **/
+    public function it_does_not_allow_user_details_that_are_already_taken()
     {
         $currentUser = $this->logInAsAdmin();
 

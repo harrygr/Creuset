@@ -13,7 +13,7 @@ class OrderTest extends TestCase
     public function it_redirects_to_login_if_email_is_recognised()
     {
         $user = factory(User::class)->create([
-            'password' => bcrypt('secret'),
+            'password' => 'secret',
             ]);
         $product = $this->putProductInCart();
 
@@ -30,7 +30,7 @@ class OrderTest extends TestCase
     public function it_redirects_back_to_checkout_if_user_logs_in_at_checkout()
     {
         $user = factory(User::class)->create([
-            'password' => bcrypt('secret'),
+            'password' => 'secret',
             ]);
         $product = $this->putProductInCart();
 
