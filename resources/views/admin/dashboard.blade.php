@@ -4,8 +4,12 @@
     Dashboard
 @stop
 
+@section('heading')
+Dashboard
+@stop
+
 @section('admin.content')
-<h1>Dashboard</h1>
+<p>This is the dashboard</p>
 
 
 @stop
