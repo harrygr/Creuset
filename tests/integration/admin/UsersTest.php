@@ -26,10 +26,9 @@ class UsersTest extends TestCase
 
         // Ensure the password has been saved and hashed correctly
         $this->assertTrue(\Auth::validate([
-            'email' => 'joe@bloggs.com', 
-            'password' => 'secret123'
+            'email'    => 'joe@bloggs.com',
+            'password' => 'secret123',
             ]));
-
     }
 
     /** @test **/
@@ -52,8 +51,8 @@ class UsersTest extends TestCase
 
         // Ensure the password has been saved and hashed correctly
         $this->assertTrue(\Auth::validate([
-            'email' => $newUserProfile['email'], 
-            'password' => 'secret123'
+            'email'    => $newUserProfile['email'],
+            'password' => 'secret123',
             ]));
     }
 
