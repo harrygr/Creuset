@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     /**
-     * The table used by the model
+     * The table used by the model.
      * 
      * @var string
      */
     public $table = 'roles';
 
     /**
-     * The fields that are mass-assignable
+     * The fields that are mass-assignable.
      * 
      * @var array
      */
@@ -23,7 +23,7 @@ class Role extends Model
     /**
      * Disable timestamps.
      * 
-     * @var boolean
+     * @var bool
      */
     public $timestamps = false;
 

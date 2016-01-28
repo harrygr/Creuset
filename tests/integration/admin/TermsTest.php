@@ -64,7 +64,7 @@ class TermsTest extends \TestCase
         $this->visit("admin/terms/{$category->id}/edit")
              ->type('Nice Cat', 'term')
              ->press('submit')
-             ->see("Category updated");
+             ->see('Category updated');
 
         $this->seeInDatabase('terms', ['taxonomy' => 'category', 'term'     => 'Nice Cat']);
     }
@@ -87,7 +87,7 @@ class TermsTest extends \TestCase
         $this->visit("admin/terms/{$category_1->id}/edit")
              ->type($category_2->term, 'term')
              ->press('submit')
-             ->see("already been taken");
+             ->see('already been taken');
 
         $this->dontSeeInDatabase('terms', ['id' => $category_1, 'taxonomy' => 'category', 'term' => 'Nice Cat']);
     }

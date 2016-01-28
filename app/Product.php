@@ -140,9 +140,9 @@ class Product extends Model implements HasMediaConversions, Termable
     }
 
     /**
-     * Cast the product's price to a float
+     * Cast the product's price to a float.
      * 
-     * @param  integer $price
+     * @param int $price
      * 
      * @return float
      */
@@ -152,9 +152,9 @@ class Product extends Model implements HasMediaConversions, Termable
     }
 
     /**
-     * Cast the product's sale price to a float
+     * Cast the product's sale price to a float.
      * 
-     * @param  integer $price
+     * @param int $price
      * 
      * @return float
      */

@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class ShippingMethod extends Model
 {
     /**
-     * The table used by the model
+     * The table used by the model.
      * 
      * @var string
-     */    
+     */
     protected $table = 'shipping_methods';
 
     /**
-     * Validation rules for an address
+     * Validation rules for an address.
      * 
      * @var array
      */
@@ -80,7 +80,7 @@ class ShippingMethod extends Model
     }
 
     /**
-     * A shipping method has many shipping countries
+     * A shipping method has many shipping countries.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\Relation
      */

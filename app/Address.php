@@ -10,28 +10,28 @@ class Address extends Model
     use SoftDeletes;
 
     /**
-     * The table used by the model
+     * The table used by the model.
      * 
      * @var string
      */
     protected $table = 'addresses';
 
     /**
-     * The fields that are mass-assignable
+     * The fields that are mass-assignable.
      * 
      * @var array
      */
     protected $fillable = ['name', 'phone', 'line_1', 'line_2', 'city', 'country', 'postcode'];
 
     /**
-     * Mutate these dates to Carbon instances
+     * Mutate these dates to Carbon instances.
      * 
      * @var array
      */
     protected $dates = ['deleted_at'];
 
     /**
-     * Validation rules for an address
+     * Validation rules for an address.
      * 
      * @var array
      */
