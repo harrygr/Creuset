@@ -16,6 +16,11 @@ class Post extends Model implements HasMediaConversions, Termable
 {
     use PresentableTrait, SoftDeletes, HasTerms, HasMediaTrait, Postable;
 
+    /**
+     * Set the image sizes for post attachments.
+     * 
+     * @return void
+     */
     public function registerMediaConversions()
     {
         $this->addMediaConversion('thumb')

@@ -6,17 +6,31 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
+    /**
+     * The table used by the model
+     * 
+     * @var string
+     */
     public $table = 'roles';
 
+    /**
+     * The fields that are mass-assignable
+     * 
+     * @var array
+     */
     public $fillable = ['name', 'display_name'];
 
     /**
-     * Set timestamps off.
+     * Disable timestamps.
+     * 
+     * @var boolean
      */
     public $timestamps = false;
 
     /**
      * Get users with a certain role.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\Relation
      */
     public function users()
     {

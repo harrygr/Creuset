@@ -26,8 +26,18 @@ class Order extends Model
         'cancelled'     => 'Cancelled',
     ];
 
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
     public $table = 'orders';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     public $fillable = ['amount', 'status', 'user_id', 'payment_id', 'billing_address_id', 'shipping_address_id'];
 
     /**
@@ -51,11 +61,13 @@ class Order extends Model
     }
 
     /**
-     * Add a product to an order, creating a new Order Item 
+     * Add a product to an order, creating a new Order Item, 
      * or appending to an existing one.
      * 
      * @param Product $product
      * @param int     $quantity
+     *
+     * @return  \Creuset\Order
      */
     public function addProduct(Product $product, $quantity = 1)
     {
@@ -79,7 +91,7 @@ class Order extends Model
      * 
      * @param int $id
      *
-     * @return Order
+     * @return \Creuset\Order
      */
     public function setShipping($id)
     {

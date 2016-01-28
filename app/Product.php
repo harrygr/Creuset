@@ -22,6 +22,11 @@ class Product extends Model implements HasMediaConversions, Termable
      */
     public $table = 'products';
 
+    /**
+     * Set the image sizes for product attachments.
+     * 
+     * @return void
+     */
     public function registerMediaConversions()
     {
         $this->addMediaConversion('thumb')
@@ -57,17 +62,32 @@ class Product extends Model implements HasMediaConversions, Termable
 
     protected $presenter = 'Creuset\Presenters\ProductPresenter';
 
+    /**
+     * A products belongs to many terms.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\Relation
+     */
     public function terms()
     {
-        return $this->morphToMany('\Creuset\Term', 'termable');
+        return $this->morphToMany(Term::class, 'termable');
     }
 
+    /**
+     * A product belongs to many product categories.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\Relation
+     */
     public function product_categories()
     {
-        return $this->morphToMany('\Creuset\Term', 'termable')
+        return $this->morphToMany(Term::class, 'termable')
         ->where('taxonomy', 'product_category');
     }
 
+    /**
+     * A product belongs to a featured image.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\Relation
+     */
     public function image()
     {
         return $this->belongsTo(Media::class, 'media_id');
@@ -78,7 +98,7 @@ class Product extends Model implements HasMediaConversions, Termable
      * 
      * This shouldn't really need to be done, but Laravel's automatic date
      * mutators expects strings to be in the format Y-m-d H-i-s which is 
-     * not always the case; such as for 'datetime-local' html5 fields
+     * not always the case; such as for 'datetime-local' html5 fields.
      * 
      * @param mixed $date The date to be parsed
      */
@@ -89,36 +109,75 @@ class Product extends Model implements HasMediaConversions, Termable
         }
     }
 
+    /**
+     * Get the URL of the product's thumbnail.
+     * 
+     * @return string
+     */
     public function getThumbnailAttribute()
     {
         return $this->image ? $this->image->thumbnail_url : '';
     }
 
+    /**
+     * Cast the product's price to an integer for storage.
+     *  
+     * @param float $price
+     */
     public function setPriceAttribute($price)
     {
         $this->attributes['price'] = intval(100 * $price);
     }
 
+    /**
+     * Cast the product's sale price to an integer for storage.
+     *  
+     * @param float $price
+     */
     public function setSalePriceAttribute($price)
     {
         $this->attributes['sale_price'] = intval(100 * $price);
     }
 
+    /**
+     * Cast the product's price to a float
+     * 
+     * @param  integer $price
+     * 
+     * @return float
+     */
     public function getPriceAttribute($price)
     {
         return $price / 100;
     }
 
+    /**
+     * Cast the product's sale price to a float
+     * 
+     * @param  integer $price
+     * 
+     * @return float
+     */
     public function getSalePriceAttribute($price)
     {
         return $price / 100;
     }
 
+    /**
+     * Get the product's description as html.
+     * 
+     * @return string
+     */
     public function getDescriptionHtml()
     {
         return \Markdown::convertToHtml($this->description);
     }
 
+    /**
+     * Get the URL to a single product page.
+     * 
+     * @return string
+     */
     public function getUrlAttribute()
     {
         return route('products.show', [$this->product_category->slug, $this->slug]);
@@ -134,6 +193,13 @@ class Product extends Model implements HasMediaConversions, Termable
         return $this->name;
     }
 
+    /**
+     * Get the product's product category.
+     * Gets the first if more than one set.
+     * Sets it to uncategorised if none set.
+     * 
+     * @return \Creuset\Term
+     */
     public function getProductCategoryAttribute()
     {
         if ($this->product_categories->count() == 0) {

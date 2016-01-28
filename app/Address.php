@@ -9,12 +9,32 @@ class Address extends Model
 {
     use SoftDeletes;
 
+    /**
+     * The table used by the model
+     * 
+     * @var string
+     */
     protected $table = 'addresses';
 
+    /**
+     * The fields that are mass-assignable
+     * 
+     * @var array
+     */
     protected $fillable = ['name', 'phone', 'line_1', 'line_2', 'city', 'country', 'postcode'];
 
+    /**
+     * Mutate these dates to Carbon instances
+     * 
+     * @var array
+     */
     protected $dates = ['deleted_at'];
 
+    /**
+     * Validation rules for an address
+     * 
+     * @var array
+     */
     public static $rules = [
         'name'      => 'required',
         'line_1'    => 'required',
@@ -23,6 +43,11 @@ class Address extends Model
         'country'   => 'required|alpha|size:2',
     ];
 
+    /**
+     * An address belongs to a user.
+     *     
+     * @return \Illuminate\Database\Eloquent\Relations\Relation
+     */
     public function user()
     {
         return $this->belongsTo(User::class);

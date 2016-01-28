@@ -6,13 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class ShippingMethod extends Model
 {
+    /**
+     * The table used by the model
+     * 
+     * @var string
+     */    
     protected $table = 'shipping_methods';
 
+    /**
+     * Validation rules for an address
+     * 
+     * @var array
+     */
     public static $rules = [
     'description' => 'required',
     'base_rate'   => 'required|numeric',
     ];
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     public $fillable = ['description', 'base_rate'];
 
     /**
@@ -64,6 +79,11 @@ class ShippingMethod extends Model
         return $rate / 100;
     }
 
+    /**
+     * A shipping method has many shipping countries
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\Relation
+     */
     public function shipping_countries()
     {
         return $this->hasMany(ShippingCountry::class);
