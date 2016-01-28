@@ -10,7 +10,7 @@ class OrderItem extends Model
      * The database table used by the model.
      *
      * @var string
-     */    
+     */
     public $table = 'order_items';
 
     /**

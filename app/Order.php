@@ -67,7 +67,7 @@ class Order extends Model
      * @param Product $product
      * @param int     $quantity
      *
-     * @return  \Creuset\Order
+     * @return \Creuset\Order
      */
     public function addProduct(Product $product, $quantity = 1)
     {

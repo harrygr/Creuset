@@ -10,7 +10,7 @@ use Creuset\Term;
 class TermsController extends Controller
 {
     /**
-     * The terms repository
+     * The terms repository.
      * 
      * @var \Creuset\Repositories\Term\TermRepository
      */
@@ -27,16 +27,16 @@ class TermsController extends Controller
     }
 
     /**
-     * Show a page of all terms for a given taxonomy
+     * Show a page of all terms for a given taxonomy.
      *     
-     * @param  string $taxonomies The singular or plural taxonomy to use
+     * @param string $taxonomies The singular or plural taxonomy to use
      * 
      * @return \Illuminate\Http\Response
      */
     public function index($taxonomies)
     {
         $taxonomy = str_singular($taxonomies);
-        
+
         if (!isset(Term::$taxonomies[$taxonomy])) {
             abort(404);
         }
@@ -70,7 +70,7 @@ class TermsController extends Controller
     /**
      * Show a page to edit a term.
      * 
-     * @param  Term   $term
+     * @param Term $term
      * 
      * @return \Illuminate\Http\Response
      */
@@ -82,8 +82,8 @@ class TermsController extends Controller
     /**
      * Update a term in storage.
      * 
-     * @param  Term              $term    
-     * @param  UpdateTermRequest $request
+     * @param Term              $term
+     * @param UpdateTermRequest $request
      * 
      * @return \Illuminate\Http\Response
      */
@@ -96,13 +96,12 @@ class TermsController extends Controller
         return redirect()
             ->route('admin.terms.edit', $term)
             ->with(['alert' => "$taxonomy updated!", 'alert-class' => 'success']);
-
     }
 
     /**
      * Delete a term from storage.
      * 
-     * @param  Term   $term
+     * @param Term $term
      * 
      * @return \Illuminate\Http\Response
      */

@@ -16,7 +16,7 @@ class ShippingCountry extends Model
     /**
      * Disable timestamps.
      * 
-     * @var boolean
+     * @var bool
      */
     public $timestamps = false;
 
@@ -40,7 +40,7 @@ class ShippingCountry extends Model
     /**
      * Ensure the country ID is always uppercase.
      * 
-     * @param  string $country_id
+     * @param string $country_id
      * 
      * @return string
      */
