@@ -66,7 +66,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     /**
      * A user has several orders.
      *
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\Relation
      */
     public function orders()
     {
@@ -76,7 +76,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     /**
      * A user has several addresses.
      *
-     * @return
+     * @return \Illuminate\Database\Eloquent\Relations\Relation
      */
     public function addresses()
     {
@@ -135,5 +135,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function autoCreated()
     {
         return is_null($this->last_seen_at);
+    }
+
+    /**
+     * Limit users to just those assigned as shop admins
+     * 
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function scopeShopAdmins($query)
+    {
+        $query->whereIn('id', config('shop.admin_ids'));
     }
 }

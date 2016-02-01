@@ -1,1 +1,3 @@
-Product out of stock
+Product out of stock: {{ $product->sku }}
+
+{{ $product->description }}
