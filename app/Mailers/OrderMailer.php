@@ -7,11 +7,10 @@ use Creuset\User;
 
 class OrderMailer extends Mailer
 {
-    
     /**
-     * Send an order receipt to a customer
+     * Send an order receipt to a customer.
      * 
-     * @param  Order  $order
+     * @param Order $order
      * 
      * @return void
      */
@@ -24,9 +23,9 @@ class OrderMailer extends Mailer
     }
 
     /**
-     * Send an order notification to each of the admins
+     * Send an order notification to each of the admins.
      * 
-     * @param  Order  $order
+     * @param Order $order
      * 
      * @return void
      */

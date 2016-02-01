@@ -5,7 +5,6 @@ namespace Creuset\Listeners;
 use Creuset\Events\ProductStockChanged;
 use Creuset\Mailers\ProductMailer;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Mail;
 
 class EmailStockNotification implements ShouldQueue
 {
@@ -32,9 +31,7 @@ class EmailStockNotification implements ShouldQueue
     {
         if ($event->product->stock_qty == 0) {
             $this->mailer->sendOutOfStockNotificationFor($event->product);
-        } 
-
-        elseif ($event->product->stock_qty <= config('shop.low_stock_qty')) {
+        } elseif ($event->product->stock_qty <= config('shop.low_stock_qty')) {
             $this->mailer->sendLowStockNotificationFor($event->product);
         }
     }
