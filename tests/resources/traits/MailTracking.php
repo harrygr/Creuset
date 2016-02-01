@@ -45,7 +45,7 @@ trait MailTracking
     /**
      * Assert that the given number of emails were sent.
      *
-     * @param integer $count
+     * @param int $count
      */
     protected function seeEmailsSent($count)
     {
@@ -69,7 +69,7 @@ trait MailTracking
     {
         $this->assertEquals(
             $body, $this->getEmail($message)->getBody(),
-            "No email with the provided body was sent."
+            'No email with the provided body was sent.'
         );
 
         return $this;
@@ -85,7 +85,7 @@ trait MailTracking
     {
         $this->assertContains(
             $excerpt, $this->getEmail($message)->getBody(),
-            "No email containing the provided body was found."
+            'No email containing the provided body was found.'
         );
 
         return $this;

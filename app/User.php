@@ -138,9 +138,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * Limit users to just those assigned as shop admins
+     * Limit users to just those assigned as shop admins.
      * 
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      */
     public function scopeShopAdmins($query)
     {

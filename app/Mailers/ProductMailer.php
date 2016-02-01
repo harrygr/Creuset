@@ -7,11 +7,10 @@ use Creuset\User;
 
 class ProductMailer extends Mailer
 {
-    
     /**
-     * Send an out of stock notification to the shop admins
+     * Send an out of stock notification to the shop admins.
      *  
-     * @param  Product $product
+     * @param Product $product
      * 
      * @return void
      */
@@ -28,9 +27,9 @@ class ProductMailer extends Mailer
     }
 
     /**
-     * Send an low stock notification to the shop admins
+     * Send an low stock notification to the shop admins.
      *  
-     * @param  Product $product
+     * @param Product $product
      * 
      * @return void
      */
