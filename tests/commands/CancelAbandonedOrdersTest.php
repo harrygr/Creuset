@@ -1,8 +1,6 @@
 <?php
 
 use Creuset\Order;
-use Illuminate\Console\Command;
-use Creuset\Console\Kernel;
 
 class CancelAbandonedOrdersTest extends TestCase
 {
