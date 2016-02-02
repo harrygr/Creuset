@@ -12,4 +12,14 @@ return [
      */
     'products_per_row'  => env('PRODUCTS_PER_ROW', 4),
 
+    /*
+     * The user ids who receive order and stock notifications
+     */
+    'admin_ids'         => [1],
+
+    /*
+     * The stock quantity at which to alert shop admins
+     */
+    'low_stock_qty'     => 3,
+
 ];
