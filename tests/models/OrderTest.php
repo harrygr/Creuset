@@ -139,4 +139,27 @@ class OrderTest extends TestCase
         $order->shipping_address_id = 1;
         $this->assertTrue($order->shippingSameAsBilling());
     }
+
+    /** @test **/
+    public function it_gets_abandoned_orders()
+    {
+        $abandoned_orders = factory(Order::class, 2)->create([
+            'status' => Order::PENDING,
+            'updated_at' => \Carbon\Carbon::parse('10 hours ago'),
+            ]);
+
+        $completed_order = factory(Order::class)->create([
+            'status' => Order::COMPLETED,
+            'updated_at' => \Carbon\Carbon::parse('13 hours ago'),
+            ]);
+
+        $in_progress_order = factory(Order::class)->create([
+            'status' => Order::PENDING,
+            'updated_at' => \Carbon\Carbon::parse('1 minute ago'),
+            ]);
+
+        $abandoned = Order::abandoned()->get();
+
+        $this->assertCount(2, $abandoned);
+    }
 }

@@ -18,6 +18,10 @@ class Order extends Model
     const REFUNDED = 'refunded';
     const CANCELLED = 'cancelled';
 
+    /**
+     * The possible statuses for an order
+     * @var array
+     */
     public static $statuses = [
         'pending'       => 'Pending',
         'processing'    => 'Processing',
@@ -279,5 +283,18 @@ class Order extends Model
         }
 
         return new Address();
+    }
+
+    /**
+     * Limit to abandoned orders
+     *     
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * 
+     * @return void      
+     */
+    public function scopeAbandoned($query)
+    {
+        $query->where('status', self::PENDING)
+              ->where('updated_at', '<', \Carbon\Carbon::now()->subMinutes(config('shop.pending_order_limit')));
     }
 }
