@@ -66,9 +66,9 @@ class Order extends Model
     }
 
     /**
-     * Add a product to an order, creating a new Order Item, 
+     * Add a product to an order, creating a new Order Item,
      * or appending to an existing one.
-     * 
+     *
      * @param Product $product
      * @param int     $quantity
      *
@@ -93,7 +93,7 @@ class Order extends Model
 
     /**
      * Add a shipping method to the order.
-     * 
+     *
      * @param int $id
      *
      * @return \Creuset\Order
@@ -117,7 +117,7 @@ class Order extends Model
 
     /**
      * Has the order had a shipping method set.
-     * 
+     *
      * @return bool
      */
     public function hasShipping()
@@ -127,7 +127,7 @@ class Order extends Model
 
     /**
      * Refresh the total for an order by tallying up all the order items.
-     * 
+     *
      * @return float
      */
     public function refreshAmount()
@@ -143,7 +143,7 @@ class Order extends Model
 
     /**
      * Get the Order Item that holds the shipping method for an order.
-     * 
+     *
      * @return OrderItem
      */
     public function getShippingItemAttribute()
@@ -153,7 +153,7 @@ class Order extends Model
 
     /**
      * Get the underlying shipping method for an order.
-     * 
+     *
      * @return ShippingMethod
      */
     public function getShippingMethodAttribute()
@@ -288,14 +288,14 @@ class Order extends Model
 
     /**
      * Limit to abandoned orders.
-     *     
+     *
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * 
+     *
      * @return void
      */
     public function scopeAbandoned($query)
     {
         $query->where('status', self::PENDING)
-              ->where('updated_at', '<', \Carbon\Carbon::now()->subMinutes(config('shop.pending_order_limit')));
+              ->where('updated_at', '<', \Carbon\Carbon::now()->subMinutes(config('shop.order_time_limit')));
     }
 }

@@ -39,9 +39,14 @@ class CancelAbandonedOrders extends Command
     public function handle()
     {
         $abandoned_orders = Order::abandoned();
+        $abandoned_count = $abandoned_orders->count();
 
         $abandoned_orders->update(['status' => Order::CANCELLED]);
 
-        $this->comment(sprintf('%s abandoned orders marked cancelled.', $abandoned_orders->count()));
+        if ($abandoned_count > 0) {
+            $this->info(sprintf('%s abandoned orders cancelled.', $abandoned_count));
+        } else {
+            $this->info('No abandoned orders to cancel.');
+        }
     }
 }

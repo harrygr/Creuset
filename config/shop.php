@@ -15,6 +15,6 @@ return [
     /*
      * Number of minutes a pending cart will be regarded as abandoned
      */
-    'pending_order_limit'   => env('PENDING_ORDER_LIMIT', 15),
+    'order_time_limit'  => env('ORDER_TIME_LIMIT', 15),
 
 ];
