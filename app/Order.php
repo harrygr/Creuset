@@ -19,7 +19,8 @@ class Order extends Model
     const CANCELLED = 'cancelled';
 
     /**
-     * The possible statuses for an order
+     * The possible statuses for an order.
+     *
      * @var array
      */
     public static $statuses = [
@@ -286,11 +287,11 @@ class Order extends Model
     }
 
     /**
-     * Limit to abandoned orders
+     * Limit to abandoned orders.
      *     
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * 
-     * @return void      
+     * @return void
      */
     public function scopeAbandoned($query)
     {

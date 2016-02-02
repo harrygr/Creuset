@@ -144,17 +144,17 @@ class OrderTest extends TestCase
     public function it_gets_abandoned_orders()
     {
         $abandoned_orders = factory(Order::class, 2)->create([
-            'status' => Order::PENDING,
+            'status'     => Order::PENDING,
             'updated_at' => \Carbon\Carbon::parse('10 hours ago'),
             ]);
 
         $completed_order = factory(Order::class)->create([
-            'status' => Order::COMPLETED,
+            'status'     => Order::COMPLETED,
             'updated_at' => \Carbon\Carbon::parse('13 hours ago'),
             ]);
 
         $in_progress_order = factory(Order::class)->create([
-            'status' => Order::PENDING,
+            'status'     => Order::PENDING,
             'updated_at' => \Carbon\Carbon::parse('1 minute ago'),
             ]);
 
