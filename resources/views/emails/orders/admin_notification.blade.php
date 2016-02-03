@@ -1,10 +1,14 @@
-<p>You have a new customer order</p>
+@extends('emails.main')
 
-<p>Order details:</p>
+@section('content')
+    <p>You have a new customer order</p>
 
-<ul>
-<li><strong>Order ID:</strong> #{{ $order->id }}</li>
-<li><strong>Order Date:</strong> {{ $order->created_at }}</li>    
-</ul>
+    <p>Order details:</p>
 
-@include('orders._summary')
+    <ul>
+    <li><strong>Order ID:</strong> #{{ $order->id }}</li>
+    <li><strong>Order Date:</strong> {{ $order->created_at }}</li>    
+    </ul>
+
+    @include('orders._summary')
+@stop
