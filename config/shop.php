@@ -17,4 +17,15 @@ return [
      */
     'order_time_limit'  => env('ORDER_TIME_LIMIT', 15),
 
+    /*
+     * The user ids who receive order and stock notifications
+     */
+    'admin_ids'         => [1],
+
+    /*
+     * The stock quantity at which to alert shop admins
+     */
+    'low_stock_qty'     => 3,
+
+
 ];

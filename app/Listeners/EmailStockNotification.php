@@ -3,18 +3,21 @@
 namespace Creuset\Listeners;
 
 use Creuset\Events\ProductStockChanged;
-use Mail;
+use Creuset\Mailers\ProductMailer;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class EmailStockNotification
+class EmailStockNotification implements ShouldQueue
 {
+    private $mailer;
+
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(ProductMailer $mailer)
     {
-        //
+        $this->mailer = $mailer;
     }
 
     /**
@@ -26,15 +29,10 @@ class EmailStockNotification
      */
     public function handle(ProductStockChanged $event)
     {
-        // if ($event->product->stock_qty == 0)
-        // {
-        //     $data = ['product' => $event->product];
-
-        //     Mail::send('emails.products.out_of_stock', $data, function ($message) {
-        //         $message->from('us@example.com', 'Laravel');
-
-        //         $message->to('foo@example.com')->cc('bar@example.com');
-        //     });
-        // }
+        if ($event->product->stock_qty == 0) {
+            $this->mailer->sendOutOfStockNotificationFor($event->product);
+        } elseif ($event->product->stock_qty <= config('shop.low_stock_qty')) {
+            $this->mailer->sendLowStockNotificationFor($event->product);
+        }
     }
 }

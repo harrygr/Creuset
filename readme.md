@@ -20,11 +20,17 @@ Creuset is a powerful ecommerce platform built in Laravel. It is intended to use
 3. Set your environment variables, including database config. (see `.env.example` for examples)
 4. Serve it up and enjoy
 
+### Notes on environment variables
+
+- The cache driver should be one that supports cache tags (e.g. memcached, redis).
+- Cache time specifies the default number of minutes that a cache entry will be retained in the cache. This is so values like this are not hard-coded.
+- Not all config entries are in `.env.example`. Check individual config files for more options.
+
 ## Contributing
 
-Development is by Git Flow. To add a feature contribute create a branch from the dev branch called `feature/<feature-name>` and pull request back to the dev branch. Small bugfixes and tweaks can be merged straight to master.
+Development is by Git Flow. To add a feature contribute create a branch from the dev branch called `feature/<feature-name>` and pull request back to the dev branch.
 
-All the tests should pass before trying to merge. This is checked using Travis. 
+All the tests should pass before trying to merge. This is checked using TravisCI. 
 
 PSR-2 code style should be used throughout. This is auto-checked with StyleCI
 
