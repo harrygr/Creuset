@@ -4,11 +4,14 @@
 {{ $title or 'Terms' }}
 @stop
 
-@section('admin.content')
-<h1>{{ $term_name or 'Terms'}}</h1>
+@section('heading')
+{{ $title or 'Terms' }}
+@stop
 
-<div class="panel panel-default">
-    <div class="panel-body">
+@section('admin.content')
+
+<div class="box box-primary">
+    <div class="box-body">
 
     <table class="table table-striped">
         <thead>

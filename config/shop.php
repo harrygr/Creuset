@@ -12,4 +12,9 @@ return [
      */
     'products_per_row'  => env('PRODUCTS_PER_ROW', 4),
 
+    /*
+     * Number of minutes a pending cart will be regarded as abandoned
+     */
+    'order_time_limit'  => env('ORDER_TIME_LIMIT', 15),
+
 ];

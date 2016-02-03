@@ -3,68 +3,112 @@
 namespace Creuset\Http\Controllers\Admin;
 
 use Creuset\Http\Controllers\Controller;
+use Creuset\Http\Requests\Term\UpdateTermRequest;
 use Creuset\Repositories\Term\TermRepository;
 use Creuset\Term;
 
 class TermsController extends Controller
 {
+    /**
+     * The terms repository.
+     * 
+     * @var \Creuset\Repositories\Term\TermRepository
+     */
     protected $terms;
 
+    /**
+     * Create a new TermsController instance.
+     * 
+     * @param TermRepository $terms [description]
+     */
     public function __construct(TermRepository $terms)
     {
         $this->terms = $terms;
     }
 
+    /**
+     * Show a page of all terms for a given taxonomy.
+     *     
+     * @param string $taxonomies The singular or plural taxonomy to use
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function index($taxonomies)
     {
         $taxonomy = str_singular($taxonomies);
-        $terms = $this->terms->getTerms($taxonomy);
+
         if (!isset(Term::$taxonomies[$taxonomy])) {
             abort(404);
         }
-        $term_name = Term::$taxonomies[$taxonomy];
 
-        return view('admin.terms.index')->with(compact('terms', 'term_name'));
+        $terms = $this->terms->getTerms($taxonomy);
+        $title = Term::$taxonomies[$taxonomy];
+
+        return view('admin.terms.index')->with(compact('terms', 'title'));
     }
 
+    /**
+     * Show a list of categories.
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function categoriesIndex()
     {
-        $terms = $this->terms->getCategories();
-        $term_name = 'Categories';
-
-        return view('admin.terms.index')->with(compact('terms', 'term_name'));
+        return $this->index('categories');
     }
 
+    /**
+     * Show a list of tags.
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function tagsIndex()
     {
-        $terms = $this->terms->getTags();
-        $term_name = 'Tags';
-
-        return view('admin.terms.index')->with(compact('terms', 'term_name'));
+        return $this->index('tags');
     }
 
-    public function productCategoriesIndex()
+    /**
+     * Show a page to edit a term.
+     * 
+     * @param Term $term
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Term $term)
     {
-        $terms = $this->terms->getTags();
-        $term_name = 'Tags';
-
-        return view('admin.terms.index')->with(compact('terms', 'term_name'));
+        return view('admin.terms.edit')->with(compact('term'));
     }
 
-    public function edit($term)
+    /**
+     * Update a term in storage.
+     * 
+     * @param Term              $term
+     * @param UpdateTermRequest $request
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Term $term, UpdateTermRequest $request)
     {
-        // code...
+        $term->update($request->all());
+
+        $taxonomy = $term->getTaxonomy();
+
+        return redirect()
+            ->route('admin.terms.edit', $term)
+            ->with(['alert' => "$taxonomy updated!", 'alert-class' => 'success']);
     }
 
-    public function update($term)
-    {
-        // code...
-    }
-
+    /**
+     * Delete a term from storage.
+     * 
+     * @param Term $term
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function destroy(Term $term)
     {
         $oldTerm = $term;
-        $taxonomy = ucfirst($term->taxonomy);
+        $taxonomy = $term->getTaxonomy();
         $term->delete();
 
         return redirect()

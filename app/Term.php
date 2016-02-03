@@ -49,4 +49,9 @@ class Term extends Model
 
         return $term;
     }
+
+    public function getTaxonomy()
+    {
+        return ucwords(\Present::unslug($this->taxonomy));
+    }
 }
