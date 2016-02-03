@@ -27,5 +27,4 @@ return [
      */
     'low_stock_qty'     => 3,
 
-
 ];
