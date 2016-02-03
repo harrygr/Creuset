@@ -2,15 +2,17 @@
 
 namespace Integration;
 
+use Creuset\User;
 use TestCase;
 
 class PaymentTest extends TestCase
 {
-    use \CreatesOrders, \UsesCart;
+    use \CreatesOrders, \UsesCart, \MailTracking;
 
     /** @test **/
     public function it_completes_an_order_upon_payment()
     {
+        $shop_admin = factory(User::class)->create();
         $this->createOrder(['status' => 'pending']);
 
         \Session::put('order', $this->order);
@@ -30,6 +32,11 @@ class PaymentTest extends TestCase
         $this->seeInDatabase('orders', ['id' => $this->order->id, 'status' => \Creuset\Order::PAID]);
         $this->assertEquals(0, \Cart::total());
         $this->assertContains('ch_', $this->order->fresh()->payment_id);
+
+        $this->seeEmailTo($this->customer->email, $this->emails[0]);
+
+        $admin_users = User::shopAdmins()->get();
+        $this->seeEmailTo($admin_users->first()->email, $this->emails[1]);
     }
 
     /** @test **/
