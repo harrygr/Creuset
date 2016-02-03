@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         'Creuset\Console\Commands\Inspire',
+        \Creuset\Console\Commands\CancelAbandonedOrders::class,
     ];
 
     /**
