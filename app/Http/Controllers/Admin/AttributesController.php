@@ -2,15 +2,13 @@
 
 namespace Creuset\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use Creuset\Http\Requests;
 use Creuset\Http\Controllers\Controller;
 use Creuset\Term;
 
 class AttributesController extends Controller
 {
     /**
-     * Show all attributes
+     * Show all attributes.
      * 
      * @return \Illuminate\Http\Response
      */
@@ -24,7 +22,7 @@ class AttributesController extends Controller
     }
 
     /**
-     * Show a form for creating a new attribute
+     * Show a form for creating a new attribute.
      * 
      * @return \Illuminate\Http\Response
      */
@@ -34,9 +32,9 @@ class AttributesController extends Controller
     }
 
     /**
-     * Show a form for updating attribute terms
+     * Show a form for updating attribute terms.
      * 
-     * @param  string $taxonomies
+     * @param string $taxonomies
      * 
      * @return \Illuminate\Http\Response
      */
@@ -52,9 +50,9 @@ class AttributesController extends Controller
     }
 
     /**
-     * Delete all instances of a given taxonomy from storage
+     * Delete all instances of a given taxonomy from storage.
      *  
-     * @param  string $taxonomy
+     * @param string $taxonomy
      * 
      * @return \Illuminate\Http\Response
      */
@@ -63,8 +61,8 @@ class AttributesController extends Controller
         $terms = Term::where('taxonomy', $taxonomy)->delete();
 
         return redirect()->route('admin.attributes.index')->with([
-            'alert' => sprintf('Attribute "%s" deleted', \Present::labelText($taxonomy)),
-            'alert-class' => 'success', 
+            'alert'       => sprintf('Attribute "%s" deleted', \Present::labelText($taxonomy)),
+            'alert-class' => 'success',
             ]);
     }
 }

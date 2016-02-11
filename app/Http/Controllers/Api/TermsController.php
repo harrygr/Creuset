@@ -4,10 +4,8 @@ namespace Creuset\Http\Controllers\Api;
 
 use Creuset\Http\Controllers\Controller;
 use Creuset\Http\Requests\CreateTermRequest;
-use Creuset\Http\Requests\Term\CreateManyTermsRequest;
 use Creuset\Repositories\Term\TermRepository;
 use Creuset\Term;
-use Illuminate\Http\Request;
 
 class TermsController extends Controller
 {
@@ -26,6 +24,7 @@ class TermsController extends Controller
     public function terms($taxonomy)
     {
         $taxonomy = snake_case($taxonomy);
+
         return $this->terms->getTerms($taxonomy);
     }
 
@@ -40,9 +39,9 @@ class TermsController extends Controller
     }
 
     /**
-     * Create a new category in storage
+     * Create a new category in storage.
      * 
-     * @param  CreateTermRequest $request 
+     * @param CreateTermRequest $request
      * 
      * @return \Illuminate\Http\Response
      */
@@ -52,9 +51,9 @@ class TermsController extends Controller
     }
 
     /**
-     * Create a new term in storage
+     * Create a new term in storage.
      * 
-     * @param  CreateTermRequest $request 
+     * @param CreateTermRequest $request
      * 
      * @return \Illuminate\Http\Response
      */
@@ -64,16 +63,16 @@ class TermsController extends Controller
     }
 
     /**
-     * Delete a term from storage
+     * Delete a term from storage.
      *   
-     * @param  Term   $term 
+     * @param Term $term
      * 
      * @return \Illuminate\Http\Response
      */
     public function destroy(Term $term)
     {
         $term->delete();
+
         return 'success';
     }
-
 }

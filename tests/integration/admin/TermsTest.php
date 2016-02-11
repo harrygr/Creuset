@@ -133,5 +133,4 @@ class TermsTest extends \TestCase
         $this->visit('admin/attributes/lampshade_size/edit')
              ->see('Edit Lampshade Size');
     }
-
 }

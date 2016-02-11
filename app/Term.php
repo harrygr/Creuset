@@ -42,21 +42,20 @@ class Term extends Model
     }
 
     /**
-     * Set a slug for a Term is it's not explicitly set
+     * Set a slug for a Term is it's not explicitly set.
      *
      * @param string $term
      */
     public function setTermAttribute($term)
     {
         $this->attributes['term'] = $term;
-        if (!$this->slug)
-        {
+        if (!$this->slug) {
             $this->attributes['slug'] = str_slug($term);
         }
     }
 
     /**
-     * If a term isn't set, get the unslugged version of the slug
+     * If a term isn't set, get the unslugged version of the slug.
      *
      * @param string $term
      *
@@ -72,7 +71,7 @@ class Term extends Model
     }
 
     /**
-     * Get a presentable version of the taxonomy
+     * Get a presentable version of the taxonomy.
      *
      * @return string
      */
