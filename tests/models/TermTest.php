@@ -11,18 +11,16 @@ class TermTest extends TestCase
     {
         $term = new Term([
             'taxonomy' => 'whatever',
-            'term' => 'A Good Thing',
+            'term'     => 'A Good Thing',
         ]);
 
         $term_2 = new Term([
             'taxonomy' => 'whatever',
-            'term' => 'A Big Thing',
-            'slug' => 'my-own-term',
+            'term'     => 'A Big Thing',
+            'slug'     => 'my-own-term',
         ]);
 
         $this->assertEquals('a-good-thing', $term->slug);
         $this->assertEquals('my-own-term', $term_2->slug);
-
     }
-
 }

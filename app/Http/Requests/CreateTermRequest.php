@@ -31,7 +31,7 @@ class CreateTermRequest extends Request
     }
 
     /**
-     * Override the all method to sanitize input first
+     * Override the all method to sanitize input first.
      * 
      * @return array
      */
@@ -43,7 +43,7 @@ class CreateTermRequest extends Request
     }
 
     /**
-     * Sanitize the input to ensure we have a slug and things are in snake case
+     * Sanitize the input to ensure we have a slug and things are in snake case.
      * 
      * @return void
      */
@@ -57,7 +57,7 @@ class CreateTermRequest extends Request
     }
 
     /**
-     * Customize the messages that are related to unique terms
+     * Customize the messages that are related to unique terms.
      *     
      * @return array
      */
@@ -66,6 +66,6 @@ class CreateTermRequest extends Request
         return [
             'term.unique'      => 'The term has already been taken.',
             'slug.unique'      => 'The term has already been taken.',
-            ];    
+            ];
     }
 }
