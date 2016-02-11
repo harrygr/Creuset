@@ -34,8 +34,13 @@
                         <strong>{{ Present::labelText($attribute) }}</strong>
                     </td>
                     <td>{{ $properties->implode('term', ', ') }}</td>
-                    <td>
+                    <td style="width:75px;">
+
                         <a href="{{ route('admin.attributes.edit', $attribute) }}"><i class="fa fa-pencil"></i></a>
+                        @include('partials._delete_link', [
+                        'url' => route('admin.attributes.delete', $attribute), 
+                        'link_text' => new Illuminate\Support\HtmlString('<i class="fa fa-fw fa-trash"></i>'),
+                        ])                        
                     </td>
                 </tr>
             @endforeach

@@ -125,6 +125,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'admin']], function (
     Route::get('attributes', ['uses' => 'Admin\AttributesController@index', 'as' => 'admin.attributes.index']);
     Route::get('attributes/create', ['uses' => 'Admin\AttributesController@create', 'as' => 'admin.attributes.create']);
     Route::get('attributes/{taxonomy}/edit', ['uses' => 'Admin\AttributesController@edit', 'as' => 'admin.attributes.edit']);
+    Route::delete('attributes/{taxonomy}', ['uses' => 'Admin\AttributesController@destroy', 'as' => 'admin.attributes.delete']);
 
     // Media
     Route::get('media', ['uses' => 'Admin\MediaController@index', 'as' => 'admin.media.index']);
