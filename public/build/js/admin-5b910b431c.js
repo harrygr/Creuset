@@ -31481,7 +31481,8 @@ global.vm = new Vue({
 		'cr-title-slugger': require('./components/cr-title-slugger.vue'),
 		'cr-category-chooser': require('./components/cr-category-chooser.vue'),
 		'cr-imageable-gallery': require('./components/cr-imageable-gallery.vue'),
-		'cr-image-chooser': require('./components/cr-image-chooser.vue')
+		'cr-image-chooser': require('./components/cr-image-chooser.vue'),
+		'cr-attribute-form': require('./components/cr-attribute-form.vue')
 	}
 });
 
@@ -31501,7 +31502,93 @@ $("#menu-toggle").click(function (e) {
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./components/cr-category-chooser.vue":17,"./components/cr-image-chooser.vue":18,"./components/cr-imageable-gallery.vue":19,"./components/cr-markarea.vue":20,"./components/cr-title-slugger.vue":21,"./plugins/larail.js":24,"bootstrap":1,"dropzone":2,"jquery":3,"select2":5,"vue":15,"vue-resource":8}],17:[function(require,module,exports){
+},{"./components/cr-attribute-form.vue":17,"./components/cr-category-chooser.vue":18,"./components/cr-image-chooser.vue":19,"./components/cr-imageable-gallery.vue":20,"./components/cr-markarea.vue":21,"./components/cr-title-slugger.vue":22,"./plugins/larail.js":25,"bootstrap":1,"dropzone":2,"jquery":3,"select2":5,"vue":15,"vue-resource":8}],17:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+    props: ['taxonomy'],
+
+    data: function data() {
+        return {
+            'currentTaxonomy': null,
+            'term': '',
+            'terms': [],
+            'errors': null,
+            'loading': false
+        };
+    },
+
+    ready: function ready() {
+        if ('taxonomy') {
+            this.fetchCurrentTerms();
+        }
+    },
+
+    'methods': {
+
+        setTaxonomy: function setTaxonomy() {
+            this.taxonomy = this.currentTaxonomy;
+            this.fetchCurrentTerms();
+        },
+
+        addTerm: function addTerm() {
+            var term = {
+                term: this.term,
+                taxonomy: this.taxonomy,
+                order: 1
+            };
+
+            this.loading = true;
+
+            this.$http.post('/api/terms', term).success(function (response) {
+                this.terms.push(response);
+                this.term = '';
+                this.loading = false;
+            }).error(function (response) {
+                this.errors = response;
+                this.loading = false;
+            });
+        },
+
+        removeTerm: function removeTerm(term) {
+            this.loading = true;
+
+            this.$http['delete']('/api/terms/' + term.id).success(function (response) {
+                console.log(response);
+                this.terms.$remove(term);
+                this.loading = false;
+            }).error(function (response) {
+                console.log(response);
+                this.loading = false;
+            });
+        },
+
+        fetchCurrentTerms: function fetchCurrentTerms() {
+            this.loading = true;
+
+            this.$http.get('/api/terms/' + this.taxonomy).success(function (terms) {
+                this.terms = terms;
+                this.loading = false;
+            }).error(function (response) {
+                console.log(response);
+                this.loading = false;
+            });
+        }
+    }
+};
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <div class=\"alert alert-danger\" v-if=\"errors\">\n        <p>There were some errors with your input:</p>\n        <ul>\n            <li v-for=\"error in errors\">{{ error }}</li>\n        </ul>\n    </div>\n\n    <div class=\"form-group\" v-if=\"!taxonomy\">\n        <label for=\"taxonomy\">Attribute Name</label>\n        <div class=\"input-group\">\n            <input class=\"form-control\" type=\"text\" name=\"taxonomy\" v-model=\"currentTaxonomy\" @keyup.enter=\"setTaxonomy\">\n            <div class=\"input-group-btn\">\n                <button class=\"btn btn-default\" type=\"button\" @click=\"setTaxonomy\">Create</button>\n            </div>\n        </div>\n    </div>\n\n    <h2 v-if=\"taxonomy\">{{ taxonomy }}</h2>\n\n    <div v-if=\"taxonomy\" class=\"row\">\n        <div class=\"col-md-6\">\n            <div class=\"form-group\">\n                <label for=\"term\">Add Property</label>\n                <div class=\"input-group\">\n                    <input class=\"form-control\" type=\"text\" v-model=\"term\" @keyup.enter=\"addTerm\">\n                    <div class=\"input-group-btn\">\n                        <button class=\"btn btn-default\" type=\"button\" @click=\"addTerm\" :disabled=\"loading\">Add Property</button>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"col-md-6\">\n            <ul class=\"list-group\">\n              <li v-for=\"term in terms | orderBy term.order\" class=\"list-group-item\">\n                  {{ term.term }} <span class=\"pull-right\"><button class=\"btn-link\" @click=\"removeTerm(term)\"><i class=\"fa fa-fw fa-trash\"></i></button></span>\n              </li>\n          </ul>\n      </div>\n  </div>\n\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "C:\\Users\\hgrumbar\\code\\Creuset\\resources\\assets\\js\\components\\cr-attribute-form.vue"
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":15,"vue-hot-reload-api":6}],18:[function(require,module,exports){
 'use strict';
 
 var $ = require('jquery');
@@ -31608,7 +31695,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"../filters/unsluggify.js":23,"jquery":3,"vue":15,"vue-hot-reload-api":6}],18:[function(require,module,exports){
+},{"../filters/unsluggify.js":24,"jquery":3,"vue":15,"vue-hot-reload-api":6}],19:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -31680,7 +31767,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":15,"vue-hot-reload-api":6}],19:[function(require,module,exports){
+},{"vue":15,"vue-hot-reload-api":6}],20:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -31785,7 +31872,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":15,"vue-hot-reload-api":6}],20:[function(require,module,exports){
+},{"vue":15,"vue-hot-reload-api":6}],21:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -31810,7 +31897,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"marked":4,"vue":15,"vue-hot-reload-api":6}],21:[function(require,module,exports){
+},{"marked":4,"vue":15,"vue-hot-reload-api":6}],22:[function(require,module,exports){
 'use strict';
 
 var sluggify = require('../filters/sluggify.js');
@@ -31851,21 +31938,21 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"../filters/sluggify.js":22,"vue":15,"vue-hot-reload-api":6}],22:[function(require,module,exports){
+},{"../filters/sluggify.js":23,"vue":15,"vue-hot-reload-api":6}],23:[function(require,module,exports){
 'use strict';
 
 module.exports = function (text) {
     return text.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
 };
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 module.exports = function (text) {
     return text.replace('-', ' ').replace('_', ' ');
 };
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 /**
  * larail.js
  *

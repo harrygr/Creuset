@@ -29,7 +29,7 @@ class Term extends Model
      *
      * @var array
      */
-    protected $fillable = ['taxonomy', 'term', 'slug'];
+    protected $fillable = ['taxonomy', 'term', 'slug', 'order'];
 
     public function posts()
     {
@@ -41,6 +41,27 @@ class Term extends Model
         return $this->morphedByMany('Creuset\Product', 'termable');
     }
 
+    /**
+     * Set a slug for a Term is it's not explicitly set
+     *
+     * @param string $term
+     */
+    public function setTermAttribute($term)
+    {
+        $this->attributes['term'] = $term;
+        if (!$this->slug)
+        {
+            $this->attributes['slug'] = str_slug($term);
+        }
+    }
+
+    /**
+     * If a term isn't set, get the unslugged version of the slug
+     *
+     * @param string $term
+     *
+     * @return string
+     */
     public function getTermAttribute($term)
     {
         if (!$term) {
@@ -50,6 +71,11 @@ class Term extends Model
         return $term;
     }
 
+    /**
+     * Get a presentable version of the taxonomy
+     *
+     * @return string
+     */
     public function getTaxonomy()
     {
         return ucwords(\Present::unslug($this->taxonomy));

@@ -14,15 +14,32 @@ class TermsControllerTest extends \TestCase
     /** @test **/
     public function it_saves_a_new_term_in_the_database()
     {
-        $this->withoutMiddleware();
+        $this->logInAsAdmin();
+
         $payload = [
             'term'     => 'pa laa',
             'taxonomy' => 'product_category',
         ];
 
-        $this->post('api/terms', $payload)->seeJson(['term' => 'pa laa']);
+        $this->json('POST', 'api/terms', $payload)->seeJson(['term' => 'pa laa']);
 
-        $this->seeInDataBase('terms', $payload);
+        $this->seeInDatabase('terms', $payload);
+    }
+
+    /** @test **/
+    public function it_sanitizes_taxonomies()
+    {
+        $this->logInAsAdmin();
+
+        $payload = [
+            'term'     => 'Very Tall',
+            'taxonomy' => 'Tree Height',
+        ];
+
+        $this->json('POST', 'api/terms', $payload)->seeJson(['term' => 'Very Tall']);
+
+        $this->seeInDataBase('terms', ['taxonomy' => 'tree_height', 'term' => 'Very Tall']);
+
     }
 
     /** @test **/
@@ -30,23 +47,40 @@ class TermsControllerTest extends \TestCase
     {
         $terms = factory(Term::class, 5)->create(['taxonomy' => 'product_category']);
 
-        $this->get(route('api.terms', 'product_category'))->seeJson(['term' => $terms[0]->term]);
+        $this->json('GET', route('api.terms', 'product_category'))->seeJson(['term' => $terms[0]->term]);
     }
 
-    /* @test **/
-    // public function it_does_not_allow_saving_duplicate_terms_of_a_certain_taxonomy()
-    // {
-    // 	$this->withoutMiddleware();
-    // 	$payload = [
-    // 		'term' => 'pa laa',
-    // 		'slug' => 'pa-laa',
-    // 		'taxonomy' => 'product_category'
-    // 	];
-    // 	$this->post('api/terms', $payload);
-    // 	$this->assertResponseOk();
+    /** @test **/
+    public function it_does_not_allow_saving_duplicate_terms_of_a_certain_taxonomy()
+    {
+    	$this->logInAsAdmin();
 
-    // 	$this->post('api/terms', $payload);
-    // 	var_dump($this->response->getContent());
-    // 	$this->assertResponseStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
-    // }
+    	$payload = [
+    		'term' => 'Humungous',
+    		'taxonomy' => 'Lampshade Size'
+    	];
+    	$this->json('POST', 'api/terms', $payload);
+    	$this->assertResponseOk();
+
+        // adjust the taxonomy to just send the snake case version
+        $payload = [
+            'term' => 'humungous',
+            'taxonomy' => 'lampshade_size'
+        ];
+
+    	$this->json('POST', 'api/terms', $payload);
+
+    	$this->seeJson(['The term has already been taken.']);
+    	$this->assertResponseStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+    
+    /** @test **/
+    public function it_deletes_a_term_from_storage()
+    {
+        $term = factory(Term::class)->create();
+
+        $this->json('DELETE', "api/terms/{$term->id}");
+
+        $this->notSeeInDataBase('terms', ['taxonomy' => $term->taxonomy, 'term' => $term->term]);
+    }
 }
