@@ -21,9 +21,9 @@ class TermsController extends Controller
     }
 
     /**
-     * Get all terms for a given taxonomy
+     * Get all terms for a given taxonomy.
      * 
-     * @param  string $taxonomy
+     * @param string $taxonomy
      * 
      * @return \Illuminate\Http\Response
      */
@@ -54,10 +54,11 @@ class TermsController extends Controller
     public function storeCategory(CreateTermRequest $request)
     {
         $attributes = [
-            'term'  => $request->get('term'),
+            'term'     => $request->get('term'),
             'taxonomy' => 'category',
-            'slug' => $request->get('slug'),
+            'slug'     => $request->get('slug'),
         ];
+
         return Term::create($attributes);
     }
 
