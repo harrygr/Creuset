@@ -148,5 +148,4 @@ class TermsTest extends \TestCase
         $this->assertRedirectedTo('admin/attributes');
         $this->notSeeInDatabase('terms', ['taxonomy' => 'lampshade_size']);
     }
-
 }

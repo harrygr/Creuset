@@ -39,7 +39,6 @@ class TermsControllerTest extends \TestCase
         $this->json('POST', 'api/terms', $payload)->seeJson(['term' => 'Very Tall']);
 
         $this->seeInDataBase('terms', ['taxonomy' => 'tree_height', 'term' => 'Very Tall']);
-
     }
 
     /** @test **/
@@ -53,27 +52,27 @@ class TermsControllerTest extends \TestCase
     /** @test **/
     public function it_does_not_allow_saving_duplicate_terms_of_a_certain_taxonomy()
     {
-    	$this->logInAsAdmin();
+        $this->logInAsAdmin();
 
-    	$payload = [
-    		'term' => 'Humungous',
-    		'taxonomy' => 'Lampshade Size'
-    	];
-    	$this->json('POST', 'api/terms', $payload);
-    	$this->assertResponseOk();
+        $payload = [
+            'term'     => 'Humungous',
+            'taxonomy' => 'Lampshade Size',
+        ];
+        $this->json('POST', 'api/terms', $payload);
+        $this->assertResponseOk();
 
         // adjust the taxonomy to just send the snake case version
         $payload = [
-            'term' => 'humungous',
-            'taxonomy' => 'lampshade_size'
+            'term'     => 'humungous',
+            'taxonomy' => 'lampshade_size',
         ];
 
-    	$this->json('POST', 'api/terms', $payload);
+        $this->json('POST', 'api/terms', $payload);
 
-    	$this->seeJson(['The term has already been taken.']);
-    	$this->assertResponseStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $this->seeJson(['The term has already been taken.']);
+        $this->assertResponseStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
-    
+
     /** @test **/
     public function it_deletes_a_term_from_storage()
     {
