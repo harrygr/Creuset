@@ -2,10 +2,23 @@
 
 namespace Creuset;
 
+use Creuset\Scopes\OrderScope;
 use Illuminate\Database\Eloquent\Model;
 
 class Term extends Model
 {
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new OrderScope);
+    }
+
     /**
      * The database table used by the model.
      *

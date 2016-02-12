@@ -126,12 +126,27 @@ class TermsTest extends \TestCase
     {
         $this->logInAsAdmin();
 
-        $attributes_1 = factory('Creuset\Term', 3)->create([
+        $attributes = factory('Creuset\Term', 3)->create([
             'taxonomy' => 'lampshade_size',
             ]);
 
         $this->visit('admin/attributes/lampshade_size/edit')
-             ->see('Edit Lampshade Size');
+             ->see('Edit Attribute');
+    }
+
+    /** @test **/
+    public function it_deletes_all_terms_for_a_given_attribute()
+    {
+        $this->logInAsAdmin();
+
+        $attributes = factory('Creuset\Term', 3)->create([
+            'taxonomy' => 'lampshade_size',
+            ]);
+
+        $this->call('DELETE', 'admin/attributes/lampshade_size');
+
+        $this->assertRedirectedTo('admin/attributes');
+        $this->notSeeInDatabase('terms', ['taxonomy' => 'lampshade_size']);
     }
 
 }

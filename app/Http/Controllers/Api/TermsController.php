@@ -20,9 +20,15 @@ class TermsController extends Controller
     {
         $this->terms = $terms;
         $this->middleware('admin', ['only' => ['store', 'storeCategory', 'storeMany']]);
-        //$this->middleware('term.sanitize', ['only' => 'store']);
     }
 
+    /**
+     * Get all terms for a given taxonomy
+     * 
+     * @param  string $taxonomy
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function terms($taxonomy)
     {
         $taxonomy = snake_case($taxonomy);
@@ -48,7 +54,12 @@ class TermsController extends Controller
      */
     public function storeCategory(CreateTermRequest $request)
     {
-        return $this->terms->createCategory($request->get('term'));
+        $attributes = [
+            'term'  => $request->get('term'),
+            'taxonomy' => 'category',
+            'slug' => $request->get('slug'),
+        ];
+        return Term::create($attributes);
     }
 
     /**
@@ -60,7 +71,7 @@ class TermsController extends Controller
      */
     public function store(CreateTermRequest $request)
     {
-        return $this->terms->create($request->all());
+        return Term::create($request->all());
     }
 
     /**

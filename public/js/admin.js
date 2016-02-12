@@ -31535,7 +31535,7 @@ module.exports = {
             var term = {
                 term: this.term,
                 taxonomy: this.taxonomy,
-                order: 1
+                order: this.terms.length + 2
             };
 
             this.loading = true;
@@ -31569,6 +31569,8 @@ module.exports = {
             this.$http.get('/api/terms/' + this.taxonomy).success(function (terms) {
                 this.terms = terms;
                 this.loading = false;
+
+                this.reindexItems();
             }).error(function (response) {
                 console.log(response);
                 this.loading = false;
@@ -31590,10 +31592,51 @@ module.exports = {
             setTimeout((function () {
                 this.errors = null;
             }).bind(this), errorDisplayTime);
+        },
+
+        reindexItems: function reindexItems() {
+
+            this.terms = this.$options.filters.orderBy(this.terms, 'order');
+
+            for (var ind = 0; ind < this.terms.length; ind++) {
+                this.terms[ind].order = ind;
+            }
+        },
+
+        promote: function promote(index) {
+
+            this.reindexItems();
+
+            if (index !== 0) {
+                var newOrder = this.terms[index - 1].order;
+
+                this.terms[index - 1].order = this.terms[index].order;
+                this.terms[index].order = newOrder;
+            }
+
+            this.updateTerms();
+        },
+
+        demote: function demote(index) {
+
+            this.reindexItems();
+
+            if (index + 1 !== this.terms.length) {
+                var newOrder = this.terms[index + 1].order;
+
+                this.terms[index + 1].order = this.terms[index].order;
+                this.terms[index].order = newOrder;
+            }
+
+            this.updateTerms();
+        },
+
+        updateTerms: function updateTerms() {
+            //ajax to update orders of terms
         }
     }
 };
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    \n    <!-- Errors -->\n    <div class=\"alert alert-danger\" v-if=\"errors\">\n        <p>There were some errors with your input:</p>\n        <ul>\n            <li v-for=\"error in errors\">{{ error }}</li>\n        </ul>\n    </div>\n\n    <!-- Taxonomy Input -->\n    <div class=\"form-group\" v-if=\"!taxonomy\">\n        <label for=\"taxonomy\">Attribute Name</label>\n        <div class=\"input-group\">\n            <input class=\"form-control\" type=\"text\" name=\"taxonomy\" v-model=\"currentTaxonomy\" @keyup.enter=\"setTaxonomy\">\n            <div class=\"input-group-btn\">\n                <button class=\"btn btn-default\" type=\"button\" @click=\"setTaxonomy\">Create</button>\n            </div>\n        </div>\n    </div>\n\n    <!-- Taxonomy Display -->\n    <h2 v-if=\"taxonomy\">{{ taxonomy }} <button class=\"btn btn-link\" v-if=\"!terms.length\" @click=\"switchTaxonomy\"><i class=\"fa fa-pencil\"></i></button></h2>\n\n    <!-- Attribute Entry -->\n    <div v-if=\"taxonomy\" class=\"row\">\n        <div class=\"col-md-6\">\n            <div class=\"form-group\">\n                <label for=\"term\">Add Property</label>\n                <div class=\"input-group\">\n                    <input class=\"form-control\" type=\"text\" v-model=\"term\" @keyup.enter=\"addTerm\">\n                    <div class=\"input-group-btn\">\n                        <button class=\"btn btn-default\" type=\"button\" @click=\"addTerm\" :disabled=\"loading\">Add Property</button>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"col-md-6\">\n            <ul class=\"list-group\">\n              <li v-for=\"term in terms | orderBy term.order\" class=\"list-group-item\">\n                  {{ term.term }} <span class=\"pull-right\"><button class=\"btn-link\" @click=\"removeTerm(term)\"><i class=\"fa fa-fw fa-trash\"></i></button></span>\n              </li>\n          </ul>\n      </div>\n  </div>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <!-- Errors -->\n    <div class=\"alert alert-danger\" v-if=\"errors\">\n        <p>There were some errors with your input:</p>\n        <ul>\n            <li v-for=\"error in errors\">{{ error }}</li>\n        </ul>\n    </div>\n\n    <!-- Taxonomy Input -->\n    <div class=\"form-group\" v-if=\"!taxonomy\">\n        <label for=\"taxonomy\">Attribute Name</label>\n        <div class=\"input-group\">\n            <input class=\"form-control\" type=\"text\" name=\"taxonomy\" v-model=\"currentTaxonomy\" @keyup.enter=\"setTaxonomy\">\n            <div class=\"input-group-btn\">\n                <button class=\"btn btn-default\" type=\"button\" @click=\"setTaxonomy\">Create</button>\n            </div>\n        </div>\n    </div>\n\n    <!-- Taxonomy Display -->\n    <h2 v-if=\"taxonomy\">{{ taxonomy }} <button class=\"btn btn-link\" v-if=\"!terms.length\" @click=\"switchTaxonomy\"><i class=\"fa fa-pencil\"></i></button></h2>\n\n    <!-- Attributes -->\n    <div v-if=\"taxonomy\" class=\"row\">\n    \n        <!-- Attribute Entry -->\n        <div class=\"col-md-6\">\n            <div class=\"form-group\">\n                <label for=\"term\">Add Property</label>\n                <div class=\"input-group\">\n                    <input class=\"form-control\" type=\"text\" v-model=\"term\" @keyup.enter=\"addTerm\">\n                    <div class=\"input-group-btn\">\n                        <button class=\"btn btn-default\" type=\"button\" @click=\"addTerm\" :disabled=\"loading\">Add Property</button>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n        <!-- Attribute Display -->\n        <div class=\"col-md-6\">\n            <ul class=\"list-group\">\n              <li v-for=\"term in terms | orderBy 'order'\" class=\"list-group-item\">\n                {{ term.term }} \n                <span class=\"pull-right\">\n                    <input type=\"number\" v-model=\"term.order\" class=\"\">\n                    <button class=\"btn-link\" @click=\"promote($index)\" :disabled=\"$index === 0\"><i class=\"fa fa-fw fa-arrow-up\"></i></button>\n                    <button class=\"btn-link\" @click=\"demote($index)\" :disabled=\"$index === (terms.length - 1)\"><i class=\"fa fa-fw fa-arrow-down\"></i></button>\n                    <button class=\"btn-link\" @click=\"removeTerm(term)\"><i class=\"fa fa-fw fa-trash\"></i></button>\n                </span>\n              </li>\n          </ul>\n      </div>\n  </div>\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

@@ -53,7 +53,7 @@ class CreateTermRequest extends Request
 
         $slug = $this->input('slug', str_slug($this->input('term')));
 
-        $this->replace(['taxonomy' => $taxonomy, 'slug' => $slug, 'term' => $this->input('term')]);
+        $this->merge(['taxonomy' => $taxonomy, 'slug' => $slug]);
     }
 
     /**

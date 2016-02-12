@@ -1,5 +1,5 @@
 <template>
-    
+
     <!-- Errors -->
     <div class="alert alert-danger" v-if="errors">
         <p>There were some errors with your input:</p>
@@ -22,8 +22,10 @@
     <!-- Taxonomy Display -->
     <h2 v-if="taxonomy">{{ taxonomy }} <button class="btn btn-link" v-if="!terms.length" @click="switchTaxonomy"><i class="fa fa-pencil"></i></button></h2>
 
-    <!-- Attribute Entry -->
+    <!-- Attributes -->
     <div  v-if="taxonomy" class="row">
+    
+        <!-- Attribute Entry -->
         <div class="col-md-6">
             <div class="form-group">
                 <label for="term">Add Property</label>
@@ -35,10 +37,18 @@
                 </div>
             </div>
         </div>
+
+        <!-- Attribute Display -->
         <div class="col-md-6">
             <ul class="list-group">
-              <li v-for="term in terms | orderBy term.order"class="list-group-item">
-                  {{ term.term }} <span class="pull-right"><button class="btn-link" @click="removeTerm(term)"><i class="fa fa-fw fa-trash"></i></button></span>
+              <li v-for="term in terms | orderBy 'order'"class="list-group-item">
+                {{ term.term }} 
+                <span class="pull-right">
+                    <input type="number" v-model="term.order" class="">
+                    <button class="btn-link" @click="promote($index)" :disabled="$index === 0"><i class="fa fa-fw fa-arrow-up"></i></button>
+                    <button class="btn-link" @click="demote($index)" :disabled="$index === (terms.length - 1)"><i class="fa fa-fw fa-arrow-down"></i></button>
+                    <button class="btn-link" @click="removeTerm(term)"><i class="fa fa-fw fa-trash"></i></button>
+                </span>
               </li>
           </ul>
       </div>
@@ -82,7 +92,7 @@
                 var term = {
                     term: this.term,
                     taxonomy: this.taxonomy,
-                    order: 1,
+                    order: this.terms.length + 2,
                 };
 
                 this.loading = true;
@@ -124,6 +134,8 @@
                 .success(function (terms) {
                     this.terms = terms;
                     this.loading = false;
+
+                    this.reindexItems();
                 }).error(function (response) {
                     console.log(response);
                     this.loading = false;
@@ -148,8 +160,49 @@
                 {
                     this.errors = null;
                 }.bind(this), errorDisplayTime);
+            },
+
+            reindexItems: function() {
+
+                this.terms = this.$options.filters.orderBy(this.terms, 'order');
+
+                for (var ind = 0; ind < this.terms.length; ind++) {
+                    this.terms[ind].order = ind;         
+                }
+            },
+
+            promote: function(index) {
+
+                this.reindexItems();
+
+                if (index !== 0) {
+                    var newOrder = this.terms[index - 1].order;
+
+                    this.terms[index - 1].order = this.terms[index].order;
+                    this.terms[index].order = newOrder;
+                }
+
+                this.updateTerms();
+            },
+
+            demote: function(index) {
+
+                this.reindexItems();
+
+                if ((index + 1) !== this.terms.length) {
+                    var newOrder = this.terms[index + 1].order;
+
+                    this.terms[index + 1].order = this.terms[index].order;
+                    this.terms[index].order = newOrder;
+                }
+
+                this.updateTerms();
+            },
+
+            updateTerms: function() {
+                //ajax to update orders of terms
             }
         }
     }
 
-    </script>
+</script>
