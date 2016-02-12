@@ -2,21 +2,20 @@
 
 namespace Creuset\Scopes;
 
-use Illuminate\Database\Eloquent\Scope;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Scope;
 
 /**
- * A scope to automatically sort terms by their specified order, deferring to alphabetical if the order value is equal
+ * A scope to automatically sort terms by their specified order, deferring to alphabetical if the order value is equal.
  */
 class OrderScope implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $builder
-     * 
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param \Illuminate\Database\Eloquent\Model   $model
      * 
      * @return void
      */
