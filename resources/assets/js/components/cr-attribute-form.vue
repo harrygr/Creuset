@@ -24,7 +24,7 @@
 
     <!-- Attributes -->
     <div  v-if="taxonomy" class="row">
-    
+
         <!-- Attribute Entry -->
         <div class="col-md-6">
             <div class="form-group">
@@ -42,9 +42,8 @@
         <div class="col-md-6">
             <ul class="list-group">
               <li v-for="term in terms | orderBy 'order'"class="list-group-item">
-                {{ term.term }} 
+                {{ term.term }} <span class='text-muted'>({{ term.order}})</span>
                 <span class="pull-right">
-                    <input type="number" v-model="term.order" class="">
                     <button class="btn-link" @click="promote($index)" :disabled="$index === 0"><i class="fa fa-fw fa-arrow-up"></i></button>
                     <button class="btn-link" @click="demote($index)" :disabled="$index === (terms.length - 1)"><i class="fa fa-fw fa-arrow-down"></i></button>
                     <button class="btn-link" @click="removeTerm(term)"><i class="fa fa-fw fa-trash"></i></button>
@@ -61,7 +60,7 @@
     module.exports = {
         props: ['taxonomy'],
 
-        data: function () 
+        data: function ()
         {
             return {
                 'currentTaxonomy': null,
@@ -72,11 +71,11 @@
             };
         },
 
-        ready: function () 
+        ready: function ()
         {
-            if ('taxonomy') {
+            if (this.taxonomy) {
                 this.fetchCurrentTerms();
-            }  
+            }
         },
 
         'methods': {
@@ -88,23 +87,23 @@
             },
 
             addTerm: function ()
-            {                
+            {
                 var term = {
                     term: this.term,
                     taxonomy: this.taxonomy,
-                    order: this.terms.length + 2,
+                    order: this.terms.length + 1,
                 };
 
                 this.loading = true;
 
                 this.$http.post('/api/terms', term)
-                .success(function (response) {
-                    this.terms.push(response);                        
+                .then(function (response) {
+                    this.terms.push(response.data);
                     this.term = '';
                     this.loading = false;
                 })
-                .error(function (response) {
-                    this.displayErrors(response);
+                .catch(function (response) {
+                    this.displayErrors(response.data);
                     this.loading = false;
                 });
 
@@ -115,13 +114,12 @@
                 this.loading = true;
 
                 this.$http.delete('/api/terms/' + term.id)
-                .success(function (response) {
-                    console.log(response);
+                .then(function (response) {
                     this.terms.$remove(term);
                     this.loading = false;
                 })
-                .error(function (response) {
-                    console.log(response);
+                .catch(function (response) {
+                    console.log(response.data);
                     this.loading = false;
                 });
             },
@@ -131,13 +129,13 @@
                 this.loading = true;
 
                 this.$http.get('/api/terms/' + this.taxonomy)
-                .success(function (terms) {
-                    this.terms = terms;
+                .then(function (response) {
+                    this.terms = response.data;
                     this.loading = false;
 
                     this.reindexItems();
-                }).error(function (response) {
-                    console.log(response);
+                }).catch(function (response) {
+                    console.log(response.data);
                     this.loading = false;
                 });
             },
@@ -167,7 +165,7 @@
                 this.terms = this.$options.filters.orderBy(this.terms, 'order');
 
                 for (var ind = 0; ind < this.terms.length; ind++) {
-                    this.terms[ind].order = ind;         
+                    this.terms[ind].order = ind;
                 }
             },
 
@@ -179,10 +177,12 @@
                     var newOrder = this.terms[index - 1].order;
 
                     this.terms[index - 1].order = this.terms[index].order;
+                    this.updateTerm(this.terms[index - 1]);
+
                     this.terms[index].order = newOrder;
+                    this.updateTerm(this.terms[index]);
                 }
 
-                this.updateTerms();
             },
 
             demote: function(index) {
@@ -193,14 +193,19 @@
                     var newOrder = this.terms[index + 1].order;
 
                     this.terms[index + 1].order = this.terms[index].order;
+                    this.updateTerm(this.terms[index + 1]);
+
                     this.terms[index].order = newOrder;
+                    this.updateTerm(this.terms[index]);
+
                 }
 
-                this.updateTerms();
             },
 
-            updateTerms: function() {
-                //ajax to update orders of terms
+            updateTerm: function(term) {
+                this.$http.patch('/api/terms/' + term.id, term)
+                          .then(function(response){})
+                          .catch(function(response){});
             }
         }
     }

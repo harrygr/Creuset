@@ -43,11 +43,3 @@ jQuery(function(){
         tags: true
     });
 });
-
-
- 
-$("#menu-toggle").click(function(e) {
-    e.preventDefault();
-    $("#admin-content").toggleClass("toggled");
-    $("#wrapper").toggleClass("toggled");
-});

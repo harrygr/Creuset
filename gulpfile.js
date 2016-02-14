@@ -1,5 +1,7 @@
 var elixir = require('laravel-elixir');
 
+require('laravel-elixir-vueify');
+
 var jsPath = 'resources/assets/js/vendor/';
 var lessPath = 'resources/assets/less/vendor/';
 var cssAdminPath = 'resources/assets/css/admin/';

@@ -153,6 +153,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'api'], function () {
     Route::get('terms/{taxonomy}', ['uses' => 'Api\TermsController@terms', 'as' => 'api.terms']);
     Route::post('terms', ['uses' => 'Api\TermsController@store', 'as' => 'api.terms.store']);
     Route::delete('terms/{term}', ['uses' => 'Api\TermsController@destroy', 'as' => 'api.terms.delete']);
+    Route::patch('terms/{term}', ['uses' => 'Api\TermsController@update', 'as' => 'api.terms.update']);
 
     Route::get('categories', ['uses' => 'Api\TermsController@categories', 'as' => 'api.categories']);
     Route::post('categories', ['uses' => 'Api\TermsController@storeCategory', 'as' => 'api.categories']);

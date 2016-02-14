@@ -80,6 +80,17 @@ class TermsControllerTest extends \TestCase
 
         $this->json('DELETE', "api/terms/{$term->id}");
 
-        $this->notSeeInDataBase('terms', ['taxonomy' => $term->taxonomy, 'term' => $term->term]);
+        $this->notSeeInDatabase('terms', ['taxonomy' => $term->taxonomy, 'term' => $term->term]);
+    }
+
+    /** @test */
+    public function it_updates_a_term()
+    {
+        $term = factory(Term::class)->create();
+
+        $this->json('PATCH', "api/terms/{$term->id}", ['order' => 11]);
+
+        $this->seeInDatabase('terms', ['taxonomy' => $term->taxonomy, 'term' => $term->term, 'order' => 11]);
+
     }
 }

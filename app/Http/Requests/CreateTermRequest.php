@@ -27,12 +27,13 @@ class CreateTermRequest extends Request
         return [
             'term'    => 'required|unique:terms,term,NULL,id,taxonomy,'.$taxonomy, // term is only unique for a given taxonomy
             'slug'    => 'required|unique:terms,slug,NULL,id,taxonomy,'.$taxonomy,
+            'order'   => 'integer',
         ];
     }
 
     /**
      * Override the all method to sanitize input first.
-     * 
+     *
      * @return array
      */
     public function all()
@@ -44,7 +45,7 @@ class CreateTermRequest extends Request
 
     /**
      * Sanitize the input to ensure we have a slug and things are in snake case.
-     * 
+     *
      * @return void
      */
     public function sanitize()
@@ -58,7 +59,7 @@ class CreateTermRequest extends Request
 
     /**
      * Customize the messages that are related to unique terms.
-     *     
+     *
      * @return array
      */
     public function messages()
