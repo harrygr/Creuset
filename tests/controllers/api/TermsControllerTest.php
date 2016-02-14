@@ -91,6 +91,5 @@ class TermsControllerTest extends \TestCase
         $this->json('PATCH', "api/terms/{$term->id}", ['order' => 11]);
 
         $this->seeInDatabase('terms', ['taxonomy' => $term->taxonomy, 'term' => $term->term, 'order' => 11]);
-
     }
 }
