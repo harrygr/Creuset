@@ -5,6 +5,15 @@ php:
   - 5.6
   - hhvm
 
+cache:
+  - composer
+
+addons:
+  artifacts: true
+  s3_region: "eu-west-1"
+   paths:
+    - $(ls storage/logs/*.log | tr "\n" ":")
+
 before_script:
   - composer self-update
   - composer update --dev --prefer-source --no-interaction

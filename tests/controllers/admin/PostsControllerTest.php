@@ -17,7 +17,8 @@ class PostsControllerTest extends \TestCase
         $this->user = $this->logInAsAdmin();
     }
 
-    public function testICanCreateAPost()
+    /** @test **/
+    public function it_can_create_a_post()
     {
         // I go to the create posts page
         $postTitle = 'Awesome Post Title';
@@ -42,7 +43,8 @@ class PostsControllerTest extends \TestCase
             ]);
     }
 
-    public function testICanEditAPost()
+    /** @test **/
+    public function it_can_edit_a_post()
     {
 
         // And a post exists in the database
