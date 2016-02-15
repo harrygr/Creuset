@@ -10,8 +10,8 @@ cache:
 
 addons:
   artifacts: true
-  s3_region: "eu-west-1"
-   paths:
+  s3_region: eu-west-1
+  paths:
     - $(ls storage/logs/*.log | tr "\n" ":")
 
 before_script:
