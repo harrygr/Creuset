@@ -5,7 +5,7 @@ namespace Creuset\Http\Controllers\Admin;
 use Carbon\Carbon;
 use Creuset\Media;
 use Faker\Factory;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Illuminate\Http\UploadedFile;
 
 class PostsControllerTest extends \TestCase
 {
