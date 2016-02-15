@@ -19,9 +19,9 @@ class Term extends Model
         static::addGlobalScope(new OrderScope());
 
         /**
-         * Set a slug on the term if it's not passed in
+         * Set a slug on the term if it's not passed in.
          */
-        static::creating(function($term) {
+        static::creating(function ($term) {
             if (!$term->slug) {
                 $term->slug = str_slug($term->term);
             }
