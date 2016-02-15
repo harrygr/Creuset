@@ -4,9 +4,9 @@ namespace Creuset\Http\Controllers\Api;
 
 use Creuset\Http\Controllers\Controller;
 use Creuset\Http\Requests\CreateTermRequest;
+use Creuset\Http\Requests\Term\UpdateTermRequest;
 use Creuset\Repositories\Term\TermRepository;
 use Creuset\Term;
-use Illuminate\Http\Request;
 
 class TermsController extends Controller
 {
@@ -92,14 +92,13 @@ class TermsController extends Controller
     /**
      * Update a term in storage.
      *
-     * @param Term    $term
-     * @param Request $request
+     * @param \Creuset\Term    $term
+     * @param \Creuset\Http\Requests\Term\UpdateTermRequest $request
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Term $term, Request $request)
+    public function update(Term $term, UpdateTermRequest $request)
     {
-        // TODO: Validate request
         $term->update($request->all());
 
         return $term;
