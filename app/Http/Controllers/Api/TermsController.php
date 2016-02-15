@@ -92,7 +92,7 @@ class TermsController extends Controller
     /**
      * Update a term in storage.
      *
-     * @param \Creuset\Term    $term
+     * @param \Creuset\Term                                 $term
      * @param \Creuset\Http\Requests\Term\UpdateTermRequest $request
      *
      * @return \Illuminate\Http\Response
