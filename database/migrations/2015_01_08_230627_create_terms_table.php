@@ -17,6 +17,7 @@ class CreateTermsTable extends Migration
             $table->string('taxonomy')->default('category');
             $table->string('term');
             $table->string('slug')->index();
+            $table->integer('order')->default(0);
             $table->timestamps();
 
             $table->unique(['taxonomy', 'term']);

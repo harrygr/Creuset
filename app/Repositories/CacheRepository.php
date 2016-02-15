@@ -36,7 +36,7 @@ abstract class CacheRepository
     }
 
     /**
-     * @param array $with
+     * @param array $with Any relations to eager load
      *
      * @return mixed
      */
@@ -53,7 +53,7 @@ abstract class CacheRepository
     /**
      * Get all instances of the model.
      * 
-     * @param array $with
+     * @param array $with Any relations to eager load
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */

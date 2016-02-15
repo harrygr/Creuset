@@ -14,9 +14,9 @@ class TermsTest extends \TestCase
         $tag = factory(Term::class)->create(['taxonomy' => 'tag']);
 
         $this->visit('/admin/terms/categories')
-             ->see('Categories')
-             ->see($category->term)
-             ->dontSee($tag->term);
+        ->see('Categories')
+        ->see($category->term)
+        ->dontSee($tag->term);
     }
 
     /** @test **/
@@ -62,9 +62,9 @@ class TermsTest extends \TestCase
           ]);
 
         $this->visit("admin/terms/{$category->id}/edit")
-             ->type('Nice Cat', 'term')
-             ->press('submit')
-             ->see('Category updated');
+        ->type('Nice Cat', 'term')
+        ->press('submit')
+        ->see('Category updated');
 
         $this->seeInDatabase('terms', ['taxonomy' => 'category', 'term'     => 'Nice Cat']);
     }
@@ -85,10 +85,67 @@ class TermsTest extends \TestCase
           ]);
 
         $this->visit("admin/terms/{$category_1->id}/edit")
-             ->type($category_2->term, 'term')
-             ->press('submit')
-             ->see('already been taken');
+        ->type($category_2->term, 'term')
+        ->press('submit')
+        ->see('already been taken');
 
         $this->dontSeeInDatabase('terms', ['id' => $category_1, 'taxonomy' => 'category', 'term' => 'Nice Cat']);
+    }
+
+    /** CUSTOM ATTRIBUTES **/
+
+    /** @test **/
+    public function it_can_view_a_list_of_custom_attributes()
+    {
+        $attributes_1 = factory('Creuset\Term', 3)->create([
+            'taxonomy' => 'lampshade_size',
+            ]);
+
+        $attributes_2 = factory('Creuset\Term', 2)->create([
+            'taxonomy' => 'lampshade_colour',
+            ]);
+
+        $this->logInAsAdmin();
+
+        $this->visit('admin/attributes')
+             ->see('Lampshade Size')
+             ->see('Lampshade Colour');
+    }
+
+    /** @test **/
+    public function it_shows_the_page_for_creating_an_attribute()
+    {
+        $this->logInAsAdmin();
+
+        $this->visit('admin/attributes/create')
+             ->see('New Attribute');
+    }
+
+    /** @test **/
+    public function it_shows_the_page_for_editing_an_attribute()
+    {
+        $this->logInAsAdmin();
+
+        $attributes = factory('Creuset\Term', 3)->create([
+            'taxonomy' => 'lampshade_size',
+            ]);
+
+        $this->visit('admin/attributes/lampshade_size/edit')
+             ->see('Edit Attribute');
+    }
+
+    /** @test **/
+    public function it_deletes_all_terms_for_a_given_attribute()
+    {
+        $this->logInAsAdmin();
+
+        $attributes = factory('Creuset\Term', 3)->create([
+            'taxonomy' => 'lampshade_size',
+            ]);
+
+        $this->call('DELETE', 'admin/attributes/lampshade_size');
+
+        $this->assertRedirectedTo('admin/attributes');
+        $this->notSeeInDatabase('terms', ['taxonomy' => 'lampshade_size']);
     }
 }

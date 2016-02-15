@@ -26,8 +26,9 @@ class UpdateTermRequest extends Request
         $term = $this->route('term');
 
         return [
-            'term'    => 'required|unique:terms,term,'.$term->id.',id,taxonomy,'.$term->taxonomy, // term is only unique for a given taxonomy
-            'slug'    => 'required|unique:terms,slug,'.$term->id.',id,taxonomy,'.$term->taxonomy,
+            'term'    => 'unique:terms,term,'.$term->id.',id,taxonomy,'.$term->taxonomy, // term is only unique for a given taxonomy
+            'slug'    => 'unique:terms,slug,'.$term->id.',id,taxonomy,'.$term->taxonomy,
+            'order'   => 'numeric',
         ];
     }
 }

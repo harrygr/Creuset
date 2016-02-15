@@ -22,7 +22,9 @@ class DbTermRepository implements TermRepository
     }
 
     /**
-     * @param Termable $related_model
+     * Get a list of categories for use, say, in a checklist or multi-select.
+     * 
+     * @param Termable $related_model If provided, categories attached to the model will be ordered at the top of the list
      *
      * @return array
      */
@@ -108,10 +110,6 @@ class DbTermRepository implements TermRepository
      */
     public function create($attributes)
     {
-        if (!isset($attributes['slug']) or !$attributes['slug']) {
-            $attributes['slug'] = str_slug($attributes['term']);
-        }
-
         return Term::create($attributes);
     }
 
