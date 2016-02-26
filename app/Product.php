@@ -63,13 +63,35 @@ class Product extends Model implements HasMediaConversions, Termable
     protected $presenter = 'Creuset\Presenters\ProductPresenter';
 
     /**
-     * A products belongs to many terms.
+     * Get all the terms for a product
+     * Restrict only to normal taxonomies. 
      * 
      * @return \Illuminate\Database\Eloquent\Relations\Relation
      */
     public function terms()
     {
         return $this->morphToMany(Term::class, 'termable');
+    }
+
+    /**
+     * Get all the attributes for a product
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\Relation
+     */
+    public function attributes()
+    {
+        return $this->morphToMany(Term::class, 'termable')->whereNotIn('taxonomy', array_keys(Term::$taxonomies));
+    }
+
+    /**
+     * Add an attribute to a product
+     * 
+     * @param Term $attribute
+     */
+    public function addAttribute(Term $attribute)
+    {
+        $this->attributes()->save($attribute);
+        return $this;
     }
 
     /**
@@ -81,6 +103,49 @@ class Product extends Model implements HasMediaConversions, Termable
     {
         return $this->morphToMany(Term::class, 'termable')
         ->where('taxonomy', 'product_category');
+    }
+
+
+    /**
+     * Ensure an uncategorised term exists and assign it to the product,
+     * removing it from all other categories.
+     * 
+     * @return Product
+     */
+    public function makeUncategorised()
+    {
+        $term = Term::firstOrCreate([
+              'taxonomy' => 'product_category',
+              'slug'     => 'uncategorised',
+              'term'     => 'Uncategorised',
+              ]);
+
+        return $this->syncTerms([$term->id]);
+    }
+
+    /**
+     * Sync terms to a product.
+     * 
+     * @param \Illuminate\Database\Eloquent\Collection|array $terms
+     * 
+     * @return Product
+     */
+    public function syncTerms($terms = [])
+    {
+        if (!count($terms)) {
+            return $this->makeUncategorised();
+        }
+
+        $currentTerms = $this->product_categories->pluck('id')->toArray();
+        $this->terms()->detach($currentTerms);
+
+        if ($terms instanceof \Illuminate\Database\Eloquent\Collection) {
+            $terms = $terms->pluck('id')->toArray();
+        }
+
+        $this->terms()->attach($terms);
+
+        return $this;
     }
 
     /**
@@ -211,40 +276,6 @@ class Product extends Model implements HasMediaConversions, Termable
         return $this->product_categories->first();
     }
 
-    /**
-     * Ensure an uncategorised term exists and assign it to the product,
-     * removing it from all other categories.
-     * 
-     * @return Product
-     */
-    public function makeUncategorised()
-    {
-        $term = Term::firstOrCreate([
-              'taxonomy' => 'product_category',
-              'slug'     => 'uncategorised',
-              'term'     => 'Uncategorised',
-              ]);
-
-        return $this->syncTerms([$term->id]);
-    }
-
-    /**
-     * Sync terms to a product.
-     * 
-     * @param \Illuminate\Database\Eloquent\Collection|array $terms
-     * 
-     * @return Product
-     */
-    public function syncTerms($terms = [])
-    {
-        if (!count($terms)) {
-            return $this->makeUncategorised();
-        }
-
-        $this->terms()->sync($terms);
-
-        return $this;
-    }
 
     /**
      * Get the price of the product.
