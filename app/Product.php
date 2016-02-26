@@ -74,7 +74,7 @@ class Product extends Model implements HasMediaConversions, Termable
     }
 
     /**
-     * Get all the attributes for a product
+     * Get all the attributes for a product.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\Relation
      */
@@ -84,13 +84,14 @@ class Product extends Model implements HasMediaConversions, Termable
     }
 
     /**
-     * Add an attribute to a product
+     * Add an attribute to a product.
      * 
      * @param Term $attribute
      */
     public function addAttribute(Term $attribute)
     {
         $this->attributes()->save($attribute);
+
         return $this;
     }
 
@@ -104,7 +105,6 @@ class Product extends Model implements HasMediaConversions, Termable
         return $this->morphToMany(Term::class, 'termable')
         ->where('taxonomy', 'product_category');
     }
-
 
     /**
      * Ensure an uncategorised term exists and assign it to the product,
@@ -275,7 +275,6 @@ class Product extends Model implements HasMediaConversions, Termable
 
         return $this->product_categories->first();
     }
-
 
     /**
      * Get the price of the product.
