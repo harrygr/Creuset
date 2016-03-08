@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset;
+namespace App;
 
-use Creuset\Scopes\OrderScope;
+use App\Scopes\OrderScope;
 use Illuminate\Database\Eloquent\Model;
 
 class Term extends Model
@@ -17,6 +17,15 @@ class Term extends Model
         parent::boot();
 
         static::addGlobalScope(new OrderScope());
+
+        /**
+         * Set a slug on the term if it's not passed in.
+         */
+        static::creating(function ($term) {
+            if (!$term->slug) {
+                $term->slug = str_slug($term->term);
+            }
+        });
     }
 
     /**
@@ -46,25 +55,12 @@ class Term extends Model
 
     public function posts()
     {
-        return $this->morphedByMany('Creuset\Post', 'termable');
+        return $this->morphedByMany('App\Post', 'termable');
     }
 
     public function products()
     {
-        return $this->morphedByMany('Creuset\Product', 'termable');
-    }
-
-    /**
-     * Set a slug for a Term is it's not explicitly set.
-     *
-     * @param string $term
-     */
-    public function setTermAttribute($term)
-    {
-        $this->attributes['term'] = $term;
-        if (!$this->slug) {
-            $this->attributes['slug'] = str_slug($term);
-        }
+        return $this->morphedByMany('App\Product', 'termable');
     }
 
     /**

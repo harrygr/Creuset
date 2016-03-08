@@ -5,10 +5,10 @@
  * Date: 03/02/15
  * Time: 23:31.
  */
-namespace Creuset\Repositories\Term;
+namespace App\Repositories\Term;
 
-use Creuset\Contracts\Termable;
-use Creuset\Term;
+use App\Contracts\Termable;
+use App\Term;
 use Illuminate\Database\Eloquent\Model;
 
 class DbTermRepository implements TermRepository

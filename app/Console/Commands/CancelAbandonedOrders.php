@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Console\Commands;
+namespace App\Console\Commands;
 
-use Creuset\Order;
+use App\Order;
 use Illuminate\Console\Command;
 
 class CancelAbandonedOrders extends Command

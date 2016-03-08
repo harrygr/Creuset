@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Traits;
+namespace App\Traits;
 
 trait Postable
 {

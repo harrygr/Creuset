@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Countries;
+namespace App\Countries;
 
 class CacheCountryRepository implements CountryRepository
 {

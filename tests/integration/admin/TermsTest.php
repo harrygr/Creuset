@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
-use Creuset\Term;
+use App\Term;
 
 class TermsTest extends \TestCase
 {
@@ -24,7 +24,7 @@ class TermsTest extends \TestCase
     {
         $this->logInAsAdmin();
 
-        $category = factory('Creuset\Term')->create([
+        $category = factory('App\Term')->create([
           'taxonomy' => 'category',
           'term'     => 'homeparty',
           ]);
@@ -38,7 +38,7 @@ class TermsTest extends \TestCase
     {
         $this->logInAsAdmin();
 
-        $category = factory('Creuset\Term')->create([
+        $category = factory('App\Term')->create([
           'taxonomy' => 'category',
           'term'     => 'nasty cat',
           ]);
@@ -56,7 +56,7 @@ class TermsTest extends \TestCase
     {
         $this->logInAsAdmin();
 
-        $category = factory('Creuset\Term')->create([
+        $category = factory('App\Term')->create([
           'taxonomy' => 'category',
           'term'     => 'Nasty Cat',
           ]);
@@ -74,12 +74,12 @@ class TermsTest extends \TestCase
     {
         $this->logInAsAdmin();
 
-        $category_1 = factory('Creuset\Term')->create([
+        $category_1 = factory('App\Term')->create([
           'taxonomy' => 'category',
           'term'     => 'Nasty Cat',
           ]);
 
-        $category_2 = factory('Creuset\Term')->create([
+        $category_2 = factory('App\Term')->create([
           'taxonomy' => 'category',
           'term'     => 'Nice Cat',
           ]);
@@ -97,11 +97,11 @@ class TermsTest extends \TestCase
     /** @test **/
     public function it_can_view_a_list_of_custom_attributes()
     {
-        $attributes_1 = factory('Creuset\Term', 3)->create([
+        $attributes_1 = factory('App\Term', 3)->create([
             'taxonomy' => 'lampshade_size',
             ]);
 
-        $attributes_2 = factory('Creuset\Term', 2)->create([
+        $attributes_2 = factory('App\Term', 2)->create([
             'taxonomy' => 'lampshade_colour',
             ]);
 
@@ -126,7 +126,7 @@ class TermsTest extends \TestCase
     {
         $this->logInAsAdmin();
 
-        $attributes = factory('Creuset\Term', 3)->create([
+        $attributes = factory('App\Term', 3)->create([
             'taxonomy' => 'lampshade_size',
             ]);
 
@@ -139,7 +139,7 @@ class TermsTest extends \TestCase
     {
         $this->logInAsAdmin();
 
-        $attributes = factory('Creuset\Term', 3)->create([
+        $attributes = factory('App\Term', 3)->create([
             'taxonomy' => 'lampshade_size',
             ]);
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Repositories\Order;
+namespace App\Repositories\Order;
 
-use Creuset\Order;
-use Creuset\Repositories\DbRepository;
+use App\Order;
+use App\Repositories\DbRepository;
 
 class DbOrderRepository extends DbRepository implements OrderRepository
 {

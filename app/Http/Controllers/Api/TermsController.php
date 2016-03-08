@@ -1,12 +1,12 @@
 <?php
 
-namespace Creuset\Http\Controllers\Api;
+namespace App\Http\Controllers\Api;
 
-use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests\CreateTermRequest;
-use Creuset\Repositories\Term\TermRepository;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateTermRequest;
+use App\Repositories\Term\TermRepository;
 use Illuminate\Http\Request;
-use Creuset\Term;
+use App\Term;
 
 class TermsController extends Controller
 {

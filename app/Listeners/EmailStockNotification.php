@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Listeners;
+namespace App\Listeners;
 
-use Creuset\Events\ProductStockChanged;
-use Creuset\Mailers\ProductMailer;
+use App\Events\ProductStockChanged;
+use App\Mailers\ProductMailer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class EmailStockNotification implements ShouldQueue

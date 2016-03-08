@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset;
+namespace App;
 
 use TestCase;
 
@@ -53,7 +53,7 @@ class OrderTest extends TestCase
 
         // Adding a new shipping method should replace the one currently there
 
-        $shipping_method_2 = factory('Creuset\ShippingMethod')->create(['base_rate' => 6]);
+        $shipping_method_2 = factory('App\ShippingMethod')->create(['base_rate' => 6]);
 
         $order->setShipping($shipping_method_2->id);
 

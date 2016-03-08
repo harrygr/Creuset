@@ -1,6 +1,6 @@
 <?php
 
-use Creuset\Order;
+use App\Order;
 
 class CancelAbandonedOrdersTest extends TestCase
 {

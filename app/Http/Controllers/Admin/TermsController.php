@@ -1,18 +1,18 @@
 <?php
 
-namespace Creuset\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
-use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests\Term\UpdateTermRequest;
-use Creuset\Repositories\Term\TermRepository;
-use Creuset\Term;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Term\UpdateTermRequest;
+use App\Repositories\Term\TermRepository;
+use App\Term;
 
 class TermsController extends Controller
 {
     /**
      * The terms repository.
      * 
-     * @var \Creuset\Repositories\Term\TermRepository
+     * @var \App\Repositories\Term\TermRepository
      */
     protected $terms;
 

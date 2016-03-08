@@ -1,13 +1,13 @@
 <?php
 
-namespace Creuset\Http\Controllers;
+namespace App\Http\Controllers;
 
-use Creuset\Address;
-use Creuset\Events\OrderWasCreated;
-use Creuset\Http\Requests\CreateOrderRequest;
-use Creuset\Http\Requests\Order\ViewOrderRequest;
-use Creuset\Http\Requests\SetShippingMethodRequest;
-use Creuset\Order;
+use App\Address;
+use App\Events\OrderWasCreated;
+use App\Http\Requests\CreateOrderRequest;
+use App\Http\Requests\Order\ViewOrderRequest;
+use App\Http\Requests\SetShippingMethodRequest;
+use App\Order;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller

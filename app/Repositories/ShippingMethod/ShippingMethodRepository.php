@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Repositories\ShippingMethod;
+namespace App\Repositories\ShippingMethod;
 
 interface ShippingMethodRepository
 {

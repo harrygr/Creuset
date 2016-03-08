@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Exceptions;
+namespace App\Exceptions;
 
 class PresenterException extends \Exception
 {

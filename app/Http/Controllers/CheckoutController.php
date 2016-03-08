@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Http\Controllers;
+namespace App\Http\Controllers;
 
-use Creuset\Repositories\ShippingMethod\ShippingMethodRepository;
+use App\Repositories\ShippingMethod\ShippingMethodRepository;
 use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
@@ -25,7 +25,7 @@ class CheckoutController extends Controller
         // we'll flash the checkout as the intended url
         $request->session()->flash('url.intended', 'checkout');
 
-        $order = $request->session()->get('order', new \Creuset\Order());
+        $order = $request->session()->get('order', new \App\Order());
 
         if (!$request->session()->has('order')) {
             $request->session()->put('order', $order);

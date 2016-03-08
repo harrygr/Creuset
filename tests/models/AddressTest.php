@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset;
+namespace App;
 
 use TestCase;
 
@@ -10,7 +10,7 @@ class AddressTest extends TestCase
     public function it_gets_the_country_for_an_address()
     {
         $address = factory(Address::class)->make(['country' => 'GB']);
-        $country_repository = \Mockery::mock(\Creuset\Countries\CountryRepository::class);
+        $country_repository = \Mockery::mock(\App\Countries\CountryRepository::class);
         $country_repository->shouldReceive('getByCode')->once()->with('GB')->andReturn('United Kingdom');
 
         \App::shouldReceive('make')->once()->andReturn($country_repository);

@@ -48,7 +48,7 @@ Shipping Methods
 	</div>
 	<div class="box-body">
 
-		@include('admin.shipping_methods._form', ['shipping_method' => new Creuset\ShippingMethod, 'route' => null])
+		@include('admin.shipping_methods._form', ['shipping_method' => new App\ShippingMethod, 'route' => null])
 
 
 	</div>

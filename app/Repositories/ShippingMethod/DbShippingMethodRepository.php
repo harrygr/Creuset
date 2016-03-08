@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Repositories\ShippingMethod;
+namespace App\Repositories\ShippingMethod;
 
-use Creuset\Repositories\DbRepository;
-use Creuset\ShippingMethod;
+use App\Repositories\DbRepository;
+use App\ShippingMethod;
 
 class DbShippingMethodRepository extends DbRepository implements ShippingMethodRepository
 {

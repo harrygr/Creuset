@@ -1,10 +1,10 @@
 <?php
 
-namespace Creuset\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
-use Creuset\Http\Controllers\Controller;
-use Creuset\Repositories\ShippingMethod\ShippingMethodRepository;
-use Creuset\ShippingMethod;
+use App\Http\Controllers\Controller;
+use App\Repositories\ShippingMethod\ShippingMethodRepository;
+use App\ShippingMethod;
 use Illuminate\Http\Request;
 
 class ShippingMethodsController extends Controller

@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Http\Requests\Term;
+namespace App\Http\Requests\Term;
 
-use Creuset\Http\Requests\Request;
+use App\Http\Requests\Request;
 
 class CreateManyTermsRequest extends Request
 {

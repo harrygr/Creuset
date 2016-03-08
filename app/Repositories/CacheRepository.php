@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Repositories;
+namespace App\Repositories;
 
 abstract class CacheRepository
 {

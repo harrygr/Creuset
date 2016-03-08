@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Http\Controllers\Api;
+namespace App\Http\Controllers\Api;
 
-use Creuset\Http\Controllers\Controller;
-use Creuset\Post;
+use App\Http\Controllers\Controller;
+use App\Post;
 use Illuminate\Http\Request;
 
 class PostsController extends Controller

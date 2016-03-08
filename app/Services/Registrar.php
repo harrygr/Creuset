@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Services;
+namespace App\Services;
 
-use Creuset\User;
+use App\User;
 use Illuminate\Contracts\Auth\Registrar as RegistrarContract;
 use Validator;
 

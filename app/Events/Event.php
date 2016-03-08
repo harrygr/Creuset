@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Events;
+namespace App\Events;
 
 abstract class Event
 {

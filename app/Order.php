@@ -1,16 +1,16 @@
 <?php
 
-namespace Creuset;
+namespace App;
 
 use Cart;
-use Creuset\Presenters\PresentableTrait;
+use App\Presenters\PresentableTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
     use PresentableTrait;
 
-    protected $presenter = 'Creuset\Presenters\OrderPresenter';
+    protected $presenter = 'App\Presenters\OrderPresenter';
 
     const PENDING = 'pending';
     const PAID = 'processing';
@@ -72,7 +72,7 @@ class Order extends Model
      * @param Product $product
      * @param int     $quantity
      *
-     * @return \Creuset\Order
+     * @return \App\Order
      */
     public function addProduct(Product $product, $quantity = 1)
     {
@@ -96,7 +96,7 @@ class Order extends Model
      *
      * @param int $id
      *
-     * @return \Creuset\Order
+     * @return \App\Order
      */
     public function setShipping($id)
     {

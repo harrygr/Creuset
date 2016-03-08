@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Http\Requests;
+namespace App\Http\Requests;
 
-use Creuset\Address;
+use App\Address;
 use Illuminate\Support\Collection;
 
 class CreateOrderRequest extends Request

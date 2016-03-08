@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Billing;
+namespace App\Billing;
 
 class CardException extends \Exception
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Creuset\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
-use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests\CreateUserRequest;
-use Creuset\Http\Requests\UpdateUserRequest;
-use Creuset\User;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\User;
 
 class UsersController extends Controller
 {

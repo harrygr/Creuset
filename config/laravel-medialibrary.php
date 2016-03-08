@@ -23,7 +23,7 @@ return [
     /*
      * The class name of the media model to be used.
      */
-    'media_model' => Creuset\Media::class,
+    'media_model' => App\Media::class,
 
     /*
      * When urls to files get generated this class will be called. Leave empty

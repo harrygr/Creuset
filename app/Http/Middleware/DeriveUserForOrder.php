@@ -1,10 +1,10 @@
 <?php
 
-namespace Creuset\Http\Middleware;
+namespace App\Http\Middleware;
 
 use Closure;
-use Creuset\Repositories\User\DbUserRepository;
-use Creuset\User;
+use App\Repositories\User\DbUserRepository;
+use App\User;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
@@ -93,7 +93,7 @@ class DeriveUserForOrder
         $data = collect($this->request->only($fields));
         $data['name'] = $billing_address['name'];
 
-        $user = \Creuset\User::create([
+        $user = \App\User::create([
             'name'         => $data['name'],
             'email'        => $data['email'],
             'username'     => $data['email'],

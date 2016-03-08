@@ -1,10 +1,10 @@
 <?php
 
-namespace Creuset\Repositories\Product;
+namespace App\Repositories\Product;
 
-use Creuset\Product;
-use Creuset\Repositories\DbRepository;
-use Creuset\Term;
+use App\Product;
+use App\Repositories\DbRepository;
+use App\Term;
 
 class DbProductRepository extends DbRepository implements ProductRepository
 {

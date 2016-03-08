@@ -1,12 +1,12 @@
 <?php
 
-namespace Creuset;
+namespace App;
 
 use Carbon\Carbon;
-use Creuset\Contracts\Termable;
-use Creuset\Presenters\PresentableTrait;
-use Creuset\Traits\HasTerms;
-use Creuset\Traits\Postable;
+use App\Contracts\Termable;
+use App\Presenters\PresentableTrait;
+use App\Traits\HasTerms;
+use App\Traits\Postable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -35,7 +35,7 @@ class Post extends Model implements HasMediaConversions, Termable
      */
     protected $dates = ['created_at', 'updated_at', 'published_at', 'deleted_at'];
 
-    protected $presenter = 'Creuset\Presenters\PostPresenter';
+    protected $presenter = 'App\Presenters\PostPresenter';
 
     /**
      * The database table used by the model.
@@ -89,17 +89,17 @@ class Post extends Model implements HasMediaConversions, Termable
 
     public function author()
     {
-        return $this->belongsTo('\Creuset\User', 'user_id', 'id');
+        return $this->belongsTo('\App\User', 'user_id', 'id');
     }
 
     public function parent()
     {
-        return $this->belongsTo('\Creuset\Post');
+        return $this->belongsTo('\App\Post');
     }
 
     public function children()
     {
-        return $this->hasMany('\Creuset\Post');
+        return $this->hasMany('\App\Post');
     }
 
     /**

@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
-use Creuset\Http\Controllers\Controller;
-use Creuset\Term;
+use App\Http\Controllers\Controller;
+use App\Term;
 
 class AttributesController extends Controller
 {

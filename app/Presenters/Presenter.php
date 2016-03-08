@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Presenters;
+namespace App\Presenters;
 
 abstract class Presenter
 {

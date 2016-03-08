@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
-use Creuset\Http\Controllers\Controller;
-use Creuset\Order;
+use App\Http\Controllers\Controller;
+use App\Order;
 use Illuminate\Http\Request;
 
 class OrdersController extends Controller

@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Http\Middleware;
+namespace App\Http\Middleware;
 
 class VerifyCsrfToken extends \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken
 {
