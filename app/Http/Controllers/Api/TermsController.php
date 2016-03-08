@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTermRequest;
 use App\Repositories\Term\TermRepository;
 use App\Http\Requests\Term\UpdateTermRequest;
-use Illuminate\Http\Request;
 use App\Term;
 
 class TermsController extends Controller

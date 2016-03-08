@@ -85,7 +85,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     /**
      * Hash the password when setting it on a user.
-     * 
+     *
      * @param string $password
      */
     public function setPasswordAttribute($password)
@@ -139,7 +139,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     /**
      * Limit users to just those assigned as shop admins.
-     * 
+     *
      * @param \Illuminate\Database\Eloquent\Builder $query
      */
     public function scopeShopAdmins($query)

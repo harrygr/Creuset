@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Carbon\Carbon;
 use App\Media;
+use Carbon\Carbon;
 use Faker\Factory;
 use Illuminate\Http\UploadedFile;
 
