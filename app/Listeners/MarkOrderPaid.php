@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Listeners;
+namespace App\Listeners;
 
-use Creuset\Events\OrderWasPaid;
+use App\Events\OrderWasPaid;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class MarkOrderPaid implements ShouldQueue
@@ -28,7 +28,7 @@ class MarkOrderPaid implements ShouldQueue
     {
         $event->order->update([
             'payment_id' => $event->payment_id,
-            'status'     => \Creuset\Order::PAID,
+            'status'     => \App\Order::PAID,
             ]);
     }
 }

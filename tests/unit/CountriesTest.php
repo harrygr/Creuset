@@ -1,9 +1,9 @@
 <?php
 
-use Creuset\Countries\CacheCountryRepository;
-use Creuset\Countries\CountryRepository;
-use Creuset\Countries\FileCountryRepository;
-use Creuset\Countries\RestCountriesCountryRepository;
+use App\Countries\CacheCountryRepository;
+use App\Countries\CountryRepository;
+use App\Countries\FileCountryRepository;
+use App\Countries\RestCountriesCountryRepository;
 use GuzzleHttp\Client;
 
 class CountriesTest extends TestCase

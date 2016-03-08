@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset;
+namespace App;
 
-use Creuset\Presenters\PresentableTrait;
-use Creuset\Traits\RoleableTrait;
+use App\Presenters\PresentableTrait;
+use App\Traits\RoleableTrait;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -33,7 +33,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var string
      */
-    protected $presenter = 'Creuset\Presenters\UserPresenter';
+    protected $presenter = 'App\Presenters\UserPresenter';
 
     /**
      * The database table used by the model.

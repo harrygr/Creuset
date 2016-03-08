@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Http\Controllers\Api;
+namespace App\Http\Controllers\Api;
 
 class MediaControllerTest extends \TestCase
 {

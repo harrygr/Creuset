@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Repositories\Post;
+namespace App\Repositories\Post;
 
-use Creuset\Post;
-use Creuset\Repositories\CacheRepository;
+use App\Post;
+use App\Repositories\CacheRepository;
 
 class CachePostRepository extends CacheRepository implements PostRepository
 {

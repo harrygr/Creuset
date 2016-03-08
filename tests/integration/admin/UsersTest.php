@@ -36,7 +36,7 @@ class UsersTest extends TestCase
     {
         $currentUser = $this->logInAsAdmin();
 
-        $newUserProfile = factory('Creuset\User')->make()->toArray();
+        $newUserProfile = factory('App\User')->make()->toArray();
 
         $this->updateProfile($newUserProfile);
 
@@ -63,7 +63,7 @@ class UsersTest extends TestCase
 
         // Make a new user in the database
         $newUserProfile = $this->newUserProfile();
-        factory('Creuset\User')->create($newUserProfile);
+        factory('App\User')->create($newUserProfile);
 
         // Try to update our own profile with info from the already existant user
         $this->updateProfile($newUserProfile);
@@ -83,7 +83,7 @@ class UsersTest extends TestCase
     /** @test **/
     public function it_shows_the_orders_for_a_user()
     {
-        $order_item = factory(\Creuset\OrderItem::class)->create();
+        $order_item = factory(\App\OrderItem::class)->create();
 
         $user = $order_item->order->customer;
 
@@ -108,6 +108,6 @@ class UsersTest extends TestCase
 
     private function newUserProfile()
     {
-        return factory('Creuset\User')->make()->toArray();
+        return factory('App\User')->make()->toArray();
     }
 }

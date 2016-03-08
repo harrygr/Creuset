@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Commands;
+namespace App\Commands;
 
 abstract class Command
 {

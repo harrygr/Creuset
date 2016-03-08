@@ -26,7 +26,7 @@
 				<div class="input-group">
 					<span class="input-group-addon"><i class="fa fa-{{ strtolower(config('shop.currency')) }}"></i></span>
 					<input type="number" step="0.01" class="form-control" name="price" value="{{ old('price', $product->price) }}">
-				</div>	
+				</div>
 			</div>
 
 			<div class="form-group">
@@ -49,7 +49,7 @@
 
 			<div class="form-group">
 				{!! Form::label('user_id', 'Author') !!}
-				{!! Form::select('user_id', Creuset\User::lists('name', 'id'), null, ['class' => 'form-control']) !!}
+				{!! Form::select('user_id', App\User::lists('name', 'id'), null, ['class' => 'form-control']) !!}
 			</div>
 
 			<div class="">
@@ -62,5 +62,3 @@
 
 	<cr-image-chooser image="{{ old('media_id', $product->media_id) }}"></cr-image-chooser>
 </div>
-
-

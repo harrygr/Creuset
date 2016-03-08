@@ -1,4 +1,4 @@
-@inject('countries', 'Creuset\Countries\CountryRepository')
+@inject('countries', 'App\Countries\CountryRepository')
 
 @extends('layouts.main')
 
@@ -73,7 +73,7 @@
         <h3>Billing Address</h3>
         @foreach (Auth::user()->addresses as $address)
         <div class="radio">
-          <label>            
+          <label>
             {!! Form::radio('billing_address_id', $address->id, $address->id == $order->billing_address_id, ['id' =>"billing_address_{$address->id}" ]) !!}
             @include('partials.address', compact('address'))
           </label>

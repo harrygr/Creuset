@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Repositories\Term;
+namespace App\Repositories\Term;
 
-use Creuset\Contracts\Termable;
+use App\Contracts\Termable;
 
 interface TermRepository
 {
@@ -23,7 +23,7 @@ interface TermRepository
     /**
      * Get a list of all the categories.
      *
-     * @param \Creuset\Contracts\Termable $related_model If passed will put attached categories at the top of the list
+     * @param \App\Contracts\Termable $related_model If passed will put attached categories at the top of the list
      *
      * @return mixed
      */
@@ -49,7 +49,7 @@ interface TermRepository
      * @param string $term The tag name
      * @param string $slug The slug of the tag
      *
-     * @return \Creuset\Term
+     * @return \App\Term
      */
     public function createTag($term, $slug = null);
 
@@ -59,7 +59,7 @@ interface TermRepository
      * @param string $term The category name
      * @param string $slug The slug of the category
      *
-     * @return \Creuset\Term
+     * @return \App\Term
      */
     public function createCategory($term, $slug = null);
 
@@ -68,7 +68,7 @@ interface TermRepository
      *
      * @param array $attributes
      *
-     * @return \Creuset\Term
+     * @return \App\Term
      */
     public function create($attributes);
 

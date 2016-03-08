@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Http\Controllers;
+namespace App\Http\Controllers;
 
 class HomeController extends Controller
 {

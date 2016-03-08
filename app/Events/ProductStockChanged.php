@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Events;
+namespace App\Events;
 
-use Creuset\Product;
+use App\Product;
 use Illuminate\Queue\SerializesModels;
 
 class ProductStockChanged extends Event

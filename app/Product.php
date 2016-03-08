@@ -1,11 +1,11 @@
 <?php
 
-namespace Creuset;
+namespace App;
 
 use Carbon\Carbon;
-use Creuset\Contracts\Termable;
-use Creuset\Presenters\PresentableTrait;
-use Creuset\Traits\Postable;
+use App\Contracts\Termable;
+use App\Presenters\PresentableTrait;
+use App\Traits\Postable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -60,7 +60,7 @@ class Product extends Model implements HasMediaConversions, Termable
     'published_at',
     ];
 
-    protected $presenter = 'Creuset\Presenters\ProductPresenter';
+    protected $presenter = 'App\Presenters\ProductPresenter';
 
     /**
      * A products belongs to many terms.
@@ -198,7 +198,7 @@ class Product extends Model implements HasMediaConversions, Termable
      * Gets the first if more than one set.
      * Sets it to uncategorised if none set.
      * 
-     * @return \Creuset\Term
+     * @return \App\Term
      */
     public function getProductCategoryAttribute()
     {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Http\Controllers;
+namespace App\Http\Controllers;
 
-use Creuset\Http\Requests\UpdateUserRequest;
-use Creuset\User;
+use App\Http\Requests\UpdateUserRequest;
+use App\User;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 

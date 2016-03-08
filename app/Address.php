@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -67,7 +67,7 @@ class Address extends Model
      */
     public function getCountryNameAttribute()
     {
-        $countries = \App::make(\Creuset\Countries\CountryRepository::class);
+        $countries = \App::make(\App\Countries\CountryRepository::class);
 
         return $countries->getByCode($this->country);
     }

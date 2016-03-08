@@ -2,7 +2,7 @@
 
 namespace Integration;
 
-use Creuset\Order;
+use App\Order;
 use TestCase;
 
 class OrdersTest extends TestCase

@@ -59,7 +59,7 @@
           <td>{{ $order->created_at }}</td>
           <td>{{ Present::money($order->amount) }}</td>
           <td>
-            @if ($order->status == Creuset\Order::PAID)
+            @if ($order->status == App\Order::PAID)
             @include('admin.orders.partials._complete_button', ['order' => $order])
             @endif
         </td>

@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Events;
+namespace App\Events;
 
-use Creuset\Order;
+use App\Order;
 use Illuminate\Queue\SerializesModels;
 
 class OrderWasCreated extends Event

@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Providers;
+namespace App\Providers;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -15,23 +15,23 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'Creuset\Events\ModelWasChanged' => [
-            'Creuset\Listeners\FlushModelCache',
+        'App\Events\ModelWasChanged' => [
+            'App\Listeners\FlushModelCache',
         ],
         'Illuminate\Auth\Events\Login' => [
-            'Creuset\Listeners\UserLoggedInHandler',
+            'App\Listeners\UserLoggedInHandler',
         ],
-        'Creuset\Events\OrderWasCreated' => [
+        'App\Events\OrderWasCreated' => [
 
         ],
-        'Creuset\Events\OrderWasPaid' => [
-            'Creuset\Listeners\ReduceProductStock',
-            'Creuset\Listeners\MarkOrderPaid',
-            'Creuset\Listeners\SendCustomerOrderEmail',
-            'Creuset\Listeners\SendAdminOrderEmail',
+        'App\Events\OrderWasPaid' => [
+            'App\Listeners\ReduceProductStock',
+            'App\Listeners\MarkOrderPaid',
+            'App\Listeners\SendCustomerOrderEmail',
+            'App\Listeners\SendAdminOrderEmail',
         ],
-        'Creuset\Events\ProductStockChanged' => [
-            'Creuset\Listeners\EmailStockNotification',
+        'App\Events\ProductStockChanged' => [
+            'App\Listeners\EmailStockNotification',
         ],
     ];
 }

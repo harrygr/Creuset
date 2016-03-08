@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Providers;
+namespace App\Providers;
 
-use Creuset\Billing\GatewayInterface;
-use Creuset\Billing\StripeGateway;
+use App\Billing\GatewayInterface;
+use App\Billing\StripeGateway;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             'Illuminate\Contracts\Auth\Registrar',
-            'Creuset\Services\Registrar'
+            'App\Services\Registrar'
         );
 
         $this->app->singleton(GatewayInterface::class, StripeGateway::class);

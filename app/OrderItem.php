@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 

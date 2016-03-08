@@ -1,11 +1,11 @@
 <?php
 
-namespace Creuset\Http\Controllers;
+namespace App\Http\Controllers;
 
-use Creuset\Address;
-use Creuset\Http\Requests\Address\CreateAddressRequest;
-use Creuset\Http\Requests\Address\EditAddressRequest;
-use Creuset\Http\Requests\Address\UpdateAddressRequest;
+use App\Address;
+use App\Http\Requests\Address\CreateAddressRequest;
+use App\Http\Requests\Address\EditAddressRequest;
+use App\Http\Requests\Address\UpdateAddressRequest;
 use Illuminate\Contracts\Auth\Guard;
 
 class AddressesController extends Controller

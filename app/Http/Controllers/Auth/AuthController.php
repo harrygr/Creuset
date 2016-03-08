@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth;
 
-use Creuset\Http\Controllers\Controller;
-use Creuset\User;
+use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;

@@ -2,7 +2,7 @@
 
 namespace Integration;
 
-use Creuset\User;
+use App\User;
 use TestCase;
 
 class PaymentTest extends TestCase
@@ -29,7 +29,7 @@ class PaymentTest extends TestCase
 
         $this->assertRedirectedTo('order-completed');
 
-        $this->seeInDatabase('orders', ['id' => $this->order->id, 'status' => \Creuset\Order::PAID]);
+        $this->seeInDatabase('orders', ['id' => $this->order->id, 'status' => \App\Order::PAID]);
         $this->assertEquals(0, \Cart::total());
         $this->assertContains('ch_', $this->order->fresh()->payment_id);
 
@@ -44,7 +44,7 @@ class PaymentTest extends TestCase
     {
         $this->createOrder(['status' => 'pending']);
 
-        $this->order->setShipping(factory(\Creuset\ShippingMethod::class)->create()->id);
+        $this->order->setShipping(factory(\App\ShippingMethod::class)->create()->id);
 
         \Session::put('order', $this->order);
 
@@ -61,7 +61,7 @@ class PaymentTest extends TestCase
         $this->assertRedirectedTo('checkout/pay');
         $this->assertContains('declined', \Session::get('alert'));
 
-        $this->dontSeeInDatabase('orders', ['id' => $this->order->id, 'status' => \Creuset\Order::PAID]);
+        $this->dontSeeInDatabase('orders', ['id' => $this->order->id, 'status' => \App\Order::PAID]);
     }
 
     /**
@@ -73,7 +73,7 @@ class PaymentTest extends TestCase
      */
     protected function getToken($card_failure = false)
     {
-        $address = factory('Creuset\Address')->create();
+        $address = factory('App\Address')->create();
 
         \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Mailers;
+namespace App\Mailers;
 
 class Mailer
 {

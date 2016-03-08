@@ -1,4 +1,4 @@
-@inject('countries', 'Creuset\Countries\CountryRepository')
+@inject('countries', 'App\Countries\CountryRepository')
 
 <div class="form-group">
     <label for="name">Name</label>

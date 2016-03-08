@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Repositories\Post;
+namespace App\Repositories\Post;
 
-use Creuset\Post;
-use Creuset\Repositories\DbRepository;
+use App\Post;
+use App\Repositories\DbRepository;
 
 class DbPostRepository extends DbRepository implements PostRepository
 {

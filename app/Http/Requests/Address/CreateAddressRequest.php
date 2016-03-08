@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Http\Requests\Address;
+namespace App\Http\Requests\Address;
 
-use Creuset\Address;
-use Creuset\Http\Requests\Request;
+use App\Address;
+use App\Http\Requests\Request;
 
 class CreateAddressRequest extends Request
 {

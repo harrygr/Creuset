@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Repositories\ShippingMethod;
+namespace App\Repositories\ShippingMethod;
 
-use Creuset\Repositories\CacheRepository;
-use Creuset\ShippingMethod;
+use App\Repositories\CacheRepository;
+use App\ShippingMethod;
 
 class CacheShippingMethodRepository extends CacheRepository implements ShippingMethodRepository
 {

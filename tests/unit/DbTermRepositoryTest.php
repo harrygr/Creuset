@@ -2,9 +2,9 @@
 
 namespace Unit;
 
-use Creuset\Post;
-use Creuset\Repositories\Term\DbTermRepository;
-use Creuset\Term;
+use App\Post;
+use App\Repositories\Term\DbTermRepository;
+use App\Term;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use TestCase;
 
@@ -53,7 +53,7 @@ class DbTermRepositoryTest extends TestCase
     public function it_process_new_terms()
     {
         // Start with some tags in the database
-        $tags = factory('Creuset\Term', 3)->create([
+        $tags = factory('App\Term', 3)->create([
             'taxonomy' => 'tag',
             ]);
 

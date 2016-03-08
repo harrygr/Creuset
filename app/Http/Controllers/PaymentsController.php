@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Http\Controllers;
+namespace App\Http\Controllers;
 
-use Creuset\Billing\GatewayInterface;
-use Creuset\Order;
+use App\Billing\GatewayInterface;
+use App\Order;
 use Illuminate\Http\Request;
 
 class PaymentsController extends Controller
@@ -28,7 +28,7 @@ class PaymentsController extends Controller
                 ], [
                     'email' => $order->email,
                 ]);
-        } catch (\Creuset\Billing\CardException $e) {
+        } catch (\App\Billing\CardException $e) {
             return redirect()->back()->with([
                 'alert'       => $this->paymentErrorMessage($e->getMessage()),
                 'alert-class' => 'danger',
@@ -36,7 +36,7 @@ class PaymentsController extends Controller
         }
 
         $request->session()->forget('order');
-        event(new \Creuset\Events\OrderWasPaid($order, $charge->id));
+        event(new \App\Events\OrderWasPaid($order, $charge->id));
 
         \Cart::destroy();
 

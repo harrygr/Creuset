@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Mailers;
+namespace App\Mailers;
 
-use Creuset\Product;
-use Creuset\User;
+use App\Product;
+use App\User;
 
 class ProductMailer extends Mailer
 {
