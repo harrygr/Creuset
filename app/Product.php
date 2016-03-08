@@ -63,14 +63,9 @@ class Product extends Model implements HasMediaConversions, Termable
     protected $presenter = 'App\Presenters\ProductPresenter';
 
     /**
-<<<<<<< HEAD
      * Get all the terms for a product
-     * Restrict only to normal taxonomies. 
-     * 
-=======
-     * A products belongs to many terms.
+     * Restrict only to normal taxonomies.
      *
->>>>>>> origin/dev
      * @return \Illuminate\Database\Eloquent\Relations\Relation
      */
     public function terms()
@@ -80,7 +75,7 @@ class Product extends Model implements HasMediaConversions, Termable
 
     /**
      * Get all the attributes for a product.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\Relation
      */
     public function attributes()
@@ -90,7 +85,7 @@ class Product extends Model implements HasMediaConversions, Termable
 
     /**
      * Add an attribute to a product.
-     * 
+     *
      * @param Term $attribute
      */
     public function addAttribute(Term $attribute)
@@ -114,7 +109,7 @@ class Product extends Model implements HasMediaConversions, Termable
     /**
      * Ensure an uncategorised term exists and assign it to the product,
      * removing it from all other categories.
-     * 
+     *
      * @return Product
      */
     public function makeUncategorised()
@@ -130,9 +125,9 @@ class Product extends Model implements HasMediaConversions, Termable
 
     /**
      * Sync terms to a product.
-     * 
+     *
      * @param \Illuminate\Database\Eloquent\Collection|array $terms
-     * 
+     *
      * @return Product
      */
     public function syncTerms($terms = [])
@@ -282,44 +277,6 @@ class Product extends Model implements HasMediaConversions, Termable
     }
 
     /**
-<<<<<<< HEAD
-=======
-     * Ensure an uncategorised term exists and assign it to the product,
-     * removing it from all other categories.
-     *
-     * @return Product
-     */
-    public function makeUncategorised()
-    {
-        $term = Term::firstOrCreate([
-              'taxonomy' => 'product_category',
-              'slug'     => 'uncategorised',
-              'term'     => 'Uncategorised',
-              ]);
-
-        return $this->syncTerms([$term->id]);
-    }
-
-    /**
-     * Sync terms to a product.
-     *
-     * @param \Illuminate\Database\Eloquent\Collection|array $terms
-     *
-     * @return Product
-     */
-    public function syncTerms($terms = [])
-    {
-        if (!count($terms)) {
-            return $this->makeUncategorised();
-        }
-
-        $this->terms()->sync($terms);
-
-        return $this;
-    }
-
-    /**
->>>>>>> origin/dev
      * Get the price of the product.
      *
      * @return float
