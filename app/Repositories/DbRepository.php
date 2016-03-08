@@ -40,9 +40,9 @@ abstract class DbRepository
     /**
      * Build a query for all instances of a model.
      *
-     * 
-     * @param  array                                 $with
-     *                                                      
+     *
+     * @param array $with
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected function queryAll($with = [])

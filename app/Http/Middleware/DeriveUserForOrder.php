@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
 use App\Repositories\User\DbUserRepository;
 use App\User;
+use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 

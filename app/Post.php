@@ -2,11 +2,11 @@
 
 namespace App;
 
-use Carbon\Carbon;
 use App\Contracts\Termable;
 use App\Presenters\PresentableTrait;
 use App\Traits\HasTerms;
 use App\Traits\Postable;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -18,7 +18,7 @@ class Post extends Model implements HasMediaConversions, Termable
 
     /**
      * Set the image sizes for post attachments.
-     * 
+     *
      * @return void
      */
     public function registerMediaConversions()
@@ -59,11 +59,11 @@ class Post extends Model implements HasMediaConversions, Termable
 
     /**
      * Parses a date string into a Carbon instance for saving.
-     * 
+     *
      * This shouldn't really need to be done, but Laravel's automatic date
-     * mutators expects strings to be in the format Y-m-d H-i-s which is 
+     * mutators expects strings to be in the format Y-m-d H-i-s which is
      * not always the case; such as for 'datetime-local' html5 fields
-     * 
+     *
      * @param mixed $date The date to be parsed
      */
     public function setPublishedAtAttribute($date)

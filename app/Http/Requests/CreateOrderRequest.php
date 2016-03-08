@@ -58,7 +58,7 @@ class CreateOrderRequest extends Request
 
     /**
      * Build up the validation rules for a given address type.
-     * 
+     *
      * @param string $type The address type e.g. billing
      *
      * @return Illuminate\Support\Collection

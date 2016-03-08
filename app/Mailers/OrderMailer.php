@@ -9,9 +9,9 @@ class OrderMailer extends Mailer
 {
     /**
      * Send an order receipt to a customer.
-     * 
+     *
      * @param Order $order
-     * 
+     *
      * @return void
      */
     public function sendOrderConfirmationEmailFor(Order $order)
@@ -24,9 +24,9 @@ class OrderMailer extends Mailer
 
     /**
      * Send an order notification to each of the admins.
-     * 
+     *
      * @param Order $order
-     * 
+     *
      * @return void
      */
     public function sendAdminOrderNotificationFor(Order $order)

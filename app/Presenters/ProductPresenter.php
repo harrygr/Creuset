@@ -11,10 +11,10 @@ class ProductPresenter extends ModelPresenter
 
     /**
      * Get a delimited string of a product's categories.
-     * 
+     *
      * @param string $delimiter
      * @param bool   $links     Should the categories link
-     * 
+     *
      * @return HtmlString
      */
     public function categoryList($delimiter = ', ', $links = true)
@@ -28,7 +28,7 @@ class ProductPresenter extends ModelPresenter
 
     /**
      * Get a string representing the product's price, taking into account any sale price.
-     * 
+     *
      * @return HtmlString
      */
     public function price()
@@ -46,10 +46,10 @@ class ProductPresenter extends ModelPresenter
 
     /**
      * Get an html img tag for the product's thumbnail.
-     * 
+     *
      * @param int $w The desired width of the thumbnail
      * @param int $h The desired height of the thumbnail
-     * 
+     *
      * @return HtmlString
      */
     public function thumbnail($w = 300, $h = null)
@@ -67,10 +67,10 @@ class ProductPresenter extends ModelPresenter
 
     /**
      * Get the URL of the product's thumbnail, or a placeholder if one doesn't exist.
-     * 
+     *
      * @param int $w The desired width of the thumbnail
      * @param int $h The desired height of the thumbnail
-     * 
+     *
      * @return string
      */
     public function thumbnail_url($w = 300, $h = null)
@@ -82,7 +82,7 @@ class ProductPresenter extends ModelPresenter
 
     /**
      * Get a string representing the stock of the product.
-     * 
+     *
      * @return string
      */
     public function stock()

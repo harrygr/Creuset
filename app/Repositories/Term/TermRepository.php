@@ -74,7 +74,7 @@ interface TermRepository
 
     /**
      * Process an array of mixed string and numneric terms, create a new term for each string.
-     * 
+     *
      * @param array  $terms    The terms to process
      * @param string $taxonomy The taxonomy of the terms in question
      *
