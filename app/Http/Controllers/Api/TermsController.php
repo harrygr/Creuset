@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTermRequest;
 use App\Repositories\Term\TermRepository;
+use App\Http\Requests\Term\UpdateTermRequest;
 use Illuminate\Http\Request;
 use App\Term;
 
@@ -92,8 +93,8 @@ class TermsController extends Controller
     /**
      * Update a term in storage.
      *
-     * @param \Creuset\Term                                 $term
-     * @param \Creuset\Http\Requests\Term\UpdateTermRequest $request
+     * @param \App\Term                                 $term
+     * @param \App\Http\Requests\Term\UpdateTermRequest $request
      *
      * @return \Illuminate\Http\Response
      */
