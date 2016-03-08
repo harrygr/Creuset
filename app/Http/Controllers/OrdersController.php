@@ -50,9 +50,9 @@ class OrdersController extends Controller
 
     /**
      * Add a shipping to an order.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function shipping(SetShippingMethodRequest $request)
@@ -68,9 +68,9 @@ class OrdersController extends Controller
 
     /**
      * Show the page for a completed order.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function completed(Request $request)

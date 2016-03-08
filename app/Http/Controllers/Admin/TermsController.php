@@ -11,14 +11,14 @@ class TermsController extends Controller
 {
     /**
      * The terms repository.
-     * 
+     *
      * @var \App\Repositories\Term\TermRepository
      */
     protected $terms;
 
     /**
      * Create a new TermsController instance.
-     * 
+     *
      * @param TermRepository $terms [description]
      */
     public function __construct(TermRepository $terms)
@@ -28,9 +28,9 @@ class TermsController extends Controller
 
     /**
      * Show a page of all terms for a given taxonomy.
-     *     
+     *
      * @param string $taxonomies The singular or plural taxonomy to use
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function index($taxonomies)
@@ -49,7 +49,7 @@ class TermsController extends Controller
 
     /**
      * Show a list of categories.
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function categoriesIndex()
@@ -59,7 +59,7 @@ class TermsController extends Controller
 
     /**
      * Show a list of tags.
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function tagsIndex()
@@ -69,9 +69,9 @@ class TermsController extends Controller
 
     /**
      * Show a page to edit a term.
-     * 
+     *
      * @param Term $term
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Term $term)
@@ -81,10 +81,10 @@ class TermsController extends Controller
 
     /**
      * Update a term in storage.
-     * 
+     *
      * @param Term              $term
      * @param UpdateTermRequest $request
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Term $term, UpdateTermRequest $request)
@@ -100,9 +100,9 @@ class TermsController extends Controller
 
     /**
      * Delete a term from storage.
-     * 
+     *
      * @param Term $term
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Term $term)

@@ -9,9 +9,9 @@ class ProductMailer extends Mailer
 {
     /**
      * Send an out of stock notification to the shop admins.
-     *  
+     *
      * @param Product $product
-     * 
+     *
      * @return void
      */
     public function sendOutOfStockNotificationFor(Product $product)
@@ -28,9 +28,9 @@ class ProductMailer extends Mailer
 
     /**
      * Send an low stock notification to the shop admins.
-     *  
+     *
      * @param Product $product
-     * 
+     *
      * @return void
      */
     public function sendLowStockNotificationFor(Product $product)

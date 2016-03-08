@@ -36,9 +36,9 @@ class CheckoutController extends Controller
 
     /**
      * Show the page for choosing a shipping method for an order.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function shipping(Request $request, ShippingMethodRepository $shipping_methods)

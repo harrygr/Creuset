@@ -43,7 +43,7 @@ class AddToCartRequest extends Request
 
     /**
      * Get the messages for any validation errors.
-     * 
+     *
      * @return array
      */
     public function messages()

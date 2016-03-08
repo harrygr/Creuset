@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Carbon\Carbon;
 use App\Product;
+use Carbon\Carbon;
 use Faker\Factory;
 
 class ProductsControllerTest extends \TestCase

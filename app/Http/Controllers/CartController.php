@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Cart;
 use App\Http\Requests\AddToCartRequest;
 use App\Product;
+use Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\HtmlString;
 

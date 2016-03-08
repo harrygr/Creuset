@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Cart;
 use App\Presenters\PresentableTrait;
+use Cart;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
@@ -266,8 +266,6 @@ class Order extends Model
         if ($this->user) {
             return $this->user->email;
         }
-
-        return;
     }
 
     /**

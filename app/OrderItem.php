@@ -22,10 +22,10 @@ class OrderItem extends Model
 
     /**
      * Make a new Order Item which is associated with a product.
-     * 
+     *
      * @param Product $product  The product that the item is associated with
      * @param int     $quantity The quantity of the product in the order item
-     * 
+     *
      * @return OrderItem
      */
     public static function forProduct(Product $product, $quantity = 1)
@@ -42,7 +42,7 @@ class OrderItem extends Model
 
     /**
      * An OrderItem belongs to an order.
-     * 
+     *
      * @return Illuminate\Database\Eloquent\Relations\Relation
      */
     public function order()
@@ -52,7 +52,7 @@ class OrderItem extends Model
 
     /**
      * An order item is related to an orderable entity, e.g. a product.
-     * 
+     *
      * @return Illuminate\Database\Eloquent\Relations\Relation
      */
     public function orderable()

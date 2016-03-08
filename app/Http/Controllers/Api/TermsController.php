@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTermRequest;
 use App\Repositories\Term\TermRepository;
-use Illuminate\Http\Request;
 use App\Term;
 
 class TermsController extends Controller
