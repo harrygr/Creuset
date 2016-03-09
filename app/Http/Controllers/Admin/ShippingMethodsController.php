@@ -1,10 +1,10 @@
 <?php
 
-namespace Creuset\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
-use Creuset\Http\Controllers\Controller;
-use Creuset\Repositories\ShippingMethod\ShippingMethodRepository;
-use Creuset\ShippingMethod;
+use App\Http\Controllers\Controller;
+use App\Repositories\ShippingMethod\ShippingMethodRepository;
+use App\ShippingMethod;
 use Illuminate\Http\Request;
 
 class ShippingMethodsController extends Controller
@@ -30,9 +30,9 @@ class ShippingMethodsController extends Controller
 
     /**
      * Create a new shipping method in storage.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -50,9 +50,9 @@ class ShippingMethodsController extends Controller
 
     /**
      * Show the page for editing a shipping method.
-     * 
+     *
      * @param ShippingMethod $shipping_method
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function edit(ShippingMethod $shipping_method)
@@ -62,10 +62,10 @@ class ShippingMethodsController extends Controller
 
     /**
      * Update a shipping method in storage.
-     * 
+     *
      * @param Request        $request
      * @param ShippingMethod $shipping_method
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function update(Request $request, ShippingMethod $shipping_method)
@@ -83,9 +83,9 @@ class ShippingMethodsController extends Controller
 
     /**
      * Remove a shipping method from storage.
-     * 
+     *
      * @param ShippingMethod $shipping_method
-     * 
+     *
      * @return Illuminate\Http\Response
      */
     public function destroy(ShippingMethod $shipping_method)

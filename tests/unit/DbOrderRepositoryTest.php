@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Repositories\Order;
+namespace App\Repositories\Order;
 
-use Creuset\Order;
+use App\Order;
 use TestCase;
 
 class DbOrderRepositoryTest extends TestCase

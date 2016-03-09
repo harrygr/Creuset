@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Countries;
+namespace App\Countries;
 
 use GuzzleHttp\Client;
 use Illuminate\Support\Collection;

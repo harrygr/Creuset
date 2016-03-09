@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Repositories\Post;
+namespace App\Repositories\Post;
 
 use TestCase;
 
@@ -9,9 +9,9 @@ class PostRepositoryTest extends TestCase
     /** @test **/
     public function it_gets_posts()
     {
-        $post = factory(\Creuset\Post::class)->create();
+        $post = factory(\App\Post::class)->create();
 
-        $category = factory(\Creuset\Term::class)->create();
+        $category = factory(\App\Term::class)->create();
 
         $post->terms()->attach($category);
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Repositories\Order;
+namespace App\Repositories\Order;
 
-use Creuset\Order;
-use Creuset\Repositories\CacheRepository;
+use App\Order;
+use App\Repositories\CacheRepository;
 
 class CacheOrderRepository extends CacheRepository implements OrderRepository
 {

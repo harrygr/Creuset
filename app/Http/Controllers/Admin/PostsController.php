@@ -1,13 +1,13 @@
 <?php
 
-namespace Creuset\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
-use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests\CreatePostRequest;
-use Creuset\Http\Requests\UpdatePostRequest;
-use Creuset\Post;
-use Creuset\Repositories\Post\PostRepository;
-use Creuset\Repositories\Term\TermRepository;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\UpdatePostRequest;
+use App\Post;
+use App\Repositories\Post\PostRepository;
+use App\Repositories\Term\TermRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -16,7 +16,7 @@ use Illuminate\Http\Response;
  */
 class PostsController extends Controller
 {
-    use \Creuset\Traits\TrashesModels;
+    use \App\Traits\TrashesModels;
 
     /**
      * @var PostRepository

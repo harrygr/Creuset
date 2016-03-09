@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Presenters;
+namespace App\Presenters;
 
-use Creuset\Exceptions\PresenterException;
+use App\Exceptions\PresenterException;
 
 trait PresentableTrait
 {

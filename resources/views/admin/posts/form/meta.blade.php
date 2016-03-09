@@ -7,15 +7,15 @@
                 {!! Form::input('datetime-local', 'published_at', isset($post->published_at) ? $post->published_at->format('Y-m-d\TH:i:s') : date('Y-m-d\TH:i:s'), ['class' => 'form-control']) !!}
             </div>
         </div>
-        
+
         <div class="form-group">
             {!! Form::label('status') !!}
-            {!! Form::select('status', Creuset\Post::$postStatuses, null, ['class' => 'form-control']) !!}
+            {!! Form::select('status', App\Post::$postStatuses, null, ['class' => 'form-control']) !!}
         </div>
         <div class="form-group">
 
             {!! Form::label('user_id', 'Author') !!}
-            {!! Form::select('user_id', Creuset\User::lists('name', 'id'), null, ['class' => 'form-control']) !!}
+            {!! Form::select('user_id', App\User::lists('name', 'id'), null, ['class' => 'form-control']) !!}
         </div>
     </div>
     <div class="box-footer">

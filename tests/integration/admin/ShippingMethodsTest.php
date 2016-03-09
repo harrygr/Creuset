@@ -2,7 +2,7 @@
 
 namespace Integration;
 
-use Creuset\ShippingMethod;
+use App\ShippingMethod;
 use TestCase;
 
 class ShippingMethodsTest extends TestCase
@@ -26,11 +26,11 @@ class ShippingMethodsTest extends TestCase
         $this->visit('admin/shipping-methods')
              ->type('Express Shipping', 'description')
              ->type('5.40', 'base_rate')
-             //->select('GB', 'shipping_countries[]')
+             // ->select('GB', 'shipping_countries[]')
              ->press('submit')
              ->seePageIs('admin/shipping-methods')
              ->see('Shipping Method Saved')
-             ->see(config('shop.currency_symbol').'5.40');
+             ->see('Express Shipping');
 
         $shipping_method = ShippingMethod::where('description', 'Express Shipping')->first();
 
@@ -65,6 +65,6 @@ class ShippingMethodsTest extends TestCase
              ->press('submit')
              ->seePageIs('admin/shipping-methods')
              ->see('Shipping Method Updated')
-             ->see(config('shop.currency_symbol').'8.40');
+             ->see('8.40');
     }
 }

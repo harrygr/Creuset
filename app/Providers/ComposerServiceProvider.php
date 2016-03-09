@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Providers;
+namespace App\Providers;
 
-use Creuset\Countries\CountryRepository;
-use Creuset\Repositories\Order\OrderRepository;
+use App\Countries\CountryRepository;
+use App\Repositories\Order\OrderRepository;
 use Illuminate\Support\ServiceProvider;
 
 class ComposerServiceProvider extends ServiceProvider
@@ -35,7 +35,7 @@ class ComposerServiceProvider extends ServiceProvider
     {
         view()->composer('admin.users.form', function ($view) {
 
-            $roles = \Creuset\Role::lists('display_name', 'id');
+            $roles = \App\Role::lists('display_name', 'id');
 
             $view->with(compact('roles'));
 
@@ -51,7 +51,7 @@ class ComposerServiceProvider extends ServiceProvider
     {
         view()->composer(
             ['admin.products.images', 'admin.products.edit'],
-            \Creuset\Composers\NavViewComposer::class.'@productLinks'
+            \App\Composers\NavViewComposer::class.'@productLinks'
         );
     }
 
@@ -62,7 +62,7 @@ class ComposerServiceProvider extends ServiceProvider
      */
     private function sharePostData()
     {
-        view()->composer('admin.posts.index', \Creuset\Composers\Admin\PostViewComposer::class.'@postCount');
+        view()->composer('admin.posts.index', \App\Composers\Admin\PostViewComposer::class.'@postCount');
     }
 
     private function shareCountries()
@@ -90,7 +90,7 @@ class ComposerServiceProvider extends ServiceProvider
     {
         view()->composer('admin.layouts.sidebar-menu', function ($view) {
             $orders = $this->app->make(OrderRepository::class);
-            $view->with('order_count', $orders->count(\Creuset\Order::PAID));
+            $view->with('order_count', $orders->count(\App\Order::PAID));
         });
     }
 

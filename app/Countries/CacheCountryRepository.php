@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Countries;
+namespace App\Countries;
 
 class CacheCountryRepository implements CountryRepository
 {
@@ -25,7 +25,7 @@ class CacheCountryRepository implements CountryRepository
 
     /**
      * Get a country name by its Alpha2 code.
-     * 
+     *
      * @param string $code The alpha2 code
      *
      * @return string The country name

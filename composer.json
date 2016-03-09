@@ -27,7 +27,7 @@
 			"database"
 		],
 		"psr-4": {
-			"Creuset\\": "app/"
+			"App\\": "app/"
 		}
 	},
 	"autoload-dev": {

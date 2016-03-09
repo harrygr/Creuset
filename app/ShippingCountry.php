@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +15,7 @@ class ShippingCountry extends Model
 
     /**
      * Disable timestamps.
-     * 
+     *
      * @var bool
      */
     public $timestamps = false;
@@ -39,9 +39,9 @@ class ShippingCountry extends Model
 
     /**
      * Ensure the country ID is always uppercase.
-     * 
+     *
      * @param string $country_id
-     * 
+     *
      * @return string
      */
     public function getCountryIdAttribute($country_id)

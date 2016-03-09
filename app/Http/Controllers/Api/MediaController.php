@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Http\Controllers\Api;
+namespace App\Http\Controllers\Api;
 
-use Creuset\Http\Controllers\Controller;
-use Creuset\Media;
+use App\Http\Controllers\Controller;
+use App\Media;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMedia;
 

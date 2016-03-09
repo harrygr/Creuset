@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,14 +8,14 @@ class ShippingMethod extends Model
 {
     /**
      * The table used by the model.
-     * 
+     *
      * @var string
      */
     protected $table = 'shipping_methods';
 
     /**
      * Validation rules for an address.
-     * 
+     *
      * @var array
      */
     public static $rules = [
@@ -81,7 +81,7 @@ class ShippingMethod extends Model
 
     /**
      * A shipping method has many shipping countries.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\Relation
      */
     public function shipping_countries()
@@ -93,7 +93,7 @@ class ShippingMethod extends Model
      * Allow countries for a shipping method.
      *
      * @param array $countries An array of allowed country codes
-     * 
+     *
      * @return ShippingMethod
      */
     public function allowCountries(array $countries)

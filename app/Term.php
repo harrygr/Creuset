@@ -1,11 +1,33 @@
 <?php
 
-namespace Creuset;
+namespace App;
 
+use App\Scopes\OrderScope;
 use Illuminate\Database\Eloquent\Model;
 
 class Term extends Model
 {
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new OrderScope());
+
+        /**
+         * Set a slug on the term if it's not passed in.
+         */
+        static::creating(function ($term) {
+            if (!$term->slug) {
+                $term->slug = str_slug($term->term);
+            }
+        });
+    }
+
     /**
      * The database table used by the model.
      *
@@ -29,18 +51,25 @@ class Term extends Model
      *
      * @var array
      */
-    protected $fillable = ['taxonomy', 'term', 'slug'];
+    protected $fillable = ['taxonomy', 'term', 'slug', 'order'];
 
     public function posts()
     {
-        return $this->morphedByMany('Creuset\Post', 'termable');
+        return $this->morphedByMany('App\Post', 'termable');
     }
 
     public function products()
     {
-        return $this->morphedByMany('Creuset\Product', 'termable');
+        return $this->morphedByMany('App\Product', 'termable');
     }
 
+    /**
+     * If a term isn't set, get the unslugged version of the slug.
+     *
+     * @param string $term
+     *
+     * @return string
+     */
     public function getTermAttribute($term)
     {
         if (!$term) {
@@ -50,6 +79,11 @@ class Term extends Model
         return $term;
     }
 
+    /**
+     * Get a presentable version of the taxonomy.
+     *
+     * @return string
+     */
     public function getTaxonomy()
     {
         return ucwords(\Present::unslug($this->taxonomy));

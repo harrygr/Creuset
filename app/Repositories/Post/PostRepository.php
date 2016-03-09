@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Repositories\Post;
+namespace App\Repositories\Post;
 
-use Creuset\Post;
+use App\Post;
 
 interface PostRepository
 {

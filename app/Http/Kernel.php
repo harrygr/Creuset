@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Http;
+namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -21,14 +21,14 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth'           => 'Creuset\Http\Middleware\Authenticate',
+        'auth'           => 'App\Http\Middleware\Authenticate',
         'auth.basic'     => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
-        'guest'          => 'Creuset\Http\Middleware\RedirectIfAuthenticated',
-        'admin'          => 'Creuset\Http\Middleware\ForbidIfNotAdmin',
-        'order.customer' => 'Creuset\Http\Middleware\DeriveUserForOrder',
+        'guest'          => 'App\Http\Middleware\RedirectIfAuthenticated',
+        'admin'          => 'App\Http\Middleware\ForbidIfNotAdmin',
+        'order.customer' => 'App\Http\Middleware\DeriveUserForOrder',
         'throttle'       => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'order.session'  => \Creuset\Http\Middleware\OrderMustBeInSession::class,
-        'cart.empty'     => \Creuset\Http\Middleware\RedirectIfCartIsEmpty::class,
+        'order.session'  => \App\Http\Middleware\OrderMustBeInSession::class,
+        'cart.empty'     => \App\Http\Middleware\RedirectIfCartIsEmpty::class,
     ];
 
     /**
@@ -42,7 +42,7 @@ class Kernel extends HttpKernel
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \Creuset\Http\Middleware\VerifyCsrfToken::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
         ],
         'api' => [
             \Illuminate\Cookie\Middleware\EncryptCookies::class,

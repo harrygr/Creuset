@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Repositories\Product;
+namespace App\Repositories\Product;
 
-use Creuset\Term;
+use App\Term;
 
 interface ProductRepository
 {

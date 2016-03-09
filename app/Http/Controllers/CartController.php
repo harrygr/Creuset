@@ -1,10 +1,10 @@
 <?php
 
-namespace Creuset\Http\Controllers;
+namespace App\Http\Controllers;
 
+use App\Http\Requests\AddToCartRequest;
+use App\Product;
 use Cart;
-use Creuset\Http\Requests\AddToCartRequest;
-use Creuset\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\HtmlString;
 
@@ -32,7 +32,7 @@ class CartController extends Controller
         $product = Product::findOrFail($request->product_id);
         $qty = (int) $request->quantity;
 
-        Cart::associate('Product', 'Creuset')->add([
+        Cart::associate('Product', 'App')->add([
                   'id'    => $product->id,
                   'qty'   => $qty,
                   'name'  => $product->name,

@@ -1,8 +1,8 @@
 <?php
 
-use Creuset\Post;
-use Creuset\Product;
-use Creuset\Term;
+use App\Post;
+use App\Product;
+use App\Term;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 
@@ -26,7 +26,7 @@ class TermablesTableSeeder extends Seeder
             DB::table('termables')->insert([
                 'term_id'          => $this->faker->randomElement($term_ids),
                 'termable_id'      => $this->faker->randomElement($post_ids),
-                'termable_type'    => 'Creuset\Post',
+                'termable_type'    => 'App\Post',
                 ]);
         }
     }
@@ -39,7 +39,7 @@ class TermablesTableSeeder extends Seeder
             DB::table('termables')->insert([
                 'term_id'          => $this->faker->randomElement($term_ids),
                 'termable_id'      => $this->faker->randomElement($product_ids),
-                'termable_type'    => 'Creuset\Product',
+                'termable_type'    => 'App\Product',
                 ]);
         }
     }

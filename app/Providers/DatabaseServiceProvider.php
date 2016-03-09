@@ -1,21 +1,21 @@
 <?php
 
-namespace Creuset\Providers;
+namespace App\Providers;
 
-use Creuset\Repositories\Order\CacheOrderRepository;
-use Creuset\Repositories\Order\DbOrderRepository;
-use Creuset\Repositories\Order\OrderRepository;
-use Creuset\Repositories\Post\CachePostRepository;
-use Creuset\Repositories\Post\DbPostRepository;
-use Creuset\Repositories\Post\PostRepository;
-use Creuset\Repositories\Product\CacheProductRepository;
-use Creuset\Repositories\Product\DbProductRepository;
-use Creuset\Repositories\Product\ProductRepository;
-use Creuset\Repositories\ShippingMethod\CacheShippingMethodRepository;
-use Creuset\Repositories\ShippingMethod\DbShippingMethodRepository;
-use Creuset\Repositories\ShippingMethod\ShippingMethodRepository;
-use Creuset\Repositories\Term\DbTermRepository;
-use Creuset\Repositories\Term\TermRepository;
+use App\Repositories\Order\CacheOrderRepository;
+use App\Repositories\Order\DbOrderRepository;
+use App\Repositories\Order\OrderRepository;
+use App\Repositories\Post\CachePostRepository;
+use App\Repositories\Post\DbPostRepository;
+use App\Repositories\Post\PostRepository;
+use App\Repositories\Product\CacheProductRepository;
+use App\Repositories\Product\DbProductRepository;
+use App\Repositories\Product\ProductRepository;
+use App\Repositories\ShippingMethod\CacheShippingMethodRepository;
+use App\Repositories\ShippingMethod\DbShippingMethodRepository;
+use App\Repositories\ShippingMethod\ShippingMethodRepository;
+use App\Repositories\Term\DbTermRepository;
+use App\Repositories\Term\TermRepository;
 use Illuminate\Support\ServiceProvider;
 
 class DatabaseServiceProvider extends ServiceProvider

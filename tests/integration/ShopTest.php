@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset;
+namespace App;
 
 use TestCase;
 
@@ -80,7 +80,7 @@ class ShopTest extends TestCase
         $product_group_1 = factory(Product::class, 4)->create();
         $product_group_2 = factory(Product::class, 3)->create();
 
-        $product_category = factory('Creuset\Term')->create([
+        $product_category = factory('App\Term')->create([
           'taxonomy' => 'product_category',
           'term'     => 'Cats',
           'slug'     => 'cats',

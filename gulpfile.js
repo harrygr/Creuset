@@ -1,5 +1,7 @@
 var elixir = require('laravel-elixir');
 
+require('laravel-elixir-vueify');
+
 var jsPath = 'resources/assets/js/vendor/';
 var lessPath = 'resources/assets/less/vendor/';
 var cssAdminPath = 'resources/assets/css/admin/';
@@ -17,15 +19,13 @@ elixir(function(mix) {
 
     mix.browserify('admin.js');
 
-    mix.copy(adminltepath + 'css/AdminLTE.css', cssAdminPath + 'AdminLTE.css')
-       .copy(adminltepath + 'css/skins/skin-blue.css', cssAdminPath + 'skin-blue.css')
-       .copy(adminltepath + 'js/app.min.js', 'public/js/admin-lte.js');
+    mix.copy(adminltepath + 'js/app.min.js', 'public/js/admin-lte.js');
 
     // Combine admin styles
     mix.styles([
         cssAdminPath + 'admin.css',
-        cssAdminPath + 'AdminLTE.css',
-        cssAdminPath + 'skin-blue.css',
+        '../../../' + adminltepath + 'css/AdminLTE.css',
+        '../../../' + adminltepath + 'css/skins/skin-blue.css',
         ], 'public/css/admin.all.css');
 
     mix.version([

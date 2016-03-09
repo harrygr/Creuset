@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Repositories;
+namespace App\Repositories;
 
 abstract class CacheRepository
 {
@@ -20,7 +20,7 @@ abstract class CacheRepository
 
     /**
      * Find an instance of the model by its ID.
-     * 
+     *
      * @param int   $id
      * @param array $with
      *
@@ -36,7 +36,7 @@ abstract class CacheRepository
     }
 
     /**
-     * @param array $with
+     * @param array $with Any relations to eager load
      *
      * @return mixed
      */
@@ -52,8 +52,8 @@ abstract class CacheRepository
 
     /**
      * Get all instances of the model.
-     * 
-     * @param array $with
+     *
+     * @param array $with Any relations to eager load
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -80,7 +80,7 @@ abstract class CacheRepository
 
     /**
      * Get an instance of a model by its slug.
-     * 
+     *
      * @param string $slug
      *
      * @return mixed

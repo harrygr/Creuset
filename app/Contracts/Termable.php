@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Contracts;
+namespace App\Contracts;
 
 /**
  * The contract for a model that has terms attached.

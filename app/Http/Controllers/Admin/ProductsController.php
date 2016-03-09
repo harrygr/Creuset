@@ -1,17 +1,17 @@
 <?php
 
-namespace Creuset\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
-use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests\CreateProductRequest;
-use Creuset\Http\Requests\UpdateProductRequest;
-use Creuset\Product;
-use Creuset\Repositories\Product\ProductRepository;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateProductRequest;
+use App\Http\Requests\UpdateProductRequest;
+use App\Product;
+use App\Repositories\Product\ProductRepository;
 
 class ProductsController extends Controller
 {
     /**
-     * @var \Creuset\Repositories\Product\ProductRepository
+     * @var \App\Repositories\Product\ProductRepository
      */
     private $products;
 

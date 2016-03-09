@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Http\Requests;
+namespace App\Http\Requests;
 
 class UpdateProductRequest extends Request
 {

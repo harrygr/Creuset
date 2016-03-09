@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Http\Requests;
+namespace App\Http\Requests;
 
-// use Creuset\Http\Requests\Request;
+// use App\Http\Requests\Request;
 
 class UpdatePostRequest extends PostRequest
 {

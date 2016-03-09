@@ -2,9 +2,9 @@
 
 namespace Events;
 
-use Creuset\Events\ProductStockChanged;
-use Creuset\Product;
-use Creuset\User;
+use App\Events\ProductStockChanged;
+use App\Product;
+use App\User;
 use TestCase;
 
 class ProductStockChangedEventTest extends TestCase

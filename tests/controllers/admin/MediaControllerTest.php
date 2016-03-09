@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
-use Creuset\Media;
+use App\Media;
 
 class MediaControllerTest extends \TestCase
 {

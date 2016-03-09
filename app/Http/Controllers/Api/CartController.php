@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Http\Controllers\Api;
+namespace App\Http\Controllers\Api;
 
-use Creuset\Http\Controllers\Controller;
-use Creuset\Product;
+use App\Http\Controllers\Controller;
+use App\Product;
 use Illuminate\Http\Request;
 
 class CartController extends Controller

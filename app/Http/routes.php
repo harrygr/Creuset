@@ -122,6 +122,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'admin']], function (
     Route::patch('categories/{term}', ['uses' => 'Admin\TermsController@update', 'as' => 'admin.categories.update']);
     Route::delete('terms/{term}', ['uses' => 'Admin\TermsController@destroy', 'as' => 'admin.terms.delete']);
 
+    Route::get('attributes', ['uses' => 'Admin\AttributesController@index', 'as' => 'admin.attributes.index']);
+    Route::get('attributes/create', ['uses' => 'Admin\AttributesController@create', 'as' => 'admin.attributes.create']);
+    Route::get('attributes/{taxonomy}/edit', ['uses' => 'Admin\AttributesController@edit', 'as' => 'admin.attributes.edit']);
+    Route::delete('attributes/{taxonomy}', ['uses' => 'Admin\AttributesController@destroy', 'as' => 'admin.attributes.delete']);
+
+    // Media
     Route::get('media', ['uses' => 'Admin\MediaController@index', 'as' => 'admin.media.index']);
     Route::delete('media/{media}', ['uses' => 'Admin\MediaController@destroy', 'as' => 'admin.media.delete']);
 
@@ -146,6 +152,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'admin']], function (
 Route::group(['prefix' => 'api', 'middleware' => 'api'], function () {
     Route::get('terms/{taxonomy}', ['uses' => 'Api\TermsController@terms', 'as' => 'api.terms']);
     Route::post('terms', ['uses' => 'Api\TermsController@store', 'as' => 'api.terms.store']);
+    Route::delete('terms/{term}', ['uses' => 'Api\TermsController@destroy', 'as' => 'api.terms.delete']);
+    Route::patch('terms/{term}', ['uses' => 'Api\TermsController@update', 'as' => 'api.terms.update']);
 
     Route::get('categories', ['uses' => 'Api\TermsController@categories', 'as' => 'api.categories']);
     Route::post('categories', ['uses' => 'Api\TermsController@storeCategory', 'as' => 'api.categories']);
@@ -159,9 +167,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'api'], function () {
     Route::get('media/{media}', ['uses' => 'Api\MediaController@show', 'as' => 'api.media.show'])->where('id', '[0-9]+');
     Route::get('media/{collection?}', ['uses' => 'Api\MediaController@index', 'as' => 'api.media.index']);
 
-    // Route::group(['prefix' => 'cart'], function () {
-    //     Route::post('/', ['uses' => 'Api\CartController@store']);
-    // });
+    Route::post('attributes', ['uses' => 'Api\TermsController@storeMany', 'as' => 'api.terms.store_many']);
 
     Route::group(['prefix' => 'orders'], function () {
         Route::patch('{order}', ['uses' => 'Api\OrdersController@update', 'as' => 'api.orders.update']);

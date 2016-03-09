@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Http\Requests\Address;
+namespace App\Http\Requests\Address;
 
-use Creuset\Http\Requests\Request;
+use App\Http\Requests\Request;
 
 class EditAddressRequest extends Request
 {

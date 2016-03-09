@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Http\Requests\Order;
+namespace App\Http\Requests\Order;
 
-use Creuset\Http\Requests\Request;
+use App\Http\Requests\Request;
 
 class ViewOrderRequest extends Request
 {
