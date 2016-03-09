@@ -79,7 +79,7 @@ $factory->define('App\Termable', function ($faker) {
 });
 
 $factory->define('App\OrderItem', function ($faker) {
-    $product = factory(App\Product::class)->create();
+    $product = factory(App\Product::class)->create(['stock_qty' => 20]);
 
     return [
     'order_id'          => factory('App\Order')->create()->id,
