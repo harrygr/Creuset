@@ -36,4 +36,14 @@ class CacheCountryRepository implements CountryRepository
             return $this->country_repository->getByCode($code);
         });
     }
+    
+    /**
+     * Group the list of countries into subarrays organised by region
+     * 
+     * @return Array
+     */
+    public function group()
+    {
+        return $this->country_repository->group();
+    }
 }
