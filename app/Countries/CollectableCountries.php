@@ -5,11 +5,10 @@ namespace App\Countries;
 use Illuminate\Support\Collection;
 
 /**
- * Common methods applicable to a collection of countries, regardless of their source
+ * Common methods applicable to a collection of countries, regardless of their source.
  */
-Trait CollectableCountries
+trait CollectableCountries
 {
-
     /**
      * Get a country name by its Alpha2 code.
      *
@@ -40,21 +39,19 @@ Trait CollectableCountries
         return $list;
     }
 
-
     /**
-     * Group the list of countries into subarrays organised by region
-     * 
-     * @return Array
+     * Group the list of countries into subarrays organised by region.
+     *
+     * @return array
      */
     public function group()
     {
         $countries = $this->all()->groupBy('region');
 
-        return $countries->map(function($region) {
+        return $countries->map(function ($region) {
             return $region->pluck('name', 'alpha2Code');
         })->toArray();
     }
-
 
     /**
      * Sort a list of countries, putting the first countries at the top.
@@ -81,9 +78,9 @@ Trait CollectableCountries
     }
 
     /**
-     * Get the country IDs that should be at the top of the list
-     * 
-     * @return Array
+     * Get the country IDs that should be at the top of the list.
+     *
+     * @return array
      */
     protected function getFirstCountries()
     {
