@@ -58,6 +58,14 @@ class RouteServiceProvider extends ServiceProvider
             return Product::where('slug', $slug)->firstOrFail();
         });
 
+        $router->bind('page_slug', function ($slug) {
+            return Post::published()
+            ->where([
+                'slug' => $slug,
+                'type' => 'page',
+                ])->firstOrFail();
+        });
+
         $router->bind('product_category', function ($slug) {
             return Term::where([
                 'taxonomy' => 'product_category',

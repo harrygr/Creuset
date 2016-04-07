@@ -68,9 +68,20 @@ class Post extends Model implements HasMediaConversions, Termable
      */
     public function setPublishedAtAttribute($date)
     {
-        if (is_string($date)) {
-            $this->attributes['published_at'] = new Carbon($date);
-        }
+            $this->attributes['published_at'] = is_string($date) ? new Carbon($date) : $date;
+    }
+
+    /**
+     * Limit the scope of a query to only posts that are published
+     * 
+     * @param  Illuminate\Database\Query\Builder $query
+     * 
+     * @return void
+     */
+    public function scopePublished($query)
+    {
+        $query->where('published_at', '<=', new \DateTime())
+              ->where('status', 'published');
     }
 
     /**
@@ -130,5 +141,15 @@ class Post extends Model implements HasMediaConversions, Termable
     public function getName()
     {
         return $this->title;
+    }
+
+    /**
+     * Get the post's content as html.
+     *
+     * @return string
+     */
+    public function getContentHtml()
+    {
+        return \Markdown::convertToHtml($this->content);
     }
 }
