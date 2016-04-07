@@ -21,5 +21,4 @@ interface CountryRepository
     public function getByCode($code);
 
     public function group();
-    
 }

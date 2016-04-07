@@ -15,7 +15,6 @@ class FileCountryRepository implements CountryRepository
      */
     public $first_countries = ['GB', 'US'];
 
-
     /**
      * Get a collection of all the countries.
      *
@@ -27,5 +26,4 @@ class FileCountryRepository implements CountryRepository
 
         return new Collection(json_decode(file_get_contents($file_path), true));
     }
-
 }

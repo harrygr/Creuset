@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 class RestCountriesCountryRepository implements CountryRepository
 {
     use CollectableCountries;
-    
+
     private $http_client;
     private $base_url = 'https://restcountries.eu/rest/v1/';
 
