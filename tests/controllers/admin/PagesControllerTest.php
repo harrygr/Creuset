@@ -22,6 +22,7 @@ class PagesControllerTest extends \TestCase
     {
         // I go to the create pages page
         $pageTitle = 'Awesome page Title';
+        $pageContent = 'Here is some page content';
 
         $this->visit('/admin/pages/create');
 
@@ -35,6 +36,7 @@ class PagesControllerTest extends \TestCase
             ]);
         // And see that I created a post successfully
         $this->seeInDatabase('pages', [
+            'title'   => $pageTitle,
             'content' => $pageContent,
             'user_id' => $this->user->id,
             ]);
@@ -76,6 +78,7 @@ class PagesControllerTest extends \TestCase
 
         // move to trash
         $this->delete("/admin/pages/{$page->id}");
+        $this->assertSessionHas('alert', 'Page moved to trash');
     }
 
     /** @test **/
@@ -93,6 +96,7 @@ class PagesControllerTest extends \TestCase
 
         // Delete permanently
         $this->delete("/admin/pages/{$page->id}");
+        $this->assertSessionHas('alert', 'Page permanently deleted');
 
         $this->notSeeInDatabase('pages', [
             'title' => $page->title,
