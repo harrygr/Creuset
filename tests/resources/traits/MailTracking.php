@@ -126,13 +126,13 @@ trait MailTracking
     }
 
     /**
-     * Get all recipients who have been sent an email
-     * 
+     * Get all recipients who have been sent an email.
+     *
      * @return array
      */
-    function getAllRecipients()
+    public function getAllRecipients()
     {
-        $recipients = array_map(function($mail) {
+        $recipients = array_map(function ($mail) {
             return $mail->getTo();
         }, $this->emails);
 

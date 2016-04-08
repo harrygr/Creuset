@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Media;
 use Carbon\Carbon;
 use Faker\Factory;
-use Illuminate\Http\UploadedFile;
 
 class PagesControllerTest extends \TestCase
 {
@@ -116,5 +114,4 @@ class PagesControllerTest extends \TestCase
         $this->visit('/admin/pages')
              ->see($page->title);
     }
-
 }

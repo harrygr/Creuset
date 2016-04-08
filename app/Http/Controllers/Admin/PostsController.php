@@ -8,7 +8,6 @@ use App\Http\Requests\Post\UpdatePostRequest;
 use App\Post;
 use App\Repositories\Post\PostRepository;
 use App\Repositories\Term\TermRepository;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 /**
@@ -29,8 +28,8 @@ class PostsController extends Controller
     private $terms;
 
     /**
-     * Create a new PostsController instance
-     * 
+     * Create a new PostsController instance.
+     *
      * @param PostRepository $posts PostRepository
      * @param TermRepository $terms TermRepository
      */
@@ -41,10 +40,9 @@ class PostsController extends Controller
     }
 
     /**
-     * Show a listing of posts
-     * 
-     * @return Response
+     * Show a listing of posts.
      *
+     * @return Response
      */
     public function index()
     {
@@ -54,8 +52,8 @@ class PostsController extends Controller
     }
 
     /**
-     * Show a page of trashed posts
-     * 
+     * Show a page of trashed posts.
+     *
      * @return Response
      */
     public function trash()
@@ -78,7 +76,7 @@ class PostsController extends Controller
     {
         $selectedCategories = [];
         $categoryList = $terms->getCategoryList();
-        $tagList = $terms->getTagList();        
+        $tagList = $terms->getTagList();
 
         return view('admin.posts.create')->with(compact(
             'categoryList',
@@ -102,8 +100,8 @@ class PostsController extends Controller
 
         return redirect()->route('admin.posts.edit', $post)
             ->with([
-                'alert' => 'Post saved', 
-                'alert-class' => 'success'
+                'alert'       => 'Post saved',
+                'alert-class' => 'success',
                 ]);
     }
 
@@ -149,16 +147,16 @@ class PostsController extends Controller
 
         return redirect()->route('admin.posts.edit', $post)
             ->with([
-                'alert' => 'Post Updated!',
-                'alert-class' => 'success'
+                'alert'       => 'Post Updated!',
+                'alert-class' => 'success',
                 ]);
     }
 
     /**
-     * Show a page of attached images
-     * 
-     * @param  Post   $post
-     * 
+     * Show a page of attached images.
+     *
+     * @param Post $post
+     *
      * @return Response
      */
     public function images(Post $post)
@@ -167,20 +165,19 @@ class PostsController extends Controller
     }
 
     /**
-     * Restore the post from soft-deletion
+     * Restore the post from soft-deletion.
      *
      * @param Post $post
      *
      * @throws \Exception
      */
-
     public function restore(Post $post)
     {
         $post->restore();
 
         return redirect()->route('admin.posts.index')
             ->with([
-                'alert' => 'Post Restored', 
+                'alert'       => 'Post Restored',
                 'alert-class' => 'success',
                 ]);
     }

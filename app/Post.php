@@ -57,17 +57,16 @@ class Post extends Model implements HasMediaConversions, Termable
     ];
 
     /**
-     * Sync an array of terms to the post
-     *     
-     * @param  arra  $terms
-     * 
+     * Sync an array of terms to the post.
+     *
+     * @param arra $terms
+     *
      * @return Post
      */
     public function syncTerms(array $terms = [])
     {
         $this->terms()->sync($terms);
+
         return $this;
     }
-
-    
 }

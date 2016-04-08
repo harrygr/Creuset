@@ -62,7 +62,6 @@ Route::group(['middleware' => ['web']], function () {
         Route::delete('addresses/{address}', ['uses' => 'AddressesController@destroy', 'as' => 'addresses.delete']);
     });
 
-
 }); // /web middleware group
 
 /*
@@ -186,7 +185,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'api'], function () {
 
 });
 
-/**
- * If none of the above routes are matched we will see is a page has a matching slug 
+/*
+ * If none of the above routes are matched we will see is a page has a matching slug
  */
 Route::get('{page_slug}', ['uses' => 'PagesController@show', 'middleware' => ['web']]);

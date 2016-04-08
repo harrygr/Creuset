@@ -2,8 +2,6 @@
 
 namespace App\Repositories\Post;
 
-use App\Post;
-
 interface PostRepository
 {
     /**
