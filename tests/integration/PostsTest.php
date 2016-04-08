@@ -5,7 +5,7 @@ namespace Unit;
 use App\Repositories\Post\DbPostRepository;
 use TestCase;
 
-class PagesTest extends TestCase
+class PostsTest extends TestCase
 {
     protected $posts;
 
@@ -44,5 +44,4 @@ class PagesTest extends TestCase
         $post = $this->posts->getBySlug($postDummy->slug);
         $this->assertEquals($post->slug, $postDummy->slug);
     }
-
 }

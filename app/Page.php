@@ -2,10 +2,10 @@
 
 namespace App;
 
+use App\Presenters\PresentableTrait;
 use App\Traits\Postable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Presenters\PresentableTrait;
 
 class Page extends Model
 {

@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Page;
 
 use App\Http\Requests\Request;
-use App\Repositories\Term\TermRepository;
 
 class PageRequest extends Request
 {

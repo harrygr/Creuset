@@ -12,8 +12,8 @@ class PagesController extends Controller
     use \App\Traits\TrashesModels;
 
     /**
-     * Show a list of pages
-     *  
+     * Show a list of pages.
+     *
      * @return Response
      */
     public function index()
@@ -26,13 +26,12 @@ class PagesController extends Controller
     /**
      * Show the form for creating a new page.
      *
-     * @param Page             $page
+     * @param Page $page
      *
      * @return Response
      */
     public function create(Page $page)
-    {      
-
+    {
         return view('admin.pages.create', compact('page'));
     }
 
@@ -49,15 +48,15 @@ class PagesController extends Controller
 
         return redirect()->route('admin.pages.edit', $page)
         ->with([
-            'alert' => 'Page saved', 
-            'alert-class' => 'success'
+            'alert'       => 'Page saved',
+            'alert-class' => 'success',
             ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Page             $page
+     * @param Page $page
      *
      * @return Response
      */
@@ -80,14 +79,14 @@ class PagesController extends Controller
 
         return redirect()->route('admin.pages.edit', $page)
             ->with([
-                'alert' => 'Page Updated!',
+                'alert'       => 'Page Updated!',
                 'alert-class' => 'success',
                 ]);
     }
 
     /**
-     * Show the page of trashed pages
-     * 
+     * Show the page of trashed pages.
+     *
      * @return Response
      */
     public function trash()
@@ -99,20 +98,19 @@ class PagesController extends Controller
     }
 
     /**
-     * Restore the page from soft-deletion
+     * Restore the page from soft-deletion.
      *
      * @param Page $post
      *
      * @throws \Exception
      */
-
     public function restore(Page $page)
     {
         $page->restore();
 
         return redirect()->route('admin.pages.index')
             ->with([
-                'alert' => 'Page Restored', 
+                'alert'       => 'Page Restored',
                 'alert-class' => 'success',
                 ]);
     }

@@ -2,10 +2,9 @@
 
 namespace Unit;
 
-use App\Repositories\Post\DbPostRepository;
 use TestCase;
 
-class PostsTest extends TestCase
+class PagesTest extends TestCase
 {
     /** @test **/
     public function it_loads_a_page_by_slug()

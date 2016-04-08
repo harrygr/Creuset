@@ -6,7 +6,6 @@ use Carbon\Carbon;
 
 trait Postable
 {
-
     public function getEditUri()
     {
         return route('admin.'.$this->getTable().'.edit', $this->id);
@@ -23,14 +22,14 @@ trait Postable
      */
     public function setPublishedAtAttribute($date)
     {
-            $this->attributes['published_at'] = is_string($date) ? new Carbon($date) : $date;
+        $this->attributes['published_at'] = is_string($date) ? new Carbon($date) : $date;
     }
 
     /**
-     * Limit the scope of a query to only posts that are published
-     * 
-     * @param  Illuminate\Database\Query\Builder $query
-     * 
+     * Limit the scope of a query to only posts that are published.
+     *
+     * @param Illuminate\Database\Query\Builder $query
+     *
      * @return void
      */
     public function scopePublished($query)
