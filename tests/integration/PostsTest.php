@@ -5,7 +5,7 @@ namespace Unit;
 use App\Repositories\Post\DbPostRepository;
 use TestCase;
 
-class PostsTest extends TestCase
+class PagesTest extends TestCase
 {
     protected $posts;
 
@@ -45,15 +45,4 @@ class PostsTest extends TestCase
         $this->assertEquals($post->slug, $postDummy->slug);
     }
 
-    /** @test **/
-    public function it_loads_a_page_by_slug()
-    {
-        $page = factory('App\Post')->create([
-            'type' => 'page',
-            'slug' => 'my-very-nice-page',
-            ]);
-
-        $this->visit('/my-very-nice-page')
-             ->see($page->content);
-    }
 }

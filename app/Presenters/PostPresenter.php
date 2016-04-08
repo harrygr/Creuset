@@ -6,8 +6,6 @@ use Illuminate\Support\HtmlString;
 
 class PostPresenter extends ModelPresenter
 {
-    protected $modelRoute = 'posts';
-
     public function categoryList($delimiter = ', ', $links = true)
     {
         $categoryNames = $links ? $this->model->categories->map(function ($category) {

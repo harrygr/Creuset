@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Page;
 use App\Post;
 use App\Product;
 use App\Term;
@@ -50,6 +51,10 @@ class RouteServiceProvider extends ServiceProvider
             return Post::withTrashed()->find($id);
         });
 
+        $router->bind('trashedPage', function ($id) {
+            return Page::withTrashed()->find($id);
+        });
+
         $router->bind('username', function ($username) {
             return \App\User::where('username', $username)->firstOrFail();
         });
@@ -59,10 +64,9 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $router->bind('page_slug', function ($slug) {
-            return Post::published()
+            return Page::published()
             ->where([
                 'slug' => $slug,
-                'type' => 'page',
                 ])->firstOrFail();
         });
 

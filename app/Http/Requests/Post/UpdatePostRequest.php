@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
-
-// use App\Http\Requests\Request;
+namespace App\Http\Requests\Post;
 
 class UpdatePostRequest extends PostRequest
 {

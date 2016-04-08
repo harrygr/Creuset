@@ -38,7 +38,6 @@ class PostsControllerTest extends \TestCase
         $this->seeInDatabase('posts', [
             'title'   => $postTitle,
             'content' => $postContent,
-            'type'    => 'post',
             'user_id' => $this->user->id,
             ]);
     }
@@ -67,7 +66,6 @@ class PostsControllerTest extends \TestCase
         $this->seeInDatabase('posts', [
             'id'      => $post->id,
             'title'   => $postTitle,
-            'type'    => 'post',
             ]);
     }
 

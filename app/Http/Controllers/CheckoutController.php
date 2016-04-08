@@ -21,7 +21,7 @@ class CheckoutController extends Controller
      */
     public function show(Request $request)
     {
-        // In case we need to refirest to a login page
+        // In case we need to redirect to a login page
         // we'll flash the checkout as the intended url
         $request->session()->flash('url.intended', 'checkout');
 
