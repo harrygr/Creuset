@@ -57,16 +57,6 @@ trait Postable
         return $this->belongsTo('\App\User', 'user_id', 'id');
     }
 
-    public function parent()
-    {
-        return $this->belongsTo('\App\Post');
-    }
-
-    public function children()
-    {
-        return $this->hasMany('\App\Post');
-    }
-
     /**
      * Whether the post is not yet persisted.
      *
