@@ -1,5 +1,9 @@
 <?php
 
+ // DB::listen(function ($query) {
+ //    var_dump($query->sql);
+ //        });
+
 Route::group(['middleware' => ['web']], function () {
 
     Route::get('/', 'HomeController@index');
@@ -185,7 +189,8 @@ Route::group(['prefix' => 'api', 'middleware' => 'api'], function () {
 
 });
 
+
 /*
  * If none of the above routes are matched we will see is a page has a matching slug
  */
-Route::get('{page_slug}', ['uses' => 'PagesController@show', 'middleware' => ['web']]);
+Route::get('{slug}/{slug2?}/{slug3?}', ['uses' => 'PagesController@show', 'middleware' => ['web']]);

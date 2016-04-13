@@ -19,8 +19,15 @@ class CreatePagesTable extends Migration
             $table->string('slug')->unique();
             $table->string('status', 20)->default('published');
             $table->integer('user_id')->unsigned();
-            $table->integer('page_id')->unsigned()->nullable();
+
             $table->integer('image_id')->unsigned()->nullable();
+
+            // Nested Set relations
+            $table->integer('parent_id')->nullable();
+            $table->integer('lft')->nullable();
+            $table->integer('rgt')->nullable();
+            $table->integer('depth')->nullable();
+
             $table->timestamp('published_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
@@ -28,7 +35,6 @@ class CreatePagesTable extends Migration
 
         Schema::table('pages', function ($table) {
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('page_id')->references('id')->on('pages');
         });
     }
 

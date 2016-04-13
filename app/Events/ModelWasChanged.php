@@ -19,14 +19,4 @@ class ModelWasChanged extends Event
     {
         $this->tag = $tag;
     }
-
-    /**
-     * Get the channels the event should be broadcast on.
-     *
-     * @return array
-     */
-    public function broadcastOn()
-    {
-        return [];
-    }
 }

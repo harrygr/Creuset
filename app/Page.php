@@ -4,10 +4,9 @@ namespace App;
 
 use App\Presenters\PresentableTrait;
 use App\Traits\Postable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Page extends Model
+class Page extends \Baum\Node
 {
     use Postable, SoftDeletes, PresentableTrait;
 
@@ -28,4 +27,20 @@ class Page extends Model
     protected $dates = ['created_at', 'updated_at', 'published_at', 'deleted_at'];
 
     protected $presenter = 'App\Presenters\PostPresenter';
+
+    /**
+     * Get the full url path to the page, based on its page hierarchy.
+     * 
+     * @param  boolean $excludeSelf exclude the slug of the current page.
+     * 
+     * @return string
+     */
+    public function getPath($excludeSelf = false)
+    {
+        return '/' . $this->ancestors()
+                          ->pluck('slug')
+                          ->merge($excludeSelf ? [] : [$this->slug])
+                          ->implode('/');
+    }
+
 }
