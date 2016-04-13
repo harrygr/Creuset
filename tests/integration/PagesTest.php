@@ -32,9 +32,9 @@ class PagesTest extends TestCase
     /** @test **/
     public function it_gets_the_permalink_for_an_unnested_page()
     {
-       $page = factory(Page::class)->create(['slug' => 'first']);
-       $this->assertEquals('/first', $page->getPath());
-       $this->assertEquals('/', $page->getPath(true));
+        $page = factory(Page::class)->create(['slug' => 'first']);
+        $this->assertEquals('/first', $page->getPath());
+        $this->assertEquals('/', $page->getPath(true));
     }
 
     /** @test **/
@@ -76,7 +76,6 @@ class PagesTest extends TestCase
         $response = $this->call('GET', '/first/second');
 
         $this->assertEquals(404, $response->status());
-
     }
 
     public function seedNestedPages()
@@ -87,6 +86,5 @@ class PagesTest extends TestCase
 
         $page2->makeChildOf($page1);
         $page3->makeChildOf($page2);
-
     }
 }

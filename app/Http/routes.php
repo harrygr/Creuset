@@ -189,7 +189,6 @@ Route::group(['prefix' => 'api', 'middleware' => 'api'], function () {
 
 });
 
-
 /*
  * If none of the above routes are matched we will see is a page has a matching slug
  */
