@@ -30,17 +30,16 @@ class Page extends \Baum\Node
 
     /**
      * Get the full url path to the page, based on its page hierarchy.
-     * 
-     * @param  boolean $excludeSelf exclude the slug of the current page.
-     * 
+     *
+     * @param bool $excludeSelf exclude the slug of the current page.
+     *
      * @return string
      */
     public function getPath($excludeSelf = false)
     {
-        return '/' . $this->ancestors()
+        return '/'.$this->ancestors()
                           ->pluck('slug')
                           ->merge($excludeSelf ? [] : [$this->slug])
                           ->implode('/');
     }
-
 }
