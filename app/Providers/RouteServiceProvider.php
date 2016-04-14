@@ -70,7 +70,7 @@ class RouteServiceProvider extends ServiceProvider
                 ])->firstOrFail();
         });
 
-        $router->bind('path', function($path) {
+        $router->bind('path', function ($path) {
             return Page::wherePath($path)->published()->firstOrFail();
         });
     }

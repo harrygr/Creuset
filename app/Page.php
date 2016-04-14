@@ -44,15 +44,16 @@ class Page extends \Baum\Node
     }
 
     /**
-     * Make a page a child of another page by ID
-     * 
-     * @param  int $id
-     * 
+     * Make a page a child of another page by ID.
+     *
+     * @param int $id
+     *
      * @return Page
      */
     public function makeChildOfPage($id)
     {
         $page = static::findOrFail($id);
+
         return $this->makeChildOf($page);
     }
 }

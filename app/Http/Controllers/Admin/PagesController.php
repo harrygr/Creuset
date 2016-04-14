@@ -46,8 +46,7 @@ class PagesController extends Controller
     {
         $page = Page::create($request->all());
 
-        if ($request->get('parent_id'))
-        {
+        if ($request->get('parent_id')) {
             $page->makeChildOfPage($request->get('parent_id'));
         }
 
@@ -82,8 +81,7 @@ class PagesController extends Controller
     {
         $page->update($request->all());
 
-        if ($request->get('parent_id'))
-        {
+        if ($request->get('parent_id')) {
             $page->makeChildOfPage($request->get('parent_id'));
         } else {
             $page->makeRoot();

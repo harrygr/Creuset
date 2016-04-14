@@ -17,8 +17,9 @@ class PageRequest extends Request
         // Maybe add some role-based authorization at some point
         return true;
     }
-   
-    public function messages() {
+
+    public function messages()
+    {
         return [
             'parent_id.not_in' => 'You cannot make a page a child of itself or its children.',
             'parent_id.exists' => 'The parent page you have selected does not exist.',

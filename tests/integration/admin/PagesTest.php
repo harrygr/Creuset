@@ -62,7 +62,7 @@ class PagesTest extends \TestCase
             'published_at'  => '2016-03-14T16:36:15',
             ]);
 
-        $this->assertEquals("first/new-child-slug", $pages[1]->fresh()->path);
+        $this->assertEquals('first/new-child-slug', $pages[1]->fresh()->path);
         $this->assertEquals('first/new-child-slug/third', $pages[2]->fresh()->path);
     }
 
@@ -89,7 +89,6 @@ class PagesTest extends \TestCase
 
         $this->assertEquals("parent2/{$pages[1]->slug}", $pages[1]->fresh()->path);
         $this->assertEquals("parent2/{$pages[1]->slug}/third", $pages[2]->fresh()->path);
-
     }
 
     /** @test **/
