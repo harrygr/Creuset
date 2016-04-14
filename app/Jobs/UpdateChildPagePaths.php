@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Jobs\Job;
 use App\Page;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -31,7 +30,7 @@ class UpdateChildPagePaths extends Job implements ShouldQueue
      */
     public function handle()
     {
-        $this->page->getDescendants()->map(function($page) {
+        $this->page->getDescendants()->map(function ($page) {
             $page->path = $page->getPath();
             $page->save();
         });

@@ -16,19 +16,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Page::moved(function($page) {
+        Page::moved(function ($page) {
             if ($page) {
                 dispatch(new \App\Jobs\UpdatePagePath($page));
             }
         });
 
-        Page::created(function($page) {
+        Page::created(function ($page) {
             if ($page->isRoot()) {
                 dispatch(new \App\Jobs\UpdatePagePath($page));
             }
         });
 
-        Page::updated(function($page) {
+        Page::updated(function ($page) {
             if ($page->isDirty('slug') and $page->fresh()) {
                 dispatch(new \App\Jobs\UpdatePagePath($page->fresh()));
             }

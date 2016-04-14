@@ -31,5 +31,4 @@ class UpdatePageRequest extends PageRequest
             'parent_id'       => 'numeric|exists:pages,id|not_in:'.$child_pages->implode(','),
         ];
     }
-
 }

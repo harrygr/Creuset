@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Jobs\Job;
 use App\Page;
 
 class UpdatePagePath extends Job
@@ -30,8 +29,8 @@ class UpdatePagePath extends Job
     }
 
     /**
-     * Re-calculate the path of the page and recursively update the paths of children
-     * 
+     * Re-calculate the path of the page and recursively update the paths of children.
+     *
      * @return void
      */
     private function updatePaths(Page $page)
@@ -39,7 +38,7 @@ class UpdatePagePath extends Job
         $page->path = $page->getPath();
         $page->save();
 
-        // We'll dispatch updating the child pages to a new job as 
+        // We'll dispatch updating the child pages to a new job as
         // it isn't important that it happens in real time so we
         // can queue it, improving response time to the user.
         if ($page->fresh()) {

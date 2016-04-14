@@ -2,9 +2,8 @@
 
 use App\Page;
 
-trait SeedsPages 
+trait SeedsPages
 {
-
     protected function seedNestedPages()
     {
         $pages = [
