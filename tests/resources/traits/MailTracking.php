@@ -16,6 +16,8 @@ trait MailTracking
     {
         Mail::getSwiftMailer()
             ->registerPlugin(new TestingMailEventListener($this));
+
+        $this->emails = [];
     }
 
     /**

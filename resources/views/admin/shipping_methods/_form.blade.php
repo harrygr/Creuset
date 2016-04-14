@@ -16,6 +16,8 @@
     </div>
 </div>
 
+<?php //app(App\Countries\CountryRepository::class)->group(); ?>
+
 <div class="form-group">
     <?php $selected_countries = $shipping_method->shipping_countries->pluck('country_id')->toArray(); ?>
     {!! Form::label('shipping_countries[]', 'Allowed Countries') !!}
