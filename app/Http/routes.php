@@ -1,11 +1,14 @@
 <?php
 
+ // DB::listen(function ($query) {
+ //    var_dump($query->sql);
+ //        });
+
 Route::group(['middleware' => ['web']], function () {
 
     Route::get('/', 'HomeController@index');
 
     Route::controllers([
-        //'auth' => 'Auth\AuthController',
         'password' => 'Auth\PasswordController',
     ]);
 
@@ -100,6 +103,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'admin']], function (
     // Deprecate this in favor of generic images route
     Route::post('posts/{post}/image', ['uses' => 'Api\MediaController@store', 'as' => 'admin.posts.attach_image']);
 
+    // Pages
+    Route::get('pages', ['uses' => 'Admin\PagesController@index', 'as' => 'admin.pages.index']);
+    Route::get('pages/create', ['uses' => 'Admin\PagesController@create', 'as' => 'admin.pages.create']);
+    Route::get('pages/{page}/edit', ['uses' => 'Admin\PagesController@edit', 'as' => 'admin.pages.edit']);
+    Route::get('pages/trash', ['uses' => 'Admin\PagesController@trash', 'as' => 'admin.pages.trash']);
+
+    Route::post('pages', ['uses' => 'Admin\PagesController@store', 'as' => 'admin.pages.store']);
+    Route::put('pages/{trashedPage}/restore', ['uses' => 'Admin\PagesController@restore', 'as' => 'admin.pages.restore']);
+    Route::patch('pages/{page}', ['uses' => 'Admin\PagesController@update', 'as' => 'admin.pages.update']);
+    Route::delete('pages/{trashedPage}', ['uses' => 'Admin\PagesController@destroy', 'as' => 'admin.pages.delete']);
+
     // Products
     Route::get('products/create', ['uses' => 'Admin\ProductsController@create', 'as' => 'admin.products.create']);
     Route::get('products/{product}/edit', ['uses' => 'Admin\ProductsController@edit', 'as' => 'admin.products.edit']);
@@ -174,3 +188,8 @@ Route::group(['prefix' => 'api', 'middleware' => 'api'], function () {
     });
 
 });
+
+/*
+ * If none of the above routes are matched we will see if a page has a matching path
+ */
+Route::get('{path}', ['uses' => 'PagesController@show', 'middleware' => ['web']])->where('path', '.+');

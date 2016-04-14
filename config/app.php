@@ -152,11 +152,11 @@ return [
         /*
          * 3rd Party Service Providers
          */
-        'Collective\Html\HtmlServiceProvider',
+        Collective\Html\HtmlServiceProvider::class,
         Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
         GrahamCampbell\Markdown\MarkdownServiceProvider::class,
-
+        Baum\Providers\BaumServiceProvider::class,
     ],
 
     /*

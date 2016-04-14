@@ -10,16 +10,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class ReduceProductStock implements ShouldQueue
 {
     /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      *
      * @param OrderWasCompleted $event

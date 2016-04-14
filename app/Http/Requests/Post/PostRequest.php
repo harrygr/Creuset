@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Post;
 
+use App\Http\Requests\Request;
 use App\Repositories\Term\TermRepository;
 
 class PostRequest extends Request

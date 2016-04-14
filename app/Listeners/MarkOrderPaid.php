@@ -8,16 +8,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class MarkOrderPaid implements ShouldQueue
 {
     /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      *
      * @param OrderWasPaid $event
