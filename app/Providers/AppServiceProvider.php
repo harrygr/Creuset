@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Billing\GatewayInterface;
 use App\Billing\StripeGateway;
+use App\Page;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,6 +16,23 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Page::moved(function($page) {
+            if ($page) {
+                dispatch(new \App\Jobs\UpdatePagePath($page));
+            }
+        });
+
+        Page::created(function($page) {
+            if ($page->isRoot()) {
+                dispatch(new \App\Jobs\UpdatePagePath($page));
+            }
+        });
+
+        Page::updated(function($page) {
+            if ($page->isDirty('slug') and $page->fresh()) {
+                dispatch(new \App\Jobs\UpdatePagePath($page->fresh()));
+            }
+        });
     }
 
     /**

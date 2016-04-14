@@ -1,12 +1,14 @@
 <?php
 
-namespace Unit;
+namespace Integration;
 
 use App\Page;
 use TestCase;
 
 class PagesTest extends TestCase
 {
+    use \SeedsPages;
+
     /** @test **/
     public function it_loads_a_page_by_slug()
     {
@@ -21,37 +23,53 @@ class PagesTest extends TestCase
     /** @test **/
     public function it_gets_the_permalink_for_a_nested_page()
     {
-        $this->seedNestedPages();
+        $pages = $this->seedNestedPages();
 
-        $page = Page::whereSlug('third')->first();
-
-        $this->assertEquals('/first/second/third', $page->getPath());
-        $this->assertEquals('/first/second', $page->getPath($excludeSelf = true));
+        $this->assertEquals('first/second/third', $pages[2]->path);
+        $this->assertEquals('first/second', $pages[2]->getPath($excludeSelf = true));
     }
 
     /** @test **/
     public function it_gets_the_permalink_for_an_unnested_page()
     {
         $page = factory(Page::class)->create(['slug' => 'first']);
-        $this->assertEquals('/first', $page->getPath());
-        $this->assertEquals('/', $page->getPath(true));
+        $this->assertEquals('first', $page->path);
+        $this->assertEquals('', $page->getPath(true));
     }
 
     /** @test **/
     public function it_shows_the_correct_page_from_nested_slugs()
     {
-        $this->seedNestedPages();
-
-        $page2 = Page::whereSlug('second')->first();
-        $page3 = Page::whereSlug('third')->first();
+        $pages = $this->seedNestedPages();
 
         $this->visit('/first/second')
-             ->see($page2->title)
-             ->see($page2->content);
+             ->see($pages[1]->title)
+             ->see($pages[1]->content);
 
         $this->visit('/first/second/third')
-             ->see($page3->title)
-             ->see($page3->content);
+             ->see($pages[2]->title)
+             ->see($pages[2]->content);
+    }
+
+    /** @test **/
+    public function it_updates_the_path_for_child_pages()
+    {
+        $pages = $pages = $this->seedNestedPages();
+
+        // Add child to the 3rd page
+        $child = factory(Page::class)->create(['slug' => 'child']);
+
+        $this->assertEquals('child', $child->path);
+
+        $child->makeChildOf($pages[2]);
+
+        $this->assertEquals('first/second/third/child', $child->fresh()->path);
+
+        // Now move the parent page to become the child of the root page
+        $pages[2]->makeChildOf($pages[0]);
+
+        // Check the path to the has been updated
+        $this->assertEquals('first/third/child', $child->fresh()->path);
     }
 
     /** @test **/
@@ -69,22 +87,12 @@ class PagesTest extends TestCase
     /** @test **/
     public function it_doesnt_show_unpublished_pages()
     {
-        $this->seedNestedPages();
+        $pages = $this->seedNestedPages();
 
-        $page2 = Page::whereSlug('second')->first()->update(['status' => 'draft']);
+        $pages[1]->update(['status' => 'draft']);
 
         $response = $this->call('GET', '/first/second');
 
         $this->assertEquals(404, $response->status());
-    }
-
-    public function seedNestedPages()
-    {
-        $page1 = factory(Page::class)->create(['slug' => 'first']);
-        $page2 = factory(Page::class)->create(['slug' => 'second']);
-        $page3 = factory(Page::class)->create(['slug' => 'third']);
-
-        $page2->makeChildOf($page1);
-        $page3->makeChildOf($page2);
     }
 }

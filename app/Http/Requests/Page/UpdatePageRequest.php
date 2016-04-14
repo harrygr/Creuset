@@ -20,10 +20,16 @@ class UpdatePageRequest extends PageRequest
      */
     public function rules()
     {
+        $page_id = $this->route('page')->id;
+        $child_pages = $this->route('page')->descendantsAndSelf()->pluck('id');
+
+        // Need to ensure we don't move the page into a child page of itself
         return [
-            'slug'            => 'alpha_dash|unique:pages,slug,'.$this->route('page')->id,
+            'slug'            => 'alpha_dash|unique:pages,slug,'.$page_id,
             'published_at'    => 'date',
             'status'          => 'alpha_dash',
+            'parent_id'       => 'numeric|exists:pages,id|not_in:'.$child_pages->implode(','),
         ];
     }
+
 }

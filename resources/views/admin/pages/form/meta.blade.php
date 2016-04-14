@@ -8,14 +8,20 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group {{ $errors->has('status') ? 'has-error' : '' }}">
             {!! Form::label('status') !!}
             {!! Form::select('status', App\Post::$postStatuses, null, ['class' => 'form-control']) !!}
         </div>
-        <div class="form-group">
+        
+        <div class="form-group {{ $errors->has('user_id') ? 'has-error' : '' }}">
 
             {!! Form::label('user_id', 'Author') !!}
             {!! Form::select('user_id', App\User::lists('name', 'id'), null, ['class' => 'form-control']) !!}
+        </div>
+
+        <div class="form-group {{ $errors->has('parent_id') ? 'has-error' : '' }}">
+            {!! Form::label('parent_id', 'Parent') !!}
+            {!! Form::select('parent_id', [null => 'none'] + App\Page::getNestedList('title', 'id', '- '), null, ['class' => 'form-control']) !!}
         </div>
     </div>
     <div class="box-footer">

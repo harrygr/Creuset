@@ -37,9 +37,22 @@ class Page extends \Baum\Node
      */
     public function getPath($excludeSelf = false)
     {
-        return '/'.$this->ancestors()
-                          ->pluck('slug')
-                          ->merge($excludeSelf ? [] : [$this->slug])
-                          ->implode('/');
+        return $this->ancestors()
+                    ->pluck('slug')
+                    ->merge($excludeSelf ? [] : [$this->slug])
+                    ->implode('/');
+    }
+
+    /**
+     * Make a page a child of another page by ID
+     * 
+     * @param  int $id
+     * 
+     * @return Page
+     */
+    public function makeChildOfPage($id)
+    {
+        $page = static::findOrFail($id);
+        return $this->makeChildOf($page);
     }
 }

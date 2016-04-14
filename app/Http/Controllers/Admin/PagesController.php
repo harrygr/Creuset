@@ -46,6 +46,11 @@ class PagesController extends Controller
     {
         $page = Page::create($request->all());
 
+        if ($request->get('parent_id'))
+        {
+            $page->makeChildOfPage($request->get('parent_id'));
+        }
+
         return redirect()->route('admin.pages.edit', $page)
         ->with([
             'alert'       => 'Page saved',
@@ -76,6 +81,13 @@ class PagesController extends Controller
     public function update(Page $page, UpdatePageRequest $request)
     {
         $page->update($request->all());
+
+        if ($request->get('parent_id'))
+        {
+            $page->makeChildOfPage($request->get('parent_id'));
+        } else {
+            $page->makeRoot();
+        }
 
         return redirect()->route('admin.pages.edit', $page)
             ->with([

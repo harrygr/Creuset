@@ -18,8 +18,9 @@ class CreatePagesTable extends Migration
             $table->text('content')->nullable();
             $table->string('slug')->unique();
             $table->string('status', 20)->default('published');
-            $table->integer('user_id')->unsigned();
+            $table->string('path')->unique()->nullable();
 
+            $table->integer('user_id')->unsigned();
             $table->integer('image_id')->unsigned()->nullable();
 
             // Nested Set relations

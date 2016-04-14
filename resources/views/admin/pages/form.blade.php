@@ -6,6 +6,7 @@
 
 <div class="col-md-4"  id="postMeta">
     <div>@include('admin.pages.form.meta')</div>
+
 </div>
 
 </div>

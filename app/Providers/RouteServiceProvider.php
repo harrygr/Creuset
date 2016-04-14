@@ -69,6 +69,10 @@ class RouteServiceProvider extends ServiceProvider
                 'slug'     => $slug,
                 ])->firstOrFail();
         });
+
+        $router->bind('path', function($path) {
+            return Page::wherePath($path)->published()->firstOrFail();
+        });
     }
 
     /**

@@ -125,8 +125,10 @@ class PostsControllerTest extends \TestCase
         $post = factory('App\Post')->create();
 
         // And we need a file
-        $faker = Factory::create();
-        $image = $faker->image();
+        $source_image = base_path('tests/resources/images/image-1.jpg');
+        $image = base_path('tests/resources/images/image-1-tmp.jpg');
+        copy($source_image, $image);
+
         $file = new UploadedFile($image, basename($image), null, null, null, true);
 
         // Send off the request to upload the file
