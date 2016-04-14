@@ -8,8 +8,8 @@ class MailerTest extends TestCase
     /** @test **/
     public function it_sends_an_email_to_a_user()
     {
-        $user = factory(\Creuset\User::class)->create();
-        $mailer = app(\Creuset\Mailers\Mailer::class);
+        $user = factory(\App\User::class)->create();
+        $mailer = app(\App\Mailers\Mailer::class);
 
         $mailer->sendTo($user, 'This is a subject', 'emails.plain', ['body' => 'This is the email body']);
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Creuset\Repositories\Product;
+namespace App\Repositories\Product;
 
-use Creuset\Product;
-use Creuset\Repositories\CacheRepository;
-use Creuset\Term;
+use App\Product;
+use App\Repositories\CacheRepository;
+use App\Term;
 
 class CacheProductRepository extends CacheRepository implements ProductRepository
 {

@@ -1,14 +1,13 @@
 <?php
 
-namespace Creuset\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
-use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests\CreatePostRequest;
-use Creuset\Http\Requests\UpdatePostRequest;
-use Creuset\Post;
-use Creuset\Repositories\Post\PostRepository;
-use Creuset\Repositories\Term\TermRepository;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Post\CreatePostRequest;
+use App\Http\Requests\Post\UpdatePostRequest;
+use App\Post;
+use App\Repositories\Post\PostRepository;
+use App\Repositories\Term\TermRepository;
 use Illuminate\Http\Response;
 
 /**
@@ -16,17 +15,24 @@ use Illuminate\Http\Response;
  */
 class PostsController extends Controller
 {
-    use \Creuset\Traits\TrashesModels;
+    use \App\Traits\TrashesModels;
 
     /**
      * @var PostRepository
      */
     private $posts;
+
     /**
      * @var TermRepository
      */
     private $terms;
 
+    /**
+     * Create a new PostsController instance.
+     *
+     * @param PostRepository $posts PostRepository
+     * @param TermRepository $terms TermRepository
+     */
     public function __construct(PostRepository $posts, TermRepository $terms)
     {
         $this->posts = $posts;
@@ -34,23 +40,28 @@ class PostsController extends Controller
     }
 
     /**
-     * @return Response
+     * Show a listing of posts.
      *
-     * @internal param PostRepository $posts
+     * @return Response
      */
     public function index()
     {
         $posts = $this->posts->getPaginated(['categories', 'author']);
 
-        return \View::make('admin.posts.index')->with(compact('posts'));
+        return view('admin.posts.index')->with(compact('posts'));
     }
 
+    /**
+     * Show a page of trashed posts.
+     *
+     * @return Response
+     */
     public function trash()
     {
         $posts = Post::onlyTrashed()->latest()->paginate(10);
         $title = 'Trash';
 
-        return \View::make('admin.posts.index')->with(compact('posts', 'title'));
+        return view('admin.posts.index')->with(compact('posts', 'title'));
     }
 
     /**
@@ -66,7 +77,6 @@ class PostsController extends Controller
         $selectedCategories = [];
         $categoryList = $terms->getCategoryList();
         $tagList = $terms->getTagList();
-        $post->type = 'post';
 
         return view('admin.posts.create')->with(compact(
             'categoryList',
@@ -82,16 +92,17 @@ class PostsController extends Controller
      * @param CreatePostRequest $request
      *
      * @return Response
-     *
-     * @internal param PostRepository $posts
-     * @internal param Post $post
      */
     public function store(CreatePostRequest $request)
     {
-        $post = $this->posts->create($request->all());
+        $post = Post::create($request->all());
+        $post->syncTerms($request->get('terms', []));
 
-        return redirect()->route('admin.posts.edit', [$post->id])
-            ->with(['alert' => 'Post saved', 'alert-class' => 'success']);
+        return redirect()->route('admin.posts.edit', $post)
+            ->with([
+                'alert'       => 'Post saved',
+                'alert-class' => 'success',
+                ]);
     }
 
     /**
@@ -101,8 +112,6 @@ class PostsController extends Controller
      * @param DbTermRepository $terms
      *
      * @return Response
-     *
-     * @internal param int $id
      */
     public function edit(Post $post, TermRepository $terms)
     {
@@ -133,53 +142,43 @@ class PostsController extends Controller
      */
     public function update(Post $post, UpdatePostRequest $request)
     {
-        $attributes = $request->all();
-        $attributes['terms'] = $this->terms->process($request->input('terms', []), 'tag');
+        $post->update($request->all());
+        $post->syncTerms($request->get('terms', []));
 
-        $this->posts->update($post, $attributes);
-        $alert = 'Post Updated!';
-
-        return redirect()->route('admin.posts.edit', [$post])
-            ->with(compact('alert'))
-            ->with(['alert-class' => 'success']);
+        return redirect()->route('admin.posts.edit', $post)
+            ->with([
+                'alert'       => 'Post Updated!',
+                'alert-class' => 'success',
+                ]);
     }
 
+    /**
+     * Show a page of attached images.
+     *
+     * @param Post $post
+     *
+     * @return Response
+     */
     public function images(Post $post)
     {
         return view('admin.posts.images')->with(compact('post'));
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Restore the post from soft-deletion.
      *
      * @param Post $post
      *
      * @throws \Exception
-     *
-     * @return Response
-     *
-     * @internal param int $id
-     * @internal param Request $request
      */
-    // public function destroy(Post $post)
-    // {
-    // 	$alert = 'Post moved to trash';
-    //
-    // 	if ($post->trashed()) {
-    // 		$alert = "Post permanently deleted";
-    // 	}
-    //
-    // 	$this->posts->delete($post);
-    //
-    // 	return redirect()->route('admin.posts.index')
-    // 		->with(['alert' => $alert, 'alert-class' => 'success']);
-    // }
-
     public function restore(Post $post)
     {
-        $this->posts->restore($post);
+        $post->restore();
 
         return redirect()->route('admin.posts.index')
-            ->with(['alert' => 'Post Restored', 'alert-class' => 'success']);
+            ->with([
+                'alert'       => 'Post Restored',
+                'alert-class' => 'success',
+                ]);
     }
 }

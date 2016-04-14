@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Http\Controllers;
+namespace App\Http\Controllers;
 
-use Creuset\Product;
+use App\Product;
 
 class ProductsControllerTest extends \TestCase
 {

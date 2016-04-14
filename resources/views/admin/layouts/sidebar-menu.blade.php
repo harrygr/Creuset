@@ -5,6 +5,14 @@
     </li>
 
     <li class="treeview">
+        <a href="{{ route('admin.pages.index') }}"><i class="fa fa-fw fa-files-o"></i> <span>Pages</span></a>
+        <ul class="treeview-menu">
+            <li><a href="{{ route('admin.pages.index') }}"><i class="fa fa-circle-o"></i> All Pages</a></li>
+            <li><a href="{{ route('admin.pages.create') }}"><i class="fa fa-circle-o"></i> New Page</a></li>
+        </ul>
+    </li>
+
+    <li class="treeview">
         <a href="{{ route('admin.posts.index') }}"><i class="fa fa-fw fa-files-o"></i> <span>Posts</span></a>
         <ul class="treeview-menu">
             <li><a href="{{ route('admin.posts.index') }}"><i class="fa fa-circle-o"></i> All Posts</a></li>

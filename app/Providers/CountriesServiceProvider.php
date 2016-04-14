@@ -1,10 +1,10 @@
 <?php
 
-namespace Creuset\Providers;
+namespace App\Providers;
 
-use Creuset\Countries\CacheCountryRepository;
-use Creuset\Countries\CountryRepository;
-use Creuset\Countries\FileCountryRepository;
+use App\Countries\CacheCountryRepository;
+use App\Countries\CountryRepository;
+use App\Countries\FileCountryRepository;
 use Illuminate\Support\ServiceProvider;
 
 class CountriesServiceProvider extends ServiceProvider

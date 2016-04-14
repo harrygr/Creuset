@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
-use Creuset\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
 {

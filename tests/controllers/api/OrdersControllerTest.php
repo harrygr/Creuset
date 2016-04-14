@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Http\Controllers\Api;
+namespace App\Http\Controllers\Api;
 
-use Creuset\Order;
+use App\Order;
 
 class OrdersControllerTest extends \TestCase
 {

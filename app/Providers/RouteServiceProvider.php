@@ -1,10 +1,11 @@
 <?php
 
-namespace Creuset\Providers;
+namespace App\Providers;
 
-use Creuset\Post;
-use Creuset\Product;
-use Creuset\Term;
+use App\Page;
+use App\Post;
+use App\Product;
+use App\Term;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
 
@@ -17,7 +18,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'Creuset\Http\Controllers';
+    protected $namespace = 'App\Http\Controllers';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -30,28 +31,32 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot($router);
 
-        $router->model('term', 'Creuset\Term');
-        $router->model('user', 'Creuset\User');
-        $router->model('post', 'Creuset\Post');
-        $router->model('media', 'Creuset\Media');
-        $router->model('address', 'Creuset\Address');
+        $router->model('term', 'App\Term');
+        $router->model('user', 'App\User');
+        $router->model('post', 'App\Post');
+        $router->model('media', 'App\Media');
+        $router->model('address', 'App\Address');
 
         $router->bind('product', function ($id) {
-            $products = $this->app->make(\Creuset\Repositories\Product\ProductRepository::class);
+            $products = $this->app->make(\App\Repositories\Product\ProductRepository::class);
 
             return $products->fetch($id, ['product_categories', 'image']);
         });
 
         $router->bind('order', function ($id) {
-            return \Creuset\Order::with(['items', 'shipping_address', 'billing_address'])->findOrFail($id);
+            return \App\Order::with(['items', 'shipping_address', 'billing_address'])->findOrFail($id);
         });
 
         $router->bind('trashedPost', function ($id) {
             return Post::withTrashed()->find($id);
         });
 
+        $router->bind('trashedPage', function ($id) {
+            return Page::withTrashed()->find($id);
+        });
+
         $router->bind('username', function ($username) {
-            return \Creuset\User::where('username', $username)->firstOrFail();
+            return \App\User::where('username', $username)->firstOrFail();
         });
 
         $router->bind('product_slug', function ($slug) {
@@ -63,6 +68,10 @@ class RouteServiceProvider extends ServiceProvider
                 'taxonomy' => 'product_category',
                 'slug'     => $slug,
                 ])->firstOrFail();
+        });
+
+        $router->bind('path', function ($path) {
+            return Page::wherePath($path)->published()->firstOrFail();
         });
     }
 

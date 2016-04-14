@@ -1,11 +1,11 @@
 <?php
 
-namespace Creuset;
+namespace App;
 
+use App\Contracts\Termable;
+use App\Presenters\PresentableTrait;
+use App\Traits\Postable;
 use Carbon\Carbon;
-use Creuset\Contracts\Termable;
-use Creuset\Presenters\PresentableTrait;
-use Creuset\Traits\Postable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -24,7 +24,7 @@ class Product extends Model implements HasMediaConversions, Termable
 
     /**
      * Set the image sizes for product attachments.
-     * 
+     *
      * @return void
      */
     public function registerMediaConversions()
@@ -60,12 +60,12 @@ class Product extends Model implements HasMediaConversions, Termable
     'published_at',
     ];
 
-    protected $presenter = 'Creuset\Presenters\ProductPresenter';
+    protected $presenter = 'App\Presenters\ProductPresenter';
 
     /**
      * Get all the terms for a product
-     * Restrict only to normal taxonomies. 
-     * 
+     * Restrict only to normal taxonomies.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\Relation
      */
     public function terms()
@@ -75,7 +75,7 @@ class Product extends Model implements HasMediaConversions, Termable
 
     /**
      * Get all the attributes for a product.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\Relation
      */
     public function attributes()
@@ -85,7 +85,7 @@ class Product extends Model implements HasMediaConversions, Termable
 
     /**
      * Add an attribute to a product.
-     * 
+     *
      * @param Term $attribute
      */
     public function addAttribute(Term $attribute)
@@ -97,7 +97,7 @@ class Product extends Model implements HasMediaConversions, Termable
 
     /**
      * A product belongs to many product categories.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\Relation
      */
     public function product_categories()
@@ -109,7 +109,7 @@ class Product extends Model implements HasMediaConversions, Termable
     /**
      * Ensure an uncategorised term exists and assign it to the product,
      * removing it from all other categories.
-     * 
+     *
      * @return Product
      */
     public function makeUncategorised()
@@ -125,9 +125,9 @@ class Product extends Model implements HasMediaConversions, Termable
 
     /**
      * Sync terms to a product.
-     * 
+     *
      * @param \Illuminate\Database\Eloquent\Collection|array $terms
-     * 
+     *
      * @return Product
      */
     public function syncTerms($terms = [])
@@ -150,7 +150,7 @@ class Product extends Model implements HasMediaConversions, Termable
 
     /**
      * A product belongs to a featured image.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\Relation
      */
     public function image()
@@ -160,11 +160,11 @@ class Product extends Model implements HasMediaConversions, Termable
 
     /**
      * Parses a date string into a Carbon instance for saving.
-     * 
+     *
      * This shouldn't really need to be done, but Laravel's automatic date
-     * mutators expects strings to be in the format Y-m-d H-i-s which is 
+     * mutators expects strings to be in the format Y-m-d H-i-s which is
      * not always the case; such as for 'datetime-local' html5 fields.
-     * 
+     *
      * @param mixed $date The date to be parsed
      */
     public function setPublishedAtAttribute($date)
@@ -176,7 +176,7 @@ class Product extends Model implements HasMediaConversions, Termable
 
     /**
      * Get the URL of the product's thumbnail.
-     * 
+     *
      * @return string
      */
     public function getThumbnailAttribute()
@@ -186,7 +186,7 @@ class Product extends Model implements HasMediaConversions, Termable
 
     /**
      * Cast the product's price to an integer for storage.
-     *  
+     *
      * @param float $price
      */
     public function setPriceAttribute($price)
@@ -196,7 +196,7 @@ class Product extends Model implements HasMediaConversions, Termable
 
     /**
      * Cast the product's sale price to an integer for storage.
-     *  
+     *
      * @param float $price
      */
     public function setSalePriceAttribute($price)
@@ -206,9 +206,9 @@ class Product extends Model implements HasMediaConversions, Termable
 
     /**
      * Cast the product's price to a float.
-     * 
+     *
      * @param int $price
-     * 
+     *
      * @return float
      */
     public function getPriceAttribute($price)
@@ -218,9 +218,9 @@ class Product extends Model implements HasMediaConversions, Termable
 
     /**
      * Cast the product's sale price to a float.
-     * 
+     *
      * @param int $price
-     * 
+     *
      * @return float
      */
     public function getSalePriceAttribute($price)
@@ -230,7 +230,7 @@ class Product extends Model implements HasMediaConversions, Termable
 
     /**
      * Get the product's description as html.
-     * 
+     *
      * @return string
      */
     public function getDescriptionHtml()
@@ -240,7 +240,7 @@ class Product extends Model implements HasMediaConversions, Termable
 
     /**
      * Get the URL to a single product page.
-     * 
+     *
      * @return string
      */
     public function getUrlAttribute()
@@ -262,8 +262,8 @@ class Product extends Model implements HasMediaConversions, Termable
      * Get the product's product category.
      * Gets the first if more than one set.
      * Sets it to uncategorised if none set.
-     * 
-     * @return \Creuset\Term
+     *
+     * @return \App\Term
      */
     public function getProductCategoryAttribute()
     {

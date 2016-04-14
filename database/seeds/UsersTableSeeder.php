@@ -1,7 +1,7 @@
 <?php
 
-use Creuset\Role;
-use Creuset\User;
+use App\Role;
+use App\User;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 
@@ -18,14 +18,14 @@ class UsersTableSeeder extends Seeder
             'name'        => 'Harry G',
             'username'    => 'harryg',
             'email'       => 'harry@laravel.com',
-            'password'    => Hash::make('secret'),
+            'password'    => 'secret',
             ]);
 
         $admin->assignRole('admin');
 
         // Make some auto-generated users for extra usage
         $users = array_map(function ($i) use ($roles) {
-                $user = factory('Creuset\User')->create();
+                $user = factory('App\User')->create();
 
                 $role = $roles[array_rand($roles)];
 

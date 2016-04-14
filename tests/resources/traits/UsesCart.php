@@ -1,6 +1,6 @@
 <?php
 
-use Creuset\Product;
+use App\Product;
 
 trait UsesCart
 {
@@ -8,7 +8,7 @@ trait UsesCart
     {
         $product = $product ? $product : factory(Product::class)->create();
 
-        \Cart::associate('Product', 'Creuset')->add([
+        \Cart::associate('Product', 'App')->add([
                   'id'    => $product->id,
                   'qty'   => 1,
                   'name'  => $product->name,

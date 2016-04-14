@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Scopes;
+namespace App\Scopes;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -16,7 +16,7 @@ class OrderScope implements Scope
      *
      * @param \Illuminate\Database\Eloquent\Builder $builder
      * @param \Illuminate\Database\Eloquent\Model   $model
-     * 
+     *
      * @return void
      */
     public function apply(Builder $builder, Model $model)

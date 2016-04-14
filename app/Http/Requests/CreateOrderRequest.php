@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Http\Requests;
+namespace App\Http\Requests;
 
-use Creuset\Address;
+use App\Address;
 use Illuminate\Support\Collection;
 
 class CreateOrderRequest extends Request
@@ -58,7 +58,7 @@ class CreateOrderRequest extends Request
 
     /**
      * Build up the validation rules for a given address type.
-     * 
+     *
      * @param string $type The address type e.g. billing
      *
      * @return Illuminate\Support\Collection

@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Countries;
+namespace App\Countries;
 
 class CacheCountryRepository implements CountryRepository
 {
@@ -25,7 +25,7 @@ class CacheCountryRepository implements CountryRepository
 
     /**
      * Get a country name by its Alpha2 code.
-     * 
+     *
      * @param string $code The alpha2 code
      *
      * @return string The country name
@@ -35,5 +35,15 @@ class CacheCountryRepository implements CountryRepository
         return \Cache::remember("country_by_code.$code", config('cache.time'), function () use ($code) {
             return $this->country_repository->getByCode($code);
         });
+    }
+
+    /**
+     * Group the list of countries into subarrays organised by region.
+     *
+     * @return array
+     */
+    public function group()
+    {
+        return $this->country_repository->group();
     }
 }

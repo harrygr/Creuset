@@ -16,10 +16,12 @@
     </div>
 </div>
 
+<?php //app(App\Countries\CountryRepository::class)->group(); ?>
+
 <div class="form-group">
     <?php $selected_countries = $shipping_method->shipping_countries->pluck('country_id')->toArray(); ?>
     {!! Form::label('shipping_countries[]', 'Allowed Countries') !!}
-    {!! Form::select('shipping_countries[]', app(Creuset\Countries\CountryRepository::class)->lists(), $selected_countries, ['multiple' => true, 'class' => 'form-control select2']) !!}
+    {!! Form::select('shipping_countries[]', app(App\Countries\CountryRepository::class)->lists(), $selected_countries, ['multiple' => true, 'class' => 'form-control select2']) !!}
 </div>
 <div class="form-group">
     <button type="submit" name="submit" class="btn btn-primary">Save Shipping Method</button>

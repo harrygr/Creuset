@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset;
+namespace App;
 
-use Creuset\Scopes\OrderScope;
+use App\Scopes\OrderScope;
 use Illuminate\Database\Eloquent\Model;
 
 class Term extends Model
@@ -55,12 +55,12 @@ class Term extends Model
 
     public function posts()
     {
-        return $this->morphedByMany('Creuset\Post', 'termable');
+        return $this->morphedByMany('App\Post', 'termable');
     }
 
     public function products()
     {
-        return $this->morphedByMany('Creuset\Product', 'termable');
+        return $this->morphedByMany('App\Product', 'termable');
     }
 
     /**

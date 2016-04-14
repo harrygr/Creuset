@@ -1,4 +1,4 @@
-@inject('countries', 'Creuset\Countries\CountryRepository')
+@inject('countries', 'App\Countries\CountryRepository')
 
 @extends('layouts.main')
 
@@ -17,7 +17,7 @@
 <form action="/orders/shipping" method="POST" id="shipping-form">
   {{ csrf_field() }}
   <div class="form-group">
-    
+
     @foreach ($shipping_methods as $shipping_method)
     <div class="radio">
       <label>

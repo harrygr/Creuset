@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Events;
+namespace App\Events;
 
 use Illuminate\Queue\SerializesModels;
 
@@ -18,15 +18,5 @@ class ModelWasChanged extends Event
     public function __construct($tag)
     {
         $this->tag = $tag;
-    }
-
-    /**
-     * Get the channels the event should be broadcast on.
-     *
-     * @return array
-     */
-    public function broadcastOn()
-    {
-        return [];
     }
 }

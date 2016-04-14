@@ -1,8 +1,9 @@
 <?php
 
-namespace Creuset\Http\Requests;
+namespace App\Http\Requests\Post;
 
-use Creuset\Repositories\Term\TermRepository;
+use App\Http\Requests\Request;
+use App\Repositories\Term\TermRepository;
 
 class PostRequest extends Request
 {

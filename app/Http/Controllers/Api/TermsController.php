@@ -1,12 +1,12 @@
 <?php
 
-namespace Creuset\Http\Controllers\Api;
+namespace App\Http\Controllers\Api;
 
-use Creuset\Http\Controllers\Controller;
-use Creuset\Http\Requests\CreateTermRequest;
-use Creuset\Http\Requests\Term\UpdateTermRequest;
-use Creuset\Repositories\Term\TermRepository;
-use Creuset\Term;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateTermRequest;
+use App\Http\Requests\Term\UpdateTermRequest;
+use App\Repositories\Term\TermRepository;
+use App\Term;
 
 class TermsController extends Controller
 {
@@ -92,8 +92,8 @@ class TermsController extends Controller
     /**
      * Update a term in storage.
      *
-     * @param \Creuset\Term                                 $term
-     * @param \Creuset\Http\Requests\Term\UpdateTermRequest $request
+     * @param \App\Term                                 $term
+     * @param \App\Http\Requests\Term\UpdateTermRequest $request
      *
      * @return \Illuminate\Http\Response
      */

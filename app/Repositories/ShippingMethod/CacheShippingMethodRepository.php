@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Repositories\ShippingMethod;
+namespace App\Repositories\ShippingMethod;
 
-use Creuset\Repositories\CacheRepository;
-use Creuset\ShippingMethod;
+use App\Repositories\CacheRepository;
+use App\ShippingMethod;
 
 class CacheShippingMethodRepository extends CacheRepository implements ShippingMethodRepository
 {
@@ -21,9 +21,9 @@ class CacheShippingMethodRepository extends CacheRepository implements ShippingM
 
     /**
      * Get all shipping methods for a given country code.
-     *  
+     *
      * @param string $country_id
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function forCountry($country_id)

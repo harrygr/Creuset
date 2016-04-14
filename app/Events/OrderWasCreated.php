@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Events;
+namespace App\Events;
 
-use Creuset\Order;
+use App\Order;
 use Illuminate\Queue\SerializesModels;
 
 class OrderWasCreated extends Event
@@ -19,15 +19,5 @@ class OrderWasCreated extends Event
     public function __construct(Order $order)
     {
         $this->order = $order;
-    }
-
-    /**
-     * Get the channels the event should be broadcast on.
-     *
-     * @return array
-     */
-    public function broadcastOn()
-    {
-        return [];
     }
 }

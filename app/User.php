@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset;
+namespace App;
 
-use Creuset\Presenters\PresentableTrait;
-use Creuset\Traits\RoleableTrait;
+use App\Presenters\PresentableTrait;
+use App\Traits\RoleableTrait;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -33,7 +33,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var string
      */
-    protected $presenter = 'Creuset\Presenters\UserPresenter';
+    protected $presenter = 'App\Presenters\UserPresenter';
 
     /**
      * The database table used by the model.
@@ -85,7 +85,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     /**
      * Hash the password when setting it on a user.
-     * 
+     *
      * @param string $password
      */
     public function setPasswordAttribute($password)
@@ -139,7 +139,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     /**
      * Limit users to just those assigned as shop admins.
-     * 
+     *
      * @param \Illuminate\Database\Eloquent\Builder $query
      */
     public function scopeShopAdmins($query)

@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Listeners;
+namespace App\Listeners;
 
-use Creuset\Events\OrderWasPaid;
-use Creuset\Mailers\OrderMailer;
+use App\Events\OrderWasPaid;
+use App\Mailers\OrderMailer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SendCustomerOrderEmail implements ShouldQueue

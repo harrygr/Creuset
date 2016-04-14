@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Composers;
+namespace App\Composers;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;

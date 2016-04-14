@@ -29,7 +29,7 @@ Shipping Methods
 				<tr>
 					<td>{{ $method->description }}</td>
 					<td>{{ Present::money($method->getPrice()) }}</td>
-					<td><span title="{{ $method->shipping_countries->implode('country_id', PHP_EOL) }}">{{ $method->shipping_countries->count() }}</span></td>
+					<td>{{ $method->shipping_countries->implode('country_id', ', ') }}</td>
 					<td>
 						<a href="{{ route('admin.shipping_methods.edit', $method) }}" class="btn btn-link">Edit</a>
 						@include('partials._delete_link', ['url' => route('admin.shipping_methods.delete', $method)])
@@ -48,7 +48,7 @@ Shipping Methods
 	</div>
 	<div class="box-body">
 
-		@include('admin.shipping_methods._form', ['shipping_method' => new Creuset\ShippingMethod, 'route' => null])
+		@include('admin.shipping_methods._form', ['shipping_method' => new App\ShippingMethod, 'route' => null])
 
 
 	</div>

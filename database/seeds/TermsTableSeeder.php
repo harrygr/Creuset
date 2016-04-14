@@ -1,6 +1,6 @@
 <?php
 
-use Creuset\Term;
+use App\Term;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 

@@ -1,15 +1,15 @@
 <?php
 
-namespace Creuset\Repositories\User;
+namespace App\Repositories\User;
 
-use Creuset\Repositories\DbRepository;
-use Creuset\User;
+use App\Repositories\DbRepository;
+use App\User;
 
 class DbUserRepository extends DbRepository
 {
     /**
      * Create a new DbUserRepository instance.
-     * 
+     *
      * @param User $user
      */
     public function __construct(User $user)

@@ -5,10 +5,10 @@
  * Date: 03/02/15
  * Time: 23:31.
  */
-namespace Creuset\Repositories\Term;
+namespace App\Repositories\Term;
 
-use Creuset\Contracts\Termable;
-use Creuset\Term;
+use App\Contracts\Termable;
+use App\Term;
 use Illuminate\Database\Eloquent\Model;
 
 class DbTermRepository implements TermRepository
@@ -23,7 +23,7 @@ class DbTermRepository implements TermRepository
 
     /**
      * Get a list of categories for use, say, in a checklist or multi-select.
-     * 
+     *
      * @param Termable $related_model If provided, categories attached to the model will be ordered at the top of the list
      *
      * @return array
@@ -101,7 +101,7 @@ class DbTermRepository implements TermRepository
 
     /**
      * Persist a new term to the database.
-     * 
+     *
      * @param string $term     The term
      * @param string $taxonomy The term's taxonomy
      * @param string $slug     The slug of the term. A slug will be automatically generated if nothing passed
@@ -115,7 +115,7 @@ class DbTermRepository implements TermRepository
 
     /**
      * Process an array of mixed string and numneric terms, create a new term for each string.
-     * 
+     *
      * @param array  $terms    The terms to process
      * @param string $taxonomy The taxonomy of the terms in question
      *

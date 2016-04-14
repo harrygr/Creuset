@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Traits;
+namespace App\Traits;
 
-use Creuset\Role;
+use App\Role;
 
 trait RoleableTrait
 {

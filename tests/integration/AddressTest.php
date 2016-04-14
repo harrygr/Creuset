@@ -2,8 +2,8 @@
 
 namespace Integration;
 
-use Creuset\Address;
-use Creuset\User;
+use App\Address;
+use App\User;
 use TestCase;
 
 class AddressTest extends TestCase

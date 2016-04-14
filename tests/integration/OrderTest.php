@@ -2,7 +2,7 @@
 
 namespace Integration;
 
-use Creuset\User;
+use App\User;
 use TestCase;
 
 class OrderTest extends TestCase
@@ -47,7 +47,7 @@ class OrderTest extends TestCase
     public function it_auto_creates_a_user_for_the_order_when_not_logged_in()
     {
         $product = $this->putProductInCart();
-        $shipping_method = factory('Creuset\ShippingMethod')->create()->allowCountries(['GB']);
+        $shipping_method = factory('App\ShippingMethod')->create()->allowCountries(['GB']);
 
         $this->visit('checkout')
         ->type('booboo@tempuser.com', 'email')
@@ -65,8 +65,8 @@ class OrderTest extends TestCase
     {
         $user = $this->loginWithUser([], 'customer');
         $product = $this->putProductInCart();
-        $address = factory(\Creuset\Address::class)->create(['user_id' => $user->id, 'country' => 'GB']);
-        $shipping_method = factory('Creuset\ShippingMethod')->create()->allowCountries(['GB']);
+        $address = factory(\App\Address::class)->create(['user_id' => $user->id, 'country' => 'GB']);
+        $shipping_method = factory('App\ShippingMethod')->create()->allowCountries(['GB']);
 
         //$current_stock = $product->stock_qty;
 
@@ -78,7 +78,7 @@ class OrderTest extends TestCase
 
         $order_amount = $product->getPrice() + $shipping_method->getPrice();
 
-        $order = \Creuset\Order::where('user_id', $user->id)->first();
+        $order = \App\Order::where('user_id', $user->id)->first();
         $this->seeInDatabase('orders', ['amount' => $order_amount, 'status' => 'pending']);
 
         $this->assertEquals($address->id, $order->billing_address_id);
@@ -92,9 +92,9 @@ class OrderTest extends TestCase
     {
         $user = $this->loginWithUser([], 'customer');
         $product = $this->putProductInCart();
-        $address = factory(\Creuset\Address::class)->create(['user_id' => $user->id, 'country' => 'GB']);
-        $shipping_method = factory('Creuset\ShippingMethod')->create(['base_rate' => 500]);
-        $shipping_method_2 = factory('Creuset\ShippingMethod')->create(['base_rate' => 600]);
+        $address = factory(\App\Address::class)->create(['user_id' => $user->id, 'country' => 'GB']);
+        $shipping_method = factory('App\ShippingMethod')->create(['base_rate' => 500]);
+        $shipping_method_2 = factory('App\ShippingMethod')->create(['base_rate' => 600]);
 
         $shipping_method->allowCountries(['GB']);
         $shipping_method_2->allowCountries(['GB']);
@@ -115,9 +115,9 @@ class OrderTest extends TestCase
     {
         $user = $this->loginWithUser([], 'customer');
         $product = $this->putProductInCart();
-        $address = factory(\Creuset\Address::class)->create(['user_id' => $user->id, 'country' => 'GB']);
-        $shipping_method = factory('Creuset\ShippingMethod')->create(['base_rate' => 500]);
-        $shipping_method_2 = factory('Creuset\ShippingMethod')->create(['base_rate' => 600]);
+        $address = factory(\App\Address::class)->create(['user_id' => $user->id, 'country' => 'GB']);
+        $shipping_method = factory('App\ShippingMethod')->create(['base_rate' => 500]);
+        $shipping_method_2 = factory('App\ShippingMethod')->create(['base_rate' => 600]);
 
         $shipping_method->allowCountries(['GB']);
         $shipping_method_2->allowCountries(['US']);
@@ -135,11 +135,11 @@ class OrderTest extends TestCase
     {
         $user = $this->loginWithUser([], 'customer');
         $product = $this->putProductInCart();
-        $address = factory(\Creuset\Address::class)->create(['user_id' => $user->id, 'country' => 'GB']);
+        $address = factory(\App\Address::class)->create(['user_id' => $user->id, 'country' => 'GB']);
 
-        $shipping_method = factory('Creuset\ShippingMethod')->create(['base_rate' => 500]);
-        $shipping_method_2 = factory('Creuset\ShippingMethod')->create(['base_rate' => 600]);
-        $shipping_method_3 = factory('Creuset\ShippingMethod')->create(['base_rate' => 200]);
+        $shipping_method = factory('App\ShippingMethod')->create(['base_rate' => 500]);
+        $shipping_method_2 = factory('App\ShippingMethod')->create(['base_rate' => 600]);
+        $shipping_method_3 = factory('App\ShippingMethod')->create(['base_rate' => 200]);
 
         $shipping_method->allowCountries(['GB']);
         $shipping_method_2->allowCountries(['GB']);
@@ -165,8 +165,8 @@ class OrderTest extends TestCase
     {
         $user = $this->loginWithUser([], 'customer');
         $product = $this->putProductInCart();
-        $address = factory(\Creuset\Address::class)->create(['user_id' => $user->id, 'country' => 'FR']);
-        $shipping_method = factory('Creuset\ShippingMethod')->create(['base_rate' => 500]);
+        $address = factory(\App\Address::class)->create(['user_id' => $user->id, 'country' => 'FR']);
+        $shipping_method = factory('App\ShippingMethod')->create(['base_rate' => 500]);
 
         $shipping_method->allowCountries(['GB']);
 
@@ -182,7 +182,7 @@ class OrderTest extends TestCase
     public function it_creates_a_user_for_the_order_when_they_select_to_make_new_account()
     {
         $product = $this->putProductInCart();
-        $shipping_method = factory('Creuset\ShippingMethod')->create(['base_rate' => 500])->allowCountries(['GB']);
+        $shipping_method = factory('App\ShippingMethod')->create(['base_rate' => 500])->allowCountries(['GB']);
 
         $this->visit('checkout')
         ->type('booboo@tempuser.com', 'email')
@@ -193,7 +193,7 @@ class OrderTest extends TestCase
         ->press('Continue')
         ->seePageIs('checkout/pay');
 
-        $this->seeInDatabase('orders', ['amount' => $product->getPrice() + $shipping_method->getPrice(), 'status' => \Creuset\Order::PENDING]);
+        $this->seeInDatabase('orders', ['amount' => $product->getPrice() + $shipping_method->getPrice(), 'status' => \App\Order::PENDING]);
         $this->assertFalse(User::where('email', 'booboo@tempuser.com')->first()->autoCreated());
         $this->seeInDatabase('addresses', ['city' => 'London']);
     }

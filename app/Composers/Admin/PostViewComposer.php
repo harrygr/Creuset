@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Composers\Admin;
+namespace App\Composers\Admin;
 
-use Creuset\Repositories\Post\PostRepository;
+use App\Repositories\Post\PostRepository;
 use Illuminate\Contracts\View\View;
 
 class PostViewComposer

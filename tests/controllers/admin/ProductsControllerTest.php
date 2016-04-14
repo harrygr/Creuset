@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
+use App\Product;
 use Carbon\Carbon;
-use Creuset\Product;
 use Faker\Factory;
 
 class ProductsControllerTest extends \TestCase
@@ -30,7 +30,7 @@ class ProductsControllerTest extends \TestCase
     {
         $this->visit('admin/products/create')->see('Create Product');
 
-        $terms = factory('Creuset\Term', 2)->create(['taxonomy' => 'product_category']);
+        $terms = factory('App\Term', 2)->create(['taxonomy' => 'product_category']);
 
         $this->post('admin/products', [
             'name'         => 'nice product',
@@ -66,7 +66,7 @@ class ProductsControllerTest extends \TestCase
     public function it_can_update_a_product()
     {
         $product = factory(Product::class)->create();
-        $terms = factory('Creuset\Term', 2)->create(['taxonomy' => 'product_category']);
+        $terms = factory('App\Term', 2)->create(['taxonomy' => 'product_category']);
 
         $this->visit("admin/products/{$product->id}/edit")
              ->see('Edit Product');

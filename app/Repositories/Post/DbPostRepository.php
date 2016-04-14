@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Repositories\Post;
+namespace App\Repositories\Post;
 
-use Creuset\Post;
-use Creuset\Repositories\DbRepository;
+use App\Post;
+use App\Repositories\DbRepository;
 
 class DbPostRepository extends DbRepository implements PostRepository
 {
@@ -33,64 +33,6 @@ class DbPostRepository extends DbRepository implements PostRepository
     public function getPaginated($with = [])
     {
         return $this->model->with($with)->latest()->paginate(10);
-    }
-
-    /**
-     * @param array $attributes
-     *
-     * @return static
-     */
-    public function create($attributes)
-    {
-        $post = $this->model->create($attributes);
-        if (isset($attributes['terms'])) {
-            $post->terms()->sync($attributes['terms']);
-        }
-
-        return $post;
-    }
-
-    /**
-     * @param Post  $post
-     * @param array $attributes
-     *
-     * @return bool|int
-     */
-    public function update(Post $post, $attributes)
-    {
-        if (isset($attributes['terms'])) {
-            $post->terms()->sync($attributes['terms']);
-        }
-
-        return $post->update($attributes);
-    }
-
-    /**
-     * @param Post $post
-     *
-     * @throws \Exception
-     *
-     * @return bool|null
-     */
-    public function delete(Post $post)
-    {
-        if ($post->trashed()) {
-            return $post->forceDelete();
-        }
-
-        return $post->delete();
-    }
-
-    /**
-     * @param Post $post
-     *
-     * @throws \Exception
-     *
-     * @return bool|null
-     */
-    public function restore(Post $post)
-    {
-        return $post->restore();
     }
 
     public function trashedCount()

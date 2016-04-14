@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
+use App\Media;
 use Carbon\Carbon;
-use Creuset\Media;
 use Faker\Factory;
 use Illuminate\Http\UploadedFile;
 
@@ -38,7 +38,6 @@ class PostsControllerTest extends \TestCase
         $this->seeInDatabase('posts', [
             'title'   => $postTitle,
             'content' => $postContent,
-            'type'    => 'post',
             'user_id' => $this->user->id,
             ]);
     }
@@ -48,7 +47,7 @@ class PostsControllerTest extends \TestCase
     {
 
         // And a post exists in the database
-        $post = factory('Creuset\Post')->create();
+        $post = factory('App\Post')->create();
 
         // I update the post
         $postTitle = 'Edited Title';
@@ -67,14 +66,13 @@ class PostsControllerTest extends \TestCase
         $this->seeInDatabase('posts', [
             'id'      => $post->id,
             'title'   => $postTitle,
-            'type'    => 'post',
             ]);
     }
 
     /** @test **/
     public function it_trashes_a_post()
     {
-        $post = factory('Creuset\Post')->create();
+        $post = factory('App\Post')->create();
 
         $this->visit('/admin/posts')
              ->see($post->title);
@@ -87,7 +85,7 @@ class PostsControllerTest extends \TestCase
     /** @test **/
     public function it_permanently_deletes_a_post()
     {
-        $post = factory('Creuset\Post')->create([
+        $post = factory('App\Post')->create([
             'deleted_at' => Carbon::now()->subDay(),
         ]);
 
@@ -109,7 +107,7 @@ class PostsControllerTest extends \TestCase
     /** @test **/
     public function it_restores_a_post()
     {
-        $post = factory('Creuset\Post')->create();
+        $post = factory('App\Post')->create();
 
         // move to trash
         $this->delete("/admin/posts/{$post->id}");
@@ -124,11 +122,13 @@ class PostsControllerTest extends \TestCase
     public function it_can_upload_an_image_to_a_post()
     {
         // Make a post
-        $post = factory('Creuset\Post')->create();
+        $post = factory('App\Post')->create();
 
         // And we need a file
-        $faker = Factory::create();
-        $image = $faker->image();
+        $source_image = base_path('tests/resources/images/image-1.jpg');
+        $image = base_path('tests/resources/images/image-1-tmp.jpg');
+        copy($source_image, $image);
+
         $file = new UploadedFile($image, basename($image), null, null, null, true);
 
         // Send off the request to upload the file
@@ -140,7 +140,7 @@ class PostsControllerTest extends \TestCase
         // Ensure the image has been saved in the db and attached to our post
         $this->seeInDatabase('media', [
             'model_id'   => $post->id,
-            'model_type' => 'Creuset\Post',
+            'model_type' => 'App\Post',
             'file_name'  => basename($image),
             ]);
 

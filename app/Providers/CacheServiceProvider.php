@@ -1,17 +1,17 @@
 <?php
 
-namespace Creuset\Providers;
+namespace App\Providers;
 
-use Creuset\Events\ModelWasChanged;
+use App\Events\ModelWasChanged;
 use Illuminate\Support\ServiceProvider;
 
 class CacheServiceProvider extends ServiceProvider
 {
     private $cachable_models = [
-        \Creuset\Post::class,
-        \Creuset\Product::class,
-        \Creuset\Order::class,
-        \Creuset\ShippingMethod::class,
+        \App\Post::class,
+        \App\Product::class,
+        \App\Order::class,
+        \App\ShippingMethod::class,
     ];
 
     public function boot()

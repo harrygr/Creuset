@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Http\Requests;
+namespace App\Http\Requests;
 
-use Creuset\Repositories\ShippingMethod\ShippingMethodRepository;
+use App\Repositories\ShippingMethod\ShippingMethodRepository;
 
 class SetShippingMethodRequest extends Request
 {

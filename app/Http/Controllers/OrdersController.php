@@ -1,14 +1,15 @@
 <?php
 
-namespace Creuset\Http\Controllers;
+namespace App\Http\Controllers;
 
-use Creuset\Address;
-use Creuset\Events\OrderWasCreated;
-use Creuset\Http\Requests\CreateOrderRequest;
-use Creuset\Http\Requests\Order\ViewOrderRequest;
-use Creuset\Http\Requests\SetShippingMethodRequest;
-use Creuset\Order;
+use App\Address;
+use App\Events\OrderWasCreated;
+use App\Http\Requests\CreateOrderRequest;
+use App\Http\Requests\Order\ViewOrderRequest;
+use App\Http\Requests\SetShippingMethodRequest;
+use App\Order;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class OrdersController extends Controller
 {
@@ -50,9 +51,9 @@ class OrdersController extends Controller
 
     /**
      * Add a shipping to an order.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function shipping(SetShippingMethodRequest $request)
@@ -68,15 +69,15 @@ class OrdersController extends Controller
 
     /**
      * Show the page for a completed order.
-     * 
+     *
      * @param Request $request
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function completed(Request $request)
     {
         if (!$request->session()->has('order_id')) {
-            abort(419);
+            abort(Response::HTTP_BAD_REQUEST);
         }
         $order = Order::findOrFail($request->session()->get('order_id'));
 

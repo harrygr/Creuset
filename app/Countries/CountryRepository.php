@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Countries;
+namespace App\Countries;
 
 interface CountryRepository
 {
@@ -19,4 +19,6 @@ interface CountryRepository
      * @return string The country name
      */
     public function getByCode($code);
+
+    public function group();
 }

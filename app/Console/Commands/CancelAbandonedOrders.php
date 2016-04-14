@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Console\Commands;
+namespace App\Console\Commands;
 
-use Creuset\Order;
+use App\Order;
 use Illuminate\Console\Command;
 
 class CancelAbandonedOrders extends Command
@@ -20,16 +20,6 @@ class CancelAbandonedOrders extends Command
      * @var string
      */
     protected $description = 'Mark all pending orders of a certain age as cancelled';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
      * Execute the console command.

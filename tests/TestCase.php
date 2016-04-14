@@ -41,7 +41,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 
     protected function loginWithUser(array $overrides = [], $role = 'subscriber')
     {
-        $user = factory('Creuset\User')->create($overrides);
+        $user = factory('App\User')->create($overrides);
 
         $user->assignRole($this->getRole($role)->name);
 
@@ -52,9 +52,9 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 
     protected function getRole($role_name)
     {
-        $role = Creuset\Role::where('name', $role_name)->first();
+        $role = App\Role::where('name', $role_name)->first();
         if (!$role) {
-            return Creuset\Role::create([
+            return App\Role::create([
                 'name'         => $role_name,
                 'display_name' => ucwords($role_name),
                 ]);
@@ -66,7 +66,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     protected function createImage($quantity = 1)
     {
         // Make a post
-        $post = factory('Creuset\Post')->create();
+        $post = factory('App\Post')->create();
         $faker = Factory::create();
         $image = base_path('tests/resources/images/image-1.jpg');
 

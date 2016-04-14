@@ -2,7 +2,7 @@
 
 namespace Integration;
 
-use Creuset\User;
+use App\User;
 use TestCase;
 
 class AuthTest extends TestCase

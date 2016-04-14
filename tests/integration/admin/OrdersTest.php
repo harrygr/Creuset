@@ -2,7 +2,7 @@
 
 namespace Integration;
 
-use Creuset\Order;
+use App\Order;
 use TestCase;
 
 class OrdersTest extends TestCase
@@ -34,7 +34,7 @@ class OrdersTest extends TestCase
              ->see("#{$order->id}")
              ->select('completed', 'status')
              ->press('update-status')
-             ->seePageIs('admin/orders')
+             ->seePageIs("admin/orders/{$order->id}")
              ->see(Order::$statuses['completed']);
     }
 }

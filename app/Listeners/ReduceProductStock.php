@@ -1,24 +1,14 @@
 <?php
 
-namespace Creuset\Listeners;
+namespace App\Listeners;
 
-use Creuset\Events\OrderWasPaid;
-use Creuset\Events\ProductStockChanged;
-use Creuset\Product;
+use App\Events\OrderWasPaid;
+use App\Events\ProductStockChanged;
+use App\Product;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class ReduceProductStock implements ShouldQueue
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
     /**
      * Handle the event.
      *
@@ -35,10 +25,10 @@ class ReduceProductStock implements ShouldQueue
 
     /**
      * Reduce the stock on a product.
-     * 
+     *
      * @param Product $product
      * @param int     $quantity
-     * 
+     *
      * @return bool
      */
     private function reduceStock(Product $product, $quantity)

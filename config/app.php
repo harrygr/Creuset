@@ -139,24 +139,24 @@ return [
         /*
          * Application Service Providers...
          */
-        'Creuset\Providers\AppServiceProvider',
-        'Creuset\Providers\EventServiceProvider',
-        'Creuset\Providers\RouteServiceProvider',
-        'Creuset\Providers\RouteServiceProvider',
-        'Creuset\Providers\DatabaseServiceProvider',
-        'Creuset\Providers\ComposerServiceProvider',
-        'Creuset\Providers\AuthServiceProvider',
-        'Creuset\Providers\CountriesServiceProvider',
-        'Creuset\Providers\CacheServiceProvider',
+        'App\Providers\AppServiceProvider',
+        'App\Providers\EventServiceProvider',
+        'App\Providers\RouteServiceProvider',
+        'App\Providers\RouteServiceProvider',
+        'App\Providers\DatabaseServiceProvider',
+        'App\Providers\ComposerServiceProvider',
+        'App\Providers\AuthServiceProvider',
+        'App\Providers\CountriesServiceProvider',
+        'App\Providers\CacheServiceProvider',
 
         /*
          * 3rd Party Service Providers
          */
-        'Collective\Html\HtmlServiceProvider',
+        Collective\Html\HtmlServiceProvider::class,
         Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
         GrahamCampbell\Markdown\MarkdownServiceProvider::class,
-
+        Baum\Providers\BaumServiceProvider::class,
     ],
 
     /*
@@ -208,7 +208,7 @@ return [
         'Gate'          => Illuminate\Support\Facades\Gate::class,
         'Cart'          => 'Gloudemans\Shoppingcart\Facades\Cart',
         'Markdown'      => 'GrahamCampbell\Markdown\Facades\Markdown',
-        'Present'       => 'Creuset\Presenters\Presenter',
+        'Present'       => 'App\Presenters\Presenter',
 
     ],
 

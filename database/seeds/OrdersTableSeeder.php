@@ -1,10 +1,10 @@
 <?php
 
-use Creuset\Address;
-use Creuset\Order;
-use Creuset\Product;
-use Creuset\ShippingMethod;
-use Creuset\User;
+use App\Address;
+use App\Order;
+use App\Product;
+use App\ShippingMethod;
+use App\User;
 use Illuminate\Database\Seeder;
 
 class OrdersTableSeeder extends Seeder

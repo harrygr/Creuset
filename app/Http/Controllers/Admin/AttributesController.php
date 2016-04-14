@@ -1,15 +1,15 @@
 <?php
 
-namespace Creuset\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
-use Creuset\Http\Controllers\Controller;
-use Creuset\Term;
+use App\Http\Controllers\Controller;
+use App\Term;
 
 class AttributesController extends Controller
 {
     /**
      * Show all attributes.
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function index()
@@ -23,7 +23,7 @@ class AttributesController extends Controller
 
     /**
      * Show a form for creating a new attribute.
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function create()
@@ -33,9 +33,9 @@ class AttributesController extends Controller
 
     /**
      * Show a form for updating attribute terms.
-     * 
+     *
      * @param string $taxonomies
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($taxonomies)
@@ -51,9 +51,9 @@ class AttributesController extends Controller
 
     /**
      * Delete all instances of a given taxonomy from storage.
-     *  
+     *
      * @param string $taxonomy
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($taxonomy)

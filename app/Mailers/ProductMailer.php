@@ -1,17 +1,17 @@
 <?php
 
-namespace Creuset\Mailers;
+namespace App\Mailers;
 
-use Creuset\Product;
-use Creuset\User;
+use App\Product;
+use App\User;
 
 class ProductMailer extends Mailer
 {
     /**
      * Send an out of stock notification to the shop admins.
-     *  
+     *
      * @param Product $product
-     * 
+     *
      * @return void
      */
     public function sendOutOfStockNotificationFor(Product $product)
@@ -28,9 +28,9 @@ class ProductMailer extends Mailer
 
     /**
      * Send an low stock notification to the shop admins.
-     *  
+     *
      * @param Product $product
-     * 
+     *
      * @return void
      */
     public function sendLowStockNotificationFor(Product $product)

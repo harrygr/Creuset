@@ -1,17 +1,17 @@
 <?php
 
-namespace Creuset\Mailers;
+namespace App\Mailers;
 
-use Creuset\Order;
-use Creuset\User;
+use App\Order;
+use App\User;
 
 class OrderMailer extends Mailer
 {
     /**
      * Send an order receipt to a customer.
-     * 
+     *
      * @param Order $order
-     * 
+     *
      * @return void
      */
     public function sendOrderConfirmationEmailFor(Order $order)
@@ -24,9 +24,9 @@ class OrderMailer extends Mailer
 
     /**
      * Send an order notification to each of the admins.
-     * 
+     *
      * @param Order $order
-     * 
+     *
      * @return void
      */
     public function sendAdminOrderNotificationFor(Order $order)

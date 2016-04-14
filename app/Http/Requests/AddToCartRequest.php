@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Http\Requests;
+namespace App\Http\Requests;
 
-use Creuset\Repositories\Product\ProductRepository;
+use App\Repositories\Product\ProductRepository;
 
 class AddToCartRequest extends Request
 {
@@ -43,7 +43,7 @@ class AddToCartRequest extends Request
 
     /**
      * Get the messages for any validation errors.
-     * 
+     *
      * @return array
      */
     public function messages()

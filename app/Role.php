@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,21 +8,21 @@ class Role extends Model
 {
     /**
      * The table used by the model.
-     * 
+     *
      * @var string
      */
     public $table = 'roles';
 
     /**
      * The fields that are mass-assignable.
-     * 
+     *
      * @var array
      */
     public $fillable = ['name', 'display_name'];
 
     /**
      * Disable timestamps.
-     * 
+     *
      * @var bool
      */
     public $timestamps = false;
@@ -34,7 +34,7 @@ class Role extends Model
      */
     public function users()
     {
-        return $this->hasMany('Creuset\User', 'users');
+        return $this->hasMany('App\User', 'users');
     }
 
     /**

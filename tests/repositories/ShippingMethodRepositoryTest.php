@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Repositories\ShippingMethod;
+namespace App\Repositories\ShippingMethod;
 
-use Creuset\ShippingMethod;
+use App\ShippingMethod;
 use TestCase;
 
 class ShippingMethodRepositoryTest extends TestCase

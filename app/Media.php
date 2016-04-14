@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset;
+namespace App;
 
 use Spatie\MediaLibrary\Media as BaseMedia;
 

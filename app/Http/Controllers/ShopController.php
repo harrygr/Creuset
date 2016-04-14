@@ -1,9 +1,9 @@
 <?php
 
-namespace Creuset\Http\Controllers;
+namespace App\Http\Controllers;
 
-use Creuset\Repositories\Product\ProductRepository;
-use Creuset\Term;
+use App\Repositories\Product\ProductRepository;
+use App\Term;
 
 class ShopController extends Controller
 {

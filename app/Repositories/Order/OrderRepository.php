@@ -1,6 +1,6 @@
 <?php
 
-namespace Creuset\Repositories\Order;
+namespace App\Repositories\Order;
 
 interface OrderRepository
 {

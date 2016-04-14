@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Events;
+namespace App\Events;
 
-use Creuset\Order;
+use App\Order;
 use Illuminate\Queue\SerializesModels;
 
 class OrderWasPaid extends Event
@@ -22,15 +22,5 @@ class OrderWasPaid extends Event
     {
         $this->order = $order;
         $this->payment_id = $payment_id;
-    }
-
-    /**
-     * Get the channels the event should be broadcast on.
-     *
-     * @return array
-     */
-    public function broadcastOn()
-    {
-        return [];
     }
 }

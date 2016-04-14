@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Listeners;
+namespace App\Listeners;
 
-use Creuset\Events\ModelWasChanged;
+use App\Events\ModelWasChanged;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class FlushModelCache implements ShouldQueue

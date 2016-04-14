@@ -1,8 +1,8 @@
 <?php
 
-namespace Creuset\Events;
+namespace App\Events;
 
-use Creuset\Product;
+use App\Product;
 use Illuminate\Queue\SerializesModels;
 
 class ProductStockChanged extends Event
@@ -19,15 +19,5 @@ class ProductStockChanged extends Event
     public function __construct(Product $product)
     {
         $this->product = $product;
-    }
-
-    /**
-     * Get the channels the event should be broadcast on.
-     *
-     * @return array
-     */
-    public function broadcastOn()
-    {
-        return [];
     }
 }

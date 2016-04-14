@@ -1,23 +1,23 @@
 <?php
 
-namespace Creuset\Traits;
+namespace App\Traits;
 
 trait HasTerms
 {
     public function terms()
     {
-        return $this->morphToMany('\Creuset\Term', 'termable');
+        return $this->morphToMany('\App\Term', 'termable');
     }
 
     public function categories()
     {
-        return $this->morphToMany('\Creuset\Term', 'termable')
+        return $this->morphToMany('\App\Term', 'termable')
         ->where('taxonomy', 'category');
     }
 
     public function tags()
     {
-        return $this->morphToMany('\Creuset\Term', 'termable')
+        return $this->morphToMany('\App\Term', 'termable')
         ->where('taxonomy', 'tag');
     }
 }
