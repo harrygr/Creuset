@@ -17,6 +17,22 @@ $factory->define('App\Post', function ($faker) {
     ];
 });
 
+$factory->define('App\Page', function ($faker) {
+
+    $creationDate = $faker->dateTimeThisMonth();
+    $title = $faker->sentence;
+
+    return [
+    'title'           => $title,
+    'content'         => $faker->paragraph,
+    'slug'            => str_slug($title),
+    'published_at'    => $creationDate,
+    'created_at'      => $creationDate,
+    'updated_at'      => $creationDate,
+    'user_id'         => factory(App\User::class)->create()->id,
+    ];
+});
+
 $factory->define('App\Product', function ($faker) {
     $name = $faker->sentence(3);
     $price = $faker->numberBetween(30, 30000);
@@ -79,7 +95,7 @@ $factory->define('App\Termable', function ($faker) {
 });
 
 $factory->define('App\OrderItem', function ($faker) {
-    $product = factory(App\Product::class)->create();
+    $product = factory(App\Product::class)->create(['stock_qty' => 20]);
 
     return [
     'order_id'          => factory('App\Order')->create()->id,

@@ -9,6 +9,7 @@ class DatabaseSeeder extends Seeder
         'termables',
         'terms',
         'posts',
+        'pages',
         'products',
         'users',
         'roles',
@@ -33,6 +34,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call('UsersTableSeeder');
         $this->call('PostsTableSeeder');
+        $this->call('PagesTableSeeder');
         $this->call('ProductsTableSeeder');
         $this->call('TermsTableSeeder');
         $this->call('TermablesTableSeeder');

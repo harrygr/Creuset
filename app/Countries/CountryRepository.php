@@ -19,4 +19,6 @@ interface CountryRepository
      * @return string The country name
      */
     public function getByCode($code);
+
+    public function group();
 }

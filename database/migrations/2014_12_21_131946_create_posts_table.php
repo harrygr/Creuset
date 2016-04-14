@@ -17,7 +17,6 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->text('content')->nullable();
             $table->string('slug')->unique();
-            $table->string('type', 20)->default('post');
             $table->string('status', 20)->default('published');
             $table->integer('user_id')->unsigned();
             $table->integer('post_id')->unsigned()->nullable();
