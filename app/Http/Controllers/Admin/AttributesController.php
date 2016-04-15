@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Attribute;
 use App\Http\Controllers\Controller;
-use App\Term;
 
 class AttributesController extends Controller
 {
@@ -63,13 +62,13 @@ class AttributesController extends Controller
 
     /**
      * Determine if a given taxonomy is a custom attribute (rather than a category, tag etc).
-     * 
-     * @param  string  $taxonomy
-     * 
-     * @return boolean          
+     *
+     * @param string $taxonomy
+     *
+     * @return bool
      */
     protected function isAttribute($taxonomy)
-    {        
-        return !!Attribute::where('taxonomy', $taxonomy)->count();
+    {
+        return (bool) Attribute::where('taxonomy', $taxonomy)->count();
     }
 }

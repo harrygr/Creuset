@@ -14,7 +14,7 @@ class Attribute extends Term
     protected static function boot()
     {
         parent::boot();
-        
+
         static::addGlobalScope(new AttributeScope());
     }
 }
