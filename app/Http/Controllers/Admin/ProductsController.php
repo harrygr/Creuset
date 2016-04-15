@@ -82,7 +82,7 @@ class ProductsController extends Controller
     {
         $selected_product_categories = $product->product_categories->lists('id');
 
-        return view('admin.products.edit')->with(compact('product', 'selected_product_categories'));
+        return view('admin.products.edit')->with(compact('product', 'selected_product_categories', 'attributes'));
     }
 
     /**

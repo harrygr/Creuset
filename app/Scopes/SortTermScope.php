@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Scope;
 /**
  * A scope to automatically sort terms by their specified order, deferring to alphabetical if the order value is equal.
  */
-class OrderScope implements Scope
+class SortTermScope implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Attribute;
 use App\Http\Controllers\Controller;
 use App\Term;
 
@@ -14,9 +15,7 @@ class AttributesController extends Controller
      */
     public function index()
     {
-        $terms = Term::whereNotIn('taxonomy', array_keys(Term::$taxonomies))->get();
-
-        $terms = $terms->groupBy('taxonomy');
+        $terms = Attribute::all()->groupBy('taxonomy');
 
         return view('admin.attributes.index', compact('terms'));
     }
@@ -40,11 +39,7 @@ class AttributesController extends Controller
      */
     public function edit($taxonomies)
     {
-        $taxonomy = str_singular($taxonomies);
-
-        if (isset(Term::$taxonomies[$taxonomy]) or !Term::where('taxonomy', $taxonomy)->count()) {
-            abort(404);
-        }
+        abort_if(!$this->isAttribute($taxonomy = str_singular($taxonomies)), 404);
 
         return view('admin.attributes.edit', compact('taxonomy'));
     }
@@ -58,11 +53,23 @@ class AttributesController extends Controller
      */
     public function destroy($taxonomy)
     {
-        $terms = Term::where('taxonomy', $taxonomy)->delete();
+        $terms = Attribute::where('taxonomy', $taxonomy)->delete();
 
         return redirect()->route('admin.attributes.index')->with([
             'alert'       => sprintf('Attribute "%s" deleted', \Present::labelText($taxonomy)),
             'alert-class' => 'success',
             ]);
+    }
+
+    /**
+     * Determine if a given taxonomy is a custom attribute (rather than a category, tag etc).
+     * 
+     * @param  string  $taxonomy
+     * 
+     * @return boolean          
+     */
+    protected function isAttribute($taxonomy)
+    {        
+        return !!Attribute::where('taxonomy', $taxonomy)->count();
     }
 }

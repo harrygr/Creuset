@@ -181,8 +181,6 @@ Route::group(['prefix' => 'api', 'middleware' => 'api'], function () {
     Route::get('media/{media}', ['uses' => 'Api\MediaController@show', 'as' => 'api.media.show'])->where('id', '[0-9]+');
     Route::get('media/{collection?}', ['uses' => 'Api\MediaController@index', 'as' => 'api.media.index']);
 
-    Route::post('attributes', ['uses' => 'Api\TermsController@storeMany', 'as' => 'api.terms.store_many']);
-
     Route::group(['prefix' => 'orders'], function () {
         Route::patch('{order}', ['uses' => 'Api\OrdersController@update', 'as' => 'api.orders.update']);
     });

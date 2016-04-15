@@ -18,7 +18,7 @@ class TermsController extends Controller
     public function __construct(TermRepository $terms)
     {
         $this->terms = $terms;
-        $this->middleware('admin', ['only' => ['store', 'storeCategory', 'storeMany']]);
+        $this->middleware('admin', ['only' => ['store', 'update', 'destroy', 'storeCategory']]);
     }
 
     /**

@@ -28,6 +28,7 @@ Pages
 			@foreach ($pages as $page)
 				<tr>
 					<td>
+					{{ str_repeat('- ', $page->getDepth()) }}
 						<strong>{{ $page->title }}</strong> {{ $page->present()->statusLabel() }}
 						<div class="row-actions">
 							{{ $page->present()->indexLinks() }}
