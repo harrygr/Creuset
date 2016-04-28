@@ -8,31 +8,31 @@
         </ul>
     </div>
 
-    <!-- Taxonomy Input -->
-    <div class="form-group" v-if="!taxonomy">
-        <label for="taxonomy">Attribute Name</label>
+    <!-- Attribute Input -->
+    <div class="form-group" v-if="!product_attribute">
+        <label for="product_attribute">Attribute Name</label>
         <div class="input-group">
-            <input class="form-control" type="text" name="taxonomy" v-model="currentTaxonomy" @keyup.enter="setTaxonomy">
+            <input class="form-control" type="text" name="product_attribute" v-model="currentAttribute" @keyup.enter="setAttribute">
             <div class="input-group-btn">
-                <button class="btn btn-default" type="button" @click="setTaxonomy">Create</button>
+                <button class="btn btn-default" type="button" @click="setAttribute">Create</button>
             </div>
         </div>
     </div>
 
-    <!-- Taxonomy Display -->
-    <h2 v-if="taxonomy">{{ taxonomy }} <button class="btn btn-link" v-if="!terms.length" @click="switchTaxonomy"><i class="fa fa-pencil"></i></button></h2>
+    <!-- Attribute Display -->
+    <h2 v-if="product_attribute">{{ product_attribute }} <button class="btn btn-link" v-if="!properties.length" @click="switchAttribute"><i class="fa fa-pencil"></i></button></h2>
 
-    <!-- Attributes -->
-    <div  v-if="taxonomy" class="row">
+    <!-- Properties -->
+    <div  v-if="product_attribute" class="row">
 
-        <!-- Attribute Entry -->
+        <!-- Property Entry -->
         <div class="col-md-6">
             <div class="form-group">
-                <label for="term">Add Property</label>
+                <label for="property">Add Property</label>
                 <div class="input-group">
-                    <input class="form-control" type="text" v-model="term" @keyup.enter="addTerm">
+                    <input class="form-control" type="text" v-model="property" @keyup.enter="addProperty">
                     <div class="input-group-btn">
-                        <button class="btn btn-default" type="button" @click="addTerm" :disabled="loading">Add Property</button>
+                        <button class="btn btn-default" type="button" @click="addProperty" :disabled="loading">Add Property</button>
                     </div>
                 </div>
             </div>
@@ -41,66 +41,97 @@
         <!-- Attribute Display -->
         <div class="col-md-6">
             <ul class="list-group">
-              <li v-for="term in terms | orderBy 'order'"class="list-group-item">
-                {{ term.term }} <span class='text-muted'>({{ term.order}})</span>
-                <span class="pull-right">
+              <li v-for="property in properties | orderBy 'order'"class="list-group-item">
+
+                <div v-if="!(editingProperty == property.id)" style="max-width:50%; display:inline;">
+                    {{ property.property }} <span class='text-muted'>({{ property.order}})</span>
+                    <button class="btn btn-link" @click="editingProperty = property.id"><i class="fa fa-pencil"></i></button>
+                </div>
+
+                <div v-if="editingProperty == property.id" style="max-width:50%; display:inline-block;">
+
+                    <div class="input-group" >
+                      <input type="text" class="form-control input-sm" v-model="property.property" @keyup.enter="updateProperty(property)">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default btn-sm" type="button" @click="updateProperty(property)" title="Save Edit"><span class="text-success"><i class="fa fa-check"></i></span></button>
+                        <button class="btn btn-default btn-sm" @click="editingProperty = null" title="Cancel Edit"><i class="fa fa-times"></i></button>
+                      </span>
+                    </div><!-- /input-group -->
+
+                </div>
+
+
+                <span class="pull-right" v-if="!editingProperty">
                     <button class="btn-link" @click="promote($index)" :disabled="$index === 0"><i class="fa fa-fw fa-arrow-up"></i></button>
-                    <button class="btn-link" @click="demote($index)" :disabled="$index === (terms.length - 1)"><i class="fa fa-fw fa-arrow-down"></i></button>
-                    <button class="btn-link" @click="removeTerm(term)"><i class="fa fa-fw fa-trash"></i></button>
+                    <button class="btn-link" @click="demote($index)" :disabled="$index === (properties.length - 1)"><i class="fa fa-fw fa-arrow-down"></i></button>
+                    <button class="btn btn-link" @click="removeProperty(property)"><span class="text-danger"><i class="fa fa-fw fa-trash"></i></span></button>
                 </span>
-              </li>
-          </ul>
-      </div>
-  </div>
+            </li>
+        </ul>
+
+        <!-- Loading messages -->
+        <p class="form-group top-buffer">
+        <span v-if="loading"><i class="fa fa-circle-o-notch fa-spin"></i> Working...</span>
+        <span class="text-success" v-if="updatedMessage"> <i class="fa fa-check"></i> {{ updatedMessage }}</span>
+        </p>
+
+    </div>
+</div>
 
 </template>
 
 <script>
 
+    var sluggify = require('../filters/sluggify.js');
+
     module.exports = {
-        props: ['taxonomy'],
+        props: ['product_attribute'],
 
         data: function ()
         {
             return {
-                'currentTaxonomy': null,
-                'term': '',
-                'terms': [],
+                'currentAttribute': null,
+                'property': '',
+                'properties': [],
                 'errors': null,
-                'loading': false
+                'loading': false,
+                'editingProperty': null,
+                'updatedMessage': '',
             };
         },
 
         ready: function ()
         {
-            if (this.taxonomy) {
-                this.fetchCurrentTerms();
+            if (this.product_attribute) {
+                this.fetchCurrentProperties();
             }
         },
 
         'methods': {
 
-            setTaxonomy: function ()
+            setAttribute: function ()
             {
-                this.taxonomy = this.currentTaxonomy;
-                this.fetchCurrentTerms();
-            },
+                this.product_attribute = this.currentAttribute;
+                this.fetchCurrentProperties();
 
-            addTerm: function ()
+            },
+            addProperty: function ()
             {
-                var term = {
-                    term: this.term,
-                    taxonomy: this.taxonomy,
-                    order: this.terms.length + 1,
+                var property = {
+                    property: this.property,
+                    property_slug: sluggify(this.property),
+                    name: this.product_attribute,
+                    order: this.properties.length + 1,
                 };
 
                 this.loading = true;
 
-                this.$http.post('/api/terms', term)
+                this.$http.post('/api/product_attributes', property)
                 .then(function (response) {
-                    this.terms.push(response.data);
-                    this.term = '';
+                    this.properties.push(response.data);
+                    this.property = '';
                     this.loading = false;
+                    this.showMessage('Property Saved');
                 })
                 .catch(function (response) {
                     this.displayErrors(response.data);
@@ -109,42 +140,41 @@
 
             },
 
-            removeTerm: function (term)
+            removeProperty: function (property)
             {
                 this.loading = true;
 
-                this.$http.delete('/api/terms/' + term.id)
+                this.$http.delete('/api/product_attributes/' + property.id)
                 .then(function (response) {
-                    this.terms.$remove(term);
+                    this.properties.$remove(property);
                     this.loading = false;
+                    this.showMessage('Property Deleted');
                 })
                 .catch(function (response) {
-                    console.log(response.data);
                     this.loading = false;
                 });
             },
 
-            fetchCurrentTerms: function ()
+            fetchCurrentProperties: function ()
             {
                 this.loading = true;
 
-                this.$http.get('/api/terms/' + this.taxonomy)
+                this.$http.get('/api/product_attributes/' + this.product_attribute)
                 .then(function (response) {
-                    this.terms = response.data;
+                    this.properties = response.data;
                     this.loading = false;
 
                     this.reindexItems();
                 }).catch(function (response) {
-                    console.log(response.data);
                     this.loading = false;
                 });
             },
 
-            switchTaxonomy: function ()
+            switchAttribute: function ()
             {
-                this.currentTaxonomy = this.taxonomy;
-                this.taxonomy = null;
-                this.fetchCurrentTerms();
+                this.currentAttribute = this.product_attribute;
+                this.property = null;
+                this.fetchCurrentAttributes();
             },
 
             displayErrors: function(errors)
@@ -162,10 +192,10 @@
 
             reindexItems: function() {
 
-                this.terms = this.$options.filters.orderBy(this.terms, 'order');
+                this.properties = this.$options.filters.orderBy(this.properties, 'order');
 
-                for (var ind = 0; ind < this.terms.length; ind++) {
-                    this.terms[ind].order = ind;
+                for (var ind = 0; ind < this.properties.length; ind++) {
+                    this.properties[ind].order = ind;
                 }
             },
 
@@ -174,13 +204,13 @@
                 this.reindexItems();
 
                 if (index !== 0) {
-                    var newOrder = this.terms[index - 1].order;
+                    var newOrder = this.properties[index - 1].order;
 
-                    this.terms[index - 1].order = this.terms[index].order;
-                    this.updateTerm(this.terms[index - 1]);
+                    this.properties[index - 1].order = this.properties[index].order;
+                    this.updateProperty(this.properties[index - 1]);
 
-                    this.terms[index].order = newOrder;
-                    this.updateTerm(this.terms[index]);
+                    this.properties[index].order = newOrder;
+                    this.updateProperty(this.properties[index]);
                 }
 
             },
@@ -189,24 +219,37 @@
 
                 this.reindexItems();
 
-                if ((index + 1) !== this.terms.length) {
-                    var newOrder = this.terms[index + 1].order;
+                if ((index + 1) !== this.properties.length) {
+                    var newOrder = this.properties[index + 1].order;
 
-                    this.terms[index + 1].order = this.terms[index].order;
-                    this.updateTerm(this.terms[index + 1]);
+                    this.properties[index + 1].order = this.properties[index].order;
+                    this.updateProperty(this.properties[index + 1]);
 
-                    this.terms[index].order = newOrder;
-                    this.updateTerm(this.terms[index]);
+                    this.properties[index].order = newOrder;
+                    this.updateProperty(this.properties[index]);
 
                 }
 
             },
 
-            updateTerm: function(term) {
-                this.$http.patch('/api/terms/' + term.id, term)
-                          .then(function(response){})
-                          .catch(function(response){});
-            }
+            updateProperty: function(property) {
+
+                this.loading = true;
+                property.property_slug = sluggify(property.property);
+
+                this.$http.patch('/api/product_attributes/' + property.id, property)
+                .then(function(response){
+                    this.editingProperty = null;
+                    this.loading = false;
+                    this.showMessage('Property Updated');
+                        })
+                .catch(function(response){});
+            },
+
+            showMessage: function(message) {
+                this.updatedMessage = message;
+                setTimeout(function(){ this.updatedMessage = false}.bind(this), 5000);
+            },
         }
     }
 

@@ -8,6 +8,7 @@ class DatabaseSeeder extends Seeder
     private $tables = [
         'termables',
         'terms',
+        'product_attributes',
         'posts',
         'pages',
         'products',
@@ -37,6 +38,7 @@ class DatabaseSeeder extends Seeder
         $this->call('PagesTableSeeder');
         $this->call('ProductsTableSeeder');
         $this->call('TermsTableSeeder');
+        $this->call('ProductAttributesTableSeeder');
         $this->call('TermablesTableSeeder');
         $this->call('AddressesTableSeeder');
         $this->call('ShippingMethodsTableSeeder');

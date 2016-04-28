@@ -19,6 +19,13 @@ abstract class CacheRepository
     protected $tag;
 
     /**
+     * The cache string modifier in case of any request differences.
+     *
+     * @var string
+     */
+    protected $modifier = '';
+
+    /**
      * Find an instance of the model by its ID.
      *
      * @param int   $id
@@ -45,7 +52,9 @@ abstract class CacheRepository
         $page = \Request::get('page', 1);
         $tags = array_merge([$this->tag], $with);
 
-        return \Cache::tags($tags)->remember("{$this->tag}.paginated.page.{$page}", config('cache.time'), function () use ($with) {
+        $cacheString = "{$this->tag}.paginated.page.{$page}{$this->modifier}";
+
+        return \Cache::tags($tags)->remember($cacheString, config('cache.time'), function () use ($with) {
             return $this->repository->getPaginated($with);
         });
     }
@@ -61,7 +70,7 @@ abstract class CacheRepository
     {
         $tags = array_merge([$this->tag], $with);
 
-        return \Cache::tags($tags)->remember("{$this->tag}.all", config('cache.time'), function () use ($with) {
+        return \Cache::tags($tags)->remember("{$this->tag}.all{$this->modifier}", config('cache.time'), function () use ($with) {
            return $this->repository->all($with);
         });
     }
@@ -73,7 +82,7 @@ abstract class CacheRepository
      */
     public function count()
     {
-        return \Cache::tags([$this->tag])->remember("{$this->tag}.count", config('cache.time'), function () {
+        return \Cache::tags([$this->tag])->remember("{$this->tag}.count{$this->modifier}", config('cache.time'), function () {
             return $this->repository->count();
         });
     }

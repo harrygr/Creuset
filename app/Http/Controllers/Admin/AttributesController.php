@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Term;
+use App\ProductAttribute;
 
 class AttributesController extends Controller
 {
@@ -14,9 +14,7 @@ class AttributesController extends Controller
      */
     public function index()
     {
-        $terms = Term::whereNotIn('taxonomy', array_keys(Term::$taxonomies))->get();
-
-        $terms = $terms->groupBy('taxonomy');
+        $terms = ProductAttribute::all()->groupBy('slug');
 
         return view('admin.attributes.index', compact('terms'));
     }
@@ -34,19 +32,13 @@ class AttributesController extends Controller
     /**
      * Show a form for updating attribute terms.
      *
-     * @param string $taxonomies
+     * @param string $attribute_slug
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($taxonomies)
+    public function edit($attribute)
     {
-        $taxonomy = str_singular($taxonomies);
-
-        if (isset(Term::$taxonomies[$taxonomy]) or !Term::where('taxonomy', $taxonomy)->count()) {
-            abort(404);
-        }
-
-        return view('admin.attributes.edit', compact('taxonomy'));
+        return view('admin.attributes.edit', compact('attribute'));
     }
 
     /**
@@ -56,12 +48,12 @@ class AttributesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($taxonomy)
+    public function destroy($slug)
     {
-        $terms = Term::where('taxonomy', $taxonomy)->delete();
+        $terms = ProductAttribute::where('slug', $slug)->delete();
 
         return redirect()->route('admin.attributes.index')->with([
-            'alert'       => sprintf('Attribute "%s" deleted', \Present::labelText($taxonomy)),
+            'alert'       => sprintf('Attribute "%s" deleted', \Present::labelText($slug)),
             'alert-class' => 'success',
             ]);
     }

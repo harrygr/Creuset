@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: harryg
- * Date: 03/02/15
- * Time: 23:31.
- */
+
 namespace App\Repositories\Term;
 
 use App\Contracts\Termable;

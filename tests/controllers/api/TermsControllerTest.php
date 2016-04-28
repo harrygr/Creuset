@@ -11,11 +11,17 @@ class TermsControllerTest extends \TestCase
 {
     use DatabaseTransactions;
 
+    private $user;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->user = $this->logInAsAdmin();
+    }
+
     /** @test **/
     public function it_saves_a_new_term_in_the_database()
     {
-        $this->logInAsAdmin();
-
         $payload = [
             'term'     => 'pa laa',
             'taxonomy' => 'product_category',
@@ -29,8 +35,6 @@ class TermsControllerTest extends \TestCase
     /** @test **/
     public function it_sanitizes_taxonomies()
     {
-        $this->logInAsAdmin();
-
         $payload = [
             'term'     => 'Very Tall',
             'taxonomy' => 'Tree Height',
@@ -52,8 +56,6 @@ class TermsControllerTest extends \TestCase
     /** @test **/
     public function it_does_not_allow_saving_duplicate_terms_of_a_certain_taxonomy()
     {
-        $this->logInAsAdmin();
-
         $payload = [
             'term'     => 'Humungous',
             'taxonomy' => 'Lampshade Size',

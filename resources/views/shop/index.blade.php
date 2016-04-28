@@ -11,6 +11,8 @@
   @endif
 </ol>
 
+@include('shop._attribute_filter')
+
 @foreach ($products->chunk($products_per_row) as $product_group)
 <div class="row">
 

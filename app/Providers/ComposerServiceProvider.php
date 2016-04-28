@@ -24,6 +24,8 @@ class ComposerServiceProvider extends ServiceProvider
         $this->shareProductIndexSettings();
 
         $this->shareOrderCountWithSidebar();
+
+        $this->shareAttributes();
     }
 
     /**
@@ -33,7 +35,7 @@ class ComposerServiceProvider extends ServiceProvider
      */
     private function shareRoles()
     {
-        view()->composer('admin.users.form', function ($view) {
+        $this->app->view->composer('admin.users.form', function ($view) {
 
             $roles = \App\Role::lists('display_name', 'id');
 
@@ -49,7 +51,7 @@ class ComposerServiceProvider extends ServiceProvider
      */
     private function shareNavLinks()
     {
-        view()->composer(
+        $this->app->view->composer(
             ['admin.products.images', 'admin.products.edit'],
             \App\Composers\NavViewComposer::class.'@productLinks'
         );
@@ -62,12 +64,12 @@ class ComposerServiceProvider extends ServiceProvider
      */
     private function sharePostData()
     {
-        view()->composer('admin.posts.index', \App\Composers\Admin\PostViewComposer::class.'@postCount');
+        $this->app->view->composer('admin.posts.index', \App\Composers\Admin\PostViewComposer::class.'@postCount');
     }
 
     private function shareCountries()
     {
-        view()->composer(['shop.checkout', 'addresses.form'], function ($view) {
+        $this->app->view->composer(['shop.checkout', 'addresses.form'], function ($view) {
             $countries_repository = $this->app->make(CountryRepository::class);
 
             $view->with('countries', $countries_repository->lists());
@@ -81,16 +83,28 @@ class ComposerServiceProvider extends ServiceProvider
      */
     private function shareProductIndexSettings()
     {
-        view()->composer('shop.index', function ($view) {
+        $this->app->view->composer('shop.index', function ($view) {
             $view->with('products_per_row', config('shop.products_per_row'));
         });
     }
 
     private function shareOrderCountWithSidebar()
     {
-        view()->composer('admin.layouts.sidebar-menu', function ($view) {
+        $this->app->view->composer('admin.layouts.sidebar-menu', function ($view) {
             $orders = $this->app->make(OrderRepository::class);
             $view->with('order_count', $orders->count(\App\Order::PAID));
+        });
+    }
+
+    /**
+     * Share the nested product attributes with the relevant views.
+     *
+     * @return void
+     */
+    private function shareAttributes()
+    {
+        $this->app->view->composer(['shop._attribute_filter', 'admin.products.form.attributes'], function ($view) {
+            $view->with('product_attributes', \App\ProductAttribute::all()->groupBy('name'));
         });
     }
 

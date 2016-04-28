@@ -86,6 +86,21 @@ $factory->define('App\Term', function ($faker) {
     ];
 });
 
+$factory->define('App\ProductAttribute', function ($faker) {
+
+    $term = $faker->unique()->word;
+    if (strlen($term) < 4) {
+        $term .= ' '.$faker->word;
+    }
+
+    $attributes = ['Size', 'Length', 'Colour', 'Top Speed'];
+
+    return [
+    'name'     => $faker->randomElement($attributes),
+    'property' => $term,
+    ];
+});
+
 $factory->define('App\Termable', function ($faker) {
     return [
     'term_id'          => factory(App\Term::class)->create()->id,

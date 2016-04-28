@@ -58,6 +58,8 @@
 		</div>
 	</div>
 
+	@include('admin.products.form.attributes')
+
 	<cr-category-chooser taxonomy="product_category" heading="Product Categories" :checkedcategories="{{ isset($selected_product_categories) ? $selected_product_categories->toJson(JSON_NUMERIC_CHECK) : '[]' }}"></cr-category-chooser>
 
 	<cr-image-chooser image="{{ old('media_id', $product->media_id) }}"></cr-image-chooser>

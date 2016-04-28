@@ -29,7 +29,6 @@ elixir(function(mix) {
         ], 'public/css/admin.all.css');
 
     mix.version([
-        'css/admin.all.css',
-        'js/admin.js'
+        'css/admin.all.css', 'js/admin.js'
         ]);
 });

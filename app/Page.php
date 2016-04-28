@@ -31,7 +31,7 @@ class Page extends \Baum\Node
     /**
      * Get the full url path to the page, based on its page hierarchy.
      *
-     * @param bool $excludeSelf exclude the slug of the current page.
+     * @param bool $excludeSelf Exclude the slug of the current page.
      *
      * @return string
      */

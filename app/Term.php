@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Scopes\OrderScope;
+use App\Scopes\SortTermScope;
 use Illuminate\Database\Eloquent\Model;
 
 class Term extends Model
@@ -16,7 +16,7 @@ class Term extends Model
     {
         parent::boot();
 
-        static::addGlobalScope(new OrderScope());
+        static::addGlobalScope(new SortTermScope());
 
         /**
          * Set a slug on the term if it's not passed in.
@@ -60,7 +60,7 @@ class Term extends Model
 
     public function products()
     {
-        return $this->morphedByMany('App\Product', 'termable');
+        return $this->morphedByMany('App\Product', 'termable', null, 'term_id');
     }
 
     /**

@@ -25,11 +25,11 @@
         <tbody>
             @foreach ($user->orders->take(5) as $order)
                 <tr>
-                    <td><a href="{{ route('orders.show', $order) }}">{{ $order->id }}</a></td>
-                    <td>{{ $order->created_at }}</td>
+                    <td><a href="{{ route('orders.show', $order) }}">#{{ $order->id }}</a></td>
+                    <td>{{ $order->created_at->format('j M Y g:ia') }}</td>
                     <td>{{ $order->present()->status }}</td>
                     <td>{{ Present::money($order->amount) }} for {{ $order->product_items->count() }} {{ str_plural('item', $order->product_items->count()) }}</td>
-                    <td><a href="{{ route('orders.show', $order) }}">View</a></td>
+                    <td><a href="{{ route('orders.show', $order) }}" class="btn btn-default">View</a></td>
                 </tr>
             @endforeach
         </tbody>

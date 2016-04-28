@@ -18,7 +18,7 @@ class PagesController extends Controller
      */
     public function index()
     {
-        $pages = Page::paginate();
+        $pages = Page::orderBy('lft')->paginate();
 
         return view('admin.pages.index', compact('pages'));
     }
