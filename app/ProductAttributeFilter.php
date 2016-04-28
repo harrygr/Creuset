@@ -17,10 +17,10 @@ class ProductAttributeFilter
     }
 
     /**
-     * Apply the attribute filter to the builder
-     * 
-     * @param  Builder $builder
-     * 
+     * Apply the attribute filter to the builder.
+     *
+     * @param Builder $builder
+     *
      * @return Builder
      */
     public function apply(Builder $builder)
@@ -28,15 +28,12 @@ class ProductAttributeFilter
         $this->builder = $builder;
 
         foreach ($this->filters as $attribute => $property) {
-
-            $this->builder->whereHas('product_attributes', function($query) use ($attribute, $property) {
+            $this->builder->whereHas('product_attributes', function ($query) use ($attribute, $property) {
                 $query->where('slug', $attribute)
                       ->where('property_slug', $property);
             });
-            
         }
+
         return $this->builder;
     }
-
-
 }

@@ -57,5 +57,4 @@ class AttributesController extends Controller
             'alert-class' => 'success',
             ]);
     }
-
 }

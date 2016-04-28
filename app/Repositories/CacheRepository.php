@@ -19,8 +19,8 @@ abstract class CacheRepository
     protected $tag;
 
     /**
-     * The cache string modifier in case of any request differences
-     * 
+     * The cache string modifier in case of any request differences.
+     *
      * @var string
      */
     protected $modifier = '';

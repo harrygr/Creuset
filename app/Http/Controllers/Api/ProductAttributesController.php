@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 class ProductAttributesController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('admin', ['only' => ['store', 'update', 'destroy', 'storeCategory']]);
@@ -27,9 +26,9 @@ class ProductAttributesController extends Controller
         if ($slug) {
             return ProductAttribute::where('slug', str_slug($slug))->get();
         }
-        return ProductAttribute::all();        
-    }
 
+        return ProductAttribute::all();
+    }
 
     /**
      * Create a new property in storage.
@@ -60,8 +59,8 @@ class ProductAttributesController extends Controller
     /**
      * Update a property in storage.
      *
-     * @param \App\ProductAttribute                                 $property
-     * @param Request $request
+     * @param \App\ProductAttribute $property
+     * @param Request               $request
      *
      * @return \Illuminate\Http\Response
      */

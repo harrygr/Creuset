@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Attribute;
 use TestCase;
 
 class ProductTest extends TestCase
@@ -95,5 +94,4 @@ class ProductTest extends TestCase
         $product = $product->syncTerms([]);
         $this->assertEquals('Uncategorised', $product->product_category->term);
     }
-
 }

@@ -91,5 +91,4 @@ class TermsTest extends \TestCase
 
         $this->dontSeeInDatabase('terms', ['id' => $category_1, 'taxonomy' => 'category', 'term' => 'Nice Cat']);
     }
-
 }

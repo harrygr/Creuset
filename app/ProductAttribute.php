@@ -2,8 +2,7 @@
 
 namespace App;
 
-use App\Product;
-use App\Scopes\AttributeScope;
+
 use App\Scopes\SortTermScope;
 use Illuminate\Database\Eloquent\Model;
 

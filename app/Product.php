@@ -4,7 +4,6 @@ namespace App;
 
 use App\Contracts\Termable;
 use App\Presenters\PresentableTrait;
-use App\ProductAttributeFilter;
 use App\Traits\Postable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -160,7 +159,7 @@ class Product extends Model implements HasMediaConversions, Termable
         if ($attributes instanceof \Illuminate\Database\Eloquent\Collection) {
             $attributes = $attributes->pluck('id')->toArray();
         }
-        
+
         $this->product_attributes()->sync($attributes);
 
         return $this;
@@ -177,10 +176,11 @@ class Product extends Model implements HasMediaConversions, Termable
     }
 
     /**
-     * Apply the attribute filter scope
-     * 
-     * @param  Builder                 $query
-     * @param  ProductAttributeFilter $filter 
+     * Apply the attribute filter scope.
+     *
+     * @param Builder                $query
+     * @param ProductAttributeFilter $filter
+     *
      * @return Builder
      */
     public function scopeFilter($query, ProductAttributeFilter $filter)

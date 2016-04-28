@@ -3,7 +3,7 @@
  // DB::listen(function ($query) {
  //    var_dump($query->sql, $query->bindings, $query->time);
  //        });
- 
+
 Route::group(['middleware' => ['web']], function () {
 
     Route::get('/', 'HomeController@index');

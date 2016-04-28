@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\Product;
-use App\ProductAttribute;
 use TestCase;
 
 class AttributeTest extends TestCase
@@ -12,10 +10,10 @@ class AttributeTest extends TestCase
     public function it_gets_a_count_of_related_products()
     {
         $attribute = factory(ProductAttribute::class)->create(['name' => 'Size']);
-        
+
         $products = factory(Product::class, 3)->create();
 
-        $products->each(function($product) use ($attribute) {
+        $products->each(function ($product) use ($attribute) {
             $product->addProperty($attribute);
         });
 
