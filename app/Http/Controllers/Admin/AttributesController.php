@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\ProductAttribute;
-use App\Term;
 
 class AttributesController extends Controller
 {
@@ -58,4 +57,5 @@ class AttributesController extends Controller
             'alert-class' => 'success',
             ]);
     }
+
 }

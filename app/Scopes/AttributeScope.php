@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
 /**
- * A scope to restrict terms to only those that are attributes. I.e. exclude categories, tags etc
+ * A scope to restrict terms to only those that are attributes. I.e. exclude categories, tags etc.
  */
 class AttributeScope implements Scope
 {
