@@ -2,7 +2,6 @@
 
 namespace App;
 
-
 use App\Scopes\SortTermScope;
 use Illuminate\Database\Eloquent\Model;
 
