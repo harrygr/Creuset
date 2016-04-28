@@ -11,8 +11,13 @@
 <h1>Create New Address</h1>
 @include('partials.errors')
 
+
+<div class="col-md-offset-3 col-md-6">
 {!! Form::model($address, ['route' => ['addresses.store'], 'method' => 'POST']) !!}
     @include('addresses.form')
     <input type="submit" class="btn btn-success" value="Save Address">
 {!! Form::close() !!}
+</div>
+
+
 @stop

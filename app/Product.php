@@ -4,6 +4,7 @@ namespace App;
 
 use App\Contracts\Termable;
 use App\Presenters\PresentableTrait;
+use App\ProductAttributeFilter;
 use App\Traits\Postable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -78,9 +79,9 @@ class Product extends Model implements HasMediaConversions, Termable
      *
      * @return \Illuminate\Database\Eloquent\Relations\Relation
      */
-    public function attributes()
+    public function product_attributes()
     {
-        return $this->morphToMany(Term::class, 'termable')->whereNotIn('taxonomy', array_keys(Term::$taxonomies));
+        return $this->belongsToMany(ProductAttribute::class);
     }
 
     /**
@@ -88,9 +89,9 @@ class Product extends Model implements HasMediaConversions, Termable
      *
      * @param Term $attribute
      */
-    public function addAttribute(Term $attribute)
+    public function addProperty(ProductAttribute $attribute)
     {
-        $this->attributes()->save($attribute);
+        $this->product_attributes()->save($attribute);
 
         return $this;
     }
@@ -103,7 +104,7 @@ class Product extends Model implements HasMediaConversions, Termable
     public function product_categories()
     {
         return $this->morphToMany(Term::class, 'termable')
-        ->where('taxonomy', 'product_category');
+                    ->where('taxonomy', 'product_category');
     }
 
     /**
@@ -136,14 +137,31 @@ class Product extends Model implements HasMediaConversions, Termable
             return $this->makeUncategorised();
         }
 
-        $currentTerms = $this->product_categories->pluck('id')->toArray();
-        $this->terms()->detach($currentTerms);
-
         if ($terms instanceof \Illuminate\Database\Eloquent\Collection) {
             $terms = $terms->pluck('id')->toArray();
         }
+        $this->product_categories()->sync($terms);
 
-        $this->terms()->attach($terms);
+        // $this->product_categories()->detach($this->product_categories->pluck('id'));
+        // $this->product_categories()->attach($terms);
+
+        return $this;
+    }
+
+    /**
+     * Sync attributes to a product.
+     *
+     * @param \Illuminate\Database\Eloquent\Collection|array $terms
+     *
+     * @return Product
+     */
+    public function syncAttributes($attributes = [])
+    {
+        if ($attributes instanceof \Illuminate\Database\Eloquent\Collection) {
+            $attributes = $attributes->pluck('id')->toArray();
+        }
+        
+        $this->product_attributes()->sync($attributes);
 
         return $this;
     }
@@ -156,6 +174,18 @@ class Product extends Model implements HasMediaConversions, Termable
     public function image()
     {
         return $this->belongsTo(Media::class, 'media_id');
+    }
+
+    /**
+     * Apply the attribute filter scope
+     * 
+     * @param  Builder                 $query
+     * @param  ProductAttributeFilter $filter 
+     * @return Builder
+     */
+    public function scopeFilter($query, ProductAttributeFilter $filter)
+    {
+        return $filter->apply($query);
     }
 
     /**

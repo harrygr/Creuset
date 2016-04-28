@@ -20,6 +20,7 @@ interface TermRepository
      */
     public function getCategories();
 
+
     /**
      * Get a list of all the categories.
      *

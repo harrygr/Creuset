@@ -48,7 +48,7 @@
          <tr>
             <td>{{ $order->present()->status }}</td>
             <td>
-              <a href="{{ route('admin.orders.show', $order) }}">#{{ $order->id }}</a> from <a href="{{ route('admin.users.edit', $order->user) }}">{{ $order->user->name }}</a><br>
+              <a href="{{ route('admin.orders.show', $order) }}"><strong>#{{ $order->id }}</strong></a> from <a href="{{ route('admin.users.edit', $order->user) }}">{{ $order->user->name }}</a><br>
               {{ $order->email }}
           </td>
           <td>{{ $order->product_items->count() }} items</td>

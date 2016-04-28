@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Attribute;
 use TestCase;
 
 class ProductTest extends TestCase
@@ -75,7 +76,7 @@ class ProductTest extends TestCase
         // We haven't yet given the product a category; it should be uncategorised.
         $this->assertEquals('Uncategorised', $product->product_category->term);
 
-        $product = $product->syncTerms($product_categories);
+        $product = $product->fresh()->syncTerms($product_categories);
 
         $this->assertCount(3, $product->fresh()->product_categories);
     }
@@ -95,28 +96,4 @@ class ProductTest extends TestCase
         $this->assertEquals('Uncategorised', $product->product_category->term);
     }
 
-    /** @test **/
-    public function it_adds_attributes_without_affecting_categories()
-    {
-        $product_categories = factory(Term::class, 3)->create([
-          'taxonomy' => 'product_category',
-        ]);
-
-        $attribute = factory(Term::class)->create([
-          'taxonomy' => 'lampshade_size',
-        ]);
-
-        $product = factory(Product::class)->create();
-
-        $product->terms()->attach($product_categories->first());
-
-        $product->addAttribute($attribute);
-
-        $product->syncTerms($product_categories->pluck('id')->toArray());
-
-        $product = $product->fresh();
-
-        $this->assertEquals($attribute->term, $product->attributes->first()->term);
-        $this->assertCount(3, $product->product_categories);
-    }
 }

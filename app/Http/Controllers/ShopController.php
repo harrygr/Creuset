@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
+use App\ProductAttributeFilter;
 use App\Repositories\Product\ProductRepository;
 use App\Term;
+use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
@@ -19,12 +22,12 @@ class ShopController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Term $product_category = null)
+    public function index(Term $product_category = null, ProductAttributeFilter $filter)
     {
         if (!$product_category->slug) {
-            $products = $this->products->getPaginated();
+            $products = $this->products->getPaginated(['image']);
         } else {
-            $products = $this->products->inCategory($product_category);
+            $products = $product_category->products()->filter($filter)->with('image')->paginate();
         }
 
         return view('shop.index')->with(compact('product_category', 'products'));

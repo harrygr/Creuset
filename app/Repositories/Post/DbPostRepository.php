@@ -32,7 +32,9 @@ class DbPostRepository extends DbRepository implements PostRepository
      */
     public function getPaginated($with = [])
     {
-        return $this->model->with($with)->latest()->paginate(10);
+        $query = $this->model->with($with)->latest();
+
+        return $query->paginate(10);
     }
 
     public function trashedCount()

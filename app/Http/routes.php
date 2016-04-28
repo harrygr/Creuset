@@ -1,9 +1,9 @@
 <?php
 
  // DB::listen(function ($query) {
- //    var_dump($query->sql);
+ //    var_dump($query->sql, $query->bindings, $query->time);
  //        });
-
+ 
 Route::group(['middleware' => ['web']], function () {
 
     Route::get('/', 'HomeController@index');
@@ -28,7 +28,6 @@ Route::group(['middleware' => ['web']], function () {
     /*
      * Shop
      */
-
     Route::get('shop/{product_category?}', ['uses' => 'ShopController@index', 'as' => 'products.index']);
     Route::get('shop/{product_category}/{product_slug}', ['uses' => 'ProductsController@show', 'as' => 'products.show']);
 
@@ -136,9 +135,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'admin']], function (
     Route::patch('categories/{term}', ['uses' => 'Admin\TermsController@update', 'as' => 'admin.categories.update']);
     Route::delete('terms/{term}', ['uses' => 'Admin\TermsController@destroy', 'as' => 'admin.terms.delete']);
 
+    // Product Attributes
     Route::get('attributes', ['uses' => 'Admin\AttributesController@index', 'as' => 'admin.attributes.index']);
     Route::get('attributes/create', ['uses' => 'Admin\AttributesController@create', 'as' => 'admin.attributes.create']);
-    Route::get('attributes/{taxonomy}/edit', ['uses' => 'Admin\AttributesController@edit', 'as' => 'admin.attributes.edit']);
+    Route::get('attributes/{attribute_slug}/edit', ['uses' => 'Admin\AttributesController@edit', 'as' => 'admin.attributes.edit']);
     Route::delete('attributes/{taxonomy}', ['uses' => 'Admin\AttributesController@destroy', 'as' => 'admin.attributes.delete']);
 
     // Media
@@ -168,6 +168,12 @@ Route::group(['prefix' => 'api', 'middleware' => 'api'], function () {
     Route::post('terms', ['uses' => 'Api\TermsController@store', 'as' => 'api.terms.store']);
     Route::delete('terms/{term}', ['uses' => 'Api\TermsController@destroy', 'as' => 'api.terms.delete']);
     Route::patch('terms/{term}', ['uses' => 'Api\TermsController@update', 'as' => 'api.terms.update']);
+
+    // Attributes
+    Route::get('product_attributes/{slug?}', ['uses' => 'Api\ProductAttributesController@index', 'as' => 'api.product_attributes.index']);
+    Route::post('product_attributes', ['uses' => 'Api\ProductAttributesController@store', 'as' => 'api.product_attributes.store']);
+    Route::delete('product_attributes/{product_attribute}', ['uses' => 'Api\ProductAttributesController@destroy', 'as' => 'api.product_attributes.delete']);
+    Route::patch('product_attributes/{product_attribute}', ['uses' => 'Api\ProductAttributesController@update', 'as' => 'api.product_attributes.update']);
 
     Route::get('categories', ['uses' => 'Api\TermsController@categories', 'as' => 'api.categories']);
     Route::post('categories', ['uses' => 'Api\TermsController@storeCategory', 'as' => 'api.categories']);

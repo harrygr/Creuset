@@ -4,6 +4,10 @@ window.$ = window.jQuery = require('jquery');
 global.Vue = require('vue');
 global.Dropzone = require('dropzone');
 
+global.AdminLTEOptions = {
+  animationSpeed: 100,
+  };
+
 var bootstrap = require('bootstrap');
 
 require('vue-resource');

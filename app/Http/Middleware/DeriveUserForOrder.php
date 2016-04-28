@@ -97,7 +97,7 @@ class DeriveUserForOrder
             'name'         => $data['name'],
             'email'        => $data['email'],
             'username'     => $data['email'],
-            'password'     => bcrypt($data->get('password', bin2hex(openssl_random_pseudo_bytes(6)))),
+            'password'     => $data->get('password', $this->generateRandomPassword()),
             'last_seen_at' => $data->has('password') ? new \DateTime() : null,
         ]);
 
@@ -106,6 +106,11 @@ class DeriveUserForOrder
         return $user;
     }
 
+    /**
+     * Validate the customer input
+     * 
+     * @return void
+     */
     protected function validateInput()
     {
         $rules = [
@@ -116,5 +121,15 @@ class DeriveUserForOrder
             $rules['password'] = 'required|confirmed|min:6';
         }
         $this->validate($this->request, $rules);
+    }
+
+    /**
+     * Auto-generate a password for the user
+     * 
+     * @return string
+     */
+    public function generateRandomPassword()
+    {
+        return bin2hex(openssl_random_pseudo_bytes(16));
     }
 }

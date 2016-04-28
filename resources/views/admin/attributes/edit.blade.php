@@ -17,7 +17,7 @@
 
 <div class="box box-primary">
     <div class="box-body">
-        <cr-attribute-form taxonomy="{{ Present::labelText($taxonomy) }}">
+        <cr-attribute-form product_attribute="{{ $attribute }}">
     </div>
 </div>
 

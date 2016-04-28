@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Attribute;
 use App\Http\Controllers\Controller;
+use App\ProductAttribute;
 use App\Term;
 
 class AttributesController extends Controller
@@ -15,7 +15,7 @@ class AttributesController extends Controller
      */
     public function index()
     {
-        $terms = Attribute::all()->groupBy('taxonomy');
+        $terms = ProductAttribute::all()->groupBy('slug');
 
         return view('admin.attributes.index', compact('terms'));
     }
@@ -33,15 +33,13 @@ class AttributesController extends Controller
     /**
      * Show a form for updating attribute terms.
      *
-     * @param string $taxonomies
+     * @param string $attribute_slug
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($taxonomies)
+    public function edit($attribute)
     {
-        abort_if(!$this->isAttribute($taxonomy = str_singular($taxonomies)), 404);
-
-        return view('admin.attributes.edit', compact('taxonomy'));
+        return view('admin.attributes.edit', compact('attribute'));
     }
 
     /**
@@ -51,25 +49,13 @@ class AttributesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($taxonomy)
+    public function destroy($slug)
     {
-        $terms = Attribute::where('taxonomy', $taxonomy)->delete();
+        $terms = ProductAttribute::where('slug', $slug)->delete();
 
         return redirect()->route('admin.attributes.index')->with([
-            'alert'       => sprintf('Attribute "%s" deleted', \Present::labelText($taxonomy)),
+            'alert'       => sprintf('Attribute "%s" deleted', \Present::labelText($slug)),
             'alert-class' => 'success',
             ]);
-    }
-
-    /**
-     * Determine if a given taxonomy is a custom attribute (rather than a category, tag etc).
-     * 
-     * @param  string  $taxonomy
-     * 
-     * @return boolean          
-     */
-    protected function isAttribute($taxonomy)
-    {        
-        return !!Attribute::where('taxonomy', $taxonomy)->count();
     }
 }

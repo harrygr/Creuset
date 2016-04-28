@@ -98,6 +98,7 @@ class ProductsController extends Controller
         $product->update($request->all());
 
         $product->syncTerms($request->get('terms', []));
+        $product->syncAttributes($request->get('attributes', []));
 
         return redirect()->route('admin.products.edit', $product)
                          ->withAlert('Product Updated')

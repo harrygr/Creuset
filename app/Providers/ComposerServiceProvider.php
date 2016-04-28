@@ -96,10 +96,15 @@ class ComposerServiceProvider extends ServiceProvider
         });
     }
 
+    /**
+     * Share the nested product attributes with the relevant views.
+     *  
+     * @return void
+     */
     private function shareAttributes()
     {
-        $this->app->view->composer('admin.products.form.attributes', function ($view) {
-            $view->with('attributes', \App\Attribute::all()->groupBy('taxonomy'));
+        $this->app->view->composer(['shop._attribute_filter', 'admin.products.form.attributes'], function ($view) {
+            $view->with('product_attributes', \App\ProductAttribute::all()->groupBy('name'));
         });
     }
 

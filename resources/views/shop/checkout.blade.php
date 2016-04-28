@@ -108,6 +108,7 @@
         <div class="checkbox" style="position: absolute; top: 16px; right: 16px;">
           <label><input type="checkbox" name="different_shipping_address" {{ old('different_shipping_address') ? 'checked' : '' }} v-model="different_shipping_address"> Different Shipping Address</label>
         </div>
+        <i v-show="!different_shipping_address">Same as billing</i>
         <div v-show="different_shipping_address">
           @include('partials.address_form', ['type' => 'shipping'])
         </div>

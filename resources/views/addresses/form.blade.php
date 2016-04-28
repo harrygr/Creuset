@@ -7,12 +7,12 @@
 
 <div class="form-group">
     <label for="line_1">Address</label>
-    {!! Form::text('line_1', null, ['class' => 'form-control']) !!}
+    {!! Form::text('line_1', null, ['class' => 'form-control', 'placeholder' => 'Street address, house name',]) !!}
 </div>
 
 <div class="form-group">
     <label for="line_2" class="sr-only">Address</label>
-    {!! Form::text('line_2', null, ['class' => 'form-control']) !!}
+    {!! Form::text('line_2', null, ['class' => 'form-control', 'placeholder' => 'Apartment, suite, unit etc. (optional)',]) !!}
 </div>
 
 <div class="form-group">
@@ -27,7 +27,7 @@
 
 <div class="form-group">
     <label for="country">Country</label>
-    {!! Form::select('country', $countries->lists(), null, ['class' => 'form-control']) !!}
+    {!! Form::select('country', $countries->lists(), null, ['class' => 'form-control select2']) !!}
 </div>
 
 <div class="form-group">

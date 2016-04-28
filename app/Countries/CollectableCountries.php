@@ -50,7 +50,7 @@ trait CollectableCountries
 
         return $countries->map(function ($region) {
             return $region->pluck('name', 'alpha2Code');
-        })->toArray();
+        });
     }
 
     /**
