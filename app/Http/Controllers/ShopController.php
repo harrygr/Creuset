@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Product;
 use App\ProductAttributeFilter;
 use App\Repositories\Product\ProductRepository;
 use App\Term;
-use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {

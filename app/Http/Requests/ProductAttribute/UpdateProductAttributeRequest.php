@@ -27,9 +27,9 @@ class UpdateProductAttributeRequest extends Request
         $slug = $this->get('slug', str_slug($this->get('name')));
 
         return [
-            'property' => 'unique:product_attributes,property,'.$attribute->id.',id,slug,'.$slug, // property is only unique for a given attribute
+            'property'      => 'unique:product_attributes,property,'.$attribute->id.',id,slug,'.$slug, // property is only unique for a given attribute
             'property_slug' => 'unique:product_attributes,property_slug,'.$attribute->id.',id,slug,'.$slug, // property slug is only unique for a given attribute
-            'order'   => 'numeric',
+            'order'         => 'numeric',
         ];
     }
 }

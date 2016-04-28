@@ -29,10 +29,10 @@ class CreateProductAttributeRequest extends Request
         $slug = $this->get('slug', str_slug($this->get('name')));
 
         return [
-            'property' => 'required|unique:product_attributes,property,NULL,id,slug,'.$slug, // property is only unique for a given attribute
+            'property'      => 'required|unique:product_attributes,property,NULL,id,slug,'.$slug, // property is only unique for a given attribute
             'property_slug' => 'required|unique:product_attributes,property_slug,NULL,id,slug,'.$slug, // property slug is only unique for a given attribute
-            'name'     => 'required',
-            'order'    => 'numeric',
+            'name'          => 'required',
+            'order'         => 'numeric',
         ];
     }
 }

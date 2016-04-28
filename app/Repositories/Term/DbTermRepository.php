@@ -2,7 +2,6 @@
 
 namespace App\Repositories\Term;
 
-use App\ProductAttribute;
 use App\Contracts\Termable;
 use App\Term;
 use Illuminate\Database\Eloquent\Model;

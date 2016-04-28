@@ -107,8 +107,8 @@ class DeriveUserForOrder
     }
 
     /**
-     * Validate the customer input
-     * 
+     * Validate the customer input.
+     *
      * @return void
      */
     protected function validateInput()
@@ -124,8 +124,8 @@ class DeriveUserForOrder
     }
 
     /**
-     * Auto-generate a password for the user
-     * 
+     * Auto-generate a password for the user.
+     *
      * @return string
      */
     public function generateRandomPassword()

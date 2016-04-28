@@ -98,7 +98,7 @@ class ComposerServiceProvider extends ServiceProvider
 
     /**
      * Share the nested product attributes with the relevant views.
-     *  
+     *
      * @return void
      */
     private function shareAttributes()
