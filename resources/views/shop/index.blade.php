@@ -17,7 +17,7 @@
 <div class="row">
 
     @foreach ($product_group as $i => $product)
-    <div class="product col-md-{{ 12 / $products_per_row }} col-xs-{{ 24 / $products_per_row }}">
+    <div class="product col-md-{{ (int) 12 / $products_per_row }} col-xs-{{ (int) 24 / $products_per_row }}">
         <a href="{{ $product->url }}">
           <img src="{{ $product->present()->thumbnail_url(300) }}" alt="" class="img-responsive">        
         </a>
@@ -27,7 +27,7 @@
         <span class="price">{{ $product->present()->price() }}</span>
     </div>
 
-    @if(($i+1) % ($products_per_row / 2) === 0)
+    @if( ($i + 1) % ($products_per_row / 2) === 0 )
       <div class="clearfix visible-xs-block"></div>
     @endif
 

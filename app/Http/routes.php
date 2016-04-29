@@ -157,6 +157,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'admin']], function (
         Route::patch('{user}', ['as' => 'admin.users.update', 'uses' => 'Admin\UsersController@update']);
 
         Route::get('{username}/orders', ['uses' => 'Admin\UsersController@orders', 'as' => 'admin.users.orders']);
+        Route::get('{username}/addresses', ['uses' => 'Admin\UsersController@addresses', 'as' => 'admin.users.addresses']);
     });
 });
 

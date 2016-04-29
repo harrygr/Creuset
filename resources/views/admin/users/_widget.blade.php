@@ -14,7 +14,7 @@
           <i class="fa fa-fw fa-truck"></i> <a href="{{ route('admin.users.orders', $user->username) }}"><b>Orders</b></a> <span class="pull-right">{{ $user->orders->count() }}</span>
         </li>
         <li class="list-group-item">
-          <i class="fa fa-fw fa-map-marker"></i> <a href=""><b>Addresses</b></a> <span class="pull-right">{{ $user->addresses->count() }}</span>
+          <i class="fa fa-fw fa-map-marker"></i> <a href="{{ route('admin.users.addresses', $user->username) }}"><b>Addresses</b></a> <span class="pull-right">{{ $user->addresses->count() }}</span>
         </li>  
       </ul>
     </div>

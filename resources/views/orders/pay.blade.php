@@ -27,8 +27,11 @@
 
         <div class="row">
             <div class="form-group col-md-6 col-xs-12" v-bind:class="{'has-error':validation_failure.card}">
-                <label for="cc-number" class="control-label">Card number<small class="text-muted">[<span class="cc-brand">@{{ card_type }}</span>]</small></label>
+                <label for="cc-number" class="control-label">Card number</label>
+                <div class="input-group">
                 <input id="cc-number" type="tel" class="form-control cc-number" autocomplete="cc-number" placeholder="•••• •••• •••• ••••" v-model="card.number" required>
+                <span class="input-group-addon cc-icon-addon"><i class="cc-icon @{{ card_type }}"></i></span>
+                </div>
             </div>
             <div class="form-group col-md-3 col-xs-6" v-bind:class="{'has-error':validation_failure.exp}">
                 <label for="cc-exp" class="control-label">Card expiry</label>
@@ -37,7 +40,9 @@
 
             <div class="form-group col-md-3 col-xs-6" v-bind:class="{'has-error':validation_failure.cvc}">
                 <label for="cc-cvc" class="control-label">Card CVC</label>
+
                 <input id="cc-cvc" type="tel" class="form-control cc-cvc" autocomplete="off" placeholder="•••" v-model="card.cvc" required>
+
             </div>
         </div>
 
@@ -53,6 +58,35 @@
     @stop
 
     @section('scripts')
+
+    <style>
+        .cc-icon {
+            display: inline-block;
+            background: url('/img/cc-sprite2.css.svg');
+            background-repeat: no-repeat;
+            background-position: -1000px -1000px;
+            white-space: nowrap;
+            background-size: 30px auto;
+            width:30px;
+            height: 21px;
+            margin-bottom: -4px;
+
+        }
+        .cc-icon-addon {
+            padding: 5px;
+        }
+        .cc-icon.amex {
+            background-position: 0 40%;
+        }
+
+        .cc-icon.visa {
+            background-position: 0 0;
+        }
+        .cc-icon.mastercard {
+            background-position: 0 20%;
+        }
+    </style>
+
     <script>
 
     var vm = new Vue({

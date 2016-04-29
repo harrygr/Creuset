@@ -18,6 +18,8 @@ elixir(function(mix) {
     	});
 
     mix.browserify('admin.js');
+    mix.browserify('main.js');
+
 
     mix.copy(adminltepath + 'js/app.min.js', 'public/js/admin-lte.js');
 
@@ -26,9 +28,9 @@ elixir(function(mix) {
         cssAdminPath + 'admin.css',
         '../../../' + adminltepath + 'css/AdminLTE.css',
         '../../../' + adminltepath + 'css/skins/skin-blue.css',
-        ], 'public/css/admin.all.css');
+        ], 'public/css/admin.css');
 
     mix.version([
-        'css/admin.all.css', 'js/admin.js'
+        'css/admin.css', 'js/admin.js'
         ]);
 });

@@ -90,4 +90,9 @@ class UsersController extends Controller
 
         return view('admin.orders.index', compact('orders', 'title'));
     }
+
+    public function addresses(User $user)
+    {
+        return view('admin.users.addresses', compact('user'));
+    }
 }

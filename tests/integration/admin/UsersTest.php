@@ -93,6 +93,19 @@ class UsersTest extends TestCase
              ->see("#{$order_item->id}");
     }
 
+    /** @test **/
+    public function it_shows_the_addresses_for_a_user()
+    {
+        $address = factory(\App\Address::class)->create();
+        $user = $address->user;
+
+        $this->logInAsAdmin();
+
+        $this->visit("admin/users/{$user->username}/addresses")
+             ->see($address->line_1);
+
+    }
+
     private function updateProfile($overrides = [])
     {
         $newUserProfile = array_merge($this->newUserProfile(), $overrides);

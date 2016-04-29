@@ -104,7 +104,7 @@ class ComposerServiceProvider extends ServiceProvider
     private function shareAttributes()
     {
         $this->app->view->composer(['shop._attribute_filter', 'admin.products.form.attributes'], function ($view) {
-            $view->with('product_attributes', \App\ProductAttribute::all()->groupBy('name'));
+            $view->with('product_attributes', \App\ProductAttribute::all()->groupBy('slug'));
         });
     }
 

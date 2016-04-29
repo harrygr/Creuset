@@ -32,11 +32,10 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate();
-        $productCount = Product::count();
+        $products = Product::with(['image', 'product_categories'])->orderBy('updated_at', 'desc')->paginate();        
 
         return view('admin.products.index', [
-            'products'     => $this->products->getPaginated(['image', 'product_categories']),
+            'products'     => $products,
             'productCount' => $this->products->count(),
         ]);
     }
@@ -65,6 +64,7 @@ class ProductsController extends Controller
         $product = Product::create($request->all());
 
         $product->syncTerms($request->get('terms', []));
+        $product->syncAttributes($request->get('attributes', []));
 
         return redirect()->route('admin.products.edit', $product)
                          ->withAlert('Product Saved')
