@@ -32,7 +32,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Product::with(['image', 'product_categories'])->orderBy('updated_at', 'desc')->paginate();        
+        $products = Product::with(['image', 'product_categories'])->orderBy('updated_at', 'desc')->paginate();
 
         return view('admin.products.index', [
             'products'     => $products,

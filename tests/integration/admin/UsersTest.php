@@ -103,7 +103,6 @@ class UsersTest extends TestCase
 
         $this->visit("admin/users/{$user->username}/addresses")
              ->see($address->line_1);
-
     }
 
     private function updateProfile($overrides = [])
