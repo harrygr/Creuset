@@ -23,7 +23,6 @@ class UserTest extends TestCase
     /** @test **/
     public function it_gets_admin_users_based_on_the_config_value()
     {
-
         $admin_user1 = factory(User::class)->create();
         $admin_user2 = factory(User::class)->create();
 

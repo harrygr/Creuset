@@ -22,9 +22,9 @@ abstract class Presenter
 
     /**
      * Present a numeric value as a money string, according to the site settings.
-     * 
-     * @param  float $value The value to present
-     * 
+     *
+     * @param float $value The value to present
+     *
      * @return string
      */
     public static function money($value)
@@ -34,10 +34,10 @@ abstract class Presenter
 
     /**
      * Convert a slug to a space-separated string.
-     * 
-     * @param  string $string
-     * 
-     * @return string        
+     *
+     * @param string $string
+     *
+     * @return string
      */
     public static function unslug($string)
     {
@@ -46,10 +46,10 @@ abstract class Presenter
 
     /**
      * Convert a slug to a proper cased string.
-     * 
-     * @param  string $string
-     * 
-     * @return string        
+     *
+     * @param string $string
+     *
+     * @return string
      */
     public static function labelText($string)
     {

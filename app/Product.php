@@ -38,7 +38,6 @@ class Product extends Model implements HasMediaConversions, Termable
              ->performOnCollections('images');
     }
 
-
     /**
      * Set the polymorphic relation.
      *
