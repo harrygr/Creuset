@@ -2,6 +2,9 @@
 
 return [
 
+    'name'              => env('SHOP_NAME', 'Creuset'),
+    'logo'              => env('BRAND_LOGO', 'http://placehold.it/500'),
+
     'currency'          => env('SHOP_CURRENCY', 'GBP'),
     'currency_symbol'   => env('SHOP_CURRENCY_SYMBOL', '&pound;'),
 
@@ -18,9 +21,9 @@ return [
     'order_time_limit'  => env('ORDER_TIME_LIMIT', 15),
 
     /*
-     * The user ids who receive order and stock notifications
+     * The user ids or emails, comma separated, who receive order and stock notifications
      */
-    'admin_ids'         => [1],
+    'admins'            => env('SHOP_ADMINS', '1'),
 
     /*
      * The stock quantity at which to alert shop admins

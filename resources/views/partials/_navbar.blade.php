@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -16,6 +16,10 @@
       <ul class="nav navbar-nav">
         <li class=""><a href="/">Home</a></li>
         <li><a href="/shop">Shop</a></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        @include('partials._auth')
       </ul>
 
 

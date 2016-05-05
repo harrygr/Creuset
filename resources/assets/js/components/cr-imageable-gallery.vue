@@ -23,10 +23,15 @@
 						<label>Thumbnail: </label>
 						<input type="text" class="form-control input-sm" readonly value="{{ images[selectedImage].thumbnail_url }}">
 					</div>
-
-					<div class="form-group">
-						<label>Image Title</label>
-						<input type="text" v-model="customProperties.title" class="form-control" @keyup.enter="updateImage">
+					<div class="row">
+						<div class="form-group col-sm-10">
+							<label>Image Title</label>
+							<input type="text" v-model="customProperties.title" class="form-control" @keyup.enter="updateImage">
+						</div>
+						<div class="form-group col-sm-2">
+							<label>Order</label>
+							<input type="number" v-model="images[selectedImage].order_column" class="form-control" @keyup.enter="updateImage">
+						</div>
 					</div>
 
 					<div class="form-group">
@@ -52,7 +57,9 @@
 
 			<div class="row" v-if="hasImages">
 			    <div class="col-md-2 col-sm-3 col-xs-6 top-buffer" v-for="image in images">
-					<img v-bind:src="image.thumbnail_url" alt="" class="img-responsive img-thumbnail selectable" v-bind:class="{'selected': isSelected(image.id)}" @click="selectImage($index)">
+			    	<a href="#" class="thumbnail"  @click="selectImage($index)">
+					<img v-bind:src="image.thumbnail_url" alt="" class="img-responsive selectable" v-bind:class="{'selected': isSelected(image.id)}">
+					</a>
 				</div>
 			</div>
 
@@ -61,6 +68,7 @@
 		</div>
 	</div>
 </template>
+
 
 <script>
 	module.exports = {

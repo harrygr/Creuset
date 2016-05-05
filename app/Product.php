@@ -32,6 +32,21 @@ class Product extends Model implements HasMediaConversions, Termable
         $this->addMediaConversion('thumb')
              ->setManipulations(['w' => 300, 'h' => 300, 'fit' => 'crop'])
              ->performOnCollections('images');
+
+        $this->addMediaConversion('wide')
+             ->setManipulations(['w' => 1300, 'h' => 866, 'fit' => 'crop'])
+             ->performOnCollections('images');
+    }
+
+
+    /**
+     * Set the polymorphic relation.
+     *
+     * @return mixed
+     */
+    public function media()
+    {
+        return $this->morphMany(config('laravel-medialibrary.media_model'), 'model')->orderBy('order_column', 'ASC');
     }
 
     /**
