@@ -25,14 +25,14 @@ class AuthTest extends TestCase
              ->type('secret', 'password')
              ->type('secret', 'password_confirmation')
              ->press('Reset Password');
-             
+
         $this->assertTrue(\Auth::check());
 
         \Auth::logout();
 
         // Ensure the newly reset password works to login with
         $this->assertTrue(\Auth::attempt([
-            'email' => $user->email,
+            'email'    => $user->email,
             'password' => 'secret',
             ]));
     }
