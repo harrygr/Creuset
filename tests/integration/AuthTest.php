@@ -8,6 +8,36 @@ use TestCase;
 class AuthTest extends TestCase
 {
     /** @test **/
+    public function it_allows_resetting_a_users_password()
+    {
+        $user = factory(User::class)->create();
+
+        $this->visit('/password/email')
+             ->type($user->email, 'email')
+             ->press('Send Password Reset Link')
+             ->see('password reset link');
+
+        // look in the db for a password reset link
+        $token = collect(\DB::table('password_resets')->where('email', $user->email)->first())->get('token');
+
+        $this->visit("/password/reset/$token")
+             ->type($user->email, 'email')
+             ->type('secret', 'password')
+             ->type('secret', 'password_confirmation')
+             ->press('Reset Password');
+             
+        $this->assertTrue(\Auth::check());
+
+        \Auth::logout();
+
+        // Ensure the newly reset password works to login with
+        $this->assertTrue(\Auth::attempt([
+            'email' => $user->email,
+            'password' => 'secret',
+            ]));
+    }
+
+    /** @test **/
     public function it_marks_a_user_as_not_auto_created_if_they_log_in_succesfully()
     {
         $email = 'jb@email.com';

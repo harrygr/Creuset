@@ -1,8 +1,7 @@
-@extends('auth.main')
+@extends('layouts.main')
 
-@section('auth.content')
-<div class="panel-heading">Reset Password</div>
-<div class="panel-body">
+@section('content')
+<h1 class="text-center">Reset Password</h1>
 	
 	@include('partials.errors')
 

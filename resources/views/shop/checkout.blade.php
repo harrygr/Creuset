@@ -2,13 +2,18 @@
 
 @extends('layouts.main')
 
-@section('content')
+@section('breadcrumb')
 
 <ol class="breadcrumb">
   <li><a href="/shop">Shop</a></li>
   <li><a href="/cart">Cart</a></li>
   <li class="active">Checkout</li>
 </ol>
+
+@endsection
+
+@section('content')
+
 
 <h2>Order Summary</h2>
 
@@ -116,8 +121,8 @@
     </div>
     @endif
 
-    <p>
-      <input type="submit" class="btn btn-success" value="Continue">
+    <p class="text-right">
+      <input type="submit" class="btn btn-success btn-lg" value="Continue">
     </p>
   </form>
 </div>

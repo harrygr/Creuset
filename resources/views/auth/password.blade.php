@@ -1,8 +1,8 @@
-@extends('auth.main')
+@extends('layouts.main')
 
-@section('auth.content')
+@section('content')
 
-<div class="panel-body">
+<h1 class="text-center">Reset Your Password</h1>
 	@if (session('status'))
 	<div class="alert alert-success">
 		{{ session('status') }}
@@ -29,6 +29,6 @@
 			</div>
 		</div>
 	</form>
-</div>
+
 
 @endsection

@@ -1,11 +1,10 @@
-@extends('auth.main')
+@extends('layouts.main')
 
-@section('auth.content')
+@section('content')
 
-<div class="panel-heading">Login</div>
-<div class="panel-body">
 	@include('partials.alert')
 	@include('partials.errors')
+	<h1 class="text-center">Login</h1>
 
 	<form class="form-horizontal" role="form" method="POST" action="{{ route('auth.login') }}">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -44,6 +43,6 @@
 			</div>
 		</div>
 	</form>
-</div>
+
 
 @endsection

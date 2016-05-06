@@ -38,7 +38,7 @@ class ProductPresenter extends ModelPresenter
         }
 
         return new HtmlString(sprintf(
-      '<del>%s</del><ins>%s</ins>',
+      '<del>%s</del> <ins>%s</ins>',
       Present::money($this->model->price),
       Present::money($this->model->sale_price)
       ));

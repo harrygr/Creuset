@@ -1,6 +1,4 @@
-<?php $spaceDeck = true; ?>
-
-@extends('layouts.main')
+@extends('layouts.single_product')
 
 @section('content')
 
@@ -11,7 +9,6 @@
         <li class="active">{{ $product->name }}</li>
     </ol>
 
-    @include('partials.errors')
 </div>
 
 <div itemscope itemtype="http://schema.org/Product">
@@ -21,9 +18,15 @@
     <div class="row">
         <div class="col-sm-8">
             <div class="sections">
+
+                @include('partials.errors')
+                @include('partials.alert')
+                
                 <header>
                     <h1 itemprop="name">{{ $product->name }}</h1>
                 </header>
+
+
                 <hr>
                 <header><h5>Description</h5></header>
                 <section class="description" itemprop="description">
@@ -50,14 +53,18 @@
 
                 @if ($product->inStock())
                 <section>
-                    <form action="/cart" method="POST" class="form-inline">
+                    <form action="/cart" method="POST" class="form-">
                         {{ csrf_field() }}
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <div class="form-group">
-                            <label for="quantity" class="sr-only">Quantity</label>
-                            <input type="number" name="quantity" value="1" min="1" step="1" max="{{ $product->stock_qty }}" class="form-control">
-                        </div>
-                        <input type="submit" class="btn btn-success" value="Add To Cart">
+           <div class="row">
+                            <div class="form-group col-sm-6">
+                   <label for="quantity" class="col-xs-f6 control-label">Quantity</label>
+               
+                       <input type="number" name="quantity" value="1" min="1" step="1" max="{{ $product->stock_qty }}" class="form-control">
+               
+               </div>
+           </div>
+                        <input type="submit" class="btn btn-success btn-block" value="Add To Cart">
                     </form>
                 </section>
                 @endif

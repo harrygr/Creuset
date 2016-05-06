@@ -19,6 +19,7 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
+        @include('partials._cart')
         @include('partials._auth')
       </ul>
 

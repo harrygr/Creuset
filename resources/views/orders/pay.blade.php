@@ -50,7 +50,9 @@
 
         <input type="hidden" name="order_id" value="{{ $order->id }}">
 
-        <input type="submit" class="btn btn-success" value="Confirm Payment" :disabled="isLoading">
+        <p class="text-right">
+            <input type="submit" class="btn btn-lg btn-success" value="Place Order" :disabled="isLoading">
+        </p>
 
         {!! Form::close() !!}
     </div>
