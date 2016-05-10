@@ -63,6 +63,22 @@ class ProductsControllerTest extends \TestCase
     }
 
     /** @test **/
+    public function it_validates_the_price_of_a_product()
+    {
+        $this->post('admin/products', [
+            'name'         => 'nice product',
+            'slug'         => 'nice-product',
+            'description'  => 'lorem ipsum',
+            'price'        => 62.50,
+            'sale_price'   => 70,
+            'stock_qty'    => 5,
+            'sku'          => 'LP346',
+            'published_at' => Carbon::now()->format('Y-m-d h:i:s'),
+            'user_id'      => $this->user->id
+            ]);
+    }
+
+    /** @test **/
     public function it_can_update_a_product()
     {
         $product = factory(Product::class)->create();
@@ -76,6 +92,7 @@ class ProductsControllerTest extends \TestCase
             'terms'  => $terms->pluck('id')->toArray(),
             '_token' => csrf_token(),
             ]);
+
 
         $this->seeInDatabase('products', ['id' => $product->id, 'name' => 'lorem ipsum']);
         $this->seeInDatabase('termables', ['termable_id' => $product->id, 'term_id' => $terms[0]->id]);

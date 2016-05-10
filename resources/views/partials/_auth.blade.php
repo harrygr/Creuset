@@ -18,6 +18,9 @@
                         <p class="text-left"><strong>{{ Auth::user()->name }}</strong></p>
                         <p class="text-left">
                             <a href="/account" class="btn btn-primary btn-block btn-sm">My Account</a>
+                            @if (Auth::user()->hasRole('admin'))
+                                <a href="/admin" class="btn btn-default btn-block btn-sm"><i class="fa fa-lock"></i> Admin</a>
+                            @endif
                         </p>
                     </div>
                 </div>

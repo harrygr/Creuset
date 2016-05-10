@@ -29,7 +29,12 @@
                     <td>{{ $order->created_at->format('j M Y g:ia') }}</td>
                     <td>{{ $order->present()->status }}</td>
                     <td>{{ Present::money($order->amount) }} for {{ $order->product_items->count() }} {{ str_plural('item', $order->product_items->count()) }}</td>
-                    <td><a href="{{ route('orders.show', $order) }}" class="btn btn-default">View</a></td>
+                    <td>
+                    <a href="{{ route('orders.show', $order) }}" class="btn btn-default">View</a>
+                    @if($order->status === App\Order::PENDING)
+                        <a href="{{ route('checkout.pay') }}" class="btn btn-default">Pay</a>
+                    @endif
+                    </td>
                 </tr>
             @endforeach
         </tbody>

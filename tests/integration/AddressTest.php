@@ -13,7 +13,7 @@ class AddressTest extends TestCase
     {
         $user = $this->loginWithUser();
         $address = factory(Address::class)->create([
-                                                   'user_id' => $user->id,
+                                                   'addressable_id' => $user->id,
                                                    ]);
         $this->visit('account/addresses')
              ->see($address->line_1);
@@ -41,7 +41,7 @@ class AddressTest extends TestCase
     {
         $user = $this->loginWithUser();
         $address = factory(Address::class)->create([
-                               'user_id' => $user->id,
+                               'addressable_id' => $user->id,
                                ]);
 
         $this->assertCount(1, $user->fresh()->addresses);
@@ -61,7 +61,7 @@ class AddressTest extends TestCase
     {
         $user = $this->loginWithUser();
         $address = factory(Address::class)->create([
-                               'user_id' => $user->id,
+                               'addressable_id' => $user->id,
                                ]);
         $this->visit("account/addresses/{$address->id}/edit");
     }
@@ -72,7 +72,7 @@ class AddressTest extends TestCase
         $user = $this->loginWithUser();
         $user_2 = factory(User::class)->create();
         $address = factory(Address::class)->create([
-                               'user_id' => $user_2->id,
+                               'addressable_id' => $user_2->id,
                                ]);
         $this->call('GET', "account/addresses/{$address->id}/edit");
         $this->assertResponseStatus(403);

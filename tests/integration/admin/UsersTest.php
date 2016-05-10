@@ -96,8 +96,10 @@ class UsersTest extends TestCase
     /** @test **/
     public function it_shows_the_addresses_for_a_user()
     {
-        $address = factory(\App\Address::class)->create();
-        $user = $address->user;
+        $address = factory(\App\Address::class)->make();
+        $user = factory(\App\User::class)->create();
+
+        $user->addresses()->save($address);
 
         $this->logInAsAdmin();
 

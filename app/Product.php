@@ -203,6 +203,18 @@ class Product extends Model implements HasMediaConversions, Termable
     }
 
     /**
+     * Limit the query to only sale items.
+     * 
+     * @param Builder                $query
+     * 
+     * @return Builder
+     */
+    public function scopeOnSale($query)
+    {
+        return $query->where('sale_price', '>', 0);
+    }
+
+    /**
      * Parses a date string into a Carbon instance for saving.
      *
      * This shouldn't really need to be done, but Laravel's automatic date

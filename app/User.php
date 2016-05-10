@@ -80,7 +80,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function addresses()
     {
-        return $this->hasMany(Address::class);
+        return $this->morphMany(Address::class, 'addressable');
     }
 
     /**

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('content')
+@section('breadcrumb')
 
 <ol class="breadcrumb">
     <li><a href="/shop">Shop</a></li>
@@ -8,6 +8,10 @@
     <li><a href="/checkout">Checkout</a></li>
     <li class="active">Pay</li>
 </ol>
+
+@endsection
+
+@section('content')
 
 <h1>Pay</h1>
 
@@ -25,6 +29,8 @@
         'v-on:submit.prevent'   => 'getStripeToken'
         ]) !!}
 
+        <input type="hidden" name="order_id" value="{{ $order->id }}">
+
         <div class="row">
             <div class="form-group col-md-6 col-xs-12" v-bind:class="{'has-error':validation_failure.card}">
                 <label for="cc-number" class="control-label">Card number</label>
@@ -34,25 +40,26 @@
                 </div>
             </div>
             <div class="form-group col-md-3 col-xs-6" v-bind:class="{'has-error':validation_failure.exp}">
-                <label for="cc-exp" class="control-label">Card expiry</label>
+                <label for="cc-exp" class="control-label">Card expiry (MM/YY)</label>
                 <input id="cc-exp" type="tel" class="form-control cc-exp" autocomplete="cc-exp" placeholder="•• / ••" v-model="card.exp" required>
             </div>
 
             <div class="form-group col-md-3 col-xs-6" v-bind:class="{'has-error':validation_failure.cvc}">
-                <label for="cc-cvc" class="control-label">Card CVC</label>
+                <label for="cc-cvc" class="control-label">Security Code (CVV) <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="3 digits on back. 4 digits on front of American Express."></i></label>
 
                 <input id="cc-cvc" type="tel" class="form-control cc-cvc" autocomplete="off" placeholder="•••" v-model="card.cvc" required>
 
             </div>
+
+            <p v-if="error_message" class="text-danger col-md-12">@{{ error_message }}</p>
+            
+            <div class="col-sm-4 col-md-2 col-sm-push-8 col-md-push-10">
+                <input type="submit" class="btn btn-lg btn-success btn-block" value="Place Order" :disabled="isLoading">
+            </div>
+            <div class="col-sm-8 col-md-10  col-sm-pull-4 col-md-pull-2">
+                <p class="top-buffer"><i class="fa fa-lock"></i> Your card details are securely encrypted and handled by our payment processor. You are safe.</p>
+            </div>
         </div>
-
-        <p v-if="error_message" class="text-danger">@{{ error_message }}</p>
-
-        <input type="hidden" name="order_id" value="{{ $order->id }}">
-
-        <p class="text-right">
-            <input type="submit" class="btn btn-lg btn-success" value="Place Order" :disabled="isLoading">
-        </p>
 
         {!! Form::close() !!}
     </div>
@@ -121,6 +128,9 @@
             $('input.cc-cvc').payment('formatCardCVC');
 
             Stripe.setPublishableKey(this.stripe_publishable_key);
+
+
+            $('[data-toggle="tooltip"]').tooltip();
         },
         methods: {
             getStripeToken: function() {

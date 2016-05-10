@@ -43,15 +43,22 @@ class Address extends Model
         'country'   => 'required|alpha|size:2',
     ];
 
-    /**
-     * An address belongs to a user.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\Relation
-     */
-    public function user()
+    public function addressable()
     {
-        return $this->belongsTo(User::class);
+        return $this->morphTo();
     }
+
+
+    /**
+     * Provide a user ID to enable determining the owner if owned by a user
+     * 
+     * @return integer|null
+     */
+    public function getUserIdAttribute()
+    {
+        return $this->addressable_type === User::class ? $this->addressable_id : null;
+    }
+    
 
     public function getFullNameAttribute()
     {

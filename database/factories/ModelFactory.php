@@ -125,26 +125,28 @@ $factory->define('App\OrderItem', function ($faker) {
 $factory->define('App\Order', function ($faker) {
 
     $user_id = factory('App\User')->create()->id;
-    $address_id = factory('App\Address')->create(['user_id' => $user_id])->id;
+    $address_id = factory('App\Address')->create(['addressable_id' => $user_id])->id;
+    $shipping_address_id = mt_rand(0, 1) ? $address_id : factory('App\Address')->create(['addressable_id' => $user_id])->id;
 
     return [
     'user_id'               => $user_id,
     'billing_address_id'    => $address_id,
-    'shipping_address_id'   => $faker->randomElement([$address_id, factory('App\Address')->create(['user_id' => $user_id])->id]),
-    'status'                => $faker->randomElement(['pending', 'processing', 'processing', 'completed', 'completed', 'cancelled']),
+    'shipping_address_id'   => $shipping_address_id,
+    'status'                => $faker->randomElement(array_keys(App\Order::$statuses)),
     ];
 });
 
 $factory->define('App\Address', function ($faker) {
 
     return [
-    'user_id'       => factory('App\User')->create()->id,
-    'name'          => $faker->name,
-    'phone'         => $faker->phoneNumber,
-    'line_1'        => $faker->buildingNumber.' '.$faker->streetName,
-    'city'          => $faker->city,
-    'postcode'      => $faker->postcode,
-    'country'       => $faker->countryCode,
+    'addressable_id'       => factory('App\User')->create()->id,
+    'addressable_type'     => 'App\User',
+    'name'                 => $faker->name,
+    'phone'                => $faker->phoneNumber,
+    'line_1'               => $faker->buildingNumber.' '.$faker->streetName,
+    'city'                 => $faker->city,
+    'postcode'             => $faker->postcode,
+    'country'              => $faker->countryCode,
     ];
 });
 

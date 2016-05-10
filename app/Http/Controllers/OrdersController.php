@@ -112,8 +112,8 @@ class OrdersController extends Controller
 
         $billing_address = $order->getAddress('billing');
         $billing_address->fill($request->get('billing_address'));
-        $billing_address->user_id = $customer->id;
-        $billing_address->save();
+
+        $customer->addresses()->save($billing_address);
 
         $addresses = [
                'billing_address_id'     => $billing_address->id,
@@ -126,10 +126,9 @@ class OrdersController extends Controller
             // different address is being used, we'll create a new one or
             // we'll end up updating the billing address too
             $shipping_address = $order->shippingSameAsBilling() ? new Address() : $order->getAddress('shipping');
-
             $shipping_address->fill($request->get('shipping_address'));
-            $shipping_address->user_id = $customer->id;
-            $shipping_address->save();
+
+            $customer->addresses()->save($shipping_address);
 
             $addresses['shipping_address_id'] = $shipping_address->id;
         }

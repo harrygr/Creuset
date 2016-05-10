@@ -120,10 +120,11 @@
       </div>
     </div>
     @endif
-
-    <p class="text-right">
-      <input type="submit" class="btn btn-success btn-lg" value="Continue">
+    <div class="row">
+    <p class="col-sm-4 col-sm-offset-8 col-md-2 col-md-offset-10">
+      <input type="submit" class="btn btn-success btn-lg btn-block" value="Continue">
     </p>
+    </div>
   </form>
 </div>
 

@@ -14,7 +14,7 @@ class AddressesTableSeeder extends Seeder
 
         foreach (range(1, 15) as $i) {
             factory(Address::class)->create([
-                'user_id' => $faker->randomElement($userIds),
+                'addressable_id' => $faker->randomElement($userIds),
                 ]);
         }
     }

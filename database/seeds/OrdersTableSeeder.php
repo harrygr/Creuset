@@ -20,7 +20,7 @@ class OrdersTableSeeder extends Seeder
             $user = $users->random();
 
             if (!$user->addresses->count()) {
-                $address = factory(Address::class)->create(['user_id' => $user->id]);
+                $address = factory(Address::class)->create(['addressable_id' => $user->id]);
                 $user = $user->fresh();
             }
 

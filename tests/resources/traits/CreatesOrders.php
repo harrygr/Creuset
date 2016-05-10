@@ -9,7 +9,7 @@ trait CreatesOrders
     protected function createOrder($overrides = [])
     {
         $this->customer = factory(\App\User::class)->create();
-        $this->address = factory(\App\Address::class)->create(['user_id' => $this->customer->id]);
+        $this->address = factory(\App\Address::class)->create(['addressable_id' => $this->customer->id]);
 
         $order_attributes = array_merge([
             'user_id'             => $this->customer->id,

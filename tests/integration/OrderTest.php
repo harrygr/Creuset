@@ -65,7 +65,7 @@ class OrderTest extends TestCase
     {
         $user = $this->loginWithUser([], 'customer');
         $product = $this->putProductInCart();
-        $address = factory(\App\Address::class)->create(['user_id' => $user->id, 'country' => 'GB']);
+        $address = factory(\App\Address::class)->create(['addressable_id' => $user->id, 'country' => 'GB']);
         $shipping_method = factory('App\ShippingMethod')->create()->allowCountries(['GB']);
 
         //$current_stock = $product->stock_qty;
@@ -92,7 +92,7 @@ class OrderTest extends TestCase
     {
         $user = $this->loginWithUser([], 'customer');
         $product = $this->putProductInCart();
-        $address = factory(\App\Address::class)->create(['user_id' => $user->id, 'country' => 'GB']);
+        $address = factory(\App\Address::class)->create(['addressable_id' => $user->id, 'country' => 'GB']);
         $shipping_method = factory('App\ShippingMethod')->create(['base_rate' => 500]);
         $shipping_method_2 = factory('App\ShippingMethod')->create(['base_rate' => 600]);
 
@@ -115,7 +115,7 @@ class OrderTest extends TestCase
     {
         $user = $this->loginWithUser([], 'customer');
         $product = $this->putProductInCart();
-        $address = factory(\App\Address::class)->create(['user_id' => $user->id, 'country' => 'GB']);
+        $address = factory(\App\Address::class)->create(['addressable_id' => $user->id, 'country' => 'GB']);
         $shipping_method = factory('App\ShippingMethod')->create(['base_rate' => 500]);
         $shipping_method_2 = factory('App\ShippingMethod')->create(['base_rate' => 600]);
 
@@ -135,7 +135,7 @@ class OrderTest extends TestCase
     {
         $user = $this->loginWithUser([], 'customer');
         $product = $this->putProductInCart();
-        $address = factory(\App\Address::class)->create(['user_id' => $user->id, 'country' => 'GB']);
+        $address = factory(\App\Address::class)->create(['addressable_id' => $user->id, 'country' => 'GB']);
 
         $shipping_method = factory('App\ShippingMethod')->create(['base_rate' => 500]);
         $shipping_method_2 = factory('App\ShippingMethod')->create(['base_rate' => 600]);
@@ -165,7 +165,7 @@ class OrderTest extends TestCase
     {
         $user = $this->loginWithUser([], 'customer');
         $product = $this->putProductInCart();
-        $address = factory(\App\Address::class)->create(['user_id' => $user->id, 'country' => 'FR']);
+        $address = factory(\App\Address::class)->create(['addressable_id' => $user->id, 'country' => 'FR']);
         $shipping_method = factory('App\ShippingMethod')->create(['base_rate' => 500]);
 
         $shipping_method->allowCountries(['GB']);

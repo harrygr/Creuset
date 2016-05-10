@@ -78,7 +78,8 @@ class CheckoutController extends Controller
      */
     public function pay(Request $request)
     {
-        $order = $request->session()->get('order');
+        $order = $request->session()->get('order')->fresh();
+        
         if (!$order->hasShipping()) {
             return redirect()->route('checkout.shipping')->with([
                 'alert'       => 'Please select a shipping method',

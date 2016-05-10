@@ -70,7 +70,7 @@ class ShopTest extends TestCase
         $product = $this->putProductInCart();
 
         $this->visit(route('cart'))
-             ->press('X')
+             ->press('remove')
              ->see("{$product->name} removed from cart");
     }
 

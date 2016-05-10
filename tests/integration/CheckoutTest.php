@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit;
+namespace Integration;
 
 use TestCase;
 
@@ -16,9 +16,9 @@ class CheckoutTest extends TestCase
              ->see('nothing in your cart');
 
         $this->visit('checkout/shipping')
-             ->see('without an order');
+             ->see('No order exists');
 
         $this->visit('checkout/pay')
-             ->see('without an order');
+             ->see('No order exists');
     }
 }
