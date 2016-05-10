@@ -6,12 +6,11 @@ use Closure;
 
 class OrderMustBeInSession
 {
-
     private $order;
 
     /**
-     * Set the order
-     * 
+     * Set the order.
+     *
      * @param \Illuminate\Http\Request $request
      */
     private function setOrder($request)
@@ -43,7 +42,7 @@ class OrderMustBeInSession
 
     /**
      * Is an order that exists in the database in the session?
-     *  
+     *
      * @return bool
      */
     private function orderExists()
@@ -54,7 +53,7 @@ class OrderMustBeInSession
     /**
      * Does the order in the session need payment?
      * I.E. Is it pending?
-     * 
+     *
      * @return bool
      */
     private function orderNeedsPayment()

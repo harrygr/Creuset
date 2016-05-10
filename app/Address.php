@@ -48,17 +48,15 @@ class Address extends Model
         return $this->morphTo();
     }
 
-
     /**
-     * Provide a user ID to enable determining the owner if owned by a user
-     * 
-     * @return integer|null
+     * Provide a user ID to enable determining the owner if owned by a user.
+     *
+     * @return int|null
      */
     public function getUserIdAttribute()
     {
         return $this->addressable_type === User::class ? $this->addressable_id : null;
     }
-    
 
     public function getFullNameAttribute()
     {

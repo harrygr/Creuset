@@ -74,7 +74,7 @@ class ProductsControllerTest extends \TestCase
             'stock_qty'    => 5,
             'sku'          => 'LP346',
             'published_at' => Carbon::now()->format('Y-m-d h:i:s'),
-            'user_id'      => $this->user->id
+            'user_id'      => $this->user->id,
             ]);
     }
 
@@ -92,7 +92,6 @@ class ProductsControllerTest extends \TestCase
             'terms'  => $terms->pluck('id')->toArray(),
             '_token' => csrf_token(),
             ]);
-
 
         $this->seeInDatabase('products', ['id' => $product->id, 'name' => 'lorem ipsum']);
         $this->seeInDatabase('termables', ['termable_id' => $product->id, 'term_id' => $terms[0]->id]);

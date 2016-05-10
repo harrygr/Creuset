@@ -24,7 +24,7 @@ class ProductRequest extends Request
     public function defaultRules()
     {
         $price = $this->get('price', 99999);
-        
+
         return [
             'name'       => 'required|string',
             'slug'       => 'required|alpha_dash|unique:products,slug',

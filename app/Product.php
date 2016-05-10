@@ -204,9 +204,9 @@ class Product extends Model implements HasMediaConversions, Termable
 
     /**
      * Limit the query to only sale items.
-     * 
-     * @param Builder                $query
-     * 
+     *
+     * @param Builder $query
+     *
      * @return Builder
      */
     public function scopeOnSale($query)
