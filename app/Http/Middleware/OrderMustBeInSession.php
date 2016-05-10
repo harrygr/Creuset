@@ -48,6 +48,7 @@ class OrderMustBeInSession
      */
     private function orderExists()
     {
+        return !is_null($this->order) and $this->order->exists;
     }
 
     /**
