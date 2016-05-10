@@ -15,7 +15,7 @@ class UpdateProductRequest extends ProductRequest
             'name'       => 'string',
             'slug'       => 'alpha_dash|unique:products,slug,'.$this->route('product')->id,
             'sku'        => 'unique:products,sku,'.$this->route('product')->id,
-            'user_id'    => 'integer'
+            'user_id'    => 'integer',
         ]);
     }
 }

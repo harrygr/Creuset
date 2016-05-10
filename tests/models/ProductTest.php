@@ -98,19 +98,19 @@ class ProductTest extends TestCase
     /** @test **/
     public function it_gets_products_on_sale()
     {
-      $sale_product = factory(Product::class)->create([
-        'price' => 50,
+        $sale_product = factory(Product::class)->create([
+        'price'      => 50,
         'sale_price' => 30,
       ]);
 
-      $normal_product = factory(Product::class)->create([
-        'price' => 60,
+        $normal_product = factory(Product::class)->create([
+        'price'      => 60,
         'sale_price' => null,
       ]);
 
-      $sale_products = Product::onSale()->get();
+        $sale_products = Product::onSale()->get();
 
-      $this->assertCount(1, $sale_products);
-      $this->assertEquals($sale_products->first()->name, $sale_product->name);
+        $this->assertCount(1, $sale_products);
+        $this->assertEquals($sale_products->first()->name, $sale_product->name);
     }
 }

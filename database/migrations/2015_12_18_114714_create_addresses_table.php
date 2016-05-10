@@ -16,7 +16,6 @@ class CreateAddressesTable extends Migration
             $table->increments('id');
             $table->morphs('addressable');
 
-
             $table->string('name');
 
             $table->string('phone', 15)->nullable();
