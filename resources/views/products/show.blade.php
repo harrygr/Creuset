@@ -1,7 +1,6 @@
 @extends('layouts.single_product')
 
-@section('content')
-
+@section('breadcrumb')
 <div class="sections">
     <ol class="breadcrumb">
         <li><a href="/shop">Shop</a></li>
@@ -10,6 +9,12 @@
     </ol>
 
 </div>
+@endsection
+
+@section('content')
+
+@include('partials.alerts._errors_block')
+@include('partials.alerts._alert_block')
 
 <div itemscope itemtype="http://schema.org/Product">
     <div class="" itemprop="image">
@@ -19,13 +24,9 @@
         <div class="col-sm-8">
             <div class="sections">
 
-                @include('partials.errors')
-                @include('partials.alert')
-                
                 <header>
                     <h1 itemprop="name">{{ $product->name }}</h1>
                 </header>
-
 
                 <hr>
                 <header><h5>Description</h5></header>
@@ -35,21 +36,22 @@
             </div>
         </div>
         <div class="col-sm-4">
-
-            <div class="sections">
-                <section class="pricing-bar row">
+            <div class="sections pricing-bar">
+                <section class="row">
                     <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="col-xs-6">
-                        <p class="price" itemprop="price">
+                        <span class="price" itemprop="price">
                             {{ $product->present()->price() }}
-                        </p>
+                        </span>
                     </div>
 
-                    <div class="col-sm-6">
-                        <p class="stock {{ $product->stock_qty > 0 ? 'in-stock' : '' }} text-right">
+                    <div class="col-sm-6 text-right">
+                        <span class="stock {{ $product->stock_qty > 0 ? 'in-stock' : '' }}">
                             {{ $product->present()->stock() }}
-                        </p>
+                        </span>
                     </div>
                 </section>
+            </div>
+            <div class="sections">
 
                 @if ($product->inStock())
                 <section>
@@ -59,9 +61,9 @@
            <div class="row">
                             <div class="form-group col-sm-6">
                    <label for="quantity" class="col-xs-f6 control-label">Quantity</label>
-               
+
                        <input type="number" name="quantity" value="1" min="1" step="1" max="{{ $product->stock_qty }}" class="form-control">
-               
+
                </div>
            </div>
                         <input type="submit" class="btn btn-success btn-block" value="Add To Cart">
@@ -73,10 +75,10 @@
 
                 <section>
                     <p class="text-center">
-                        Share this product 
-                        <a href="#"><i class="fa fa-fw fa-facebook"></i></a> 
-                        <a href="#"><i class="fa fa-fw fa-twitter"></i></a> 
-                        <a href="#"><i class="fa fa-fw fa-pinterest"></i></a> 
+                        Share this product
+                        <a href="#"><i class="fa fa-fw fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-fw fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-fw fa-pinterest"></i></a>
                     </p>
                 </section>
             </div>
