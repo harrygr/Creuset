@@ -4,9 +4,60 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ab7c4e7c92760df9b33552b322ceee22",
-    "content-hash": "e26fff3e4b9604283b65fe32de660308",
+    "hash": "5caea9f82546d547f914023eb0b7f6a7",
+    "content-hash": "47022174ad16b68646e541a38fbed33f",
     "packages": [
+        {
+            "name": "algolia/algoliasearch-client-php",
+            "version": "1.9.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/algolia/algoliasearch-client-php.git",
+                "reference": "0535a2a09ad4eff54e4565d658a30558996d80ed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/algolia/algoliasearch-client-php/zipball/0535a2a09ad4eff54e4565d658a30558996d80ed",
+                "reference": "0535a2a09ad4eff54e4565d658a30558996d80ed",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8 || ^5.0",
+                "satooshi/php-coveralls": "0.6.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "AlgoliaSearch": "src/",
+                    "AlgoliaSearch\\Tests": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Algolia Team",
+                    "email": "contact@algolia.com"
+                },
+                {
+                    "name": "Ryan T. Catlin",
+                    "email": "ryan.catlin@gmail.com"
+                },
+                {
+                    "name": "Jonathan H. Wage",
+                    "email": "jonwage@gmail.com"
+                }
+            ],
+            "description": "Algolia Search API Client for PHP",
+            "homepage": "https://github.com/algolia/algoliasearch-client-php",
+            "time": "2016-05-18 22:05:11"
+        },
         {
             "name": "almasaeed2010/adminlte",
             "version": "v2.3.3",
@@ -1216,7 +1267,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/e1273878ea8e1240cb3aa906bc245c2c6b1ec3a7",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/1f7ae4e3cc178686c49a9d23cab43ed1e955368c",
                 "reference": "e1273878ea8e1240cb3aa906bc245c2c6b1ec3a7",
                 "shasum": ""
             },
@@ -2008,6 +2059,55 @@
                 "spatie"
             ],
             "time": "2016-04-13 10:01:04"
+        },
+        {
+            "name": "spatie/searchindex",
+            "version": "3.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/searchindex.git",
+                "reference": "c454a158596ac3cd4cc0eab09290a8bc8258dbd2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/searchindex/zipball/c454a158596ac3cd4cc0eab09290a8bc8258dbd2",
+                "reference": "c454a158596ac3cd4cc0eab09290a8bc8258dbd2",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.1",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "algolia/algoliasearch-client-php": "^1.6",
+                "elasticsearch/elasticsearch": "^1.3",
+                "phpspec/phpspec": "^2.1",
+                "phpunit/phpunit": "4.*"
+            },
+            "suggest": {
+                "algolia/algoliasearch-client-php": "Install if you want use Algolia as your search index",
+                "elasticsearch/elasticsearch": "Install if you want use Elasticsearch as your search index"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\SearchIndex\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Store and retrieve objects from Elasticsearch or Algolia",
+            "homepage": "https://github.com/spatie/searchindex",
+            "keywords": [
+                "algolia",
+                "elasticsearch",
+                "index",
+                "laravel",
+                "search"
+            ],
+            "time": "2015-08-16 17:58:43"
         },
         {
             "name": "spatie/string",

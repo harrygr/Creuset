@@ -5,15 +5,16 @@ namespace App;
 use App\Contracts\Termable;
 use App\Presenters\PresentableTrait;
 use App\Traits\Postable;
+use App\Traits\SearchableModel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 
-class Product extends Model implements HasMediaConversions, Termable
+class Product extends Model implements HasMediaConversions, Termable, \Spatie\SearchIndex\Searchable
 {
-    use PresentableTrait, HasMediaTrait, SoftDeletes, Postable;
+    use PresentableTrait, HasMediaTrait, SoftDeletes, Postable, SearchableModel;
 
     /**
      * The database table used by the model.
@@ -350,5 +351,45 @@ class Product extends Model implements HasMediaConversions, Termable
     public function inStock()
     {
         return $this->stock_qty > 0;
+    }
+
+
+    /** SEARCH **/
+    /**
+     * Returns an array with properties which must be indexed
+     *
+     * @return array
+     */
+    public function getSearchableBody()
+    {
+        $searchableProperties = [
+            'name' => $this->name,
+            'description' => $this->description,
+            'categories' => $this->product_categories->pluck('term'),
+            'attributes' => $this->product_attributes->groupBy('name'),
+        ];
+
+        return $searchableProperties;
+
+    }
+
+    /**
+     * Return the type of the searchable subject
+     *
+     * @return string
+     */
+    public function getSearchableType()
+    {
+        return 'product';
+    }
+
+    /**
+     * Return the id of the searchable subject
+     *
+     * @return string
+     */
+    public function getSearchableId()
+    {
+        return $this->id;
     }
 }

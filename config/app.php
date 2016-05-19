@@ -80,9 +80,9 @@ return [
     |
     */
 
-    'key' => env('APP_KEY', 'YourSecretKey!!!'),
+    'key' => env('APP_KEY', '664fa76df43aec3c1c23c4f17730f021'),
 
-    'cipher' => MCRYPT_RIJNDAEL_128,
+    'cipher' => 'AES-256-CBC',
 
     /*
     |--------------------------------------------------------------------------
@@ -157,6 +157,7 @@ return [
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
         GrahamCampbell\Markdown\MarkdownServiceProvider::class,
         Baum\Providers\BaumServiceProvider::class,
+        Spatie\SearchIndex\SearchIndexServiceProvider::class,
     ],
 
     /*
@@ -209,6 +210,7 @@ return [
         'Cart'          => 'Gloudemans\Shoppingcart\Facades\Cart',
         'Markdown'      => 'GrahamCampbell\Markdown\Facades\Markdown',
         'Present'       => 'App\Presenters\Presenter',
+        'SearchIndex'   => Spatie\SearchIndex\SearchIndexFacade::class,
 
     ],
 
