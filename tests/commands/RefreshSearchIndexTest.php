@@ -1,4 +1,5 @@
 <?php
+
 use App\Product;
 
 class RefreshSearchIndexTest extends TestCase

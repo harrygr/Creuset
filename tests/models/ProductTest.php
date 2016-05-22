@@ -13,12 +13,11 @@ class ProductTest extends TestCase
         $attributes = collect([
             factory(ProductAttribute::class)->create(['name' => 'Size']),
             factory(ProductAttribute::class)->create(['name' => 'Size']),
-            factory(ProductAttribute::class)->create(['name' => 'Length'])
+            factory(ProductAttribute::class)->create(['name' => 'Length']),
         ]);
         $product->product_attributes()->saveMany($attributes);
 
         $this->assertNotEmpty($product->getSearchableBody()['attributes']);
-
     }
 
     /** @test **/

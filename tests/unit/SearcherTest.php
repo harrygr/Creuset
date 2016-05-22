@@ -5,7 +5,7 @@ class SearcherTest extends TestCase
     /** @test */
     public function it_searches_for_products()
     {
-        $searcher = new App\Search\ProductSearcher;
+        $searcher = new App\Search\ProductSearcher();
         $product = factory('App\Product')->create()->toArray();
 
         SearchIndex::shouldReceive('getResults')->once()->andReturn([
