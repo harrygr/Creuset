@@ -353,7 +353,6 @@ class Product extends Model implements HasMediaConversions, Termable, \Spatie\Se
         return $this->stock_qty > 0;
     }
 
-
     /** SEARCH **/
     /**
      * Returns an array with properties which must be indexed
@@ -373,6 +372,8 @@ class Product extends Model implements HasMediaConversions, Termable, \Spatie\Se
                 return $group->pluck('property');
             }),
             'type'  => $this->getSearchableType(),
+            'created_at' => $this->created_at->toDateTimeString(),
+            'updated_at' => $this->updated_at->toDateTimeString(),
         ];
     }
 
