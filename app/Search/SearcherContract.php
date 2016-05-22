@@ -5,16 +5,16 @@ namespace App\Search;
 interface SearcherContract
 {
     /**
-     * Perform a search for some entities
+     * Perform a search for some entities.
      *
-     * @param String $query
+     * @param string $query
      *
      * @return Collection
      */
     public function search($query);
 
     /**
-     * Return the results
+     * Return the results.
      *
      * @return \Illuminate\Support\Collection
      */
