@@ -49,7 +49,6 @@ class RefreshSearchIndex extends Command
         $this->info('Updating models in the index...');
 
         $models = $model::all();
-
         $bar = $this->output->createProgressBar($models->count());
 
         $models->each(function ($entity) use ($bar) {
