@@ -28,6 +28,7 @@ Route::group(['middleware' => ['web']], function () {
     /*
      * Shop
      */
+    Route::get('shop/search', ['uses' => 'ShopController@search', 'as' => 'shop.search']);
     Route::get('shop/{product_category?}', ['uses' => 'ShopController@index', 'as' => 'products.index']);
     Route::get('shop/{product_category}/{product_slug}', ['uses' => 'ProductsController@show', 'as' => 'products.show']);
 

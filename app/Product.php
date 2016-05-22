@@ -302,7 +302,7 @@ class Product extends Model implements HasMediaConversions, Termable, \Spatie\Se
      */
     public function getUrlAttribute()
     {
-        return route('products.show', [$this->product_category->slug, $this->slug]);
+        return sprintf('/shop/%s/%s', $this->product_category->slug, $this->slug);
     }
 
     /**
@@ -362,15 +362,18 @@ class Product extends Model implements HasMediaConversions, Termable, \Spatie\Se
      */
     public function getSearchableBody()
     {
-        $searchableProperties = [
+        return [
             'name' => $this->name,
+            'id'   => $this->id,
+            'url'  => $this->url,
+            'image_url' => $this->present()->thumbnail_url,
             'description' => $this->description,
             'categories' => $this->product_categories->pluck('term'),
-            'attributes' => $this->product_attributes->groupBy('name'),
+            'attributes' => $this->product_attributes->groupBy('name')->map(function($group) {
+                return $group->pluck('property');
+            }),
+            'type'  => $this->getSearchableType(),
         ];
-
-        return $searchableProperties;
-
     }
 
     /**

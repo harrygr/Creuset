@@ -6,6 +6,21 @@ use TestCase;
 
 class ProductTest extends TestCase
 {
+    /** @test */
+    public function it_gets_the_searchable_body_of_a_product()
+    {
+        $product = factory(Product::class)->create();
+        $attributes = collect([
+            factory(ProductAttribute::class)->create(['name' => 'Size']),
+            factory(ProductAttribute::class)->create(['name' => 'Size']),
+            factory(ProductAttribute::class)->create(['name' => 'Length'])
+        ]);
+        $product->product_attributes()->saveMany($attributes);
+
+        $this->assertNotEmpty($product->getSearchableBody()['attributes']);
+
+    }
+
     /** @test **/
     public function it_gets_the_usable_price_of_a_product()
     {
