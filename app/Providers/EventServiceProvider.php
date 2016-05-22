@@ -34,13 +34,13 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\EmailStockNotification',
         ],
         'searchable.created' => [
-            'App\Listeners\UpsertModelToSearchIndex'
+            'App\Listeners\UpsertModelToSearchIndex',
         ],
         'searchable.updated' => [
-            'App\Listeners\UpsertModelToSearchIndex'
+            'App\Listeners\UpsertModelToSearchIndex',
         ],
         'searchable.deleted' => [
-            'App\Listeners\RemoveModelFromSearchIndex'
+            'App\Listeners\RemoveModelFromSearchIndex',
         ],
     ];
 }

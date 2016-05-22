@@ -7,20 +7,18 @@ return
          */
         'engine' => env('SEARCH_ENGINE', 'elasticsearch'),
 
-        'elasticsearch' =>
-            [
+        'elasticsearch' => [
                 /*
                  * Specify the host(s) where elasticsearch is running.
                  */
-                'hosts' =>
-                    [
+                'hosts' => [
                         'localhost:9200',
                     ],
 
                 /*
                  * Specify the path where Elasticsearch will write it's logs.
                  */
-                'logPath' =>  storage_path() . '/logs/elasticsearch.log',
+                'logPath' => storage_path().'/logs/elasticsearch.log',
 
                 /*
                  * Specify how verbose the logging must be
@@ -33,11 +31,10 @@ return
                 /*
                  * The name of the index elasticsearch will write to.
                  */
-                'defaultIndexName' => 'main'
+                'defaultIndexName' => 'main',
             ],
 
-        'algolia' =>
-            [
+        'algolia' => [
                 /*
                  * This index will be used whenever you don't explicitly
                  * set one yourself.

@@ -2,9 +2,7 @@
 
 namespace Events;
 
-use App\Events\ProductStockChanged;
 use App\Product;
-use App\User;
 use TestCase;
 
 class SearchableProductUpdatesIndexTest extends TestCase

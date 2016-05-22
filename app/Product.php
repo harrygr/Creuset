@@ -354,31 +354,32 @@ class Product extends Model implements HasMediaConversions, Termable, \Spatie\Se
     }
 
     /** SEARCH **/
+
     /**
-     * Returns an array with properties which must be indexed
+     * Returns an array with properties which must be indexed.
      *
      * @return array
      */
     public function getSearchableBody()
     {
         return [
-            'name' => $this->name,
-            'id'   => $this->id,
-            'url'  => $this->url,
-            'image_url' => $this->present()->thumbnail_url,
+            'name'        => $this->name,
+            'id'          => $this->id,
+            'url'         => $this->url,
+            'image_url'   => $this->present()->thumbnail_url,
             'description' => $this->description,
-            'categories' => $this->product_categories->pluck('term'),
-            'attributes' => $this->product_attributes->groupBy('name')->map(function($group) {
+            'categories'  => $this->product_categories->pluck('term'),
+            'attributes'  => $this->product_attributes->groupBy('name')->map(function ($group) {
                 return $group->pluck('property');
             }),
-            'type'  => $this->getSearchableType(),
+            'type'       => $this->getSearchableType(),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];
     }
 
     /**
-     * Return the type of the searchable subject
+     * Return the type of the searchable subject.
      *
      * @return string
      */
@@ -388,7 +389,7 @@ class Product extends Model implements HasMediaConversions, Termable, \Spatie\Se
     }
 
     /**
-     * Return the id of the searchable subject
+     * Return the id of the searchable subject.
      *
      * @return string
      */

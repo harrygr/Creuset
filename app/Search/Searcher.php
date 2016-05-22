@@ -5,12 +5,12 @@ namespace App\Search;
 use Illuminate\Support\Collection;
 use Spatie\SearchIndex\Query\Algolia\SearchQuery;
 
-abstract class Searcher {
-
+abstract class Searcher
+{
     /**
-     * The results as returned from the API
+     * The results as returned from the API.
      *
-     * @var Array
+     * @var array
      */
     protected $results = [];
 
@@ -18,14 +18,14 @@ abstract class Searcher {
      * Get the type of entity to search for.
      * The search will filter the query to only get entities of the given type.
      *
-     * @return String
+     * @return string
      */
     abstract protected function getSearchableType();
 
     /**
-     * Perform a search for some entities
+     * Perform a search for some entities.
      *
-     * @param String $query
+     * @param string $query
      *
      * @return Collection
      */
@@ -40,7 +40,7 @@ abstract class Searcher {
     }
 
     /**
-     * Return the results
+     * Return the results.
      *
      * @return Collection
      */
