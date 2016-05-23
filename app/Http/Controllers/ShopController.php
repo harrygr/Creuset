@@ -47,7 +47,7 @@ class ShopController extends Controller
     {
         $product_category = new Term();
 
-        $results = $searcher->search($request->get('query'));
+        $results = $searcher->search($request->get('query'))->getResults();
         $products = \App\Product::whereIn('id', $results->pluck('id'))->paginate();
 
         return view('shop.index')->with(compact('product_category', 'products'));

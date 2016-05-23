@@ -44,7 +44,7 @@ abstract class Searcher
      *
      * @return Collection
      */
-    public function getResult()
+    public function getResults()
     {
         return new Collection($this->results['hits']);
     }

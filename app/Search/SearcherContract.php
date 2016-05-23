@@ -18,5 +18,5 @@ interface SearcherContract
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getResult();
+    public function getResults();
 }
