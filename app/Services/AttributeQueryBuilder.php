@@ -4,19 +4,19 @@ namespace App\Services;
 
 use Illuminate\Http\Request;
 
-class AttributeQueryBuilder {
-
+class AttributeQueryBuilder
+{
     /**
-     * Filters to put in the query string
+     * Filters to put in the query string.
      *
-     * @var Array
+     * @var array
      */
     private $filters = [];
 
     private $currentFilters = [];
 
     /**
-     * Create a new query builder instance
+     * Create a new query builder instance.
      *
      * @param Request $request
      */
@@ -26,7 +26,7 @@ class AttributeQueryBuilder {
     }
 
     /**
-     * Add a new filter to the query string
+     * Add a new filter to the query string.
      *
      * @param string $filter The attribute slug to filter by.
      * @param string $value  The value of the property.
@@ -36,18 +36,18 @@ class AttributeQueryBuilder {
     public function addFilter($filter, $value)
     {
         $this->filters[$filter] = $value;
+
         return $this;
     }
 
-
     /**
-     * Explictly set the filters
+     * Explictly set the filters.
      *
-     * @param Array $filters
+     * @param array $filters
      *
      * @return AttributeQueryBuilder
      */
-    public function setFilters(Array $filters)
+    public function setFilters(array $filters)
     {
         $this->filters = $filters;
 
@@ -55,7 +55,7 @@ class AttributeQueryBuilder {
     }
 
     /**
-     * Get the filter query string
+     * Get the filter query string.
      *
      * @return string
      */
@@ -73,8 +73,8 @@ class AttributeQueryBuilder {
     {
         $filters = array_merge($this->currentFilters, $this->filters);
 
-        return array_filter($filters, function($value, $key) {
-            return ! $this->filterAlreadyInRequest($key);
+        return array_filter($filters, function ($value, $key) {
+            return !$this->filterAlreadyInRequest($key);
         }, ARRAY_FILTER_USE_BOTH);
     }
 
@@ -84,6 +84,4 @@ class AttributeQueryBuilder {
             and isset($this->currentFilters[$key])
             and $this->filters[$key] === $this->currentFilters[$key];
     }
-
-
 }
