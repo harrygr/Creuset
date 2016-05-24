@@ -1,7 +1,7 @@
 <?php
-use Illuminate\Http\Request;
-use App\Services\AttributeQueryBuilder;
 
+use App\Services\AttributeQueryBuilder;
+use Illuminate\Http\Request;
 
 class AttributeQueryBuilderTest extends TestCase
 {
@@ -14,7 +14,6 @@ class AttributeQueryBuilderTest extends TestCase
 
         $this->assertEquals('filter[size]=large', urldecode($queryString));
     }
-
 
     /** @test */
     public function it_builds_a_query_when_the_request_has_filters_already()
@@ -42,7 +41,7 @@ class AttributeQueryBuilderTest extends TestCase
         $queryBuilder = new AttributeQueryBuilder($this->getFakeRequest(['color' => 'blue']));
 
         $queryString = $queryBuilder->addFilter('color', 'blue')
-                                    ->setFilters(['color' =>'red'])
+                                    ->setFilters(['color' => 'red'])
                                     ->getQueryString();
 
         $this->assertEquals('filter[color]=red', urldecode($queryString));
@@ -72,13 +71,13 @@ class AttributeQueryBuilderTest extends TestCase
 
         $this->assertFalse($queryBuilder->hasCurrentFilter('length', 'short'));
         $this->assertFalse($queryBuilder->hasCurrentFilter('length'));
-
     }
 
     private function getFakeRequest($returnValue = null)
     {
         $fakeRequest = Mockery::mock(Request::class);
         $fakeRequest->shouldReceive('query')->with('filter')->andReturn($returnValue);
+
         return $fakeRequest;
     }
 }
